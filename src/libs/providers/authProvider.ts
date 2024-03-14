@@ -37,13 +37,16 @@ const authProvider: AuthBindings = {
   },
 
   check: async () => {
-    if (directusAuthHelper.getToken()) {
+    const token = await directusAuthHelper.getToken();
+    console.log(token)
+    if (token) {
       return {
         authenticated: true,
       };
     } else {
       return {
         authenticated: false,
+        success: false,
         redirectTo: "/login",
       };
     }
@@ -56,7 +59,7 @@ const authProvider: AuthBindings = {
       const data = await directusAuthHelper.me({ fields: ["*.*"] });
       return data;
     } catch (e) {
-      window.location.href = "/login";
+      // window.location.href = "/login";
       return {
         authenticated: false,
         redirectTo: "/login",

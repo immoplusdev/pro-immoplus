@@ -11,8 +11,6 @@ import {
   EditButton,
   ShowButton,
   DeleteButton,
-  DateField,
-  TagField,
 } from "@refinedev/antd";
 import { Table, Space } from "antd";
 

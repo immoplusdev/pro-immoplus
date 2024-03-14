@@ -67,16 +67,6 @@ function App() {
                 accessControlProvider={accessControlProvider}
                 routerProvider={routerBindings}
                 resources={[
-                  // {
-                  //   name: "blog_posts",
-                  //   list: getRoutePath("/blog-posts"),
-                  //   create: getRoutePath("/blog-posts/create"),
-                  //   edit: getRoutePath("/blog-posts/edit/:id"),
-                  //   show: getRoutePath("/blog-posts/show/:id"),
-                  //   meta: {
-                  //     canDelete: true,
-                  //   },
-                  // },
                   {
                     name: "categories",
                     list: "/categories",
@@ -100,9 +90,7 @@ function App() {
                     element={
                       <Authenticated
                         key="authenticated-inner"
-                        fallback={
-                          <CatchAllNavigate to={getRoutePath("/login")} />
-                        }
+                        fallback={<CatchAllNavigate to={"/login"} />}
                       >
                         <ThemedLayoutV2
                           Header={() => <Header sticky />}
