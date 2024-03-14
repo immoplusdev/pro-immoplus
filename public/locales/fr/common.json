@@ -1,0 +1,163 @@
+{
+  "pages": {
+    "login": {
+      "title": "Connectez-vous à votre compte",
+      "signin": "Se connecter",
+      "signup": "S'inscrire",
+      "divider": "ou",
+      "fields": {
+        "email": "Email",
+        "password": "Mot de passe"
+      },
+      "errors": {
+        "validEmail": "Adresse email invalide"
+      },
+      "buttons": {
+        "submit": "Connexion",
+        "forgotPassword": "Mot de passe oublié?",
+        "noAccount": "Vous n'avez pas de compte?",
+        "rememberMe": "Se souvenir de moi"
+      }
+    },
+    "forgotPassword": {
+      "title": "Mot de passe oublié?",
+      "fields": {
+        "email": "Email"
+      },
+      "errors": {
+        "validEmail": "Adresse email invalide"
+      },
+      "buttons": {
+        "submit": "Envoyer les instructions de réinitialisation"
+      }
+    },
+    "register": {
+      "title": "Inscrivez-vous pour votre compte",
+      "fields": {
+        "email": "Email",
+        "password": "Mot de passe"
+      },
+      "errors": {
+        "validEmail": "Adresse email invalide"
+      },
+      "buttons": {
+        "submit": "S'inscrire",
+        "haveAccount": "Vous avez déjà un compte?"
+      }
+    },
+    "updatePassword": {
+      "title": "Mettre à jour le mot de passe",
+      "fields": {
+        "password": "Nouveau mot de passe",
+        "confirmPassword": "Confirmer le nouveau mot de passe"
+      },
+      "errors": {
+        "confirmPasswordNotMatch": "Les mots de passe ne correspondent pas"
+      },
+      "buttons": {
+        "submit": "Mettre à jour"
+      }
+    },
+    "error": {
+      "info": "Vous avez peut-être oublié d'ajouter le composant {{action}} à la ressource {{resource}}.",
+      "404": "Désolé, la page que vous avez visitée n'existe pas.",
+      "resource404": "Êtes-vous sûr d'avoir créé la ressource {{resource}}?",
+      "backHome": "Retour à l'accueil"
+    }
+  },
+  "actions": {
+    "list": "Liste",
+    "create": "Créer",
+    "edit": "Modifier",
+    "show": "Afficher"
+  },
+  "buttons": {
+    "create": "Créer",
+    "save": "Enregistrer",
+    "logout": "Déconnexion",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "cancel": "Annuler",
+    "confirm": "Êtes-vous sûr?",
+    "filter": "Filtrer",
+    "clear": "Effacer",
+    "refresh": "Actualiser",
+    "show": "Afficher",
+    "undo": "Annuler",
+    "import": "Importer",
+    "clone": "Cloner",
+    "notAccessTitle": "Vous n'avez pas la permission d'accéder"
+  },
+  "warnWhenUnsavedChanges": "Êtes-vous sûr de vouloir partir? Vous avez des modifications non enregistrées.",
+  "notifications": {
+    "success": "Succès",
+    "error": "Erreur (code de statut: {{statusCode}})",
+    "undoable": "Vous avez {{seconds}} secondes pour annuler",
+    "createSuccess": "Création réussie de {{resource}}",
+    "createError": "Erreur lors de la création de {{resource}} (code de statut: {{statusCode}})",
+    "deleteSuccess": "Suppression réussie de {{resource}}",
+    "deleteError": "Erreur lors de la suppression de {{resource}} (code de statut: {{statusCode}})",
+    "editSuccess": "Modification réussie de {{resource}}",
+    "editError": "Erreur lors de la modification de {{resource}} (code de statut: {{statusCode}})",
+    "importProgress": "Importation en cours: {{processed}}/{{total}}"
+  },
+  "loading": "Chargement",
+  "tags": {
+    "clone": "Cloner"
+  },
+  "dashboard": {
+    "title": "Tableau de bord"
+  },
+  "blog_posts": {
+    "blog_posts": "Articles de blog",
+    "fields": {
+      "id": "Id",
+      "title": "Titre",
+      "content": "Contenu",
+      "status": "Statut",
+      "createdAt": "Créé à",
+      "category": "Catégorie"
+    },
+    "titles": {
+      "create": "Créer un article de blog",
+      "edit": "Modifier l'article de blog",
+      "list": "Articles de blog",
+      "show": "Afficher l'article de blog"
+    }
+  },
+  "categories": {
+    "categories": "Catégories",
+    "fields": {
+      "id": "Id",
+      "title": "Titre",
+      "createdAt": "Créé à"
+    },
+    "titles": {
+      "create": "Créer une catégorie",
+      "edit": "Modifier la catégorie",
+      "list": "Catégories",
+      "show": "Afficher la catégorie"
+    }
+  },
+  "documentTitle": {
+    "default": "raffiner",
+    "suffix": " | raffiner",
+    "blog_posts": {
+      "list": "Articles de blog | raffiner",
+      "show": "#{{id}} Afficher l'article de blog | raffiner",
+      "edit": "#{{id}} Modifier l'article de blog | raffiner",
+      "create": "Créer un nouvel article de blog | raffiner",
+      "clone": "#{{id}} Cloner l'article de blog | raffiner"
+    },
+    "categories": {
+      "list": "Catégories | raffiner",
+      "show": "#{{id}} Afficher la catégorie | raffiner",
+      "edit": "#{{id}} Modifier la catégorie | raffiner",
+      "create": "Créer une nouvelle catégorie | raffiner",
+      "clone": "#{{id}} Cloner la catégorie | raffiner"
+    }
+  },
+  "table": {
+    "actions": "Actions"
+  }
+}
