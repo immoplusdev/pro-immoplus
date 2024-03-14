@@ -1,5 +1,8 @@
-import dataProvider from "@refinedev/simple-rest";
+import {
+  dataProvider as directusDataProvider
+} from "@tspvivek/refine-directus";
+import { directusClient } from "./directusClient";
 
-export function getDataProvider(url: string) {
-  return dataProvider(url);
-}
+const dataProvider = directusDataProvider(directusClient);
+
+export default dataProvider;

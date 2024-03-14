@@ -1,10 +1,10 @@
 import { AuthHelper } from "@tspvivek/refine-directus";
 import { directusClient } from "./directusClient";
 import { AuthBindings } from "@refinedev/core";
-import { getAuthRoutePath, getRoutePath } from "../helpers/routing.helper";
+import { AuthService } from "../services/auth/authService";
 
 const directusAuthHelper = AuthHelper(directusClient);
-export const TOKEN_KEY = "refine-auth";
+const authService = new AuthService();
 
 const authProvider: AuthBindings = {
   onError: async (error) => {
@@ -12,27 +12,27 @@ const authProvider: AuthBindings = {
     return { error };
   },
 
-  login: async ({ username, password }) => {
-    const { access_token } = await directusAuthHelper.login(username, password);
-    return access_token
+  login: async (params) => {
+    const response = await authService.login(params.email, params.password);
+    return response.access_token
       ? {
-          success: true,
-          redirectTo: getRoutePath("/"),
-        }
+        success: true,
+        redirectTo: "/",
+      }
       : {
-          success: false,
-          error: {
-            name: "LoginError",
-            message: "Invalid username or password",
-          },
-        };
+        success: false,
+        error: {
+          name: "Auth Error",
+          message: response.message as string,
+        },
+      };
   },
 
   logout: async () => {
     directusAuthHelper.logout();
     return {
       success: true,
-      redirectTo: getAuthRoutePath("/login"),
+      redirectTo: "/login",
     };
   },
 
@@ -44,7 +44,7 @@ const authProvider: AuthBindings = {
     } else {
       return {
         authenticated: false,
-        // redirectTo: "/login",
+        redirectTo: "/login",
       };
     }
   },
@@ -56,8 +56,7 @@ const authProvider: AuthBindings = {
       const data = await directusAuthHelper.me({ fields: ["*.*"] });
       return data;
     } catch (e) {
-      console.log("not authenticated")
-      // window.location.href = getAuthRoutePath("/login");
+      window.location.href = "/login";
       return {
         authenticated: false,
         redirectTo: "/login",

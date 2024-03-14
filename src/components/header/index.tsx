@@ -29,15 +29,16 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   sticky,
 }) => {
   const { token } = useToken();
-  const { i18n } = useTranslation();
+  // const { i18n } = useTranslation();
   const locale = useGetLocale();
   const changeLanguage = useSetLocale();
   const { data: user } = useGetIdentity<IUser>();
   const { mode, setMode } = useContext(ColorModeContext);
 
   const currentLocale = locale();
-
-  const menuItems: MenuProps["items"] = [...(i18n.languages || [])]
+  const languages = ["fr", "en"];
+  // [...(i18n.languages || [])]
+  const menuItems: MenuProps["items"] = languages
     .sort()
     .map((lang: string) => ({
       key: lang,
@@ -47,7 +48,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
           <Avatar size={16} src={`/images/flags/${lang}.svg`} />
         </span>
       ),
-      label: lang === "en" ? "English" : "German",
+      label: lang === "fr" ? "Français" : "Anglais",
     }));
 
   const headerStyles: React.CSSProperties = {
@@ -77,7 +78,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
           <Button type="text">
             <Space>
               <Avatar size={16} src={`/images/flags/${currentLocale}.svg`} />
-              {currentLocale === "en" ? "English" : "German"}
+              {currentLocale === "fr" ? "Français" : "Anglais"}
               <DownOutlined />
             </Space>
           </Button>

@@ -37,11 +37,11 @@ import {
 } from "./pages/categories";
 import { ForgotPassword } from "./pages/forgotPassword";
 import { Login } from "./pages/login";
-import { Register } from "./pages/register";
-import { getDataProvider } from "./libs/providers/dataProvider";
+import dataProvider from "./libs/providers/dataProvider";
 import authProvider from "./libs/providers/authProvider";
-import { getAuthRoutePath, getRoutePath } from "./libs/helpers/routing.helper";
-import { PROJECT_NAME } from "./config/app.config";
+import { getRoutePath } from "./libs/helpers/routing.helper";
+import { PROJECT_ID, PROJECT_NAME } from "./config/app.config";
+import accessControlProvider from "./libs/providers/accessControlProvider";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -60,30 +60,29 @@ function App() {
           <AntdApp>
             <DevtoolsProvider>
               <Refine
-                dataProvider={getDataProvider(
-                  "https://api.fake-rest.refine.dev"
-                )}
+                dataProvider={dataProvider}
                 notificationProvider={useNotificationProvider}
                 authProvider={authProvider}
                 i18nProvider={i18nProvider}
+                accessControlProvider={accessControlProvider}
                 routerProvider={routerBindings}
                 resources={[
-                  {
-                    name: "blog_posts",
-                    list: getRoutePath("/blog-posts"),
-                    create: getRoutePath("/blog-posts/create"),
-                    edit: getRoutePath("/blog-posts/edit/:id"),
-                    show: getRoutePath("/blog-posts/show/:id"),
-                    meta: {
-                      canDelete: true,
-                    },
-                  },
+                  // {
+                  //   name: "blog_posts",
+                  //   list: getRoutePath("/blog-posts"),
+                  //   create: getRoutePath("/blog-posts/create"),
+                  //   edit: getRoutePath("/blog-posts/edit/:id"),
+                  //   show: getRoutePath("/blog-posts/show/:id"),
+                  //   meta: {
+                  //     canDelete: true,
+                  //   },
+                  // },
                   {
                     name: "categories",
-                    list: getRoutePath("/categories"),
-                    create: getRoutePath("/categories/create"),
-                    edit: getRoutePath("/categories/edit/:id"),
-                    show: getRoutePath("/categories/show/:id"),
+                    list: "/categories",
+                    create: "/categories/create",
+                    edit: "/categories/edit/:id",
+                    show: "/categories/show/:id",
                     meta: {
                       canDelete: true,
                     },
@@ -93,7 +92,7 @@ function App() {
                   syncWithLocation: true,
                   warnWhenUnsavedChanges: true,
                   useNewQueryKeys: true,
-                  projectId: "xntn5Z-AEaHwy-gkPtSa",
+                  projectId: PROJECT_ID,
                 }}
               >
                 <Routes>
@@ -125,13 +124,13 @@ function App() {
                       index
                       element={<NavigateToResource resource="blog_posts" />}
                     />
-                    <Route path={getRoutePath("/blog-posts")}>
+                    <Route path={"/blog-posts"}>
                       <Route index element={<BlogPostList />} />
                       <Route path="create" element={<BlogPostCreate />} />
                       <Route path="edit/:id" element={<BlogPostEdit />} />
                       <Route path="show/:id" element={<BlogPostShow />} />
                     </Route>
-                    <Route path={getRoutePath("/categories")}>
+                    <Route path={"/categories"}>
                       <Route index element={<CategoryList />} />
                       <Route path="create" element={<CategoryCreate />} />
                       <Route path="edit/:id" element={<CategoryEdit />} />
@@ -140,23 +139,19 @@ function App() {
                     <Route path="*" element={<ErrorComponent />} />
                   </Route>
                   <Route
-                    element={
-                      <Authenticated
-                        key="authenticated-outer"
-                        fallback={<Outlet />}
-                      >
-                        <NavigateToResource />
-                      </Authenticated>
-                    }
+                  // element={
+                  //   <Authenticated
+                  //     key="authenticated-outer"
+                  //     fallback={<Outlet />}
+                  //   >
+                  //     <NavigateToResource />
+                  //   </Authenticated>
+                  // }
                   >
-                    <Route path={getRoutePath("/login")} element={<Login />} />
-                    <Route path={getAuthRoutePath("/login")} element={<Login />} />
+                    <Route path={"/login"} element={<Login />} />
+                    {/* <Route path={"/register"} element={<Register />} /> */}
                     <Route
-                      path={getRoutePath("/register")}
-                      element={<Register />}
-                    />
-                    <Route
-                      path={getRoutePath("/forgot-password")}
+                      path={"/forgot-password"}
                       element={<ForgotPassword />}
                     />
                   </Route>

@@ -1,3 +1,4 @@
+import { API_URL } from "@/config/app.config";
 import {
   AuthenticationData,
   AuthenticationStorage,
@@ -7,34 +8,32 @@ import {
   realtime,
 } from "@tspvivek/refine-directus";
 
-export const API_URL =
-  process.env.NODE_ENV != "development" ? "/" : "http://localhost:8055";
 
 export const authLocalStorage = () =>
-  ({
-    get: async () => {
-      const data =
-        typeof window !== "undefined" &&
-        window.localStorage.getItem("directus_storage");
-      if (data) {
-        return JSON.parse(data);
-      }
-      return null;
-    },
+({
+  get: async () => {
+    const data =
+      typeof window !== "undefined" &&
+      window.localStorage.getItem("directus_storage");
+    if (data) {
+      return JSON.parse(data);
+    }
+    return null;
+  },
 
-    set: async (value: AuthenticationData | null) => {
-      if (!value) {
-        return (
-          typeof window !== "undefined" &&
-          window.localStorage.removeItem("directus_storage")
-        );
-      }
+  set: async (value: AuthenticationData | null) => {
+    if (!value) {
       return (
         typeof window !== "undefined" &&
-        window.localStorage.setItem("directus_storage", JSON.stringify(value))
+        window.localStorage.removeItem("directus_storage")
       );
-    },
-  } as AuthenticationStorage);
+    }
+    return (
+      typeof window !== "undefined" &&
+      window.localStorage.setItem("directus_storage", JSON.stringify(value))
+    );
+  },
+} as AuthenticationStorage);
 
 export const directusClient = createDirectus(API_URL)
   .with(authentication("json", { storage: authLocalStorage() }))

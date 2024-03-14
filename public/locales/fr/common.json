@@ -159,5 +159,11 @@
   },
   "table": {
     "actions": "Actions"
+  },
+  "fields": {
+    "title": "Titre",
+    "name": "Nom",
+    "payment_type": "Type de paiement",
+    "product_type": "Type de produit"
   }
 }

@@ -13,9 +13,10 @@ export const Login = () => {
           icon={<AppIcon />}
         />
       }
-      formProps={{
-        initialValues: { email: "demo@refine.dev", password: "demodemo" },
-      }}
+      // formProps={{
+
+      //   initialValues: { email: "demo@refine.dev", password: "demodemo" },
+      // }}
     />
   );
 };
