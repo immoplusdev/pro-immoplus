@@ -108,21 +108,15 @@
   "dashboard": {
     "title": "Tableau de bord"
   },
-  "blog_posts": {
-    "blog_posts": "Articles de blog",
+  "products": {
     "fields": {
-      "id": "Id",
-      "title": "Titre",
-      "content": "Contenu",
-      "status": "Statut",
-      "createdAt": "Créé à",
-      "category": "Catégorie"
-    },
-    "titles": {
-      "create": "Créer un article de blog",
-      "edit": "Modifier l'article de blog",
-      "list": "Articles de blog",
-      "show": "Afficher l'article de blog"
+      "product_types": {
+        "to_contact": "Contacter",
+        "visit_to_ask": "Demande de visite",
+        "to_order": "À commander",
+        "service": "Service",
+        "booking": "Réservation"
+      }
     }
   },
   "categories": {
@@ -130,7 +124,13 @@
     "fields": {
       "id": "Id",
       "title": "Titre",
-      "createdAt": "Créé à"
+      "createdAt": "Créé à",
+      "payment_types": {
+        "lifetime": "À vie",
+        "monthly": "Mensuel",
+        "daily": "Journalier",
+        "yearly": "Annuel"
+      }
     },
     "titles": {
       "create": "Créer une catégorie",
@@ -164,6 +164,8 @@
     "title": "Titre",
     "name": "Nom",
     "payment_type": "Type de paiement",
-    "product_type": "Type de produit"
+    "product_type": "Type de produit",
+    "thumb": "Miniature",
+    "sub_categories": "Sous Catégories"
   }
 }

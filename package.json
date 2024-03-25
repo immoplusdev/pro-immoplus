@@ -49,7 +49,8 @@
     "build": "vite build",
     "build:prod": "tsc && vite build",
     "preview": "vite start",
-    "refine": "vite"
+    "refine": "vite",
+    "api": "cd ../immoplus && pnpm start"
   },
   "browserslist": {
     "production": [

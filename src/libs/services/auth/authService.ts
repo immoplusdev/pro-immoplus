@@ -5,7 +5,6 @@ import axios, { AxiosError } from "axios";
 
 export class AuthService {
     async login(username: string, password: string) {
-        console.log(username)
         const body = {
             username,
             password

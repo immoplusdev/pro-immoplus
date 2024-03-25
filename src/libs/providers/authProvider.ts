@@ -38,7 +38,6 @@ const authProvider: AuthBindings = {
 
   check: async () => {
     const token = await directusAuthHelper.getToken();
-    console.log(token)
     if (token) {
       return {
         authenticated: true,

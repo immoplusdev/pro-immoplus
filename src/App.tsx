@@ -1,4 +1,4 @@
-import { Authenticated, GitHubBanner, Refine } from "@refinedev/core";
+import { Authenticated, Refine } from "@refinedev/core";
 import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
@@ -24,12 +24,6 @@ import { AppIcon } from "./components/app-icon";
 import { Header } from "./components/header";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import {
-  BlogPostCreate,
-  BlogPostEdit,
-  BlogPostList,
-  BlogPostShow,
-} from "./pages/blog-posts";
-import {
   CategoryCreate,
   CategoryEdit,
   CategoryList,
@@ -39,7 +33,6 @@ import { ForgotPassword } from "./pages/forgotPassword";
 import { Login } from "./pages/login";
 import dataProvider from "./libs/providers/dataProvider";
 import authProvider from "./libs/providers/authProvider";
-import { getRoutePath } from "./libs/helpers/routing.helper";
 import { PROJECT_ID, PROJECT_NAME } from "./config/app.config";
 import accessControlProvider from "./libs/providers/accessControlProvider";
 
@@ -54,7 +47,6 @@ function App() {
 
   return (
     <BrowserRouter>
-      <GitHubBanner />
       <RefineKbarProvider>
         <ColorModeContextProvider>
           <AntdApp>
@@ -112,12 +104,6 @@ function App() {
                       index
                       element={<NavigateToResource resource="blog_posts" />}
                     />
-                    <Route path={"/blog-posts"}>
-                      <Route index element={<BlogPostList />} />
-                      <Route path="create" element={<BlogPostCreate />} />
-                      <Route path="edit/:id" element={<BlogPostEdit />} />
-                      <Route path="show/:id" element={<BlogPostShow />} />
-                    </Route>
                     <Route path={"/categories"}>
                       <Route index element={<CategoryList />} />
                       <Route path="create" element={<CategoryCreate />} />
@@ -126,16 +112,7 @@ function App() {
                     </Route>
                     <Route path="*" element={<ErrorComponent />} />
                   </Route>
-                  <Route
-                  // element={
-                  //   <Authenticated
-                  //     key="authenticated-outer"
-                  //     fallback={<Outlet />}
-                  //   >
-                  //     <NavigateToResource />
-                  //   </Authenticated>
-                  // }
-                  >
+                  <Route>
                     <Route path={"/login"} element={<Login />} />
                     {/* <Route path={"/register"} element={<Register />} /> */}
                     <Route

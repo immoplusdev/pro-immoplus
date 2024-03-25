@@ -1,19 +1,28 @@
-# refine-project
+# Immoplus Admin
 
-<div align="center" style="margin: 30px;">
-    <a href="https://refine.dev">
-    <img alt="refine logo" src="https://refine.ams3.cdn.digitaloceanspaces.com/readme/refine-readme-banner.png">
-    </a>
-</div>
-<br/>
-
-This [Refine](https://github.com/refinedev/refine) project was generated with [create refine-app](https://github.com/refinedev/refine/tree/master/packages/create-refine-app).
+This Project is the main admin for immoplus app
 
 ## Getting Started
 
-A React Framework for building internal tools, admin panels, dashboards & B2B apps with unmatched flexibility ✨
+Make sure that you have `node 20` or ealier installed on your local machine. Once all requirements are met, follow the following procedure to run the project locally:
 
-Refine's hooks and components simplifies the development process and eliminates the repetitive tasks by providing industry-standard solutions for crucial aspects of a project, including authentication, access control, routing, networking, state management, and i18n.
+- Make sure create create a `.env` file in the root directory of the project. Put the content in the `.env.example` in your new file.
+
+- Run
+
+```bash
+    npm install
+```
+
+in the root directory in order to install the project dependencies
+
+- Run
+
+```bash
+    npm run dev
+```
+
+to start the development server.
 
 ## Available Scripts
 
