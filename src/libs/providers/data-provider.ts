@@ -1,7 +1,7 @@
 import {
   dataProvider as directusDataProvider
 } from "@tspvivek/refine-directus";
-import { directusClient } from "./directusClient";
+import { directusClient } from "./directus-client";
 
 const dataProvider = directusDataProvider(directusClient);
 

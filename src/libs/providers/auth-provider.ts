@@ -1,7 +1,7 @@
 import { AuthHelper } from "@tspvivek/refine-directus";
-import { directusClient } from "./directusClient";
+import { directusClient } from "./directus-client";
 import { AuthBindings } from "@refinedev/core";
-import { AuthService } from "../services/auth/authService";
+import { AuthService } from "../services/auth/auth-service";
 
 const directusAuthHelper = AuthHelper(directusClient);
 const authService = new AuthService();

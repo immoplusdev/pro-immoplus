@@ -1,6 +1,6 @@
 import { API_URL } from "@/config/app.config";
 import { httpExceptionToMessage } from "@/libs/helpers/http-exception.helper";
-import { authLocalStorage } from "@/libs/providers/directusClient";
+import { authLocalStorage } from "@/libs/providers/directus-client";
 import axios, { AxiosError } from "axios";
 
 export class AuthService {
