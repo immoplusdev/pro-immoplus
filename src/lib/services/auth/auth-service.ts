@@ -17,6 +17,7 @@ export class AuthService {
             const authData = { access_token: accessToken, refresh_token: refreshToken, expires, expires_at: expires, message: undefined };
             const authStorageManager = authLocalStorage();
 
+
             await authStorageManager.set(authData)
             return authData;
         } catch (error) {
