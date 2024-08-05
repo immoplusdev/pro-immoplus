@@ -13,7 +13,6 @@ import {
   Typography,
 } from "antd";
 import React, { useContext } from "react";
-import { useTranslation } from "react-i18next";
 import { ColorModeContext } from "../../contexts/color-mode";
 
 const { Text } = Typography;

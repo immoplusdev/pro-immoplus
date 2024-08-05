@@ -1,4 +1,4 @@
-import { API_URL } from "@/config/app.config";
+import { API_URL } from "@/configs/app.config";
 import {
   AuthenticationData,
   AuthenticationStorage,

@@ -1,4 +1,4 @@
-import { ROUTE_PREFIX } from "@/config/app.config";
+import { ROUTE_PREFIX } from "@/configs/app.config";
 
 
 export function getRoutePath(route: string){

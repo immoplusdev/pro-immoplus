@@ -31,10 +31,10 @@ import {
 } from "./pages/categories";
 import { ForgotPassword } from "./pages/forgotPassword";
 import { Login } from "./pages/login";
-import dataProvider from "./libs/providers/data-provider";
-import authProvider from "./libs/providers/auth-provider";
-import { PROJECT_ID, PROJECT_NAME } from "./config/app.config";
-import accessControlProvider from "./libs/providers/access-control-provider";
+import dataProvider from "@/lib/providers/data-provider";
+import authProvider from "@/lib/providers/auth-provider";
+import { PROJECT_ID, PROJECT_NAME } from "@/configs/app.config";
+import accessControlProvider from "@/lib/providers/access-control-provider";
 
 function App() {
   const { t, i18n } = useTranslation();

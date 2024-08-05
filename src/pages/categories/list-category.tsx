@@ -13,7 +13,7 @@ import {
   DeleteButton,
 } from "@refinedev/antd";
 import { Table, Space, Tag, Image } from "antd";
-import { getImageUrl } from "@/libs/helpers/url.helper";
+import { getImageUrl } from "@/lib/helpers/url.helper";
 
 export const CategoryList: React.FC<IResourceComponentsProps> = () => {
   const translate = useTranslate();

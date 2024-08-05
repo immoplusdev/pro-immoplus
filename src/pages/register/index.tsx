@@ -1,6 +1,6 @@
 import { AuthPage, ThemedTitleV2 } from "@refinedev/antd";
 import { AppIcon } from "../../components/app-icon";
-import { PROJECT_NAME } from "@//config/app.config";
+import { PROJECT_NAME } from "@/configs/app.config";
 
 export const Register = () => {
   return (

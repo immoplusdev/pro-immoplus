@@ -1,6 +1,6 @@
-import { API_URL } from "@/config/app.config";
-import { httpExceptionToMessage } from "@/libs/helpers/http-exception.helper";
-import { authLocalStorage } from "@/libs/providers/directus-client";
+import { API_URL } from "@/configs/app.config";
+import { httpExceptionToMessage } from "@/lib/helpers/http-exception.helper";
+import { authLocalStorage } from "@/lib/providers/directus-client";
 import axios, { AxiosError } from "axios";
 
 export class AuthService {
@@ -11,13 +11,16 @@ export class AuthService {
         }
 
         try {
-            const response = await axios.post(`${API_URL}/api/auth/login`, body);
-            const { access_token, refresh_token, expires, expires_at } = response.data.data;
-            const authData = { access_token, refresh_token, expires, expires_at, message: undefined };
+            const response = await axios.post(`${API_URL}/auth/login`, body);
+            const { accessToken, refreshToken, expires } = response.data.data;
+
+            const authData = { access_token: accessToken, refresh_token: refreshToken, expires, expires_at: expires, message: undefined };
             const authStorageManager = authLocalStorage();
+
             await authStorageManager.set(authData)
             return authData;
         } catch (error) {
+            console.log(error)
             let message = "Mauvais non d'utilisateur ou mot de passe";
             const exception = error as AxiosError;
             if (exception.status != 401 && exception.status != 403 && exception.status != 400) message = httpExceptionToMessage(error, message)
