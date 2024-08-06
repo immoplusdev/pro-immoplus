@@ -67,7 +67,16 @@ To learn more about **Refine**, please check out the [Documentation](https://ref
     - ``lib/services`` contains all the services used in the app
 
 ## Work on a functionality
-- Start by creating a **new branch** with the name of the functionality you are working on
+
+- First, checkout the **dev** branch and pull the latest changes by running:
+  ```bash 
+    git checkout dev
+  ```   
+
+  ```bash 
+    git pull
+  ```   
+- Create a **new branch** with the name of the functionality you are working on
     - The branch name should be prefixed according to the type of the functionality you are working on
         - ``feat`` for new features
         - ``fix`` for bug fixes
@@ -77,9 +86,12 @@ To learn more about **Refine**, please check out the [Documentation](https://ref
         - ``test`` for tests
     - You can get more information about how to write you commit names according to the **conventional commits** standard [here](https://www.conventionalcommits.org/en/v1.0.0/) 
     - If I'm creating the reservations functionality, I will create a branch with the name ``feat-reservations``
-- Pages are stored in the ``pages`` directory. The folder structure there is similar to the one suggested on the refine documentation.
-- To create a new page, you can use the plop generators
-    - Run  ````bash npx plop page:all page name-of-the-resource-group name-of-the-resource```` to create a new page using  the plop package.
+- Checkout the your new branch
+    ```bash
+    git checkout -b your-branch-name
+    ```
+- To create a new page, you can use the plop generators. 
+    - Run  ````npx plop page:all page name-of-the-resource-group name-of-the-resource```` to create a new page using  the plop package.
         - Where ``name-of-the-resource-group`` is the name of the resource group (e.g. ``residences``) and ``name-of-the-resource`` is the name of the resource (e.g. ``residences``)
         - You can keep the name in plural, the generators will automatically singularize it
         - This will create the corresponding files in the ``pages`` directory
