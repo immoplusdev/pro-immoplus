@@ -251,7 +251,7 @@ module.exports = function (plop) {
     //     },
     // ];
 
-    plop.setGenerator("page:full", {
+    plop.setGenerator("page:all", {
         description: "Generate refine resource pages",
         prompts: groupPrompts,
         actions: [
