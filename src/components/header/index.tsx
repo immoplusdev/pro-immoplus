@@ -13,7 +13,7 @@ import {
   Typography,
 } from "antd";
 import React, { useContext } from "react";
-import { ColorModeContext } from "../../contexts/color-mode";
+import {ColorModeContext} from "@/contexts/color-mode";
 
 const { Text } = Typography;
 const { useToken } = theme;

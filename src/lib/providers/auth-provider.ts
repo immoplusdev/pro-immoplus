@@ -1,12 +1,10 @@
-import {AuthHelper} from "@tspvivek/refine-directus";
-import {directusClient} from "./directus-client";
 import {AuthBindings} from "@refinedev/core";
-import {AuthService} from "@/lib/services/auth/auth-service";
+import {AuthService} from "@/lib/services/auth";
 
-const directusAuthHelper = AuthHelper(directusClient);
 const authService = new AuthService();
 
 const authProvider: AuthBindings = {
+
     onError: async (error) => {
         console.error(error);
         return {error};
@@ -29,7 +27,7 @@ const authProvider: AuthBindings = {
     },
 
     logout: async () => {
-        directusAuthHelper.logout();
+        await authService.logout();
         return {
             success: true,
             redirectTo: "/login",
@@ -37,7 +35,8 @@ const authProvider: AuthBindings = {
     },
 
     check: async () => {
-        const token = await directusAuthHelper.getToken();
+        const token = await authService.getToken();
+
         if (token) {
             return {
                 authenticated: true,
@@ -55,7 +54,9 @@ const authProvider: AuthBindings = {
 
     getIdentity: async () => {
         try {
-            const data = await directusAuthHelper.me({fields: ["*.*"]});
+
+            const data = await authService.getUserData();
+            if (!data) throw new Error();
             return data;
         } catch (e) {
             // window.location.href = "/login";

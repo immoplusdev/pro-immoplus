@@ -1,11 +1,11 @@
 import { AuthPage, ThemedTitleV2 } from "@refinedev/antd";
-import { AppIcon } from "../../components/app-icon";
 import { PROJECT_NAME } from "@/configs/app.config";
+import {AppIcon} from "@/components";
 
-export const Login = () => {
+export const Register = () => {
   return (
     <AuthPage
-      type="login"
+      type="register"
       title={
         <ThemedTitleV2
           collapsed={false}
@@ -13,10 +13,6 @@ export const Login = () => {
           icon={<AppIcon />}
         />
       }
-      // formProps={{
-
-      //   initialValues: { email: "demo@refine.dev", password: "demodemo" },
-      // }}
     />
   );
 };
