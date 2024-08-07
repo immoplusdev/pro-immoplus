@@ -1,0 +1,15 @@
+import { MigrationInterface, QueryRunner } from "typeorm"
+
+export class {{classify name}}{{timestampify}} implements MigrationInterface {
+  async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(
+        `CREATE INDEX CONCURRENTLY post_names_idx ON post(name)`
+    )
+  }
+
+  async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(
+         `DROP INDEX CONCURRENTLY post_names_idx`
+      )
+  }
+}

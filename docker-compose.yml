@@ -1,0 +1,12 @@
+version: '3.4'
+services:
+  app:
+    container_name: ${APP_CONTAINER_NAME}
+    build:
+      dockerfile: Dockerfile
+      context: .
+    restart: always
+    ports:
+      - '${AP_PORT}:3000'
+    env_file:
+      - ./.env

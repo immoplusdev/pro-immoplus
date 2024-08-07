@@ -1,0 +1,15 @@
+import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
+import { {{classify name}}QueryResponse } from "./{{dasherize name}}-query.response";
+import { {{classify name}}Query } from "./{{dasherize name}}.query";
+
+@QueryHandler({{classify name}}Query)
+export class {{classify name}}QueryHandler
+  implements IQueryHandler<{{classify name}}Query, {{classify name}}QueryResponse>
+{
+  constructor() {
+    //
+  }
+  async execute(query: {{classify name}}Query): Promise<{{classify name}}QueryResponse> {
+    return new {{classify name}}QueryResponse();
+  }
+}

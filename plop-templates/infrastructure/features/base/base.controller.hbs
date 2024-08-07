@@ -1,0 +1,154 @@
+import { Body, Controller, Delete, Get, Post, Query, Param, Inject, UseGuards, Patch } from "@nestjs/common";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { ApiResponse } from "@nestjs/swagger";
+import { Deps } from "@/core/domain/shared/ioc";
+import { {{classify name}}, I{{classify name}}Repository } from "@/core/domain/{{dasherize group}}";
+import { Create{{classify name}}Dto, {{classify name}}Dto, Update{{classify name}}Dto, WrapperResponse{{classify name}}Dto, WrapperResponse{{classify name}}ListDto } from "@/infrastructure/features/{{dasherize group}}";
+import { CurrentUser, OwnerAccessRequired, RequiredPermissions, RequiredRoles } from "@/infrastructure/decorators";
+import { Role, UserRole } from "@/core/domain/roles";
+import { PermissionAction, PermissionCollection } from "@/core/domain/permissions";
+import { JwtAuthGuard } from "@/infrastructure/auth";
+import { WrapperResponseDtoMapper } from "@/lib/responses";
+import { SearchItemsParamsDto, SelectItemsParamsDto } from "@/infrastructure/http";
+import { addConditionsToWhereClause } from "@/infrastructure/helpers";
+
+@ApiTags('{{classify name}}')
+@Controller('{{dasherize name}}')
+export class {{classify name}}Controller {
+  constructor(
+  @Inject(Deps.{{classify name}}Repository)
+  private readonly repository: I{{classify name}}Repository,
+  ) {}
+
+  @ApiResponse({
+    type: WrapperResponse{{classify name}}Dto,
+  })
+  @Post()
+  @RequiredRoles(UserRole.Admin, UserRole.Customer, UserRole.ProEntreprise, UserRole.ProParticulier)
+  @RequiredPermissions([PermissionCollection.{{classify name}}s, PermissionAction.Create])
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  async create(
+  @Body() payload: Create{{classify name}}Dto,
+  @CurrentUser() userId: string,
+  ) {
+
+    const responseMapper = new WrapperResponseDtoMapper<{{classify name}}Dto>();
+
+    const response = await this.repository.createOne({ ...payload, createdBy: userId });
+
+    return responseMapper.mapFrom(response);
+  }
+
+  @ApiResponse({
+  type: WrapperResponse{{classify name}}ListDto,
+  })
+  @RequiredRoles(UserRole.Admin, UserRole.Customer, UserRole.ProEntreprise, UserRole.ProParticulier)
+  @RequiredPermissions([PermissionCollection.{{classify name}}s, PermissionAction.Read])
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @OwnerAccessRequired("createdBy")
+  @Get()
+  async readMany(
+  @Query() params: SearchItemsParamsDto,
+  @CurrentUser("id") userId: string,
+  @CurrentUser("role") userRole: Role,
+  ) {
+
+    const responseMapper = new WrapperResponseDtoMapper<{{classify name}}Dto[]>();
+
+    if (!userRole.hasAdminAccess()) params._where = addConditionsToWhereClause([{
+      _field: "createdBy",
+      _l_op: "and",
+      _val: userId,
+    }], params._where);
+
+    const items = await this.repository.findByQuery(params);
+
+    return responseMapper.mapFromQueryResult(items);
+  }
+
+  @ApiResponse({
+  type: WrapperResponse{{classify name}}Dto,
+  })
+  @RequiredRoles(UserRole.Admin, UserRole.Customer, UserRole.ProEntreprise, UserRole.ProParticulier)
+  @RequiredPermissions([PermissionCollection.{{classify name}}s, PermissionAction.Read])
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @OwnerAccessRequired("createdBy")
+  @Get(":id")
+  async readOne(
+  @Param("id") id: string,
+  @Query() params?: SelectItemsParamsDto,
+  ) {
+  const responseMapper = new WrapperResponseDtoMapper<{{classify name}}Dto>();
+
+    const item = await this.repository.findOne(id, params?._select);
+
+    return responseMapper.mapFrom(item); 
+ }
+
+
+  @ApiResponse({
+  type: WrapperResponse{{classify name}}Dto,
+  })
+  @RequiredRoles(UserRole.Admin, UserRole.Customer, UserRole.ProEntreprise, UserRole.ProParticulier)
+  @RequiredPermissions([PermissionCollection.{{classify name}}s, PermissionAction.Update])
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @Patch(":id")
+  async update(
+  @Param("id") id: string,
+  @CurrentUser("id") userId: string,
+  @CurrentUser("role") userRole: Role,
+  @Body() payload: Update{{classify name}}Dto,
+  ) {
+  const responseMapper = new WrapperResponseDtoMapper<{{classify name}}Dto>();
+    const query = {
+    _where: [
+    {
+    _field: "id",
+    _val: id,
+    },
+    ],
+    };
+
+    if (!userRole.hasAdminAccess()) query._where.push({ _field: "createdBy", _val: userId });
+
+    await this.repository.updateByQuery(query, payload);
+
+    return responseMapper.mapFrom((await this.repository.findByQuery(query)).data.at(0));
+    }
+
+
+      @ApiResponse({
+      type: WrapperResponse{{classify name}}Dto,
+      })
+      @RequiredRoles(UserRole.Admin, UserRole.Customer, UserRole.ProEntreprise, UserRole.ProParticulier)
+      @RequiredPermissions([PermissionCollection.{{classify name}}s, PermissionAction.Delete])
+      @UseGuards(JwtAuthGuard)
+      @ApiBearerAuth()
+      @Delete(":id")
+      async delete(
+      @Param("id") id: string,
+      @CurrentUser("id") userId: string,
+      @CurrentUser("role") userRole: Role) {
+
+      const responseMapper = new WrapperResponseDtoMapper<{{classify name}}Dto>();
+        const query = {
+        _where: [
+        {
+        _field: "id",
+        _val: id,
+        },
+        ],
+        };
+
+        if (!userRole.hasAdminAccess()) query._where.push({ _field: "createdBy", _val: userId });
+
+        await this.repository.deleteByQuery(query);
+
+        return responseMapper.mapFrom({ id } as never);
+  }
+
+}

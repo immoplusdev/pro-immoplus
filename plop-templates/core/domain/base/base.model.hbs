@@ -1,0 +1,7 @@
+import { OmitMethods } from '@/lib/ts-utilities';
+
+export class {{classify name}} {
+  constructor(data?: OmitMethods<{{classify name}}>) {
+    if(data) Object.assign(this, data);
+  }
+}

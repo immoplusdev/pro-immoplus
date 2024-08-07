@@ -1,0 +1,7 @@
+import { OmitMethods } from '@/lib/ts-utilities';
+
+export class {{classify name}}CommandResponse {
+  constructor(data?: OmitMethods<{{classify name}}CommandResponse>) {
+    if(data) Object.assign(this, data);
+  }
+}

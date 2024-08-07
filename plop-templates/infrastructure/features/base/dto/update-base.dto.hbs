@@ -1,0 +1,8 @@
+import { ApiProperty } from "@nestjs/swagger";
+import { OmitMethods } from '@/lib/ts-utilities';
+
+export class Update{{classify name}}Dto {
+constructor(data?: OmitMethods<Update{{classify name}}Dto>) {
+  if(data) Object.assign(this, data);
+  }
+}

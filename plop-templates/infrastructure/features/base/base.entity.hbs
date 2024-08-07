@@ -1,0 +1,7 @@
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
+@Entity('{{underscore name}}')
+export class {{classify name}}Entity {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+}

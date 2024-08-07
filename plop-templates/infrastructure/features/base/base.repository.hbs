@@ -1,0 +1,51 @@
+import { DataSource, Repository } from 'typeorm';
+import { Inject, Injectable } from '@nestjs/common';
+import { Deps } from '@/core/domain/shared/ioc';
+import { {{classify name}}, I{{classify name}}Repository } from "@/core/domain/{{dasherize group}}";
+import { {{classify name}}Entity } from '@/infrastructure/features/{{dasherize group}}';
+import { BaseRepository } from "@/infrastructure/typeorm";
+import { SearchItemsParams } from "@/core/domain/http";
+import { WrapperResponse } from "@/core/domain/shared/models";
+
+@Injectable()
+export class {{classify name}}Repository implements I{{classify name}}Repository{
+  private readonly repository: BaseRepository<{{classify name}}>;
+  constructor(
+    @Inject(Deps.DataSource)
+    readonly dataSource: DataSource,
+  ) {
+    this.repository = new BaseRepository(dataSource, {{classify name}}Entity);
+  }
+
+  async createMany(payload: Partial<{{classify name}}>[]): Promise<{{classify name}}[]> {
+    return await this.repository.createMany(payload);
+  }
+
+  async createOne(payload: Partial<{{classify name}}>): Promise<{{classify name}}> {
+    return await this.repository.createOne(payload);
+  }
+
+  async findByQuery(query?: SearchItemsParams): Promise<WrapperResponse<{{classify name}}[]>> {
+    return await this.repository.findByQuery(query);
+  }
+
+  async findOne(id: string, fields?: string[]): Promise<{{classify name}}> {
+    return await this.repository.findOne(id, fields);
+  }
+
+  async updateByQuery(query: SearchItemsParams, payload: Partial<{{classify name}}>): Promise<string[]> {
+    return await this.repository.updateByQuery(query, payload);
+  }
+
+  async updateOne(id: string, payload: Partial<{{classify name}}>): Promise<string> {
+    return await this.repository.updateOne(id, payload);
+  }
+
+  async deleteByQuery(query: SearchItemsParams): Promise<string[]> {
+    return await this.repository.deleteByQuery(query);
+  }
+
+  async deleteOne(id: string): Promise<string> {
+    return await this.repository.deleteOne(id);
+  }
+}

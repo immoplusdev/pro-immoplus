@@ -63,6 +63,10 @@
       "404": "Désolé, la page que vous avez visitée n'existe pas.",
       "resource404": "Êtes-vous sûr d'avoir créé la ressource {{resource}}?",
       "backHome": "Retour à l'accueil"
+    },
+    "residence": {
+      "residence": "Résidence",
+      "residences": "Résidences"
     }
   },
   "actions": {
@@ -102,6 +106,15 @@
     "importProgress": "Importation en cours: {{processed}}/{{total}}"
   },
   "loading": "Chargement",
+  "residences": {
+    "fields": {
+      "type_residence": "Type de résidence",
+      "residence_disponible": "Residence disponible",
+      "nombre_max_occupants": "Nombre maximum d'occupants",
+      "animaux_autorises": "Animaux autorisés",
+      "fetes_autorises": "Fêtes autorisées"
+    }
+  },
   "tags": {
     "clone": "Cloner"
   },
@@ -161,11 +174,25 @@
     "actions": "Actions"
   },
   "fields": {
+    "id": "Identifiant",
     "title": "Titre",
     "name": "Nom",
+    "description": "Description",
+    "adresse": "Adresse",
     "payment_type": "Type de paiement",
     "product_type": "Type de produit",
     "thumb": "Miniature",
-    "sub_categories": "Sous Catégories"
+    "sub_categories": "Sous Catégories",
+    "created_at": "Date de création",
+    "updated_at": "Date de mise à jour",
+    "nom": "Nom",
+    "status_validation": "Statut de validation",
+    "prix_reservation": "Prix de la réservation",
+    "miniature": "Miniature"
+  },
+  "tags": {
+    "valided": "Validé",
+    "pending": "En attente",
+    "rejected": "Rejeté"
   }
 }

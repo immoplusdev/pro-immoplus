@@ -1,0 +1,20 @@
+import { Module, Provider } from '@nestjs/common';
+import { Deps } from '@/core/domain/shared/ioc';
+import { TypeormModule } from "@/infrastructure/typeorm";
+import { {{classify name}}Controller } from './{{dasherize name}}.controller';
+import { {{classify name}}Repository } from './{{dasherize name}}.repository';
+
+const providers: Provider[] = [
+  {
+    provide: Deps.{{classify name}}Repository,
+    useClass: {{classify name}}Repository,
+  },
+];
+
+@Module({
+  controllers: [{{classify name}}Controller],
+  imports: [TypeormModule],
+  providers: [...providers],
+  exports: [...providers],
+})
+export class {{classify name}}Module {}
