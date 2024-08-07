@@ -102,6 +102,14 @@ To learn more about **Refine**, please check out the [Documentation](https://ref
     - The merge request will be reviewed by the team and merged to the **dev** branch
     - Don't forget to notify the team to review your merge request if it takes longer than expected
 
+## Deployment
+- The app can be deployed with docker compose
+- Make sure that you've set the environment variables in the `.env` file following the `.env.example` file
+- Run the following command to deploy the app
+    ```bash
+    docker-compose up --build
+    ```
+
 ## Useful Resources
 
 - [API Url](https://api-v2.immoplus.ci/)

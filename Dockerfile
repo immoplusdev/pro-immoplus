@@ -15,8 +15,8 @@ WORKDIR /usr/src/app
 ENV NODE_ENV=production
 
 COPY package.json package-lock.json ./
-RUN npm config set registry http://r.cnpmjs.org
-RUN npm i --force
+ RUN npm config set registry http://r.cnpmjs.org
+RUN npm install --force
 COPY . ./
 RUN npm run build
 

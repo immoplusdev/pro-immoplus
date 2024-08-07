@@ -1,0 +1,15 @@
+import { OmitMethods } from '@/lib/ts-utilities';
+import { WrapperResponseDto } from "@/lib/responses";
+import { ApiProperty } from "@nestjs/swagger";
+
+export class {{classify name}}CommandResponseDto {
+  constructor(data?: OmitMethods<{{classify name}}CommandResponseDto>) {
+    if(data) Object.assign(this, data);
+  }
+}
+
+export class WrapperResponse{{classify name}}CommandResponseDto extends WrapperResponseDto<{{classify name}}CommandResponseDto> {
+   @ApiProperty({ type: {{classify name}}CommandResponseDto })
+   data: {{classify name}}CommandResponseDto;
+}
+

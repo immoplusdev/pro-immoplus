@@ -55,7 +55,7 @@ function App() {
                                 routerProvider={routerBindings}
                                 resources={[
                                     {
-                                        name: "residences",
+                                    name: "residences",
                                         list: "/residences",
                                         create: "/residences/create",
                                         edit: "/residences/edit/:id",
@@ -81,11 +81,11 @@ function App() {
                                             >
                                                 <ThemedLayoutV2
                                                     Header={() => <Header sticky/>}
-                                                    Sider={(props) => <ThemedSiderV2 {...props} fixed/>}
+                                                    Sider={(props) => <ThemedSiderV2 {...props}  fixed/>}
                                                     Title={({collapsed}) => (
                                                         <ThemedTitleV2
                                                             collapsed={collapsed}
-                                                            text={PROJECT_NAME}
+                                                            text={""}
                                                             icon={<AppIcon/>}
                                                         />
                                                     )}

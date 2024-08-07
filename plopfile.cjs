@@ -47,13 +47,13 @@ module.exports = function (plop) {
         text.replaceAll("-", "_").toUpperCase()
     );
 
-    // const basePrompts = [
-    //   {
-    //     type: "input",
-    //     name: "name",
-    //     message: "entity name",
-    //   },
-    // ];
+    const namePrompt = [
+        {
+            type: "input",
+            name: "name",
+            message: "entity name",
+        },
+    ];
 
     const groupPrompts = [
         {
@@ -109,147 +109,259 @@ module.exports = function (plop) {
     ];
 
 
-    // const generateModel = [
-    //     {
-    //         type: "add",
-    //         path: "src/core/domain/{{dasherize group}}/{{dasherize name}}.model.ts",
-    //         templateFile: "plop-templates/core/domain/models/base.model.hbs",
-    //     },
-    // ];
-    //
-    // const generateRepositoryPort = [
-    //     {
-    //         type: "add",
-    //         path: "src/core/domain/{{dasherize group}}/{{dasherize name}}-repository.port.ts",
-    //         templateFile:
-    //             "plop-templates/core/application/ports/repositories/base-repository.port.hbs",
-    //     },
-    // ];
-    //
-    // const generateServicePort = [
-    //     {
-    //         type: "add",
-    //         path: "src/core/domain/{{dasherize group}}/{{dasherize name}}-service.port.ts",
-    //         templateFile:
-    //             "plop-templates/core/application/ports/services/base-service.port.hbs",
-    //     },
-    // ];
-    //
-    // const generateRepository = [
-    //     {
-    //         type: "add",
-    //         path: "src/infrastructure/directus-adapter/repositories/{{dasherize group}}/{{dasherize name}}.repository.ts",
-    //         templateFile:
-    //             "plop-templates/infrastructure/directus-adapter/repositories/base.repository.hbs",
-    //     },
-    // ];
-    //
-    // const generateService = [
-    //     {
-    //         type: "add",
-    //         path: "src/infrastructure/directus-adapter/services/{{dasherize group}}/{{dasherize name}}.service.ts",
-    //         templateFile:
-    //             "plop-templates/infrastructure/directus-adapter/services/base.service.hbs",
-    //     },
-    // ];
-    //
-    // const generateEndpoint = [
-    //     {
-    //         type: "add",
-    //         path: "src/infrastructure/directus-endpoints-adapter/{{dasherize name}}/dtos/{{dasherize name}}.dto.ts",
-    //         templateFile:
-    //             "plop-templates/infrastructure/directus-endpoints-adapter/dtos/base.dto.hbs",
-    //     },
-    //     {
-    //         type: "add",
-    //         path: "src/infrastructure/directus-endpoints-adapter/{{dasherize name}}/{{dasherize name}}.controller.doc.ts",
-    //         templateFile:
-    //             "plop-templates/infrastructure/directus-endpoints-adapter/base.controller.doc.hbs",
-    //     },
-    //     {
-    //         type: "add",
-    //         path: "src/infrastructure/directus-endpoints-adapter/{{dasherize name}}/{{dasherize name}}.controller.ts",
-    //         templateFile:
-    //             "plop-templates/infrastructure/directus-endpoints-adapter/base.controller.hbs",
-    //     },
-    // ];
-    //
-    // const generateCommand = [
-    //     {
-    //         type: "add",
-    //         path: "src/core/application/features/{{dasherize group}}/commands/{{dasherize name}}.command.ts",
-    //         templateFile:
-    //             "plop-templates/core/application/features/base/commands/base.command.hbs",
-    //     },
-    //     {
-    //         type: "add",
-    //         path: "src/core/application/features/{{dasherize group}}/command-handlers/{{dasherize name}}-command-handler.service.ts",
-    //         templateFile:
-    //             "plop-templates/core/application/features/base/command-handlers/base-command-handler.service.hbs",
-    //     },
-    //     {
-    //         type: "add",
-    //         path: "src/core/application/features/{{dasherize group}}/responses/{{dasherize name}}-command.response.ts",
-    //         templateFile:
-    //             "plop-templates/core/application/features/base/responses/base-command.response.hbs",
-    //     },
-    // ];
-    //
-    // const generateQuery = [
-    //     {
-    //         type: "add",
-    //         path: "src/core/application/features/{{dasherize group}}/queries/{{dasherize name}}.query.ts",
-    //         templateFile:
-    //             "plop-templates/core/application/features/base/queries/base.query.hbs",
-    //     },
-    //     {
-    //         type: "add",
-    //         path: "src/core/application/features/{{dasherize group}}/query-handlers/{{dasherize name}}-query-handler.service.ts",
-    //         templateFile:
-    //             "plop-templates/core/application/features/base/query-handlers/base-query-handler.service.hbs",
-    //     },
-    //     {
-    //         type: "add",
-    //         path: "src/core/application/features/{{dasherize group}}/responses/{{dasherize name}}-query.response.ts",
-    //         templateFile:
-    //             "plop-templates/core/application/features/base/responses/base-query.response.hbs",
-    //     },
-    // ];
-    //
-    // const generateException = [
-    //     {
-    //         type: "add",
-    //         path: "src/core/domain/{{dasherize group}}/{{dasherize name}}.exception.ts",
-    //         templateFile: "plop-templates/core/domain/exceptions/base.exception.hbs",
-    //     },
-    // ];
-    //
-    // const generateDto = [
-    //     {
-    //         type: "add",
-    //         path: "src/infrastructure/directus-endpoints-adapter/{{dasherize group}}/dtos/{{dasherize name}}.dto.ts",
-    //         templateFile:
-    //             "plop-templates/infrastructure/directus-endpoints-adapter/dtos/base.dto.hbs",
-    //     },
-    // ];
-    //
-    // const generateCommandDto = [
-    //     {
-    //         type: "add",
-    //         path: "src/infrastructure/directus-endpoints-adapter/{{dasherize group}}/dtos/{{dasherize name}}-command.dto.ts",
-    //         templateFile:
-    //             "plop-templates/infrastructure/directus-endpoints-adapter/dtos/base-command.dto.hbs",
-    //     },
-    // ];
-    //
-    // const generateQueryDto = [
-    //     {
-    //         type: "add",
-    //         path: "src/infrastructure/directus-endpoints-adapter/{{dasherize group}}/dtos/{{dasherize name}}-query.dto.ts",
-    //         templateFile:
-    //             "plop-templates/infrastructure/directus-endpoints-adapter/dtos/base-query.dto.hbs",
-    //     },
-    // ];
+    const patternPrompts = [
+        ...groupPrompts,
+        {
+            type: "input",
+            name: "pattern",
+            message: "pattern name",
+        },
+    ];
+
+    const generateModel = [
+        {
+            type: "add",
+            path: "src/core/domain/{{dasherize group}}/{{dasherize name}}.model.ts",
+            templateFile: "plop-templates/core/domain/base/base.model.hbs",
+        },
+    ];
+
+    const generateInterface = [
+        {
+            type: "add",
+            path: "src/core/domain/{{dasherize group}}/i-{{dasherize name}}.ts",
+            templateFile: "plop-templates/core/domain/base/i-base.hbs",
+        },
+    ];
+
+    const generateEnum = [
+        {
+            type: "add",
+            path: "src/core/domain/{{dasherize group}}/{{dasherize name}}.enum.ts",
+            templateFile: "plop-templates/core/domain/base/base.enum.hbs",
+        },
+    ];
+
+    const generateRepositoryPort = [
+        {
+            type: "add",
+            path: "src/core/domain/{{dasherize group}}/i-{{dasherize name}}.repository.ts",
+            templateFile:
+                "plop-templates/core/domain/base/i-base.repository.hbs",
+        },
+    ];
+
+    const generateServicePort = [
+        {
+            type: "add",
+            path: "src/core/domain/{{dasherize group}}/i-{{dasherize name}}.service.ts",
+            templateFile:
+                "plop-templates/core/domain/base/i-base.service.hbs",
+        },
+    ];
+
+    const generateRepository = [
+        {
+            type: "add",
+            path: "src/infrastructure/features/{{dasherize group}}/{{dasherize name}}.repository.ts",
+            templateFile:
+                "plop-templates/infrastructure/features/base/base.repository.hbs",
+        },
+    ];
+
+    const generateService = [
+        {
+            type: "add",
+            path: "src/infrastructure/features/{{dasherize group}}/{{dasherize name}}.service.ts",
+            templateFile:
+                "plop-templates/infrastructure/features/base/base.service.hbs",
+        },
+    ];
+
+    const generateEntity = [
+        {
+            type: "add",
+            path: "src/infrastructure/features/{{dasherize group}}/{{dasherize name}}.entity.ts",
+            templateFile:
+                "plop-templates/infrastructure/features/base/base.entity.hbs",
+        },
+    ];
+
+    const generateDomainExporter = [
+        {
+            type: "add",
+            path: "src/core/domain/{{dasherize group}}/index.ts",
+            templateFile:
+                "plop-templates/core/domain/base/index.hbs",
+        },
+    ];
+
+    const generateInfraExporter = [
+        {
+            type: "add",
+            path: "src/infrastructure/features/{{dasherize group}}/index.ts",
+            templateFile:
+                "plop-templates/infrastructure/features/base/index.hbs",
+        },
+        {
+            type: "add",
+            path: "src/infrastructure/features/{{dasherize group}}/dto/index.ts",
+            templateFile:
+                "plop-templates/infrastructure/features/base/dto/index.hbs",
+        },
+        {
+            type: "add",
+            path: "src/infrastructure/features/{{dasherize group}}/{{dasherize name}}.module.ts",
+            templateFile:
+                "plop-templates/infrastructure/features/base/base.module.hbs",
+        },
+
+    ];
+
+    const generateController = [
+        {
+            type: "add",
+            path: "src/infrastructure/features/{{dasherize group}}/{{dasherize name}}.controller.ts",
+            templateFile:
+                "plop-templates/infrastructure/features/base/base.controller.hbs",
+        },
+    ];
+
+    const generateMigration = [
+        {
+            type: "add",
+            path: "src/infrastructure/db/migrations/{{dasherize name}}-{{timestampify}}.migration.ts",
+            templateFile:
+                "plop-templates/infrastructure/db/migrations/base.hbs",
+        },
+    ];
+
+    const generateCommand = [
+        {
+            type: "add",
+            path: "src/core/application/features/{{dasherize group}}/{{dasherize name}}.command.ts",
+            templateFile:
+                "plop-templates/core/application/features/base/base.command.hbs",
+        },
+        {
+            type: "add",
+            path: "src/core/application/features/{{dasherize group}}/{{dasherize name}}-command.handler.ts",
+            templateFile:
+                "plop-templates/core/application/features/base/base-command.handler.hbs",
+        },
+        {
+            type: "add",
+            path: "src/core/application/features/{{dasherize group}}/{{dasherize name}}-command.response.ts",
+            templateFile:
+                "plop-templates/core/application/features/base/base-command.response.hbs",
+        },
+    ];
+
+    const generateQuery = [
+        {
+            type: "add",
+            path: "src/core/application/features/{{dasherize group}}/{{dasherize name}}.query.ts",
+            templateFile:
+                "plop-templates/core/application/features/base/base.query.hbs",
+        },
+        {
+            type: "add",
+            path: "src/core/application/features/{{dasherize group}}/{{dasherize name}}-query.handler.ts",
+            templateFile:
+                "plop-templates/core/application/features/base/base-query.handler.hbs",
+        },
+        {
+            type: "add",
+            path: "src/core/application/features/{{dasherize group}}/{{dasherize name}}-query.response.ts",
+            templateFile:
+                "plop-templates/core/application/features/base/base-query.response.hbs",
+        },
+    ];
+
+    const generateException = [
+        {
+            type: "add",
+            path: "src/core/domain/{{dasherize group}}/{{dasherize name}}.exception.ts",
+            templateFile: "plop-templates/core/domain/base/base.exception.hbs",
+        },
+    ];
+
+    const generateDto = [
+        {
+            type: "add",
+            path: "src/infrastructure/features/{{dasherize group}}/dto/{{dasherize name}}.dto.ts",
+            templateFile:
+                "plop-templates/infrastructure/features/base/dto/base.dto.hbs",
+        },
+    ];
+
+    const generateDtoMapper = [
+        {
+            type: "add",
+            path: "src/infrastructure/features/{{dasherize group}}/dto/{{dasherize name}}-dto.mapper.ts",
+            templateFile:
+                "plop-templates/infrastructure/features/base/dto/base-dto.mapper.hbs",
+        },
+    ];
+
+    const generateCUDto = [
+        {
+            type: "add",
+            path: "src/infrastructure/features/{{dasherize group}}/dto/create-{{dasherize name}}.dto.ts",
+            templateFile:
+                "plop-templates/infrastructure/features/base/dto/create-base.dto.hbs",
+        },
+        {
+            type: "add",
+            path: "src/infrastructure/features/{{dasherize group}}/dto/update-{{dasherize name}}.dto.ts",
+            templateFile:
+                "plop-templates/infrastructure/features/base/dto/update-base.dto.hbs",
+        },
+    ];
+
+    const generateCommandDto = [
+        {
+            type: "add",
+            path: "src/infrastructure/features/{{dasherize group}}/dto/{{dasherize name}}-command.dto.ts",
+            templateFile:
+                "plop-templates/infrastructure/features/base/dto/base-command.dto.hbs",
+        },
+        {
+            type: "add",
+            path: "src/infrastructure/features/{{dasherize group}}/dto/{{dasherize name}}-command-response.dto.ts",
+            templateFile:
+                "plop-templates/infrastructure/features/base/dto/base-command-response.dto.hbs",
+        },
+    ];
+
+    const generateQueryDto = [
+        {
+            type: "add",
+            path: "src/infrastructure/features/{{dasherize group}}/dto/{{dasherize name}}-query.dto.ts",
+            templateFile:
+                "plop-templates/infrastructure/features/base/dto/base-query.dto.hbs",
+        },
+        {
+            type: "add",
+            path: "src/infrastructure/features/{{dasherize group}}/dto/{{dasherize name}}-query-response.dto.ts",
+            templateFile:
+                "plop-templates/infrastructure/features/base/dto/base-query-response.dto.hbs",
+        },
+    ];
+
+    const generatePattern = [
+        {
+            type: "add",
+            path: "src/core/domain/{{dasherize group}}/i-{{dasherize name}}.{{dasherizeSingular pattern}}.ts",
+            templateFile: "plop-templates/core/domain/base/i-base-pattern.hbs",
+        },
+        {
+            type: "add",
+            path: "src/infrastructure/features/{{dasherize group}}/{{dasherize name}}.{{dasherizeSingular pattern}}.ts",
+            templateFile:
+                "plop-templates/infrastructure/features/base/base.pattern.hbs",
+        },
+    ];
 
     plop.setGenerator("page:all", {
         description: "Generate refine resource pages",
@@ -287,91 +399,136 @@ module.exports = function (plop) {
         actions: generateListResourcesPage,
     });
 
-    // plop.setGenerator("core:model", {
-    //     description: "Generate model",
-    //     prompts: groupPrompts,
-    //     actions: generateModel,
-    // });
-    //
-    // plop.setGenerator("core:repository", {
-    //     description: "Generate repository port",
-    //     prompts: groupPrompts,
-    //     actions: generateRepositoryPort,
-    // });
-    //
-    // plop.setGenerator("core:service", {
-    //     description: "Generate service port",
-    //     prompts: groupPrompts,
-    //     actions: generateServicePort,
-    // });
-    //
-    // plop.setGenerator("core:exception", {
-    //     description: "Generate exception",
-    //     prompts: groupPrompts,
-    //     actions: generateException,
-    // });
-    //
-    // plop.setGenerator("app:query", {
-    //     description: "Generate query",
-    //     prompts: groupPrompts,
-    //     actions: [...generateQuery, ...generateQueryDto],
-    // });
-    //
-    // plop.setGenerator("app:command", {
-    //     description: "Generate command",
-    //     prompts: groupPrompts,
-    //     actions: [...generateCommand, ...generateCommandDto],
-    // });
-    //
-    // plop.setGenerator("infra:repository", {
-    //     description: "Generate repository",
-    //     prompts: groupPrompts,
-    //     actions: [...generateRepositoryPort, ...generateRepository],
-    // });
-    //
-    // plop.setGenerator("infra:service", {
-    //     description: "Generate service",
-    //     prompts: groupPrompts,
-    //     actions: [...generateServicePort, ...generateService],
-    // });
-    //
-    // plop.setGenerator("infra:dto", {
-    //     description: "Generate dto",
-    //     prompts: groupPrompts,
-    //     actions: generateDto,
-    // });
-    //
-    // plop.setGenerator("infra:endpoint", {
-    //     description: "Generate endpoint",
-    //     prompts: groupPrompts,
-    //     actions: generateEndpoint,
-    // });
-    //
-    // plop.setGenerator("crud:entity", {
-    //     description: "Generate CRUD en",
-    //     prompts: groupPrompts,
-    //     actions: [
-    //         ...generateModel,
-    //         ...generateRepositoryPort,
-    //         ...generateRepository,
-    //     ],
-    // });
-    //
-    // plop.setGenerator("crud:endpoint", {
-    //     description: "Generate CRUD endpoint",
-    //     prompts: groupPrompts,
-    //     actions: [...generateEndpoint],
-    // });
-    //
-    // plop.setGenerator("crud:entity_and_endpoint", {
-    //     description: "Generate CRUD endpoint",
-    //     prompts: groupPrompts,
-    //     actions: [
-    //         ...generateModel,
-    //         ...generateRepositoryPort,
-    //         ...generateRepository,
-    //         ...generateEndpoint,
-    //     ],
-    // });
+    plop.setGenerator("core:model", {
+        description: "Generate model",
+        prompts: groupPrompts,
+        actions: generateModel,
+    });
+
+    plop.setGenerator("core:interface", {
+        description: "Generate interface",
+        prompts: groupPrompts,
+        actions: generateInterface,
+    });
+
+    plop.setGenerator("core:enum", {
+        description: "Generate enum",
+        prompts: groupPrompts,
+        actions: generateEnum,
+    });
+
+    plop.setGenerator("core:repository", {
+        description: "Generate repository port",
+        prompts: groupPrompts,
+        actions: generateRepositoryPort,
+    });
+
+    plop.setGenerator("core:service", {
+        description: "Generate service port",
+        prompts: groupPrompts,
+        actions: generateServicePort,
+    });
+
+    plop.setGenerator("core:exception", {
+        description: "Generate exception",
+        prompts: groupPrompts,
+        actions: generateException,
+    });
+
+    plop.setGenerator("app:query", {
+        description: "Generate query",
+        prompts: groupPrompts,
+        actions: [...generateQuery, ...generateQueryDto],
+    });
+
+    plop.setGenerator("app:command", {
+        description: "Generate command",
+        prompts: groupPrompts,
+        actions: [...generateCommand, ...generateCommandDto],
+    });
+
+    plop.setGenerator("infra:repository", {
+        description: "Generate repository",
+        prompts: groupPrompts,
+        actions: [...generateRepositoryPort, ...generateRepository],
+    });
+
+    plop.setGenerator("infra:service", {
+        description: "Generate service",
+        prompts: groupPrompts,
+        actions: [...generateServicePort, ...generateService],
+    });
+
+    plop.setGenerator("infra:dto", {
+        description: "Generate dto",
+        prompts: groupPrompts,
+        actions: generateDto,
+    });
+
+    plop.setGenerator("infra:cu-dto", {
+        description: "Generate CU dto",
+        prompts: groupPrompts,
+        actions: generateCUDto,
+    });
+
+    plop.setGenerator("infra:mapper", {
+        description: "Generate dto mapper",
+        prompts: groupPrompts,
+        actions: generateDtoMapper,
+    });
+
+    plop.setGenerator("infra:controller", {
+        description: "Generate controller",
+        prompts: groupPrompts,
+        actions: generateController,
+    });
+
+    plop.setGenerator("infra:pattern", {
+        description: "Generate pattern implementation",
+        prompts: patternPrompts,
+        actions: generatePattern,
+    });
+
+    plop.setGenerator("infra:entity", {
+        description: "Generate Typeorm entity",
+        prompts: groupPrompts,
+        actions: [
+            ...generateModel,
+            ...generateEntity,
+            ...generateRepositoryPort,
+            ...generateRepository,
+        ],
+    });
+
+    plop.setGenerator("infra:controller", {
+        description: "Generate Rest endpoint",
+        prompts: groupPrompts,
+        actions: [...generateController],
+    });
+
+    plop.setGenerator("infra:entity_and_controller", {
+        description: "Generate CRUD endpoint",
+        prompts: groupPrompts,
+        actions: [
+            ...generateModel,
+            ...generateEntity,
+            ...generateDto,
+            ...generateCUDto,
+            ...generateDtoMapper,
+            ...generateRepositoryPort,
+            ...generateRepository,
+            ...generateController,
+            ...generateDomainExporter,
+            ...generateInfraExporter,
+        ],
+    });
+
+    plop.setGenerator("db:migration", {
+        description: "Generate DB migration",
+        prompts: namePrompt,
+        actions: [
+            ...generateMigration,
+        ],
+    });
 
 };
