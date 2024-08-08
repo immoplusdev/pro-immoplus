@@ -112,7 +112,18 @@
       "residence_disponible": "Residence disponible",
       "nombre_max_occupants": "Nombre maximum d'occupants",
       "animaux_autorises": "Animaux autorisés",
-      "fetes_autorises": "Fêtes autorisées"
+      "fetes_autorises": "Fêtes autorisées",
+      "residence_disponible": "Résidence disponible"
+    },
+    "status_validation": {
+        "valide": "Validé",
+        "en_attente_validation": "En attente de validation",
+        "rejete": "Rejeté"
+    }
+  },
+  "reservations": {
+    "fields": {
+      "status_reservation": "Statut de la réservation"
     }
   },
   "tags": {

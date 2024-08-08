@@ -2,7 +2,6 @@ import type {AxiosInstance} from "axios";
 import type {DataProvider} from "@refinedev/core";
 import {axiosInstance, generateSort, generateFilter} from "./utils";
 import queryString from "query-string";
-import {AuthService} from "@/lib/services/auth";
 
 type MethodTypes = "get" | "delete" | "head" | "options";
 type MethodTypesWithBody = "post" | "put" | "patch";

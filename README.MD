@@ -91,7 +91,7 @@ To learn more about **Refine**, please check out the [Documentation](https://ref
     git checkout -b your-branch-name
     ```
 - To create a new page, you can use the plop generators. 
-    - Run  ````npx plop page:all page name-of-the-resource-group name-of-the-resource```` to create a new page using  the plop package.
+    - Run  ````npx plop page:all name-of-the-resource-group name-of-the-resource```` to create a new page using  the plop package.
         - Where ``name-of-the-resource-group`` is the name of the resource group (e.g. ``residences``) and ``name-of-the-resource`` is the name of the resource (e.g. ``residences``)
         - You can keep the name in plural, the generators will automatically singularize it
         - This will create the corresponding files in the ``pages`` directory

@@ -26,7 +26,7 @@ import {ForgotPassword} from "./pages/forgotPassword";
 import {Login} from "./pages/auth/login";
 import dataProvider from "@/lib/providers/data-provider";
 import authProvider from "@/lib/providers/auth-provider";
-import {API_URL, PROJECT_ID, PROJECT_NAME} from "@/configs/app.config";
+import {API_URL, PROJECT_ID} from "@/configs/app.config";
 import accessControlProvider from "@/lib/providers/access-control-provider";
 import {CreateResidence, EditResidence, ListResidences, ShowResidence} from "@/pages/residences";
 
@@ -55,10 +55,10 @@ function App() {
                                 routerProvider={routerBindings}
                                 resources={[
                                     {
-                                    name: "residences",
+                                        name: "residences",
                                         list: "/residences",
-                                        create: "/residences/create",
-                                        edit: "/residences/edit/:id",
+                                        // create: "/residences/create",
+                                        // edit: "/residences/edit/:id",
                                         show: "/residences/show/:id",
                                         meta: {
                                             canDelete: true,
@@ -81,7 +81,7 @@ function App() {
                                             >
                                                 <ThemedLayoutV2
                                                     Header={() => <Header sticky/>}
-                                                    Sider={(props) => <ThemedSiderV2 {...props}  fixed/>}
+                                                    Sider={(props) => <ThemedSiderV2 {...props} fixed/>}
                                                     Title={({collapsed}) => (
                                                         <ThemedTitleV2
                                                             collapsed={collapsed}
@@ -101,8 +101,8 @@ function App() {
                                         />
                                         <Route path={"/residences"}>
                                             <Route index element={<ListResidences/>}/>
-                                            <Route path="create" element={<CreateResidence/>}/>
-                                            <Route path="edit/:id" element={<EditResidence/>}/>
+                                            {/*<Route path="create" element={<CreateResidence/>}/>*/}
+                                            {/*<Route path="edit/:id" element={<EditResidence/>}/>*/}
                                             <Route path="show/:id" element={<ShowResidence/>}/>
                                         </Route>
                                         <Route path="*" element={<ErrorComponent/>}/>
