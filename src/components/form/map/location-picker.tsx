@@ -3,6 +3,8 @@ import {DEFAULT_MAP_STYLE, INITIAL_MAP_STATE} from "@/configs/map.config";
 import {useCallback, useState} from "react";
 import {Marker, MarkerDragEvent} from "react-map-gl";
 import {MapPin} from "@/components/form/map/pin";
+import 'maplibre-gl/dist/maplibre-gl.css';
+
 
 type Props = {
     height?: number | string;
@@ -52,28 +54,25 @@ export function LocationPicker({height, width}: Props) {
 
     return <Map
         initialViewState={INITIAL_MAP_STATE}
-        style={{width: width || "100%", height: height || 400}}
+        style={{position: "relative" ,width: width || "100%", height: height || 400}}
         mapStyle={DEFAULT_MAP_STYLE}
         onClick={onClick}
     >
-      <div className="flex w-full h-full items-center justify-around">
           {
               marker.latitude != 0 ?
                   <Marker
                       longitude={marker.longitude}
                       latitude={marker.latitude}
-                      anchor={'center'}
-                      className={"relative top-0 left-0 right-0 bottom-0"}
+                      // anchor={'center'}
                       // anchor="bottom"
                       // draggable
                       // onDragStart={onMarkerDragStart}
                       // onDrag={onMarkerDrag}
                       // onDragEnd={onMarkerDragEnd}
                   >
-                      <MapPin className="absolute top-0 left-0 right-0 bottom-0" size={20}/>
+                      <MapPin size={20}/>
                   </Marker> :
                   null
           }
-      </div>
     </Map>;
 }
