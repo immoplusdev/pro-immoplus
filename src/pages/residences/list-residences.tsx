@@ -25,6 +25,7 @@ export const ListResidences = () => {
 
     // Create Modal
     const {
+        form: createForm,
         modalProps: createModalProps,
         formProps: createFormProps,
         show: createModalShow,
@@ -133,7 +134,7 @@ export const ListResidences = () => {
                     </>
                 }
             >
-                <CreateResidence createFormProps={createFormProps}/>
+                <CreateResidence createForm={createForm} createFormProps={createFormProps}/>
             </Modal>
         </>
     );

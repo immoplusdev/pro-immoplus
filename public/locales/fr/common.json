@@ -116,9 +116,14 @@
       "residence_disponible": "Résidence disponible"
     },
     "status_validation": {
-        "valide": "Validé",
-        "en_attente_validation": "En attente de validation",
-        "rejete": "Rejeté"
+      "valide": "Validé",
+      "en_attente_validation": "En attente de validation",
+      "rejete": "Rejeté"
+    },
+    "type_residence": {
+      "appartement": "Appartement",
+      "maison": "Maison",
+      "villa": "Villa"
     }
   },
   "reservations": {
@@ -199,11 +204,19 @@
     "nom": "Nom",
     "status_validation": "Statut de validation",
     "prix_reservation": "Prix de la réservation",
-    "miniature": "Miniature"
+    "miniature": "Miniature",
+    "location": "Localisation"
   },
   "tags": {
     "valided": "Validé",
     "pending": "En attente",
     "rejected": "Rejeté"
+  },
+  "files": {
+    "file_upload": {
+      "drag_and_drop_image_uploader_title": "Cliquez ou faites glisser un fichier pour l'ajouter",
+      "drag_and_drop_image_uploader_description": "Assurez-vous que le fichier est au format PNG, JPG ou SVG et ne dépasse pas 2 Mo.",
+      "upload": "Téléverser"
+    }
   }
 }

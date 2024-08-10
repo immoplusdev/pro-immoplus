@@ -1,25 +1,71 @@
 import React from "react";
-import {Form, Input, Checkbox, DatePicker, FormProps, Select, TextArea} from "antd";
+import {Form, Input, Checkbox, FormProps, Select, InputNumber, Upload} from "antd";
 import {useTranslate} from "@refinedev/core";
-import dayjs from "dayjs";
 import {defaultModalFormProps} from "@/configs/form.config";
-import {ColList} from "@/components/layout/col-list";
-import {statusValidationResidence} from "@/core/domain/residences/status-validation-residence";
+import {ColList} from "@/components/layout";
+import {typesResidence, statusValidationResidence} from "@/core/domain/residences";
+import {getCurrencySymbol} from "@/lib/helpers";
+import {defaultFormColListColProps, defaultFormColListRowProps} from "@/configs";
+import {PlusOutlined} from "@ant-design/icons";
+import {defaultFileUploadProps, getFileIdFromEvent} from "@/components/form/file";
+import {LocationPicker} from "@/components/form/map";
+
 
 type Props = {
     createFormProps: FormProps
 }
+
+const {TextArea} = Input;
+
 export const CreateResidence = ({createFormProps}: Props) => {
+
     const translate = useTranslate();
+
     return (
         <Form  {...createFormProps} {...defaultModalFormProps} className="mt-8">
+            <ColList rowProps={defaultFormColListRowProps} colProps={defaultFormColListColProps}>
+                <Form.Item
+                    label={translate("fields.miniature")}
+                    name={"miniature"}
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+                    getValueFromEvent={getFileIdFromEvent}
 
+                >
+                    <Upload
+                        {...defaultFileUploadProps}
+                        accept="image/*"
+                        multiple={false}
+                    >
+                        <button style={{border: 0, background: 'none'}} type="button">
+                            <PlusOutlined/>
+                            <div style={{marginTop: 8}}>{translate("files.file_upload.upload")}</div>
+                        </button>
+                    </Upload>
+                </Form.Item>
+
+
+                <Form.Item
+                    label={translate("fields.location")}
+                    name={"location"}
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+                    getValueFromEvent={getFileIdFromEvent}
+
+                >
+                    <LocationPicker/>
+                    <p>Test</p>
+                </Form.Item>
+
+            </ColList>
             <ColList
-                colProps={{
-                    xl: {span: 12},
-                    sm: {span: 24}
-                }}
-                rowProps={{gutter: 16}}
+                rowProps={defaultFormColListRowProps} colProps={defaultFormColListColProps}
             >
                 <Form.Item
                     label={translate("fields.nom")}
@@ -33,6 +79,20 @@ export const CreateResidence = ({createFormProps}: Props) => {
                 >
                     <Input/>
                 </Form.Item>
+
+                <Form.Item
+                    label={translate("fields.prix_reservation")}
+                    name={["prixReservation"]}
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+
+                >
+                    <InputNumber suffix={getCurrencySymbol(0)} style={{width: '100%'}}/>
+                </Form.Item>
+
                 <Form.Item
                     label={translate("residences.fields.type_residence")}
                     name={["typeResidence"]}
@@ -43,44 +103,12 @@ export const CreateResidence = ({createFormProps}: Props) => {
                     ]}
 
                 >
-                    <Input/>
+                    <Select options={typesResidence.map(item => ({
+                        value: item,
+                        label: <span>{translate(`residences.type_residence.${item}`)}</span>
+                    }))}/>
                 </Form.Item>
-                <Form.Item
-                    label={translate("fields.description")}
-                    name={["description"]}
-                    rules={[
-                        {
-                            required: true,
-                        },
-                    ]}
 
-
-                >
-                    <TextArea rows={4} placeholder="maxLength is 6" maxLength={6}/>
-                </Form.Item>
-                <Form.Item
-                    label={translate("fields.adresse")}
-                    name={["adresse"]}
-                    rules={[
-                        {
-                            required: true,
-                        },
-                    ]}
-
-                >
-                    <Input/>
-                </Form.Item>
-                <Form.Item
-                    valuePropName="checked"
-                    name={["residenceDisponible"]}
-                    rules={[
-                        {
-                            required: true,
-                        },
-                    ]}
-                >
-                    <Checkbox>{translate("residences.fields.residence_disponible")}</Checkbox>
-                </Form.Item>
                 <Form.Item
                     label={translate("fields.status_validation")}
                     name={["statusValidation"]}
@@ -96,9 +124,11 @@ export const CreateResidence = ({createFormProps}: Props) => {
                         label: <span>{translate(`residences.status_validation.${item}`)}</span>
                     }))}/>
                 </Form.Item>
+
+
                 <Form.Item
-                    label={translate("residences.fields.prixReservation")}
-                    name={["prixReservation"]}
+                    label={translate("fields.adresse")}
+                    name={["adresse"]}
                     rules={[
                         {
                             required: true,
@@ -108,75 +138,52 @@ export const CreateResidence = ({createFormProps}: Props) => {
                 >
                     <Input/>
                 </Form.Item>
+
                 <Form.Item
-                    label={translate("residences.fields.nombreMaxOccupants")}
-                    name={["nombreMaxOccupants"]}
+                    label={translate("fields.description")}
+                    name={["description"]}
                     rules={[
                         {
                             required: true,
                         },
                     ]}
 
+
                 >
-                    <Input/>
+                    <TextArea rows={4}/>
                 </Form.Item>
+
                 <Form.Item
-                    label={translate("residences.fields.animauxAutorises")}
+                    label={translate("residences.fields.residence_disponible")}
                     valuePropName="checked"
-                    name={["animauxAutorises"]}
-                    rules={[
-                        {
-                            required: true,
-                        },
-                    ]}
-
+                    name={["residenceDisponible"]}
                 >
-                    <Checkbox>Animaux Autorises</Checkbox>
+                    <Checkbox>{translate("residences.fields.residence_disponible")}</Checkbox>
+                </Form.Item>
+
+
+                <Form.Item
+                    label={translate("residences.fields.nombre_max_occupants")}
+                    name={["nombreMaxOccupants"]}
+                >
+                    <InputNumber min={1}/>
                 </Form.Item>
                 <Form.Item
-                    label={translate("residences.fields.fetesAutorises")}
+                    valuePropName="checked"
+                    label={translate("residences.fields.animaux_autorises")}
+                    name={["animauxAutorises"]}
+                >
+                    <Checkbox>{translate("residences.fields.animaux_autorises")}</Checkbox>
+                </Form.Item>
+                <Form.Item
+                    label={translate("residences.fields.fetes_autorises")}
                     valuePropName="checked"
                     name={["fetesAutorises"]}
-                    rules={[
-                        {
-                            required: true,
-                        },
-                    ]}
-
                 >
-                    <Checkbox>Fetes Autorises</Checkbox>
-                </Form.Item>
-                <Form.Item
-                    label={translate("residences.fields.createdAt")}
-                    name={["createdAt"]}
-                    rules={[
-                        {
-                            required: true,
-                        },
-                    ]}
-                    getValueProps={(value) => ({
-                        value: value ? dayjs(value) : undefined,
-                    })}
-
-                >
-                    <DatePicker/>
-                </Form.Item>
-                <Form.Item
-                    label={translate("residences.fields.updatedAt")}
-                    name={["updatedAt"]}
-                    rules={[
-                        {
-                            required: true,
-                        },
-                    ]}
-                    getValueProps={(value) => ({
-                        value: value ? dayjs(value) : undefined,
-                    })}
-
-                >
-                    <DatePicker/>
+                    <Checkbox>{translate("residences.fields.fetes_autorises")}</Checkbox>
                 </Form.Item>
             </ColList>
         </Form>
-    );
+    )
+        ;
 };
