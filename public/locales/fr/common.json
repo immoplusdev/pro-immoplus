@@ -133,7 +133,12 @@
   },
   "reservations": {
     "fields": {
-      "status_reservation": "Statut de la réservation"
+      "status_reservation": "Statut de la réservation",
+      "date": "Date",
+      "montant_reservation_sans_commission": "Montant reservation sans commission",
+      "montant_total_reservation": "Montant total de reservation",
+      "retrait_pro_effectue": "Retrait Pro Effectué",
+      "status_facture": "Status facture"
     }
   },
   "tags": {
@@ -210,12 +215,17 @@
     "status_validation": "Statut de validation",
     "prix_reservation": "Prix de la réservation",
     "miniature": "Miniature",
-    "location": "Localisation"
+    "location": "Localisation",
+    "client_phone_number": "Numéro client",
+    "notes": "Note"
+
   },
   "tags": {
     "valided": "Validé",
     "pending": "En attente",
-    "rejected": "Rejeté"
+    "rejected": "Rejeté",
+    "paye": "Paye",
+    "non_paye": "Non paye"
   },
   "files": {
     "file_upload": {

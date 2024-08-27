@@ -4,7 +4,7 @@ import {CatchAllNavigate, NavigateToResource} from "@refinedev/react-router-v6";
 import {ErrorComponent, ThemedLayoutV2, ThemedSiderV2, ThemedTitleV2} from "@refinedev/antd";
 import {AppIcon, Header} from "@/components";
 import {ListResidences, ShowResidence} from "@/pages/residences";
-import {CreateReservation, EditReservation, ListReservations, ShowReservation} from "@/pages/reservations";
+import { EditReservation, ListReservations, ShowReservation} from "@/pages/reservations";
 import {EditConfig} from "@/pages/configs/edit-config";
 import {Login} from "@/pages/auth";
 import {ForgotPassword} from "@/pages/forgotPassword";
@@ -46,7 +46,7 @@ export function AppRoutes(){
                 </Route>
                 <Route path={"/reservations"}>
                     <Route index element={<ListReservations/>}/>
-                    <Route path="create" element={<CreateReservation/>}/>
+                    {/*<Route path="create" element={<CreateReservation/>}/>*/}
                     <Route path="edit/:id" element={<EditReservation/>}/>
                     <Route path="show/:id" element={<ShowReservation/>}/>
                 </Route>

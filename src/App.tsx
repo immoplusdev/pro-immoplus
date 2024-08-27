@@ -27,7 +27,7 @@ import {API_URL, PROJECT_ID} from "@/configs/app.config";
 import {ListResidences, ShowResidence} from "@/pages/residences";
 import {EditConfig} from "@/pages/configs/edit-config";
 import {authProvider, getAccessControlProvider, getDataProvider} from "@/lib/providers";
-import {CreateReservation, EditReservation, ListReservations, ShowReservation} from "@/pages/reservations";
+import {EditReservation, ListReservations, ShowReservation} from "@/pages/reservations";
 import {AppRoutes} from "@/AppRoutes";
 
 
@@ -68,7 +68,7 @@ function App() {
                                     {
                                         name: "reservations",
                                         list: "/reservations",
-                                        create: "/reservations/create",
+                                        // create: "/reservations/create",
                                         edit: "/reservations/edit/:id",
                                         show: "/reservations/show/:id",
                                         meta: {
