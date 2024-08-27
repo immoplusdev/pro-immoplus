@@ -27,6 +27,8 @@ import {API_URL, PROJECT_ID} from "@/configs/app.config";
 import {ListResidences, ShowResidence} from "@/pages/residences";
 import {EditConfig} from "@/pages/configs/edit-config";
 import {authProvider, getAccessControlProvider, getDataProvider} from "@/lib/providers";
+import {CreateReservation, EditReservation, ListReservations, ShowReservation} from "@/pages/reservations";
+import {AppRoutes} from "@/AppRoutes";
 
 
 function App() {
@@ -64,6 +66,16 @@ function App() {
                                         },
                                     },
                                     {
+                                        name: "reservations",
+                                        list: "/reservations",
+                                        create: "/reservations/create",
+                                        edit: "/reservations/edit/:id",
+                                        show: "/reservations/show/:id",
+                                        meta: {
+                                            canDelete: true,
+                                        },
+                                    },
+                                    {
                                         name: "configs",
                                         list: "/configs"
                                     },
@@ -75,54 +87,7 @@ function App() {
                                     projectId: PROJECT_ID,
                                 }}
                             >
-                                <Routes>
-                                    <Route
-                                        element={
-                                            <Authenticated
-                                                key="authenticated-inner"
-                                                fallback={<CatchAllNavigate to={"/login"}/>}
-                                            >
-                                                <ThemedLayoutV2
-                                                    Header={() => <Header sticky/>}
-                                                    Sider={(props) => <ThemedSiderV2 {...props} fixed/>}
-                                                    Title={({collapsed}) => (
-                                                        <ThemedTitleV2
-                                                            collapsed={collapsed}
-                                                            text={""}
-                                                            icon={<AppIcon/>}
-                                                        />
-                                                    )}
-                                                >
-                                                    <Outlet/>
-                                                </ThemedLayoutV2>
-                                            </Authenticated>
-                                        }
-                                    >
-                                        <Route
-                                            index
-                                            element={<NavigateToResource resource="blog_posts"/>}
-                                        />
-                                        <Route path={"/residences"}>
-                                            <Route index element={<ListResidences/>}/>
-                                            {/*<Route path="create" element={<CreateResidence/>}/>*/}
-                                            {/*<Route path="edit/:id" element={<EditResidence/>}/>*/}
-                                            <Route path="show/:id" element={<ShowResidence/>}/>
-                                        </Route>
-                                        <Route path={"/configs"}>
-                                            <Route index element={<EditConfig/>}/>
-                                        </Route>
-                                        <Route path="*" element={<ErrorComponent/>}/>
-                                    </Route>
-                                    <Route>
-                                        <Route path={"/login"} element={<Login/>}/>
-                                        {/*<Route path={"/register"} element={<Register />} />*/}
-                                        <Route
-                                            path={"/forgot-password"}
-                                            element={<ForgotPassword/>}
-                                        />
-                                    </Route>
-                                </Routes>
-
+                                <AppRoutes/>
                                 <RefineKbar/>
                                 <UnsavedChangesNotifier/>
                                 <DocumentTitleHandler/>
