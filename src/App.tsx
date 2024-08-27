@@ -1,7 +1,6 @@
 import {Authenticated, Refine, useGetIdentity} from "@refinedev/core";
 import {DevtoolsPanel, DevtoolsProvider} from "@refinedev/devtools";
 import {RefineKbar, RefineKbarProvider} from "@refinedev/kbar";
-
 import {
     ErrorComponent,
     ThemedLayoutV2,
@@ -24,11 +23,10 @@ import {AppIcon, Header} from "./components";
 import {ColorModeContextProvider} from "./contexts/color-mode";
 import {ForgotPassword} from "./pages/forgotPassword";
 import {Login} from "./pages/auth/login";
-import dataProvider from "@/lib/providers/data-provider";
-import authProvider from "@/lib/providers/auth-provider";
 import {API_URL, PROJECT_ID} from "@/configs/app.config";
-import accessControlProvider from "@/lib/providers/access-control-provider";
-import {CreateResidence, EditResidence, ListResidences, ShowResidence} from "@/pages/residences";
+import {ListResidences, ShowResidence} from "@/pages/residences";
+import {EditConfig} from "@/pages/configs/edit-config";
+import {authProvider, getAccessControlProvider, getDataProvider} from "@/lib/providers";
 
 
 function App() {
@@ -47,11 +45,11 @@ function App() {
                     <AntdApp>
                         <DevtoolsProvider>
                             <Refine
-                                dataProvider={dataProvider(API_URL)}
+                                dataProvider={getDataProvider(API_URL)}
                                 notificationProvider={useNotificationProvider}
                                 authProvider={authProvider}
                                 i18nProvider={i18nProvider}
-                                accessControlProvider={accessControlProvider}
+                                accessControlProvider={getAccessControlProvider()}
                                 routerProvider={routerBindings}
                                 resources={[
                                     {
@@ -62,7 +60,12 @@ function App() {
                                         show: "/residences/show/:id",
                                         meta: {
                                             canDelete: true,
+
                                         },
+                                    },
+                                    {
+                                        name: "configs",
+                                        list: "/configs"
                                     },
                                 ]}
                                 options={{
@@ -104,6 +107,9 @@ function App() {
                                             {/*<Route path="create" element={<CreateResidence/>}/>*/}
                                             {/*<Route path="edit/:id" element={<EditResidence/>}/>*/}
                                             <Route path="show/:id" element={<ShowResidence/>}/>
+                                        </Route>
+                                        <Route path={"/configs"}>
+                                            <Route index element={<EditConfig/>}/>
                                         </Route>
                                         <Route path="*" element={<ErrorComponent/>}/>
                                     </Route>

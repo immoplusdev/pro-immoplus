@@ -14,8 +14,8 @@ import {StatusValidationResidenceTag} from "@/pages/residences/components";
 import {StatusValidationResidence} from "@/core/domain/residences";
 import {Thumbnail} from "@/components";
 import {formatAmount, getApiFileUrl} from "@/lib/helpers";
-import {CreateResidence} from "@/pages/residences/create-residence";
 import {defaultModalProps} from "@/configs";
+import {CreateResidence} from "@/pages/residences/create-residence";
 
 export const ListResidences = () => {
     const translate = useTranslate();
@@ -23,11 +23,9 @@ export const ListResidences = () => {
         syncWithLocation: true,
     });
 
-    // Create Modal
     const {
-        form: createForm,
-        modalProps: createModalProps,
         formProps: createFormProps,
+        modalProps: createModalProps,
         show: createModalShow,
     } = useModalForm({
         action: 'create',
@@ -38,15 +36,11 @@ export const ListResidences = () => {
         <>
             <List
                 title={translate("pages.residence.residences")}
-                createButtonProps={{
-                    onClick: () => {
-                        createModalShow();
-                    },
-                }}
+                createButtonProps={{onClick: () => createModalShow()}}
             >
                 <Table {...tableProps} rowKey="id">
                     <Table.Column
-                        dataIndex="miniature"
+                        dataIndex="miniatureId"
                         title={translate("fields.miniature")}
                         render={(value: string) => <Thumbnail src={getApiFileUrl(value)}/>}
                     />
@@ -134,7 +128,7 @@ export const ListResidences = () => {
                     </>
                 }
             >
-                <CreateResidence createForm={createForm} createFormProps={createFormProps}/>
+                <CreateResidence createFormProps={createFormProps}/>
             </Modal>
         </>
     );

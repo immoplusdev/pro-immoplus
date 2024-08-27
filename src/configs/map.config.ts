@@ -1,7 +1,7 @@
 export const INITIAL_MAP_STATE = {
     longitude: -4.019912995432831,
     latitude: 5.324039336202355,
-    zoom: 1
+    zoom: 2
 }
 
 export const MAP_API_KEY = import.meta.env.VITE_MAP_API_KEY || "m3EpORIzqiw53d17W2Au"

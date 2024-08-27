@@ -34,7 +34,6 @@ export const uploadFileToServer = async (file: UploadFile, isAuthentified?: bool
                 'Content-Type': 'multipart/form-data',
             },
         });
-        console.log('File uploaded successfully:', response.data);
         return {file: {...file, uid: response.data?.id}, response: response.data};
     } catch (error) {
         console.error('Error uploading file:', error);
@@ -50,7 +49,6 @@ export const defaultFileUploadProps: UploadProps = {
 }
 
 export const getFileValuePropsToFilesId = (value: any) => {
-    console.log('value', value);
     return value;
 }
 

@@ -7,7 +7,7 @@ type MethodTypes = "get" | "delete" | "head" | "options";
 type MethodTypesWithBody = "post" | "put" | "patch";
 
 
-export const dataProvider = (
+export const getDataProvider = (
     apiUrl: string,
     httpClient: AxiosInstance = axiosInstance,
 ): Omit<
@@ -202,4 +202,3 @@ export const dataProvider = (
     }
 };
 
-export default dataProvider;

@@ -3,3 +3,9 @@ export enum StatusValidationResidence {
     EnAttenteValidation = "en_attente_validation",
     Rejete = "rejete"
 }
+
+export enum TypeResidence {
+    Appartement = "appartement",
+    Maison = "maison",
+    Villa = "villa"
+}

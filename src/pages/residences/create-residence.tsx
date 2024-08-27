@@ -1,6 +1,6 @@
 import React from "react";
 import {Form, Input, Checkbox, FormProps, Select, InputNumber, Upload} from "antd";
-import {useTranslate} from "@refinedev/core";
+import {useGetIdentity, useTranslate} from "@refinedev/core";
 import {defaultModalFormProps} from "@/configs/form.config";
 import {ColList} from "@/components/layout";
 import {typesResidence, statusValidationResidence} from "@/core/domain/residences";
@@ -9,6 +9,7 @@ import {defaultFormColListColProps, defaultFormColListRowProps} from "@/configs"
 import {PlusOutlined} from "@ant-design/icons";
 import {defaultFileUploadProps, getFileIdFromEvent} from "@/components/form/file";
 import {LocationPicker} from "@/components/form/map";
+import {User} from "@/core/domain/users";
 
 
 type Props = {
@@ -18,6 +19,7 @@ type Props = {
 const {TextArea} = Input;
 
 export const CreateResidence = ({createFormProps}: Props) => {
+    const user = useGetIdentity<User>();
 
     const translate = useTranslate();
 
@@ -33,7 +35,6 @@ export const CreateResidence = ({createFormProps}: Props) => {
                         },
                     ]}
                     getValueFromEvent={getFileIdFromEvent}
-
                 >
                     <Upload
                         {...defaultFileUploadProps}
@@ -46,8 +47,6 @@ export const CreateResidence = ({createFormProps}: Props) => {
                         </button>
                     </Upload>
                 </Form.Item>
-
-
                 <Form.Item
                     label={translate("fields.location")}
                     name={"location"}
@@ -56,11 +55,8 @@ export const CreateResidence = ({createFormProps}: Props) => {
                             required: true,
                         },
                     ]}
-                    getValueFromEvent={getFileIdFromEvent}
-
                 >
-                    <LocationPicker/>
-                    <p>Test</p>
+                    <LocationPicker onChange={(value) => createFormProps.form?.setFieldValue("location", value)}/>
                 </Form.Item>
 
             </ColList>

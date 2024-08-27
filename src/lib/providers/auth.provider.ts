@@ -1,9 +1,7 @@
 import {AuthBindings} from "@refinedev/core";
-import {AuthService} from "@/lib/services/auth";
+import {authService} from "@/lib/services/auth";
 
-const authService = new AuthService();
-
-const authProvider: AuthBindings = {
+export const authProvider: AuthBindings = {
 
     onError: async (error) => {
         console.error(error);
@@ -66,6 +64,6 @@ const authProvider: AuthBindings = {
             };
         }
     },
+
 };
 
-export default authProvider;

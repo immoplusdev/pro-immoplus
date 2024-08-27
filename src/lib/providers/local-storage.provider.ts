@@ -1,10 +1,12 @@
-export const localStorageProvider = (() =>
+const STORAGE_KEY = "admin_app_storage";
+
+export const getLocalStorageProvider = (() =>
     (
         {
             getAuthData: () => {
                 const data =
                     typeof window !== "undefined" &&
-                    window.localStorage.getItem("directus_storage");
+                    window.localStorage.getItem(STORAGE_KEY);
                 if (data) {
                     return JSON.parse(data);
                 }
@@ -15,12 +17,12 @@ export const localStorageProvider = (() =>
                 if (!value) {
                     return (
                         typeof window !== "undefined" &&
-                        window.localStorage.removeItem("directus_storage")
+                        window.localStorage.removeItem(STORAGE_KEY)
                     );
                 }
                 return (
                     typeof window !== "undefined" &&
-                    window.localStorage.setItem("directus_storage", JSON.stringify(value))
+                    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(value))
                 );
             },
         }

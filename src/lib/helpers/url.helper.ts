@@ -5,5 +5,5 @@ export function getImageUrl(imageId: string) {
 }
 
 export function getApiFileUrl(imageId: string) {
-    return `${API_URL}/api/file/${imageId}`
+    return `${API_URL}/files/raw/public/${imageId}`
 }
