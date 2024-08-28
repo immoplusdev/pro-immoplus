@@ -118,6 +118,7 @@
       "nombre_max_occupants": "Nombre maximum d'occupants",
       "animaux_autorises": "Animaux autorisés",
       "fetes_autorises": "Fêtes autorisées",
+      "residence_id": "Résidence identifiant",
       "residence_disponible": "Résidence disponible"
     },
     "status_validation": {
@@ -138,7 +139,8 @@
       "montant_reservation_sans_commission": "Montant reservation sans commission",
       "montant_total_reservation": "Montant total de reservation",
       "retrait_pro_effectue": "Retrait Pro Effectué",
-      "status_facture": "Status facture"
+      "status_facture": "Status facture",
+      "proprietaire": "proprietaire"
     }
   },
   "tags": {
@@ -202,6 +204,7 @@
   "fields": {
     "id": "Identifiant",
     "title": "Titre",
+    "client": "Client",
     "name": "Nom",
     "description": "Description",
     "adresse": "Adresse",
