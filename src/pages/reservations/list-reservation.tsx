@@ -70,7 +70,7 @@ export const ListReservations = () => {
               <Table.Column
                   dataIndex="notes"
                   title={translate("fields.notes")}
-              />0
+              />
               <Table.Column
                   dataIndex="clientPhoneNumber"
                   title={translate("fields.client_phone_number")}
@@ -85,11 +85,11 @@ export const ListReservations = () => {
                             size="small"
                             recordItemId={record.id}
                         />
-                        {/*<ShowButton*/}
-                        {/*    hideText*/}
-                        {/*    size="small"*/}
-                        {/*    recordItemId={record.id}*/}
-                        {/*/>*/}
+                        <ShowButton
+                            hideText
+                            size="small"
+                            recordItemId={record.id}
+                        />
                         <DeleteButton
                             hideText
                             size="small"
