@@ -65,7 +65,6 @@
       "backHome": "Retour à l'accueil"
     },
     "residence": {
-      "residence": "Résidence",
       "residences": "Résidences"
     },
     "reservation": {
@@ -119,7 +118,8 @@
       "animaux_autorises": "Animaux autorisés",
       "fetes_autorises": "Fêtes autorisées",
       "residence_id": "Résidence identifiant",
-      "residence_disponible": "Résidence disponible"
+      "residence_disponible": "Résidence disponible",
+      "residence": "Résidence"
     },
     "status_validation": {
       "valide": "Validé",
@@ -140,7 +140,7 @@
       "montant_total_reservation": "Montant total de reservation",
       "retrait_pro_effectue": "Retrait Pro Effectué",
       "status_facture": "Status facture",
-      "proprietaire": "proprietaire"
+      "proprietaire": "Proprietaire"
     }
   },
   "tags": {
