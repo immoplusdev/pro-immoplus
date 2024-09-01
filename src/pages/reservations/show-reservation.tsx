@@ -46,57 +46,57 @@ export const ShowReservation = () => {
           >
               <ColList rowProps={defaultFormColListRowProps} colProps={defaultFormColListColProps}>
                   <Form.Item label={translate("fields.id")}>
-                      <Button>
+                      <Button style={{width: 300}}>
                           {record?.id}
                       </Button>
                   </Form.Item>
                   <Form.Item label={translate("reservations.fields.status_reservation")}>
-                      <Button>
+                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
                           {record?.statusReservation}
                       </Button>
                   </Form.Item>
                   <Form.Item label={translate("reservations.fields.status_facture")}>
-                      <Button>
+                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
                           {record?.statusFacture}
                       </Button>
                   </Form.Item>
                   <Form.Item label={translate("reservations.fields.retrait_pro_effectue")}>
-                      <Button>
+                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
                           {record?.retraitProEffectue}
                       </Button>
                   </Form.Item>
                   <Form.Item label={translate("reservations.fields.montant_total_reservation")}>
-                      <Button>
+                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
                           {record?.montantTotalReservation}
                       </Button>
                   </Form.Item>
                   <Form.Item label={translate("reservations.fields.montant_reservation_sans_commission")}>
-                      <Button>
+                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
                           {record?.montantReservationSansCommission}
                       </Button>
                   </Form.Item>
                   <Form.Item label={translate("fields.notes")}>
-                      <Button>
+                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
                           {record?.notes}
                       </Button>
                   </Form.Item>
                   <Form.Item label={translate("fields.client_phone_number")}>
-                      <Button>
+                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
                           {record?.clientPhoneNumber}
                       </Button>
                   </Form.Item>
                   <Form.Item label={translate("fields.created_at")}>
-                      <Button>
+                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
                           {record?.createdAt}
                       </Button>
                   </Form.Item>
                   <Form.Item label={translate("fields.updated_at")}>
-                      <Button>
+                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
                           {record?.updatedAt}
                       </Button>
                   </Form.Item>
                   <Form.Item label={translate("residences.fields.residence_id")}>
-                      <Button>
+                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
                           {residenceIsLoading ? (
                               <>Loading...</>
                           ) : (
@@ -109,12 +109,12 @@ export const ShowReservation = () => {
                       </Button>
                   </Form.Item>
                   <Form.Item label={translate("fields.client")}>
-                      <Button>
+                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
                           { record?.client?.firstName + " " + record?.client?.lastName}
                       </Button>
                   </Form.Item>
                   <Form.Item label={translate("reservations.fields.proprietaire")}>
-                      <Button>
+                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
                           {  record?.proprietaire?.firstName +
                               " " +
                               record?.proprietaire?.lastName}
