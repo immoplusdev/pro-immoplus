@@ -1,4 +1,4 @@
-import {Button, Space, Table} from "antd";
+import {Button, Space, Table, Tag} from "antd";
 import {Thumbnail} from "@/components";
 import {formatAmount, getApiFileUrl} from "@/lib/helpers";
 import {StatusValidationResidence} from "@/core/domain/residences";
@@ -7,6 +7,7 @@ import {BooleanField, DateField, DeleteButton, EditButton, List, ShowButton, use
 import {BaseRecord, useTranslate} from "@refinedev/core";
 import React from "react";
 import {type CrudFilter} from "@refinedev/core/src/contexts/data/types";
+import {TypeResidenceTag} from "@/pages/residences/components/type-residence-tag";
 
 type Props = {
     filters?: {
@@ -19,16 +20,19 @@ type Props = {
 
 export function ListResidenceTable({filters, activeMenu}: Props) {
     const translate = useTranslate();
-    const {tableProps} = useTable({
-        syncWithLocation: true,
-        sorters: {
-            initial: [{
-                field: "createdAt",
-                order: "desc"
-            }]
-        },
-        filters
-    });
+    const {tableProps} = useTable(
+        {
+            resource: "residences",
+            syncWithLocation: true,
+            sorters: {
+                initial: [{
+                    field: "createdAt",
+                    order: "desc"
+                }]
+            },
+            filters
+        });
+
 
     return (
         <List
@@ -61,13 +65,35 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                 <Table.Column
                     dataIndex="typeResidence"
                     title={translate("residences.fields.type_residence")}
+                    render={(value: string)=> <TypeResidenceTag typeResidence={value}/>}
                 />
+
+                {/*<Table.Column*/}
+                {/*    dataIndex="adresse"*/}
+                {/*    title={translate("fields.adresse")}*/}
+                {/*/>*/}
+
 
                 <Table.Column
-                    dataIndex="adresse"
-                    title={translate("fields.adresse")}
+                    dataIndex="prixReservation"
+                    title={translate("fields.prix_reservation")}
+                    render={(value: number) => <span>{formatAmount(value)}</span>}
                 />
-
+                {/*<Table.Column*/}
+                {/*    dataIndex="nombreMaxOccupants"*/}
+                {/*    title={translate("residences.fields.nombre_max_occupants")}*/}
+                {/*    render={(value: boolean) => <BooleanField value={value}/>}*/}
+                {/*/>*/}
+                {/*<Table.Column*/}
+                {/*    dataIndex={["animauxAutorises"]}*/}
+                {/*    title={translate("residences.fields.animaux_autorises")}*/}
+                {/*    render={(value: any) => <BooleanField value={value}/>}*/}
+                {/*/>*/}
+                {/*<Table.Column*/}
+                {/*    dataIndex={["fetesAutorises"]}*/}
+                {/*    title={translate("residences.fields.fetes_autorises")}*/}
+                {/*    render={(value: any) => <BooleanField value={value}/>}*/}
+                {/*/>*/}
                 <Table.Column
                     dataIndex="statusValidation"
                     title={translate("fields.status_validation")}
@@ -75,29 +101,15 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                         statusValidation={value}/>}
                 />
                 <Table.Column
-                    dataIndex="prixReservation"
-                    title={translate("fields.prix_reservation")}
-                    render={(value: number) => <span>{formatAmount(value)}</span>}
-                />
-                <Table.Column
-                    dataIndex="nombreMaxOccupants"
-                    title={translate("residences.fields.nombre_max_occupants")}
-                    render={(value: boolean) => <BooleanField value={value}/>}
-                />
-                <Table.Column
-                    dataIndex={["animauxAutorises"]}
-                    title={translate("residences.fields.animaux_autorises")}
-                    render={(value: any) => <BooleanField value={value}/>}
-                />
-                <Table.Column
-                    dataIndex={["fetesAutorises"]}
-                    title={translate("residences.fields.fetes_autorises")}
-                    render={(value: any) => <BooleanField value={value}/>}
-                />
-                <Table.Column
                     dataIndex={["createdAt"]}
                     title={translate("fields.created_at")}
-                    render={(value: any) => <DateField value={value}/>}
+                    render={(date: string) => {
+                        return (
+                            <div>
+                                <Tag>{new Date(date).toLocaleDateString()}</Tag>
+                            </div>
+                        );
+                    }}
                 />
                 <Table.Column
                     title={translate("table.actions")}

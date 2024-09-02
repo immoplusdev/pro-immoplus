@@ -228,7 +228,10 @@
     "non_paye": "Non paye",
     "en_validation":"En validation",
     "all_e": "Toutes",
-    "all": "Tous"
+    "all": "Tous",
+    "maison": "maison",
+    "villa": "villa",
+    "appartement": "appartement"
   },
   "files": {
     "file_upload": {

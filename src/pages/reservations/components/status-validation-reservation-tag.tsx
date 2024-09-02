@@ -21,7 +21,5 @@ function statusValidationToTagData(statusValidation: string) {
             return {name: StatusFacture.NonPaye, color: "error"};
         default:
             return {name: StatusFacture.NonPaye, color: "error"};
-
-
     }
 }
