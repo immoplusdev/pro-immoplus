@@ -1,11 +1,7 @@
-import {Authenticated, Refine, useGetIdentity} from "@refinedev/core";
+import {Refine} from "@refinedev/core";
 import {DevtoolsPanel, DevtoolsProvider} from "@refinedev/devtools";
 import {RefineKbar, RefineKbarProvider} from "@refinedev/kbar";
 import {
-    ErrorComponent,
-    ThemedLayoutV2,
-    ThemedSiderV2,
-    ThemedTitleV2,
     useNotificationProvider,
 } from "@refinedev/antd";
 import "@refinedev/antd/dist/reset.css";
@@ -19,15 +15,9 @@ import routerBindings, {
 import {App as AntdApp} from "antd";
 import {useTranslation} from "react-i18next";
 import {BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
-import {AppIcon, Header} from "./components";
 import {ColorModeContextProvider} from "./contexts/color-mode";
-import {ForgotPassword} from "./pages/forgotPassword";
-import {Login} from "./pages/auth/login";
 import {API_URL, PROJECT_ID} from "@/configs/app.config";
-import {ListResidences, ShowResidence} from "@/pages/residences";
-import {EditConfig} from "@/pages/configs/edit-config";
 import {authProvider, getAccessControlProvider, getDataProvider} from "@/lib/providers";
-import {EditReservation, ListReservations, ShowReservation} from "@/pages/reservations";
 import {AppRoutes} from "@/AppRoutes";
 
 
@@ -62,7 +52,6 @@ function App() {
                                         show: "/residences/show/:id",
                                         meta: {
                                             canDelete: true,
-
                                         },
                                     },
                                     {

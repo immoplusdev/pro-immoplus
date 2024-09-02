@@ -8,6 +8,7 @@ import { EditReservation, ListReservations, ShowReservation} from "@/pages/reser
 import {EditConfig} from "@/pages/configs/edit-config";
 import {Login} from "@/pages/auth";
 import {ForgotPassword} from "@/pages/forgotPassword";
+import {ListResidencesEnValidation} from "@/pages/residences/list-residences-en-validation";
 
 export function AppRoutes(){
     return (
@@ -40,8 +41,7 @@ export function AppRoutes(){
                 />
                 <Route path={"/residences"}>
                     <Route index element={<ListResidences/>}/>
-                    {/*<Route path="create" element={<CreateResidence/>}/>*/}
-                    {/*<Route path="edit/:id" element={<EditResidence/>}/>*/}
+                    <Route path="en-validation" element={<ListResidencesEnValidation/>}/>
                     <Route path="show/:id" element={<ShowResidence/>}/>
                 </Route>
                 <Route path={"/reservations"}>

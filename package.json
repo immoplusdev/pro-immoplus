@@ -51,11 +51,13 @@
   },
   "scripts": {
     "dev": "concurrently \"npx refine devtools start\" \"vite dev\"",
+    "debug": "concurrently \"npx refine devtools start\" \"vite dev\"",
     "start": "vite preview",
     "build": "vite build",
     "build:prod": "tsc && vite build",
     "preview": "vite start",
     "refine": "vite",
+    "refine-devtools": "npx refine devtools start",
     "api": "cd ../api-immoplus && npm run dev"
   },
   "browserslist": {

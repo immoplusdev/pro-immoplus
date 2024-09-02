@@ -118,7 +118,6 @@
       "animaux_autorises": "Animaux autorisés",
       "fetes_autorises": "Fêtes autorisées",
       "residence_id": "Résidence identifiant",
-      "residence_disponible": "Résidence disponible",
       "residence": "Résidence"
     },
     "status_validation": {
@@ -142,9 +141,6 @@
       "status_facture": "Status facture",
       "proprietaire": "Proprietaire"
     }
-  },
-  "tags": {
-    "clone": "Cloner"
   },
   "dashboard": {
     "title": "Tableau de bord"
@@ -228,7 +224,11 @@
     "pending": "En attente",
     "rejected": "Rejeté",
     "paye": "Paye",
-    "non_paye": "Non paye"
+    "clone": "Cloner",
+    "non_paye": "Non paye",
+    "en_validation":"En validation",
+    "all_e": "Toutes",
+    "all": "Tous"
   },
   "files": {
     "file_upload": {

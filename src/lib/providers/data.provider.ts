@@ -2,6 +2,7 @@ import type {AxiosInstance} from "axios";
 import type {DataProvider} from "@refinedev/core";
 import {axiosInstance, generateSort, generateFilter} from "./utils";
 import queryString from "query-string";
+import {normalizeStringArray, serializeWhereParameterToQueryFiltersString} from "@/lib/helpers";
 
 type MethodTypes = "get" | "delete" | "head" | "options";
 type MethodTypesWithBody = "post" | "put" | "patch";
@@ -43,14 +44,15 @@ export const getDataProvider = (
             const generatedSort = generateSort(sorters);
             if (generatedSort) {
                 const {_sort, _order} = generatedSort;
-                query._order_by = _sort.join(",").at(0);
-                query._order_dir = _order.join(",").at(0);
+                query._order_by = normalizeStringArray(_sort).at(0);
+                query._order_dir = normalizeStringArray(_order).at(0);
             }
 
-            const combinedQuery = {...query, ...queryFilters};
-            const urlWithQuery = Object.keys(combinedQuery).length
-                ? `${url}?${queryString.stringify(combinedQuery)}`
+            const urlWithQuery = Object.keys(query).length
+                ? `${url}?${queryString.stringify(query)}&${serializeWhereParameterToQueryFiltersString(queryFilters)}`
                 : url;
+
+            console.log(urlWithQuery);
 
             const {data} = await httpClient[requestMethod](urlWithQuery, {
                 headers: headersFromMeta,
@@ -141,6 +143,7 @@ export const getDataProvider = (
             return apiUrl;
         },
 
+
         custom: async ({
                            url,
                            method,
@@ -157,8 +160,8 @@ export const getDataProvider = (
                 if (generatedSort) {
                     const {_sort, _order} = generatedSort;
                     const sortQuery = {
-                        _order_by: _sort.join(",").at(0),
-                        _order_dir: _order.join(",").at(0),
+                        _order_by: normalizeStringArray(_sort).at(0),
+                        _order_dir: normalizeStringArray(_order).at(0),
                     };
                     requestUrl = `${requestUrl}&${queryString.stringify(sortQuery)}`;
                 }
