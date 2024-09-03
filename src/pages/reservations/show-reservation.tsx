@@ -1,6 +1,3 @@
-import { IResourceComponentsProps } from "@refinedev/core";
-import { AntdShowInferencer } from "@refinedev/inferencer/antd";
-
 import React, {useState} from "react";
 import { useShow, useTranslate, useOne } from "@refinedev/core";
 import {
@@ -14,6 +11,7 @@ import {
 import {Button, Form, Input, Typography} from "antd";
 import {defaultFormColListColProps, defaultFormColListRowProps} from "@/configs";
 import {ColList} from "@/components/layout";
+import {FormItemWithButton} from "@/lib/ts-utilities";
 
 const { Title } = Typography;
 
@@ -33,7 +31,23 @@ export const ShowReservation = () => {
     },
   });
 
-  return (
+    const formFieldData = [
+        { label: translate("fields.id"), content: record?.id },
+        { label: translate("reservations.fields.status_reservation"), content: record?.statusReservation },
+        { label: translate("reservations.fields.status_facture"), content: record?.statusFacture },
+        { label: translate("reservations.fields.retrait_pro_effectue"), content: record?.retraitProEffectue },
+        { label: translate("reservations.fields.montant_total_reservation"), content: record?.montantTotalReservation },
+        { label: translate("reservations.fields.montant_reservation_sans_commission"), content: record?.montantReservationSansCommission },
+        { label: translate("fields.notes"), content: record?.notes },
+        { label: translate("fields.client_phone_number"), content: record?.clientPhoneNumber },
+        { label: translate("fields.created_at"), content: record?.createdAt },
+        { label: translate("fields.updated_at"), content: record?.updatedAt },
+        { label: translate("residences.fields.residence_id"), content: residenceIsLoading ? <>Loading...</> : <>Cannot Render</> },
+        { label: translate("fields.client"), content: `${record?.client?.firstName} ${record?.client?.lastName}` },
+        { label: translate("reservations.fields.proprietaire"), content: `${record?.proprietaire?.firstName} ${record?.proprietaire?.lastName}` }
+    ];
+
+    return (
       <Show isLoading={isLoading}>
           <Form
               labelCol={{span: 200}}
@@ -45,153 +59,13 @@ export const ShowReservation = () => {
               }}
           >
               <ColList rowProps={defaultFormColListRowProps} colProps={defaultFormColListColProps}>
-                  <Form.Item label={translate("fields.id")}>
-                      <Button style={{width: 300}}>
-                          {record?.id}
-                      </Button>
-                  </Form.Item>
-                  <Form.Item label={translate("reservations.fields.status_reservation")}>
-                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
-                          {record?.statusReservation}
-                      </Button>
-                  </Form.Item>
-                  <Form.Item label={translate("reservations.fields.status_facture")}>
-                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
-                          {record?.statusFacture}
-                      </Button>
-                  </Form.Item>
-                  <Form.Item label={translate("reservations.fields.retrait_pro_effectue")}>
-                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
-                          {record?.retraitProEffectue}
-                      </Button>
-                  </Form.Item>
-                  <Form.Item label={translate("reservations.fields.montant_total_reservation")}>
-                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
-                          {record?.montantTotalReservation}
-                      </Button>
-                  </Form.Item>
-                  <Form.Item label={translate("reservations.fields.montant_reservation_sans_commission")}>
-                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
-                          {record?.montantReservationSansCommission}
-                      </Button>
-                  </Form.Item>
-                  <Form.Item label={translate("fields.notes")}>
-                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
-                          {record?.notes}
-                      </Button>
-                  </Form.Item>
-                  <Form.Item label={translate("fields.client_phone_number")}>
-                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
-                          {record?.clientPhoneNumber}
-                      </Button>
-                  </Form.Item>
-                  <Form.Item label={translate("fields.created_at")}>
-                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
-                          {record?.createdAt}
-                      </Button>
-                  </Form.Item>
-                  <Form.Item label={translate("fields.updated_at")}>
-                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
-                          {record?.updatedAt}
-                      </Button>
-                  </Form.Item>
-                  <Form.Item label={translate("residences.fields.residence_id")}>
-                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
-                          {residenceIsLoading ? (
-                              <>Loading...</>
-                          ) : (
-                              <>
-                        <span title="Inferencer failed to render this field. (Cannot find key)">
-                            Cannot Render
-                        </span>
-                              </>
-                          )}
-                      </Button>
-                  </Form.Item>
-                  <Form.Item label={translate("fields.client")}>
-                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
-                          { record?.client?.firstName + " " + record?.client?.lastName}
-                      </Button>
-                  </Form.Item>
-                  <Form.Item label={translate("reservations.fields.proprietaire")}>
-                      <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
-                          {  record?.proprietaire?.firstName +
-                              " " +
-                              record?.proprietaire?.lastName}
-                      </Button>
-                  </Form.Item>
+
+                  {formFieldData.map((data, index) =>(
+                      <FormItemWithButton key={index} label={data.label} content={data.content} isLoading={data.label=== translate("residences.fields.residence_id") && isLoading}/>
+                  ))}
+
               </ColList>
 
-              {/*<Title level={5}>*/}
-              {/*    {translate("reservations.fields.status_reservation")}*/}
-              {/*</Title>*/}
-              {/*<TextField value={record?.statusReservation}/>*/}
-
-          {/*<Title level={5}>*/}
-          {/*    {translate("reservations.fields.status_facture")}*/}
-          {/*</Title>*/}
-          {/*<TextField value={record?.statusFacture}/>*/}
-
-          {/*<Title level={5}>*/}
-          {/*    {translate("reservations.fields.retrait_pro_effectue")}*/}
-          {/*</Title>*/}
-          {/*<BooleanField value={record?.retraitProEffectue}/>*/}
-
-          {/*<Title level={5}>*/}
-          {/*    {translate("reservations.fields.montant_total_reservation")}*/}
-          {/*</Title>*/}
-
-          {/*<NumberField value={record?.montantTotalReservation ?? ""}/>*/}
-          {/*<Title level={5}>*/}
-          {/*    {translate(*/}
-          {/*        "reservations.fields.montant_reservation_sans_commission",*/}
-          {/*    )}*/}
-          {/*</Title>*/}
-          {/*<NumberField*/}
-          {/*    value={record?.montantReservationSansCommission ?? ""}*/}
-          {/*/>*/}
-          {/*<Title level={5}>{translate("fields.notes")}</Title>*/}
-          {/*<TextField value={record?.notes}/>*/}
-          {/*<Title level={5}>*/}
-          {/*    {translate("fields.client_phone_number")}*/}
-          {/*</Title>*/}
-          {/*<NumberField value={record?.clientPhoneNumber ?? ""}/>*/}
-          {/*<Title level={5}>*/}
-          {/*    {translate("fields.created_at")}*/}
-          {/*</Title>*/}
-          {/*<DateField value={record?.createdAt}/>*/}
-          {/*<Title level={5}>*/}
-          {/*    {translate("fields.updated_at")}*/}
-          {/*</Title>*/}
-          {/*<DateField value={record?.updatedAt}/>*/}
-          {/*<Title level={5}>*/}
-          {/*    {translate("residences.fields.residence_id")}*/}
-          {/*</Title>*/}
-          {/*{residenceIsLoading ? (*/}
-          {/*    <>Loading...</>*/}
-          {/*) : (*/}
-          {/*    <>*/}
-          {/*              <span title="Inferencer failed to render this field. (Cannot find key)">*/}
-          {/*                  Cannot Render*/}
-          {/*              </span>*/}
-          {/*    </>*/}
-          {/*)}*/}
-          {/*<Title level={5}>{translate("fields.client")}</Title>*/}
-          {/*<TextField*/}
-          {/*    value={*/}
-          {/*        record?.client?.firstName + " " + record?.client?.lastName*/}
-          {/*    }*/}
-          {/*/>*/}
-          {/*<Title level={5}>*/}
-          {/*    {translate("reservations.fields.proprietaire")}*/}
-          {/*</Title>*/}
-          {/*<TextField*/}
-          {/*    value={*/}
-          {/*        record?.proprietaire?.firstName +*/}
-          {/*        " " +*/}
-          {/*        record?.proprietaire?.lastName*/}
-          {/*    }*/}
-          {/*/>*/}
           </Form>
       </Show>
   );

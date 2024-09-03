@@ -7,9 +7,12 @@ import {
   NumberField,
   DateField,
 } from "@refinedev/antd";
-import { Typography } from "antd";
+import {Form, Tag} from "antd";
+import {ColList} from "@/components/layout";
+import {defaultFormColListColProps, defaultFormColListRowProps} from "@/configs";
+import {FormItemWithButton} from "@/lib/ts-utilities";
+import {StatusValidationResidenceTag} from "@/pages/residences/components";
 
-const { Title } = Typography;
 
 export const ShowResidence = () => {
   const translate = useTranslate();
@@ -17,51 +20,52 @@ export const ShowResidence = () => {
   const { data, isLoading } = queryResult;
 
   const record = data?.data;
-
+  const formFieldData = [
+      {label:translate("fields.id"), content: record?.id},
+      {label:translate("fields.nom"), content: record?.nom},
+      {label:translate("residences.fields.type_residence"), content: record?.typeResidence},
+      {label:translate("fields.description"), content: record?.description},
+      {label:translate("fields.adresse"), content: record?.adresse},
+      {label:translate("fields.residence_disponible"), content: record?.residenceDisponible},
+      {label:translate("residences.status_validation.rejete"), content: record?.statusValidation},
+      {label:translate("fields.prix_reservation"), content: record?.prixReservation},
+      {label:translate("residences.fields.nombre_max_occupants"), content: record?.nombreMaxOccupants},
+      {label:translate("residences.fields.animaux_autorises"), content: record?.animauxAutorises},
+      {label:translate("residences.fields.fetes_autorises"), content: record?.fetesAutorises},
+      {label:translate("fields.created_at"), content: record?.createAt},
+      {label:translate("fields.updated_at"), content: record?.updateAt},
+  ]
   return (
       <Show isLoading={isLoading}>
-        <Title level={5}>{translate("residences.fields.id")}</Title>
-        <TextField value={record?.id} />
-        <Title level={5}>{translate("residences.fields.nom")}</Title>
-        <TextField value={record?.nom} />
-        <Title level={5}>
-          {translate("residences.fields.typeResidence")}
-        </Title>
-        <TextField value={record?.typeResidence} />
-        <Title level={5}>
-          {translate("residences.fields.description")}
-        </Title>
-        <TextField value={record?.description} />
-        <Title level={5}>{translate("residences.fields.adresse")}</Title>
-        <TextField value={record?.adresse} />
-        <Title level={5}>
-          {translate("residences.fields.residenceDisponible")}
-        </Title>
-        <BooleanField value={record?.residenceDisponible} />
-        <Title level={5}>
-          {translate("residences.fields.statusValidation")}
-        </Title>
-        <TextField value={record?.statusValidation} />
-        <Title level={5}>
-          {translate("residences.fields.prixReservation")}
-        </Title>
-        <NumberField value={record?.prixReservation ?? ""} />
-        <Title level={5}>
-          {translate("residences.fields.nombreMaxOccupants")}
-        </Title>
-        <NumberField value={record?.nombreMaxOccupants ?? ""} />
-        <Title level={5}>
-          {translate("residences.fields.animauxAutorises")}
-        </Title>
-        <BooleanField value={record?.animauxAutorises} />
-        <Title level={5}>
-          {translate("residences.fields.fetesAutorises")}
-        </Title>
-        <BooleanField value={record?.fetesAutorises} />
-        <Title level={5}>{translate("residences.fields.createdAt")}</Title>
-        <DateField value={record?.createdAt} />
-        <Title level={5}>{translate("residences.fields.updatedAt")}</Title>
-        <DateField value={record?.updatedAt} />
+          <Form
+              labelCol={{span: 200}}
+              wrapperCol={{span: 130}}
+              layout="vertical"
+              style={{
+                  maxWidth: 1000,
+                  fontWeight: 700,
+              }}
+
+          >
+              <ColList rowProps={defaultFormColListRowProps} colProps={defaultFormColListColProps}>
+                  {formFieldData.map((data, index) =>(
+                      data.content === record?.statusValidation ?
+
+                          <Form.Item label={data.label}>
+                              <Tag color="warning" style={{width: 300, height: 30 , display: "flex", alignItems: "center", justifyContent: "center"}}>{data?.content}</Tag>
+                          </Form.Item>
+
+                                        :
+                              <FormItemWithButton
+                                  key={index}
+                                  label={data.label}
+                                  content={data.content}
+                                  isLoading={isLoading}
+                              />
+
+                  ))}
+              </ColList>
+          </Form>
       </Show>
   );
 };
