@@ -48,7 +48,7 @@ function App() {
                                         name: "residences",
                                         list: "/residences",
                                         // create: "/residences/create",
-                                        // edit: "/residences/edit/:id",
+                                        edit: "/residences/edit/:id",
                                         show: "/residences/show/:id",
                                         meta: {
                                             canDelete: true,

@@ -3,7 +3,7 @@ import {Authenticated} from "@refinedev/core";
 import {CatchAllNavigate, NavigateToResource} from "@refinedev/react-router-v6";
 import {ErrorComponent, ThemedLayoutV2, ThemedSiderV2, ThemedTitleV2} from "@refinedev/antd";
 import {AppIcon, Header} from "@/components";
-import {ListResidences, ShowResidence} from "@/pages/residences";
+import {EditResidence, ListResidences, ShowResidence} from "@/pages/residences";
 import { EditReservation, ListReservations, ShowReservation} from "@/pages/reservations";
 import {EditConfig} from "@/pages/configs/edit-config";
 import {Login} from "@/pages/auth";
@@ -42,6 +42,7 @@ export function AppRoutes(){
                 <Route path={"/residences"}>
                     <Route index element={<ListResidences/>}/>
                     <Route path="en-validation" element={<ListResidencesEnValidation/>}/>
+                    <Route path="edit/:id" element={<EditResidence/>}/>
                     <Route path="show/:id" element={<ShowResidence/>}/>
                 </Route>
                 <Route path={"/reservations"}>
