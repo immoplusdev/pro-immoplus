@@ -2,16 +2,12 @@ import React, {useState} from "react";
 import { useShow, useTranslate, useOne } from "@refinedev/core";
 import {
     Show,
-    TagField,
-    TextField,
-    BooleanField,
-    NumberField,
-    DateField, List, useTable,
+    useTable,
 } from "@refinedev/antd";
 import {Button, Form, Input, Typography} from "antd";
 import {defaultFormColListColProps, defaultFormColListRowProps} from "@/configs";
 import {ColList} from "@/components/layout";
-import {FormItemWithButton} from "@/lib/ts-utilities";
+import {ReadOnlyFormField} from "@/lib/ts-utilities";
 
 const { Title } = Typography;
 
@@ -61,7 +57,7 @@ export const ShowReservation = () => {
               <ColList rowProps={defaultFormColListRowProps} colProps={defaultFormColListColProps}>
 
                   {formFieldData.map((data, index) =>(
-                      <FormItemWithButton key={index} label={data.label} content={data.content} isLoading={data.label=== translate("residences.fields.residence_id") && isLoading}/>
+                      <ReadOnlyFormField key={index} label={data.label} content={data.content} isLoading={data.label=== translate("residences.fields.residence_id") && isLoading}/>
                   ))}
 
               </ColList>

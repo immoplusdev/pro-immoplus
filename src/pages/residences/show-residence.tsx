@@ -10,7 +10,7 @@ import {
 import {Form, Tag} from "antd";
 import {ColList} from "@/components/layout";
 import {defaultFormColListColProps, defaultFormColListRowProps} from "@/configs";
-import {FormItemWithButton} from "@/lib/ts-utilities";
+import {ReadOnlyFormField} from "@/lib/ts-utilities";
 import {StatusValidationResidenceTag} from "@/pages/residences/components";
 
 
@@ -43,7 +43,7 @@ export const ShowResidence = () => {
               layout="vertical"
               style={{
                   maxWidth: 1000,
-                  fontWeight: 700,
+                  // fontWeight: 700,
               }}
 
           >
@@ -56,7 +56,7 @@ export const ShowResidence = () => {
                           </Form.Item>
 
                                         :
-                              <FormItemWithButton
+                              <ReadOnlyFormField
                                   key={index}
                                   label={data.label}
                                   content={data.content}

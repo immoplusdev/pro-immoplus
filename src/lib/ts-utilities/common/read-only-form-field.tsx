@@ -8,7 +8,7 @@ type propsType = {
     isLoading: boolean
 
 }
-export const FormItemWithButton = ({label, content, isLoading}: propsType) => {
+export const ReadOnlyFormField = ({label, content, isLoading}: propsType) => {
     const translate = useTranslate();
     return(
     <Form.Item
@@ -16,7 +16,6 @@ export const FormItemWithButton = ({label, content, isLoading}: propsType) => {
         <Button style={{width: 300, display: "flex", justifyContent: "flex-start"}}>
             {isLoading ? <>Loading...</> : content}
         </Button>
-
     </Form.Item>
     )
 }

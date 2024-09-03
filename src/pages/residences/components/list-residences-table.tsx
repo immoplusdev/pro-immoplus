@@ -8,6 +8,9 @@ import {BaseRecord, useTranslate} from "@refinedev/core";
 import React from "react";
 import {type CrudFilter} from "@refinedev/core/src/contexts/data/types";
 import {TypeResidenceTag} from "@/pages/residences/components/type-residence-tag";
+import {Link} from "react-router-dom";
+import Icon from "antd/es/icon";
+import {EditFilled, EditOutlined, EyeOutlined} from "@ant-design/icons";
 
 type Props = {
     filters?: {
@@ -38,18 +41,20 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
         <List
             title={translate("pages.residence.residences")}
             headerButtons={[
+                <Link to="/residences">
                 <Button
-                    href="/residences"
                     type={activeMenu == "all_e" ? "primary" : "default"}
                 >
                     {translate("tags.all_e")}
-                </Button>,
-                <Button
-                    href="/residences/en-validation"
-                    type={activeMenu == "en_validation" ? "primary" : "default"}
-                >
-                    {translate("tags.en_validation")}
                 </Button>
+                </Link>,
+                <Link to="/residences/en-validation">
+                    <Button
+                        type={activeMenu == "en_validation" ? "primary" : "default"}
+                    >
+                        {translate("tags.en_validation")}
+                    </Button>
+                </Link>
             ]}
         >
             <Table {...tableProps} rowKey="id">
@@ -116,16 +121,18 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                     dataIndex="actions"
                     render={(_, record: BaseRecord) => (
                         <Space>
-                            <EditButton
-                                hideText
-                                size="small"
-                                recordItemId={record.id}
-                            />
-                            <ShowButton
-                                hideText
-                                size="small"
-                                recordItemId={record.id}
-                            />
+                            <Link to={`/residences/edit/${record.id}`}>
+                                <Button
+                                    size="small"
+                                    icon={<EditOutlined/>}
+
+                                />
+                            </Link>
+                            <Link to={`/residences/show/${record.id}`}>
+                                <Button
+                                    size="small"
+                                    icon={<EyeOutlined/>}/>
+                            </Link>
                             <DeleteButton
                                 hideText
                                 size="small"

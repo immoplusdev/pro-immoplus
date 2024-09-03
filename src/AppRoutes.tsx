@@ -8,7 +8,7 @@ import { EditReservation, ListReservations, ShowReservation} from "@/pages/reser
 import {EditConfig} from "@/pages/configs/edit-config";
 import {Login} from "@/pages/auth";
 import {ForgotPassword} from "@/pages/forgotPassword";
-import {ListResidencesEnValidation} from "@/pages/residences/list-residences-en-validation";
+import {ListResidencesEnValidation} from "./pages/residences/list-residences-en-validation";
 
 export function AppRoutes(){
     return (
