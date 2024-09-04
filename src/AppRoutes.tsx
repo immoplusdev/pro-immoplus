@@ -9,6 +9,12 @@ import {EditConfig} from "@/pages/configs/edit-config";
 import {Login} from "@/pages/auth";
 import {ForgotPassword} from "@/pages/forgotPassword";
 import {ListResidencesEnValidation} from "./pages/residences/list-residences-en-validation";
+import {
+    CreateBienImmobilier,
+    EditBienImmobilier,
+    ListBienImmobiliers,
+    ShowBienImmobilier
+} from "@/pages/bienimmobiliers";
 
 export function AppRoutes(){
     return (
@@ -50,6 +56,12 @@ export function AppRoutes(){
                     {/*<Route path="create" element={<CreateReservation/>}/>*/}
                     <Route path="edit/:id" element={<EditReservation/>}/>
                     <Route path="show/:id" element={<ShowReservation/>}/>
+                </Route>
+                <Route path={"/biens-immobiliers"}>
+                    <Route index element={<ListBienImmobiliers/>}/>
+                    <Route path="create" element={<CreateBienImmobilier/>}/>
+                    <Route path="edit/:id" element={<EditBienImmobilier/>}/>
+                    <Route path="show/:id" element={<ShowBienImmobilier/>}/>
                 </Route>
                 <Route path={"/configs"}>
                     <Route index element={<EditConfig/>}/>

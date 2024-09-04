@@ -20,7 +20,7 @@ export const ShowResidence = () => {
   const { data, isLoading } = queryResult;
 
   const record = data?.data;
-  const formFieldData = [
+  const formPropName = [
       {label:translate("fields.id"), content: record?.id},
       {label:translate("fields.nom"), content: record?.nom},
       {label:translate("residences.fields.type_residence"), content: record?.typeResidence},
@@ -48,7 +48,7 @@ export const ShowResidence = () => {
 
           >
               <ColList rowProps={defaultFormColListRowProps} colProps={defaultFormColListColProps}>
-                  {formFieldData.map((data, index) =>(
+                  {formPropName.map((data, index) =>(
                       data.content === record?.statusValidation ?
 
                           <Form.Item label={data.label}>

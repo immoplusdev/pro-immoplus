@@ -63,6 +63,15 @@ function App() {
                                         meta: {
                                             canDelete: true,
                                         },
+                                    },{
+                                        name: "biens-immobiliers",
+                                        list: "/biens-immobiliers",
+                                        create: "/biens-immobiliers/create",
+                                        edit: "/biens-immobiliers/edit/:id",
+                                        show: "/biens-immobiliers/show/:id",
+                                        meta: {
+                                            canDelete: true,
+                                        },
                                     },
                                     {
                                         name: "configs",

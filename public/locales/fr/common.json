@@ -153,6 +153,18 @@
       "en_cours_validation_admin" : "En cours de validation admin"
     }
   },
+  "biens-immobiliers": {
+    "fields": {
+      "type_bien_immobilier": "Type de bien immobilier",
+      "tags": "Tag",
+      "prix": "Prix",
+      "featured": "Fonctionnalité",
+      "a_louer": "À louer",
+      "type_location": "Type de location",
+      "disponible": "Disponibilité"
+    }
+
+  },
   "dashboard": {
     "title": "Tableau de bord"
   },
