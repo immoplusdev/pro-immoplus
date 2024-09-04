@@ -66,7 +66,6 @@ function App() {
                                     },{
                                         name: "biens-immobiliers",
                                         list: "/biens-immobiliers",
-                                        create: "/biens-immobiliers/create",
                                         edit: "/biens-immobiliers/edit/:id",
                                         show: "/biens-immobiliers/show/:id",
                                         meta: {

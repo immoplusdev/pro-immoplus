@@ -2,11 +2,7 @@ import React from "react";
 import { useShow, useTranslate } from "@refinedev/core";
 import {
   Show,
-  TagField,
-  TextField,
-  NumberField,
   BooleanField,
-  DateField,
 } from "@refinedev/antd";
 import {Form, Tag, Typography} from "antd";
 import {defaultFormColListColProps, defaultFormColListRowProps} from "@/configs";
@@ -25,7 +21,6 @@ export const ShowBienImmobilier = () => {
     {label: translate("fields.name"), content: record?.nom},
     {label: translate("biens-immobiliers.fields.type_bien_immobilier"), content: record?.typeBienImmobilier},
     {label: translate("fields.description"), content: record?.description},
-    {label: translate("biens-immobiliers.fields.tags"), content: record?.tags},
     {label: translate("fields.images"), content: record?.images},
     {label: translate("fields.adresse"), content: record?.adresse},
     {label: translate("fields.status_validation"), content: record?.statusValidation},
@@ -38,7 +33,6 @@ export const ShowBienImmobilier = () => {
     {label: translate("residences.fields.fetes_autorises"), content: record?.fetesAutorises},
     {label: translate("fields.regles_supplementaires"), content: record?.reglesSupplementaires},
     {label: translate("fields.created_at"), content: record?.createdAt},
-    {label: translate("fields.updated_at"), content: record?.updatedAt},
   ]
 
   return (
@@ -85,7 +79,8 @@ export const ShowBienImmobilier = () => {
         {/*  {translate("biens-immobiliers.fields.images")}*/}
         {/*</Title>*/}
         {/*{record?.images?.map((item: any) => (*/}
-        {/*    <TagField value={item} key={item} />*/}
+        {/*    <TagField value={item} key={ite
+        m} />*/}
         {/*))}*/}
         {/*<Title level={5}>*/}
         {/*  {translate("biens-immobiliers.fields.bienImmobilierDisponible")}*/}

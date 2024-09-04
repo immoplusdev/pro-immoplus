@@ -10,11 +10,10 @@ import {Login} from "@/pages/auth";
 import {ForgotPassword} from "@/pages/forgotPassword";
 import {ListResidencesEnValidation} from "./pages/residences/list-residences-en-validation";
 import {
-    CreateBienImmobilier,
     EditBienImmobilier,
     ListBienImmobiliers,
     ShowBienImmobilier
-} from "@/pages/bienimmobiliers";
+} from "@/pages/biens-immobiliers";
 
 export function AppRoutes(){
     return (
@@ -59,7 +58,6 @@ export function AppRoutes(){
                 </Route>
                 <Route path={"/biens-immobiliers"}>
                     <Route index element={<ListBienImmobiliers/>}/>
-                    <Route path="create" element={<CreateBienImmobilier/>}/>
                     <Route path="edit/:id" element={<EditBienImmobilier/>}/>
                     <Route path="show/:id" element={<ShowBienImmobilier/>}/>
                 </Route>

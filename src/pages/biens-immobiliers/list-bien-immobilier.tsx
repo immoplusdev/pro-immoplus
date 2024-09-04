@@ -10,7 +10,9 @@ import {
   BooleanField,
   DateField,
 } from "@refinedev/antd";
-import { Table, Space } from "antd";
+import {Table, Space, Tag} from "antd";
+import {StatusValidationResidence} from "@/core/domain/residences";
+import {StatusValidationResidenceTag} from "@/pages/residences/components";
 
 export const ListBienImmobiliers = () => {
   const translate = useTranslate();
@@ -30,23 +32,13 @@ export const ListBienImmobiliers = () => {
               title={translate(
                   "biens-immobiliers.fields.type_bien_immobilier",
               )}
+              render={(value: string) => <Tag>{value}</Tag>}
           />
           <Table.Column
               dataIndex="description"
               title={translate("fields.description")}
           />
 
-          <Table.Column
-              dataIndex="tags"
-              title={translate("biens-immobiliers.fields.tags")}
-              render={(value: any[]) => (
-                  <>
-                    {value?.map((item) => (
-                        <TagField value={item} key={item} />
-                    ))}
-                  </>
-              )}
-          />
           <Table.Column
               dataIndex="images"
               title={translate("fields.images")}
@@ -65,9 +57,9 @@ export const ListBienImmobiliers = () => {
 
           <Table.Column
               dataIndex="statusValidation"
-              title={translate(
-                  "fields.status_validation",
-              )}
+              title={translate("fields.status_validation")}
+              render={(value: StatusValidationResidence) => <StatusValidationResidenceTag
+                  statusValidation={value}/>}
           />
           <Table.Column
               dataIndex="prix"
@@ -124,12 +116,6 @@ export const ListBienImmobiliers = () => {
               title={translate("fields.created_at")}
               render={(value: any) => <DateField value={value} />}
           />
-          <Table.Column
-              dataIndex={["updatedAt"]}
-              title={translate("fields.updated_at")}
-              render={(value: any) => <DateField value={value} />}
-          />
-
           <Table.Column
               title={translate("table.actions")}
               dataIndex="actions"
