@@ -144,6 +144,13 @@
       "retrait_pro_effectue": "Retrait Pro Effectué",
       "status_facture": "Status facture",
       "proprietaire": "Proprietaire"
+    },
+    "status_reservation": {
+      "rejete": "Rejeté",
+      "valide": "Validé",
+      "en_cours": "En cours",
+      "en_cours_validation_user" : "En cours de validation utilisateur ",
+      "en_cours_validation_admin" : "En cours de validation admin"
     }
   },
   "dashboard": {

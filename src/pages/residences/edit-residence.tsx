@@ -1,10 +1,13 @@
 import React from "react";
 import { Edit, useForm } from "@refinedev/antd";
-import { Form, Input, Checkbox, DatePicker } from "antd";
+import {Form, Input, Checkbox, DatePicker, Dropdown, Button, MenuProps, Select} from "antd";
 import { useTranslate } from "@refinedev/core";
 import dayjs from "dayjs";
 import {defaultFormColListColProps, defaultFormColListRowProps} from "@/configs";
 import {ColList} from "@/components/layout";
+import {enumToList} from "@/lib/ts-utilities";
+import {StatusReservation} from "@/lib/ts-utilities/enums/status-reservation";
+import {typesResidence} from "@/core/domain/residences";
 
 export const EditResidence = () => {
   const translate = useTranslate();
@@ -103,7 +106,10 @@ export const EditResidence = () => {
                   },
                 ]}
             >
-              <Input/>
+                <Select options={enumToList(StatusReservation).map(item => ({
+                    value: item,
+                    label: <span>{translate(`reservations.status_reservation.${item}`)}</span>
+                }))}/>
             </Form.Item>
             <Form.Item
                 label={translate("fields.prix_reservation")}

@@ -1,3 +1,5 @@
+import {enumToList} from "@/lib/ts-utilities";
+
 export enum StatusReservation {
   Rejete = "rejete",
   Valide = "valide",
@@ -5,3 +7,4 @@ export enum StatusReservation {
   EnCoursValidationUser = "en_cours_validation_user",
   EnCoursValidationAdmin = "en_cours_validation_admin"
 }
+
