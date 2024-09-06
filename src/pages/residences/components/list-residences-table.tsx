@@ -9,7 +9,6 @@ import React from "react";
 import {type CrudFilter} from "@refinedev/core/src/contexts/data/types";
 import {TypeResidenceTag} from "@/pages/residences/components/type-residence-tag";
 import {Link} from "react-router-dom";
-import Icon from "antd/es/icon";
 import {EditFilled, EditOutlined, EyeOutlined} from "@ant-design/icons";
 
 type Props = {
@@ -62,15 +61,18 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                     dataIndex="miniatureId"
                     title={translate("fields.miniature")}
                     render={(value: string) => <Thumbnail src={getApiFileUrl(value)}/>}
+                    align="center"
                 />
                 <Table.Column
                     dataIndex="nom"
                     title={translate("fields.nom")}
+                    align="center"
                 />
                 <Table.Column
                     dataIndex="typeResidence"
                     title={translate("residences.fields.type_residence")}
                     render={(value: string)=> <TypeResidenceTag typeResidence={value}/>}
+                    align="center"
                 />
 
                 {/*<Table.Column*/}
@@ -83,6 +85,7 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                     dataIndex="prixReservation"
                     title={translate("fields.prix_reservation")}
                     render={(value: number) => <span>{formatAmount(value)}</span>}
+                    align="center"
                 />
                 {/*<Table.Column*/}
                 {/*    dataIndex="nombreMaxOccupants"*/}
@@ -104,6 +107,7 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                     title={translate("fields.status_validation")}
                     render={(value: StatusValidationResidence) => <StatusValidationResidenceTag
                         statusValidation={value}/>}
+                    align="center"
                 />
                 <Table.Column
                     dataIndex={["createdAt"]}
@@ -115,6 +119,7 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                             </div>
                         );
                     }}
+                    align="center"
                 />
                 <Table.Column
                     title={translate("table.actions")}

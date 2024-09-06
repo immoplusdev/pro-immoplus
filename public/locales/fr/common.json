@@ -165,6 +165,25 @@
     }
 
   },
+  "users": {
+    "fields": {
+      "firstname": "Prénom",
+      "lastname": "Nom de famille",
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "phone_number": "Numéro de téléphone",
+      "otp": "Opt",
+      "otp_expiration": "Date d'expiration otp",
+      "identity_verified": "Verification identité",
+      "email_verified": "E-mail verifié",
+      "phone_number_verified": "Numéro de téléphone verifié ",
+      "compte_pro_valide": "Compte pro valide",
+      "auth_login_attempts": "Tentatives d'authentification",
+      "status": "Status",
+      "role": "Role",
+      "users": "Utilisateurs"
+    }
+  },
   "dashboard": {
     "title": "Tableau de bord"
   },
@@ -256,7 +275,12 @@
     "all": "Tous",
     "maison": "maison",
     "villa": "villa",
-    "appartement": "appartement"
+    "appartement": "appartement",
+    "pro_entreprise": "Pro entreprise",
+    "pro_particulier": "Pro particulier",
+    "utilisateurs_valides": "Utilisateurs validés",
+    "utilisateurs_non_valides": "Utilisateurs non validés"
+
   },
   "files": {
     "file_upload": {

@@ -11,7 +11,7 @@ export const ListResidencesEnValidation = () => {
                                     {
                                         field: "statusValidation",
                                         operator: "eq",
-                                        value: StatusValidationResidence.EnAttenteValidation.toString(),
+                                        value: StatusValidationResidence.EnAttenteValidation
                                     },
                                 ]
                             }}

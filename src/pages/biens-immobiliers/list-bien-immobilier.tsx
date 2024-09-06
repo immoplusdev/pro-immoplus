@@ -26,6 +26,7 @@ export const ListBienImmobiliers = () => {
           <Table.Column
               dataIndex="nom"
               title={translate("fields.nom")}
+              align="center"
           />
           <Table.Column
               dataIndex="typeBienImmobilier"
@@ -33,10 +34,12 @@ export const ListBienImmobiliers = () => {
                   "biens-immobiliers.fields.type_bien_immobilier",
               )}
               render={(value: string) => <Tag>{value}</Tag>}
+              align="center"
           />
           <Table.Column
               dataIndex="description"
               title={translate("fields.description")}
+              align="center"
           />
 
           <Table.Column
@@ -53,16 +56,19 @@ export const ListBienImmobiliers = () => {
           <Table.Column
               dataIndex="adresse"
               title={translate("fields.adresse")}
+              align="center"
           />
 
           <Table.Column
               dataIndex="statusValidation"
               title={translate("fields.status_validation")}
+              align="center"
               render={(value: StatusValidationResidence) => <StatusValidationResidenceTag
                   statusValidation={value}/>}
           />
           <Table.Column
               dataIndex="prix"
+              align="center"
               title={translate("biens-immobiliers.fields.prix")}
           />
 
@@ -70,15 +76,18 @@ export const ListBienImmobiliers = () => {
               dataIndex={["featured"]}
               title={translate("biens-immobiliers.fields.featured")}
               render={(value: any) => <BooleanField value={value} />}
+              align="center"
           />
           <Table.Column
               dataIndex={["aLouer"]}
               title={translate("biens-immobiliers.fields.a_louer")}
               render={(value: any) => <BooleanField value={value} />}
+              align="center"
           />
           <Table.Column
               dataIndex="typeLocation"
               title={translate("biens-immobiliers.fields.type_location")}
+              align="center"
           />
           <Table.Column
               dataIndex={["bienImmobilierDisponible"]}
@@ -86,12 +95,14 @@ export const ListBienImmobiliers = () => {
                   "biens-immobiliers.fields.disponible",
               )}
               render={(value: any) => <BooleanField value={value} />}
+              align="center"
           />
           <Table.Column
               dataIndex="nombreMaxOccupants"
               title={translate(
                   "residences.fields.nombre_max_occupants",
               )}
+              align="center"
           />
           <Table.Column
               dataIndex={["animauxAutorises"]}
@@ -99,22 +110,26 @@ export const ListBienImmobiliers = () => {
                   "residences.fields.animaux_autorises",
               )}
               render={(value: any) => <BooleanField value={value} />}
+              align="center"
           />
           <Table.Column
               dataIndex={["fetesAutorises"]}
               title={translate("residences.fields.fetes_autorises")}
               render={(value: any) => <BooleanField value={value} />}
+              align="center"
           />
           <Table.Column
               dataIndex="reglesSupplementaires"
               title={translate(
                   "fields.regles_supplementaires",
               )}
+              align="center"
           />
           <Table.Column
               dataIndex={["createdAt"]}
               title={translate("fields.created_at")}
               render={(value: any) => <DateField value={value} />}
+              align="center"
           />
           <Table.Column
               title={translate("table.actions")}

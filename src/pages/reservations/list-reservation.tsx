@@ -39,41 +39,49 @@ export const ListReservations = () => {
                         </div>
                     );
                   }}
+                  align="center"
               />
               <Table.Column
                   dataIndex="statusReservation"
                   title={translate("reservations.fields.status_reservation")}
+                  align="center"
               />
               <Table.Column
                   dataIndex="statusFacture"
                   title={translate("reservations.fields.status_facture")}
                   render={(value: StatusValidationReservation) => <StatusValidationReservationTag
                       statusValidation={value}/>}
+                  align="center"
               />
               <Table.Column
                   dataIndex={["retraitProEffectue"]}
                   title={translate("reservations.fields.retrait_pro_effectue")}
                   render={(value: any) => <BooleanField value={value} />}
+                  align="center"
               />
               <Table.Column
                   dataIndex="montantTotalReservation"
                   title={translate(
                       "reservations.fields.montant_total_reservation",
                   )}
+                  align="center"
               />
               <Table.Column
                   dataIndex="montantReservationSansCommission"
                   title={translate(
                       "reservations.fields.montant_reservation_sans_commission",
                   )}
+                  align="center"
               />
               <Table.Column
                   dataIndex="notes"
                   title={translate("fields.notes")}
+                  align="center"
               />
               <Table.Column
                   dataIndex="clientPhoneNumber"
                   title={translate("fields.client_phone_number")}
+                  align="center"
               />
               <Table.Column
                   title={translate("table.actions")}
