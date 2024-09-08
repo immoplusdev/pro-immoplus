@@ -22,7 +22,7 @@ type Props = {
         permanent?: CrudFilter[];
         mode?: "server" | "off";
     };
-    activeMenu?: "all_e" | "pro_entreprise" | "pro_particulier" | "utilisateurs_valides" | "utilisateurs_non_valides"
+    activeMenu?: "all_e" | "pro_entreprise" | "pro_particulier" | "utilisateurs_valides" | "utilisateurs_non_valides" | "customer"
 }
 export const ListUsersTable = ({filters, activeMenu}: Props) => {
     const translate = useTranslate();
@@ -74,6 +74,13 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
                           type={activeMenu == "utilisateurs_non_valides" ? "primary" : "default"}
                       >
                           {translate("tags.utilisateurs_non_valides")}
+                      </Button>
+                  </Link>,
+                  <Link to="/users/customer">
+                      <Button
+                          type={activeMenu == "customer" ? "primary" : "default"}
+                      >
+                          {translate("tags.customer")}
                       </Button>
                   </Link>
               ]}
@@ -127,6 +134,7 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
                 <Table.Column
                     title={translate("table.actions")}
                     dataIndex="actions"
+                    align="center"
                     render={(_, record: BaseRecord) => (
                         <Space>
                             <Link to={`/users/edit/${record.id}`}>

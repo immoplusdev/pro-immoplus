@@ -86,6 +86,7 @@ export const ListReservations = () => {
               <Table.Column
                   title={translate("table.actions")}
                   dataIndex="actions"
+                  align="center"
                   render={(_, record: BaseRecord) => (
                       <Space>
                         <EditButton

@@ -181,7 +181,8 @@
       "auth_login_attempts": "Tentatives d'authentification",
       "status": "Status",
       "role": "Role",
-      "users": "Utilisateurs"
+      "users": "Utilisateurs",
+      "customer": "Client"
     }
   },
   "dashboard": {
@@ -279,7 +280,8 @@
     "pro_entreprise": "Pro entreprise",
     "pro_particulier": "Pro particulier",
     "utilisateurs_valides": "Utilisateurs validés",
-    "utilisateurs_non_valides": "Utilisateurs non validés"
+    "utilisateurs_non_valides": "Utilisateurs non validés",
+    "customer": "Client"
 
   },
   "files": {

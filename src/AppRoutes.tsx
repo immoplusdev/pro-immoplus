@@ -19,6 +19,7 @@ import {ListUsersProEntreprise} from "@/pages/users/list-users-pro-entreprise";
 import {ListUsersProParticulier} from "@/pages/users/list-users-pro-particulier";
 import {ListUsersValides} from "@/pages/users/list-users-valides";
 import {ListUsersNonValides} from "@/pages/users/list-users-non-valides";
+import {ListUsersCustomers} from "@/pages/users/list-users-customers";
 
 export function AppRoutes(){
     return (
@@ -72,6 +73,7 @@ export function AppRoutes(){
                     <Route path="pro-particulier" element={<ListUsersProParticulier/>}/>
                     <Route path="utilisateurs-valides" element={<ListUsersValides/>}/>
                     <Route path="utilisateurs-non-valides" element={<ListUsersNonValides/>}/>
+                    <Route path="customer" element={<ListUsersCustomers/>}/>
                     <Route path="create" element={<CreateUser/>}/>
                     <Route path="edit/:id" element={<EditUser/>}/>
                     <Route path="show/:id" element={<ShowUser/>}/>

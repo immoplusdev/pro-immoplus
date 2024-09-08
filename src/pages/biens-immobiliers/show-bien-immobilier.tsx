@@ -2,12 +2,13 @@ import React from "react";
 import { useShow, useTranslate } from "@refinedev/core";
 import {
   Show,
-  BooleanField,
+  BooleanField, ImageField,
 } from "@refinedev/antd";
-import {Form, Tag, Typography} from "antd";
+import {Form, Image, Tag, Typography} from "antd";
 import {defaultFormColListColProps, defaultFormColListRowProps} from "@/configs";
 import {ColList} from "@/components/layout";
 import {ReadOnlyFormField} from "@/lib/ts-utilities";
+import {getImageUrl} from "@/lib/helpers";
 
 const { Title } = Typography;
 
@@ -60,6 +61,24 @@ export const ShowBienImmobilier = () => {
                             <BooleanField value={record?.fetesAutorises } />
                           </Form.Item>
                       )
+                    : data.content === record?.images ?
+                          (
+                              <>
+                                {record?.images.map((imageUrl: string, index: number) => (
+                                    console.log(getImageUrl(imageUrl)),
+
+                                    <>
+                                      <span>{data?.label}</span>
+                                      <Image
+                                          key={index}
+                                          src={getImageUrl(imageUrl)} // Use the image URL here
+                                          alt={`Image ${index}`}
+                                          width={200}
+                                      />
+                                    </>
+                                ))}
+                              </>
+                          )
                       : data.content === record?.featured ?
                           (
                               <Form.Item label={data.label}>

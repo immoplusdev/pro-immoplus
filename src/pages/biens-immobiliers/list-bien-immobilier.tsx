@@ -1,18 +1,19 @@
 import React from "react";
 import { BaseRecord, useTranslate } from "@refinedev/core";
 import {
-  useTable,
-  List,
-  EditButton,
-  ShowButton,
-  DeleteButton,
-  TagField,
-  BooleanField,
-  DateField,
+    useTable,
+    List,
+    EditButton,
+    ShowButton,
+    DeleteButton,
+    TagField,
+    BooleanField,
+    DateField, ImageField,
 } from "@refinedev/antd";
-import {Table, Space, Tag} from "antd";
+import {Table, Space, Tag, Image} from "antd";
 import {StatusValidationResidence} from "@/core/domain/residences";
 import {StatusValidationResidenceTag} from "@/pages/residences/components";
+import {getImageUrl} from "@/lib/helpers";
 
 export const ListBienImmobiliers = () => {
   const translate = useTranslate();
@@ -45,10 +46,11 @@ export const ListBienImmobiliers = () => {
           <Table.Column
               dataIndex="images"
               title={translate("fields.images")}
+              align="center"
               render={(value: any[]) => (
                   <>
                     {value?.map((item) => (
-                        <TagField value={item} key={item} />
+                        <Image src={item}/>
                     ))}
                   </>
               )}
@@ -71,69 +73,37 @@ export const ListBienImmobiliers = () => {
               align="center"
               title={translate("biens-immobiliers.fields.prix")}
           />
+            <Table.Column
+                dataIndex="typeLocation"
+                title={translate("biens-immobiliers.fields.type_location")}
+                align="center"
+            />
+            <Table.Column
+                dataIndex="nombreMaxOccupants"
+                title={translate(
+                    "residences.fields.nombre_max_occupants",
+                )}
+                align="center"
+            />
 
-          <Table.Column
-              dataIndex={["featured"]}
-              title={translate("biens-immobiliers.fields.featured")}
-              render={(value: any) => <BooleanField value={value} />}
-              align="center"
-          />
-          <Table.Column
-              dataIndex={["aLouer"]}
-              title={translate("biens-immobiliers.fields.a_louer")}
-              render={(value: any) => <BooleanField value={value} />}
-              align="center"
-          />
-          <Table.Column
-              dataIndex="typeLocation"
-              title={translate("biens-immobiliers.fields.type_location")}
-              align="center"
-          />
-          <Table.Column
-              dataIndex={["bienImmobilierDisponible"]}
-              title={translate(
-                  "biens-immobiliers.fields.disponible",
-              )}
-              render={(value: any) => <BooleanField value={value} />}
-              align="center"
-          />
-          <Table.Column
-              dataIndex="nombreMaxOccupants"
-              title={translate(
-                  "residences.fields.nombre_max_occupants",
-              )}
-              align="center"
-          />
-          <Table.Column
-              dataIndex={["animauxAutorises"]}
-              title={translate(
-                  "residences.fields.animaux_autorises",
-              )}
-              render={(value: any) => <BooleanField value={value} />}
-              align="center"
-          />
-          <Table.Column
-              dataIndex={["fetesAutorises"]}
-              title={translate("residences.fields.fetes_autorises")}
-              render={(value: any) => <BooleanField value={value} />}
-              align="center"
-          />
-          <Table.Column
-              dataIndex="reglesSupplementaires"
-              title={translate(
-                  "fields.regles_supplementaires",
-              )}
-              align="center"
-          />
-          <Table.Column
-              dataIndex={["createdAt"]}
-              title={translate("fields.created_at")}
-              render={(value: any) => <DateField value={value} />}
-              align="center"
-          />
+            <Table.Column
+                dataIndex={["aLouer"]}
+                title={translate("biens-immobiliers.fields.a_louer")}
+                render={(value: any) => <BooleanField value={value} />}
+                align="center"
+            />
+            <Table.Column
+                dataIndex={["bienImmobilierDisponible"]}
+                title={translate(
+                    "biens-immobiliers.fields.disponible",
+                )}
+                render={(value: any) => <BooleanField value={value} />}
+                align="center"
+            />
           <Table.Column
               title={translate("table.actions")}
               dataIndex="actions"
+              align="center"
               render={(_, record: BaseRecord) => (
                   <Space>
                     <EditButton
