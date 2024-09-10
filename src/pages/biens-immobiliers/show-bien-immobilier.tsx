@@ -4,11 +4,13 @@ import {
   Show,
   BooleanField, ImageField,
 } from "@refinedev/antd";
-import {Form, Image, Tag, Typography} from "antd";
+import {Form, Image, Tag, Typography, Upload} from "antd";
 import {defaultFormColListColProps, defaultFormColListRowProps} from "@/configs";
 import {ColList} from "@/components/layout";
 import {ReadOnlyFormField} from "@/lib/ts-utilities";
 import {getImageUrl} from "@/lib/helpers";
+import {defaultFileUploadProps, getFileIdFromEvent} from "@/components/form";
+import {PlusOutlined} from "@ant-design/icons";
 
 const { Title } = Typography;
 
@@ -37,60 +39,76 @@ export const ShowBienImmobilier = () => {
   ]
 
   return (
-      <Show isLoading={isLoading}>
-        <Form
-            labelCol={{span: 200}}
-            wrapperCol={{span: 130}}
-            layout="vertical"
-            style={{
-              maxWidth: 1000,
-              // fontWeight: 700,
-            }}
+      <Show isLoading={isLoading} >
+          <Form
+              labelCol={{span: 200}}
+              wrapperCol={{span: 130}}
+              layout="vertical"
+              style={{
+                  alignContent: "center"
+              }}
 
-        >
-          <ColList rowProps={defaultFormColListRowProps} colProps={defaultFormColListColProps}>
-            {formPropName.map((data, index) =>(
-              data.content === record?.statusValidation
-                  ? (
-                      <Form.Item label={data.label}>
-                        <Tag color="warning" style={{width: 300, height: 30 , display: "flex", alignItems: "center", justifyContent: "center"}}>{data?.content}</Tag>
-                      </Form.Item>
-                  ) : data.content === record?.fetesAutorises ?
-                      (
-                          <Form.Item label={data.label}>
-                            <BooleanField value={record?.fetesAutorises } />
-                          </Form.Item>
-                      )
-                    : data.content === record?.images ?
-                          (
-                              <>
-                                {record?.images.map((imageUrl: string, index: number) => (
-                                    console.log(getImageUrl(imageUrl)),
+          >
 
-                                    <>
-                                      <span>{data?.label}</span>
-                                      <Image
-                                          key={index}
-                                          src={getImageUrl(imageUrl)} // Use the image URL here
-                                          alt={`Image ${index}`}
-                                          width={200}
-                                      />
-                                    </>
-                                ))}
-                              </>
-                          )
-                      : data.content === record?.featured ?
-                          (
-                              <Form.Item label={data.label}>
-                                <BooleanField value={record?.bienImmobilierDisponible} />
-                              </Form.Item>
-                          ) :
-                    <ReadOnlyFormField
-                        key={index}
-                        label={data.label}
-                        content={data.content}
-                        isLoading={isLoading}
-                    />
+              <Image.PreviewGroup
+                  items={record?.images?.map((data: string) => getImageUrl(data))}
+              >
+                  <Image
+                      preview={{
+                          destroyOnClose: true,
+                      }}
+                      src={getImageUrl(record?.images[0])} width={980} style={{marginBottom: 30}}/>
+
+              </Image.PreviewGroup>
+
+
+              <ColList rowProps={defaultFormColListRowProps} colProps={defaultFormColListColProps}>
+                  {formPropName.map((data, index) => (
+                    data.content === record?.statusValidation
+                        ? (
+                        <Form.Item label={data.label}>
+                          <Tag color="warning" style={{
+                            width: 300,
+                            height: 30,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center"
+                          }}>{data?.content}</Tag>
+                        </Form.Item>
+                    ) : data.content === record?.fetesAutorises ?
+                        (
+                            <Form.Item label={data.label}>
+                              <BooleanField value={record?.fetesAutorises}/>
+                            </Form.Item>
+                        )
+                        : data.content === record?.images ?
+                            (
+                                <>
+                                  {record?.images.map((imageUrl: string, index: number) => (
+
+                                      <Form.Item label={data.label}>
+                                        <Image
+                                            key={index}
+                                            src={getImageUrl(imageUrl)} // Use the image URL here
+                                            alt={`Image ${index}`}
+                                            width={200}
+                                        />
+                                      </Form.Item>
+                                  ))}
+                                </>
+                            )
+                            : data.content === record?.featured ?
+                                (
+                                    <Form.Item label={data.label}>
+                                      <BooleanField value={record?.bienImmobilierDisponible}/>
+                                    </Form.Item>
+                                ) :
+                                <ReadOnlyFormField
+                                    key={index}
+                                    label={data.label}
+                                    content={data.content}
+                                    isLoading={isLoading}
+                                />
             ))}
           </ColList>
         </Form>

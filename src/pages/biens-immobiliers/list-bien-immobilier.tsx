@@ -50,7 +50,7 @@ export const ListBienImmobiliers = () => {
               render={(value: any[]) => (
                   <>
                     {value?.map((item) => (
-                        <Image src={item}/>
+                        <Image src={getImageUrl(item)} width={70}/>
                     ))}
                   </>
               )}
