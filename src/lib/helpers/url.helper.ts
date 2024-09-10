@@ -11,7 +11,7 @@ export function getApiFileUrl(imageId: string) {
 
 export function serializeWhereParameterToQueryFiltersString(where: Record<string, any>[]): string {
 
-    const query = where.map(filter => {
+     return where.map(filter => {
         const filterParams = filter._field;
         const queryParams: Record<string, any> = {};
         if(filterParams.field) queryParams['_field'] = filterParams.field;
@@ -19,8 +19,4 @@ export function serializeWhereParameterToQueryFiltersString(where: Record<string
         if(filterParams.value) queryParams['_val'] = filterParams.value;
         return `_where=${JSON.stringify(queryParams)}`;
     }).join('&');
-
-    console.log(query);
-
-    return query;
 }

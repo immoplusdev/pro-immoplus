@@ -4,6 +4,7 @@ import {API_URL} from "@/configs";
 import {axiosInstance} from "@/lib/providers/utils";
 import {getValueFromEvent} from "@refinedev/antd/src/definitions/upload";
 import type {UploadChangeParam} from "antd/lib/upload/interface";
+import {getImageUrl} from "@/lib/helpers";
 
 export const onPreview = async (file: UploadFile) => {
     let src = file.url as string;
@@ -63,3 +64,19 @@ export function getFileIdFromEvent(event: UploadChangeParam): string | null {
     const ids = fileList.map(file => file?.response?.data?.id);
     return ids[ids.length - 1] || null;
 }
+
+export function ImagesToUploadFilesFormat(miniatureId?: string, images?: string[]): UploadFile[] {
+    return [miniatureId].concat(images ? images : []).map(image => ({
+        uid: image as string,
+        name: image as string,
+        url: getImageUrl(image as string),
+    }))
+}
+
+export const getBase64 = (file: FileType): Promise<string> =>
+    new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = (error) => reject(error);
+    });
