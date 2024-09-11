@@ -1,0 +1,21 @@
+import {ListResidenceTable} from "@/pages/residences/components";
+import {StatusValidationResidence} from "@/core/domain/residences";
+import React from "react";
+
+export const ListResidencesValides = () => {
+    return (
+        <ListResidenceTable activeMenu={"validé"}
+                            filters={{
+                                permanent: [
+                                    {
+                                        field: "statusValidation",
+                                        operator: "eq",
+                                        value: StatusValidationResidence.Valide
+                                    },
+                                ]
+                            }}
+        />
+    );
+
+
+}

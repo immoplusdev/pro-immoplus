@@ -20,6 +20,7 @@ import {ListUsersProParticulier} from "@/pages/users/list-users-pro-particulier"
 import {ListUsersValides} from "@/pages/users/list-users-valides";
 import {ListUsersNonValides} from "@/pages/users/list-users-non-valides";
 import {ListUsersCustomers} from "@/pages/users/list-users-customers";
+import {ListResidencesValides} from "@/pages/residences/list-residences-valides";
 
 export function AppRoutes(){
     return (
@@ -52,9 +53,10 @@ export function AppRoutes(){
                 />
                 <Route path={"/residences"}>
                     <Route index element={<ListResidences/>}/>
-                    <Route path="en-validation" element={<ListResidencesEnValidation/>}/>
                     <Route path="edit/:id" element={<EditResidence/>}/>
                     <Route path="show/:id" element={<ShowResidence/>}/>
+                    <Route path="en-validation" element={<ListResidencesEnValidation/>}/>
+                    <Route path="validé" element={<ListResidencesValides/>}/>
                 </Route>
                 <Route path={"/reservations"}>
                     <Route index element={<ListReservations/>}/>

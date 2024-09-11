@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import { useShow, useTranslate, useOne } from "@refinedev/core";
 import {
+    BooleanField,
     Show,
     useTable,
 } from "@refinedev/antd";
@@ -56,9 +57,38 @@ export const ShowReservation = () => {
           >
               <ColList rowProps={defaultFormColListRowProps} colProps={defaultFormColListColProps}>
 
-                  {formFieldData.map((data, index) =>(
-                      <ReadOnlyFormField key={index} label={data.label} content={data.content} isLoading={data.label=== translate("residences.fields.residence_id") && isLoading}/>
-                  ))}
+                  <ReadOnlyFormField label={translate("fields.id")} content={record?.id} isLoading={isLoading} />
+
+                  <ReadOnlyFormField label={translate("reservations.fields.status_reservation")} content={record?.statusReservation} isLoading={isLoading} />
+
+                  <ReadOnlyFormField label={translate("reservations.fields.status_facture")} content={record?.statusFacture} isLoading={isLoading} />
+
+                  <>
+                      <Title level={5}>{translate("reservations.fields.retrait_pro_effectue")}</Title>
+                      <BooleanField value={record?.retraitProEffectue}/>
+                  </>
+
+                  <ReadOnlyFormField label={translate("reservations.fields.montant_total_reservation")} content={record?.montantTotalReservation} isLoading={isLoading} />
+
+                  <ReadOnlyFormField label={translate("reservations.fields.montant_reservation_sans_commission")} content={record?.montantReservationSansCommission} isLoading={isLoading} />
+
+                  <ReadOnlyFormField label={translate("fields.notes")} content={record?.notes} isLoading={isLoading} />
+
+                  <ReadOnlyFormField label={translate("fields.client_phone_number")} content={record?.clientPhoneNumber} isLoading={isLoading} />
+
+                  <ReadOnlyFormField label={translate("fields.created_at")} content={record?.createdAt} isLoading={isLoading} />
+
+                  <ReadOnlyFormField label={translate("fields.updated_at")} content={record?.updatedAt} isLoading={isLoading} />
+
+                  <ReadOnlyFormField
+                      label={translate("residences.fields.residence_id")}
+                      content={residenceIsLoading ? "Loading...": "Cannot Render"}
+                      isLoading={residenceIsLoading}
+                  />
+
+                  <ReadOnlyFormField label={translate("fields.client")} content={`${record?.client?.firstName} ${record?.client?.lastName}`} isLoading={isLoading} />
+
+                  <ReadOnlyFormField label={translate("reservations.fields.proprietaire")} content={`${record?.proprietaire?.firstName} ${record?.proprietaire?.lastName}`} isLoading={isLoading} />
 
               </ColList>
 

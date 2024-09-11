@@ -17,7 +17,7 @@ type Props = {
         permanent?: CrudFilter[];
         mode?: "server" | "off";
     };
-    activeMenu?: "all_e" | "en_validation"
+    activeMenu?: "all_e" | "en_validation" | "validé"
 }
 
 export function ListResidenceTable({filters, activeMenu}: Props) {
@@ -52,6 +52,13 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                         type={activeMenu == "en_validation" ? "primary" : "default"}
                     >
                         {translate("tags.en_validation")}
+                    </Button>
+                </Link>,
+                <Link to="/residences/validé">
+                    <Button
+                        type={activeMenu == "validé" ? "primary" : "default"}
+                    >
+                        {translate("residences.status_validation.valide")}
                     </Button>
                 </Link>
             ]}

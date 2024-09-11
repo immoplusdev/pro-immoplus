@@ -13,17 +13,30 @@ import {
 import {Table, Space, Tag, Image} from "antd";
 import {StatusValidationResidence} from "@/core/domain/residences";
 import {StatusValidationResidenceTag} from "@/pages/residences/components";
-import {getImageUrl} from "@/lib/helpers";
+import {getApiFileUrl, getImageUrl} from "@/lib/helpers";
+import {Thumbnail} from "@/components";
 
 export const ListBienImmobiliers = () => {
   const translate = useTranslate();
   const { tableProps } = useTable({
     syncWithLocation: true,
+      sorters: {
+          initial: [{
+              field: "createdAt",
+              order: "desc"
+          }]
+      },
   });
 
   return (
       <List>
         <Table {...tableProps} rowKey="id">
+            <Table.Column
+                dataIndex="images"
+                title={translate("fields.images")}
+                align="center"
+                render={(value: string) => <Thumbnail src={getApiFileUrl(value[0])}/>}
+            />
           <Table.Column
               dataIndex="nom"
               title={translate("fields.nom")}
@@ -41,19 +54,6 @@ export const ListBienImmobiliers = () => {
               dataIndex="description"
               title={translate("fields.description")}
               align="center"
-          />
-
-          <Table.Column
-              dataIndex="images"
-              title={translate("fields.images")}
-              align="center"
-              render={(value: any[]) => (
-                  <>
-                    {value?.map((item) => (
-                        <Image src={getImageUrl(item)} width={70}/>
-                    ))}
-                  </>
-              )}
           />
           <Table.Column
               dataIndex="adresse"

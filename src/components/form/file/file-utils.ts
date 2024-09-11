@@ -2,7 +2,6 @@ import type {UploadFile, UploadProps} from "antd";
 import {FileType} from "@/components/form/file";
 import {API_URL} from "@/configs";
 import {axiosInstance} from "@/lib/providers/utils";
-import {getValueFromEvent} from "@refinedev/antd/src/definitions/upload";
 import type {UploadChangeParam} from "antd/lib/upload/interface";
 import {getImageUrl} from "@/lib/helpers";
 
