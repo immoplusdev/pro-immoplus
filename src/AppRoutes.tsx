@@ -5,7 +5,6 @@ import {ErrorComponent, ThemedLayoutV2, ThemedSiderV2, ThemedTitleV2} from "@ref
 import {AppIcon, Header} from "@/components";
 import {EditResidence, ListResidences, ShowResidence} from "@/pages/residences";
 import { EditReservation, ListReservations, ShowReservation} from "@/pages/reservations";
-import {EditConfig} from "@/pages/configs/edit-config";
 import {Login} from "@/pages/auth";
 import {ForgotPassword} from "@/pages/forgotPassword";
 import {ListResidencesEnValidation} from "./pages/residences/list-residences-en-validation";
@@ -21,6 +20,7 @@ import {ListUsersValides} from "@/pages/users/list-users-valides";
 import {ListUsersNonValides} from "@/pages/users/list-users-non-valides";
 import {ListUsersCustomers} from "@/pages/users/list-users-customers";
 import {ListResidencesValides} from "@/pages/residences/list-residences-valides";
+import {ShowConfig} from "@/pages/configs";
 
 export function AppRoutes(){
     return (
@@ -81,7 +81,7 @@ export function AppRoutes(){
                     <Route path="show/:id" element={<ShowUser/>}/>
                 </Route>
                 <Route path={"/configs"}>
-                    <Route index element={<EditConfig/>}/>
+                    <Route index element={<ShowConfig/>}/>
                 </Route>
                 <Route path="*" element={<ErrorComponent/>}/>
             </Route>

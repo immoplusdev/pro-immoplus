@@ -28,21 +28,7 @@ export const ShowReservation = () => {
     },
   });
 
-    const formFieldData = [
-        { label: translate("fields.id"), content: record?.id },
-        { label: translate("reservations.fields.status_reservation"), content: record?.statusReservation },
-        { label: translate("reservations.fields.status_facture"), content: record?.statusFacture },
-        { label: translate("reservations.fields.retrait_pro_effectue"), content: record?.retraitProEffectue },
-        { label: translate("reservations.fields.montant_total_reservation"), content: record?.montantTotalReservation },
-        { label: translate("reservations.fields.montant_reservation_sans_commission"), content: record?.montantReservationSansCommission },
-        { label: translate("fields.notes"), content: record?.notes },
-        { label: translate("fields.client_phone_number"), content: record?.clientPhoneNumber },
-        { label: translate("fields.created_at"), content: record?.createdAt },
-        { label: translate("fields.updated_at"), content: record?.updatedAt },
-        { label: translate("residences.fields.residence_id"), content: residenceIsLoading ? <>Loading...</> : <>Cannot Render</> },
-        { label: translate("fields.client"), content: `${record?.client?.firstName} ${record?.client?.lastName}` },
-        { label: translate("reservations.fields.proprietaire"), content: `${record?.proprietaire?.firstName} ${record?.proprietaire?.lastName}` }
-    ];
+
 
     return (
       <Show isLoading={isLoading}>

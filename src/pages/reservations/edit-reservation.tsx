@@ -5,6 +5,8 @@ import {useTranslate} from "@refinedev/core";
 import dayjs from "dayjs";
 import {defaultFormColListColProps, defaultFormColListRowProps} from "@/configs";
 import {ColList} from "@/components/layout";
+import {enumToList} from "@/lib/ts-utilities";
+import {StatusReservation} from "@/lib/ts-utilities/enums/status-reservation";
 
 export const EditReservation = () => {
     const translate = useTranslate();
@@ -22,17 +24,6 @@ export const EditReservation = () => {
             <Form {...formProps} layout="vertical">
                 <ColList rowProps={defaultFormColListRowProps} colProps={defaultFormColListColProps}>
                     <Form.Item
-                        label={translate("fields.id")}
-                        name={["id"]}
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                    >
-                        <Input readOnly disabled/>
-                    </Form.Item>
-                    <Form.Item
                         label={translate("reservations.fields.status_reservation")}
                         name={["statusReservation"]}
                         rules={[
@@ -41,7 +32,10 @@ export const EditReservation = () => {
                             },
                         ]}
                     >
-                        <Input readOnly disabled/>
+                        <Select options={enumToList(StatusReservation).map(item => ({
+                            value: item,
+                            label: <span>{translate(`reservations.status_reservation.${item}`)}</span>
+                        }))}/>
                     </Form.Item>
                     <Form.Item
                         label={translate("reservations.fields.status_facture")}
@@ -52,7 +46,7 @@ export const EditReservation = () => {
                             },
                         ]}
                     >
-                        <Input readOnly disabled/>
+                        <Input />
                     </Form.Item>
                     <Form.Item
                         label={translate("reservations.fields.retrait_pro_effectue")}
@@ -77,7 +71,7 @@ export const EditReservation = () => {
                             },
                         ]}
                     >
-                        <Input readOnly disabled/>
+                        <Input />
                     </Form.Item>
                     <Form.Item
                         label={translate(
@@ -90,7 +84,7 @@ export const EditReservation = () => {
                             },
                         ]}
                     >
-                        <Input readOnly disabled/>
+                        <Input />
                     </Form.Item>
                     <Form.Item
                         label={translate("fields.notes")}
@@ -101,7 +95,7 @@ export const EditReservation = () => {
                             },
                         ]}
                     >
-                        <Input readOnly disabled/>
+                        <Input />
                     </Form.Item>
                     <Form.Item
                         label={translate("fields.client_phone_number")}
@@ -112,7 +106,7 @@ export const EditReservation = () => {
                             },
                         ]}
                     >
-                        <Input readOnly disabled/>
+                        <Input />
                     </Form.Item>
                     <Form.Item
                         label={translate("fields.created_at")}
@@ -162,7 +156,7 @@ export const EditReservation = () => {
                             },
                         ]}
                     >
-                        <Input readOnly disabled/>
+                        <Input />
                     </Form.Item>
                     <Form.Item
                         label={translate("reservations.fields.proprietaire")}
@@ -173,7 +167,7 @@ export const EditReservation = () => {
                             },
                         ]}
                     >
-                        <Input readOnly disabled/>
+                        <Input />
                     </Form.Item>
                     <></>
                 </ColList>

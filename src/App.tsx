@@ -83,7 +83,7 @@ function App() {
                                     },
                                     {
                                         name: "configs",
-                                        list: "/configs"
+                                        list: "/configs",
                                     },
                                 ]}
                                 options={{
