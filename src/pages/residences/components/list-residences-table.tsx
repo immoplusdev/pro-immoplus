@@ -3,13 +3,13 @@ import {Thumbnail} from "@/components";
 import {formatAmount, getApiFileUrl} from "@/lib/helpers";
 import {StatusValidationResidence} from "@/core/domain/residences";
 import {StatusValidationResidenceTag} from "@/pages/residences/components";
-import {BooleanField, DateField, DeleteButton, EditButton, List, ShowButton, useTable} from "@refinedev/antd";
+import {DeleteButton, EditButton, List, ShowButton, useTable} from "@refinedev/antd";
 import {BaseRecord, useTranslate} from "@refinedev/core";
 import React from "react";
 import {type CrudFilter} from "@refinedev/core/src/contexts/data/types";
 import {TypeResidenceTag} from "@/pages/residences/components/type-residence-tag";
 import {Link} from "react-router-dom";
-import { EditOutlined, EyeOutlined} from "@ant-design/icons";
+import {EditOutlined, EyeOutlined} from "@ant-design/icons";
 
 type Props = {
     filters?: {
@@ -17,7 +17,7 @@ type Props = {
         permanent?: CrudFilter[];
         mode?: "server" | "off";
     };
-    activeMenu?: "all_e" | "en_validation" | "validé"
+    activeMenu?: "all_e" | "en_validation" | "valide"
 }
 
 export function ListResidenceTable({filters, activeMenu}: Props) {
@@ -41,11 +41,11 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
             title={translate("pages.residence.residences")}
             headerButtons={[
                 <Link to="/residences">
-                <Button
-                    type={activeMenu == "all_e" ? "primary" : "default"}
-                >
-                    {translate("tags.all_e")}
-                </Button>
+                    <Button
+                        type={activeMenu == "all_e" ? "primary" : "default"}
+                    >
+                        {translate("tags.all_e")}
+                    </Button>
                 </Link>,
                 <Link to="/residences/en-validation">
                     <Button
@@ -56,7 +56,7 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                 </Link>,
                 <Link to="/residences/validé">
                     <Button
-                        type={activeMenu == "validé" ? "primary" : "default"}
+                        type={activeMenu == "valide" ? "primary" : "default"}
                     >
                         {translate("residences.status_validation.valide")}
                     </Button>
@@ -78,7 +78,7 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                 <Table.Column
                     dataIndex="typeResidence"
                     title={translate("residences.fields.type_residence")}
-                    render={(value: string)=> <TypeResidenceTag typeResidence={value}/>}
+                    render={(value: string) => <TypeResidenceTag typeResidence={value}/>}
                     align="center"
                 />
 

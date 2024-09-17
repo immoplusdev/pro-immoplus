@@ -4,7 +4,7 @@ import React from "react";
 
 export const ListResidencesValides = () => {
     return (
-        <ListResidenceTable activeMenu={"validé"}
+        <ListResidenceTable activeMenu={"valide"}
                             filters={{
                                 permanent: [
                                     {

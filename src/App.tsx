@@ -5,11 +5,14 @@ import {
     useNotificationProvider,
 } from "@refinedev/antd";
 import "@refinedev/antd/dist/reset.css";
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+
 
 import routerBindings, {
-    CatchAllNavigate,
     DocumentTitleHandler,
-    NavigateToResource,
     UnsavedChangesNotifier,
 } from "@refinedev/react-router-v6";
 import {App as AntdApp} from "antd";

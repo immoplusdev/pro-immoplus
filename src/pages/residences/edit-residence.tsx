@@ -5,9 +5,7 @@ import {
     Input,
     Checkbox,
     DatePicker,
-    Dropdown,
-    Button,
-    MenuProps,
+
     Select,
     Upload,
     Image,
@@ -21,7 +19,7 @@ import {ColList} from "@/components/layout";
 import {enumToList} from "@/lib/ts-utilities";
 import {StatusReservation} from "@/lib/ts-utilities/enums/status-reservation";
 import {typesResidence} from "@/core/domain/residences";
-import {defaultFileUploadProps, FileType, getBase64, ImagesToUploadFilesFormat} from "@/components/form";
+import {defaultFileUploadProps, FileType, getBase64} from "@/components/form";
 
 export const EditResidence = () => {
   const translate = useTranslate();
@@ -30,42 +28,13 @@ export const EditResidence = () => {
     const [previewImage, setPreviewImage] = useState('');
 
     const residencesData = queryResult?.data?.data;
-    const [fileList, setFileList] = useState<UploadFile[]>(ImagesToUploadFilesFormat(residencesData?.miniatureId, residencesData?.images))
 
-    const handlePreview = async (file: UploadFile) => {
-        if (!file.url && !file.preview) {
-            file.preview = await getBase64(file.originFileObj as FileType);
-        }
-
-        setPreviewImage(file.url || (file.preview as string));
-        setPreviewOpen(true);
-    };
-    const handleChange: UploadProps['onChange'] = ({fileList: newFileList}) =>
-        setFileList(newFileList);
 
     return (
       <Edit saveButtonProps={saveButtonProps}>
           <Form {...formProps} layout="vertical">
               <div className={"w-full mb-4"}>
-                  <Upload
-                      {...defaultFileUploadProps}
-                      accept="image/*"
-                      fileList={fileList}
-                      onPreview={handlePreview}
-                      onChange={handleChange}
-                  >
-                  </Upload>
-                  {previewImage && (
-                      <Image
-                          wrapperStyle={{display: 'none'}}
-                          preview={{
-                              visible: previewOpen,
-                              onVisibleChange: (visible: boolean) => setPreviewOpen(visible),
-                              afterOpenChange: (visible: boolean) => !visible && setPreviewImage(''),
-                          }}
-                          src={previewImage}
-                      />
-                  )}
+
 
               </div>
               <ColList rowProps={defaultFormColListRowProps} colProps={defaultFormColListColProps}>

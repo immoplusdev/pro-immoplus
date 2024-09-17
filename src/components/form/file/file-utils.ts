@@ -64,7 +64,7 @@ export function getFileIdFromEvent(event: UploadChangeParam): string | null {
     return ids[ids.length - 1] || null;
 }
 
-export function ImagesToUploadFilesFormat(miniatureId?: string, images?: string[]): UploadFile[] {
+export function w(miniatureId?: string, images?: string[]): UploadFile[] {
     return [miniatureId].concat(images ? images : []).map(image => ({
         uid: image as string,
         name: image as string,

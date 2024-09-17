@@ -12,11 +12,9 @@ export const EditReservation = () => {
     const translate = useTranslate();
     const {formProps, saveButtonProps, queryResult} = useForm();
 
-    const reservationsData = queryResult?.data?.data;
-
     const {selectProps: residenceSelectProps} = useSelect({
         resource: "residences",
-        defaultValue: reservationsData?.residence,
+        filters: undefined
     });
 
     return (

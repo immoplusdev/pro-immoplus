@@ -12,35 +12,17 @@ import {Form, Tag, Upload, Image, UploadFile, UploadProps, Typography} from "ant
 import {ColList} from "@/components/layout";
 import {defaultFormColListColProps, defaultFormColListRowProps} from "@/configs";
 import {ReadOnlyFormField} from "@/lib/ts-utilities";
-import {StatusValidationResidenceTag} from "@/pages/residences/components";
-import {LargeThumbnail} from "@/components";
-import {getImageUrl} from "@/lib/helpers";
-import {defaultFileUploadProps, FileType, getBase64, ImagesToUploadFilesFormat} from "@/components/form";
-import {PlusOutlined} from "@ant-design/icons";
+import {ImageCarousel} from "@/components/images/image-carousel";
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 const {Title} = Typography;
 
 export const ShowResidence = () => {
     const translate = useTranslate();
     const {queryResult} = useShow();
-    const [previewOpen, setPreviewOpen] = useState(false);
-    const [previewImage, setPreviewImage] = useState('');
     const {data, isLoading} = queryResult;
     const record = data?.data;
-    const [fileList, setFileList] = useState<UploadFile[]>(ImagesToUploadFilesFormat(record?.miniatureId, record?.images))
-
-
-
-    const handlePreview = async (file: UploadFile) => {
-        if (!file.url && !file.preview) {
-            file.preview = await getBase64(file.originFileObj as FileType);
-        }
-
-        setPreviewImage(file.url || (file.preview as string));
-        setPreviewOpen(true);
-    };
-    const handleChange: UploadProps['onChange'] = ({fileList: newFileList}) =>
-        setFileList(newFileList);
 
     return (
         <Show isLoading={isLoading}>
@@ -51,29 +33,11 @@ export const ShowResidence = () => {
                 style={{
                     maxWidth: 1000,
                     // fontWeight: 700,
+
                 }}
             >
                 <div className={"w-full mb-4"}>
-                    <Upload
-                        {...defaultFileUploadProps}
-                        accept="image/*"
-                        fileList={fileList}
-                        onPreview={handlePreview}
-                        onChange={handleChange}
-                    >
-                    </Upload>
-                    {previewImage && (
-                        <Image
-                            wrapperStyle={{display: 'none'}}
-                            preview={{
-                                visible: previewOpen,
-                                onVisibleChange: (visible: boolean) => setPreviewOpen(visible),
-                                afterOpenChange: (visible: boolean) => !visible && setPreviewImage(''),
-                            }}
-                            src={previewImage}
-                        />
-                    )}
-
+                    <ImageCarousel images={[record?.miniatureId]}/>
                 </div>
 
                 <ColList rowProps={defaultFormColListRowProps} colProps={defaultFormColListColProps}>
