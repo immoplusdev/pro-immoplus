@@ -15,6 +15,7 @@ import {ReadOnlyFormField} from "@/lib/ts-utilities";
 import {ImageCarousel} from "@/components/images/image-carousel";
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import {getCarouselUrls} from "@/lib/helpers";
 
 const {Title} = Typography;
 
@@ -32,16 +33,14 @@ export const ShowResidence = () => {
                 layout="vertical"
                 style={{
                     maxWidth: 1000,
-                    // fontWeight: 700,
-
                 }}
             >
                 <div className={"w-full mb-4"}>
-                    <ImageCarousel images={[record?.miniatureId]}/>
+                    <ImageCarousel images={getCarouselUrls(record?.miniatureId, record?.images)}/>
                 </div>
 
+
                 <ColList rowProps={defaultFormColListRowProps} colProps={defaultFormColListColProps}>
-                    <ReadOnlyFormField label={translate("fields.id")} content={record?.id} isLoading={isLoading}/>
                     <ReadOnlyFormField label={translate("fields.nom")} content={record?.nom} isLoading={isLoading}/>
 
                     <ReadOnlyFormField label={translate("residences.fields.type_residence")}

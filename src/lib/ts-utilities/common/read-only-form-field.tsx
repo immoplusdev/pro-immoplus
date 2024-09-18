@@ -1,11 +1,12 @@
 import {Button, Form} from "antd";
 import {BaseRecord, useTranslate} from "@refinedev/core";
+import {ReactNode} from "react";
 
 
 type propsType = {
     label: string,
-    content: string | number | undefined,
-    isLoading: boolean
+    content: string | number | undefined | ReactNode,
+    isLoading?: boolean
 
 }
 export const ReadOnlyFormField = ({label, content, isLoading}: propsType) => {

@@ -1,32 +1,22 @@
 import React, {useState} from "react";
 import { Edit, useForm } from "@refinedev/antd";
 import {
+    Card,
     Form,
-    Input,
-    Checkbox,
-    DatePicker,
-
-    Select,
-    Upload,
-    Image,
-    UploadFile,
-    UploadProps
+    Select, Space
 } from "antd";
-import {useShow, useTranslate} from "@refinedev/core";
-import dayjs from "dayjs";
+import { useTranslate} from "@refinedev/core";
+
 import {defaultFormColListColProps, defaultFormColListRowProps} from "@/configs";
 import {ColList} from "@/components/layout";
-import {enumToList} from "@/lib/ts-utilities";
+import {enumToList, ReadOnlyFormField} from "@/lib/ts-utilities";
 import {StatusReservation} from "@/lib/ts-utilities/enums/status-reservation";
-import {typesResidence} from "@/core/domain/residences";
-import {defaultFileUploadProps, FileType, getBase64} from "@/components/form";
+import {ImageCarousel} from "@/components/images/image-carousel";
+import {getCarouselUrls} from "@/lib/helpers";
 
 export const EditResidence = () => {
   const translate = useTranslate();
     const {formProps, saveButtonProps, queryResult} = useForm();
-    const [previewOpen, setPreviewOpen] = useState(false);
-    const [previewImage, setPreviewImage] = useState('');
-
     const residencesData = queryResult?.data?.data;
 
 
@@ -34,79 +24,18 @@ export const EditResidence = () => {
       <Edit saveButtonProps={saveButtonProps}>
           <Form {...formProps} layout="vertical">
               <div className={"w-full mb-4"}>
-
-
+                  <ImageCarousel images={getCarouselUrls(residencesData?.miniatureId, residencesData?.images)}/>
               </div>
               <ColList rowProps={defaultFormColListRowProps} colProps={defaultFormColListColProps}>
-                  <Form.Item
-                      label={translate("fields.nom")}
-                      name={["nom"]}
-                      rules={[
-                          {
-                              required: true,
-                          },
-                      ]}
-                  >
-                      <Input/>
-                  </Form.Item>
-                  <Form.Item
-                      label={translate("residences.fields.type_residence")}
-                      name={["typeResidence"]}
-                      rules={[
-                          {
-                              required: true,
-                          },
-                      ]}
-                  >
-                      <Input/>
-                  </Form.Item>
-                  <Form.Item
-                      label={translate("fields.description")}
-                      name={["description"]}
-                      rules={[
-                          {
-                              required: true,
-                          },
-                      ]}
-                  >
-                      <Input/>
-                  </Form.Item>
-                  <>
-                      {(residencesData?.images as any[])?.map((item, index) => (
-                          <Form.Item
-                              key={index}
-                              label={translate("fields.images")}
-                              name={["images", index]}
-                          >
-                              <Input type="text"/>
-                          </Form.Item>
-                      ))}
-                  </>
-                  <Form.Item
-                      label={translate("fields.adresse")}
-                      name={["adresse"]}
-                      rules={[
-                          {
-                              required: true,
-                          },
-                      ]}
-                  >
-                      <Input/>
-                  </Form.Item>
+                  <ReadOnlyFormField label={translate("fields.nom")} content={residencesData?.nom}/>
+                  <ReadOnlyFormField label={translate("residences.fields.type_residence")}
+                                     content={residencesData?.typeResidence}/>
+                  <ReadOnlyFormField label={translate("fields.description")} content={residencesData?.description}/>
+
+                  <ReadOnlyFormField label={translate("fields.adresse")} content={residencesData?.adresse}/>
                   <Form.Item
                       label={translate("residences.fields.residence_disponible")}
-                      valuePropName="checked"
-                      name={["residenceDisponible"]}
-                      rules={[
-                          {
-                              required: true,
-                          },
-                      ]}
-                  >
-                      <Checkbox>Residence Disponible</Checkbox>
-                  </Form.Item>
-                  <Form.Item
-                      label={translate("fields.status_validation")}
+                      style={{width: 300}}
                       name={["statusValidation"]}
                       rules={[
                           {
@@ -120,136 +49,77 @@ export const EditResidence = () => {
                       }))}/>
                   </Form.Item>
                   <Form.Item
-                      label={translate("fields.prix_reservation")}
-                      name={["prixReservation"]}
+                      label={translate("fields.status_validation")}
+                      style={{width: 300}}
+                      name={["statusValidation"]}
                       rules={[
                           {
                               required: true,
                           },
                       ]}
                   >
-                      <Input/>
+                      <Select options={enumToList(StatusReservation).map(item => ({
+                          value: item,
+                          label: <span>{translate(`reservations.status_reservation.${item}`)}</span>
+                      }))}/>
                   </Form.Item>
-                  <Form.Item
-                      label={translate("residences.fields.duree_min_sejour")}
-                      name={["dureeMinSejour"]}
-                      rules={[
-                          {
-                              required: true,
-                          },
-                      ]}
-                  >
-                      <Input/>
-                  </Form.Item>
-                  <Form.Item
-                      label={translate("residences.fields.duree_min_sejour")}
-                      name={["dureeMaxSejour"]}
-                      rules={[
-                          {
-                              required: true,
-                          },
-                      ]}
-                  >
-                      <Input/>
-                  </Form.Item>
-                  <Form.Item
-                      label={translate("residences.fields.heure_entree")}
-                      name={["heureEntree"]}
-                      rules={[
-                          {
-                              required: true,
-                          },
-                      ]}
-                  >
-                      <Input/>
-                  </Form.Item>
-                  <Form.Item
-                      label={translate("residences.fields.heure_depart")}
-                      name={["heureDepart"]}
-                      rules={[
-                          {
-                              required: true,
-                          },
-                      ]}
-                  >
-                      <Input/>
-                  </Form.Item>
-                  <Form.Item
-                      label={translate("residences.fields.nombre_max_occupants")}
-                      name={["nombreMaxOccupants"]}
-                      rules={[
-                          {
-                              required: true,
-                          },
-                      ]}
-                  >
-                      <Input/>
-                  </Form.Item>
-                  <Form.Item
-                      label={translate("residences.fields.animaux_autorises")}
-                      valuePropName="checked"
-                      name={["animauxAutorises"]}
-                      rules={[
-                          {
-                              required: true,
-                          },
-                      ]}
-                  >
-                      <Checkbox>Animaux Autorises</Checkbox>
-                  </Form.Item>
-                  <Form.Item
-                      label={translate("residences.fields.fetes_autorises")}
-                      valuePropName="checked"
-                      name={["fetesAutorises"]}
-                      rules={[
-                          {
-                              required: true,
-                          },
-                      ]}
-                  >
-                      <Checkbox>Fetes Autorises</Checkbox>
-                  </Form.Item>
-                  <Form.Item
-                      label={translate("fields.regles_supplementaires")}
-                      name={["reglesSupplementaires"]}
-                      rules={[
-                          {
-                              required: true,
-                          },
-                      ]}
-                  >
-                      <Input/>
-                  </Form.Item>
-                  <Form.Item
-                      label={translate("fields.created_at")}
-                      name={["createdAt"]}
-                      rules={[
-                          {
-                              required: true,
-                          },
-                      ]}
-                      getValueProps={(value) => ({
-                          value: value ? dayjs(value) : undefined,
-                      })}
-                  >
-                      <DatePicker/>
-                  </Form.Item>
-                  <Form.Item
-                      label={translate("fields.updated_at")}
-                      name={["updatedAt"]}
-                      rules={[
-                          {
-                              required: true,
-                          },
-                      ]}
-                      getValueProps={(value) => ({
-                          value: value ? dayjs(value) : undefined,
-                      })}
-                  >
-                      <DatePicker/>
-                  </Form.Item>
+                  <ReadOnlyFormField label={translate("fields.prix_reservation")}
+                                     content={residencesData?.prixReservation}/>
+                  <ReadOnlyFormField label={translate("residences.fields.duree_min_sejour")}
+                                     content={residencesData?.dureeMinSejour}/>
+                  <ReadOnlyFormField label={translate("residences.fields.duree_max_sejour")}
+                                     content={residencesData?.dureeMaxSejour}/>
+                  <ReadOnlyFormField label={translate("residences.fields.heure_entree")}
+                                     content={residencesData?.heureEntree}/>
+                  <ReadOnlyFormField label={translate("residences.fields.heure_depart")}
+                                     content={residencesData?.heureDepart}/>
+                  <ReadOnlyFormField label={translate("residences.fields.nombre_max_occupants")}
+                                     content={residencesData?.nombreMaxOccupants}/>
+                  <ReadOnlyFormField label={translate("residences.fields.animaux_autorises")}
+                                     content={residencesData?.animauxAutorises ? "Oui" : "Non"}/>
+                  <ReadOnlyFormField label={translate("residences.fields.fetes_autorises")}
+                                     content={residencesData?.fetesAutorises ? "Oui" : "Non"}/>
+                  <ReadOnlyFormField label={translate("fields.regles_supplementaires")}
+                                     content={residencesData?.reglesSupplementaires}/>
+                  <ReadOnlyFormField label={translate("fields.created_at")}
+                                     content={new Date(residencesData?.createdAt).toLocaleDateString()}/>
+                  <ReadOnlyFormField label={translate("fields.updated_at")}
+                                     content={new Date(residencesData?.updatedAt).toLocaleDateString()}/>
+
+              </ColList>
+              <ColList rowProps={defaultFormColListRowProps} colProps={defaultFormColListColProps}>
+                  <ReadOnlyFormField label={translate("fields.created_at")}
+                                     content={new Date(residencesData?.createdAt).toLocaleDateString()}/>
+                  <ReadOnlyFormField label={translate("fields.updated_at")}
+                                     content={new Date(residencesData?.updatedAt).toLocaleDateString()}/>
               </ColList>
           </Form>
       </Edit>
-  );
+    );
 };
+
+export const readOnlyData = () =>{
+    return(
+        <Card
+            title={
+                <Space>
+                    {/* @ts-expect-error Ant Design Icon's v5.0.1 has an issue with @types/react@^18.2.66 */}
+                    <ShopOutlined />
+                    <p>Company info</p>
+                </Space>
+            }
+            headStyle={{
+                padding: "1rem",
+            }}
+            bodyStyle={{
+                padding: "0",
+            }}
+        >
+            <ColList rowProps={defaultFormColListRowProps} colProps={defaultFormColListColProps}>
+
+            </ColList>
+
+
+        </Card>
+    )
+}

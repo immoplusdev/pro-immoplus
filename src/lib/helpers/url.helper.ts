@@ -5,6 +5,11 @@ export function getImageUrl(imageId: string) {
     return `${API_URL}/files/raw/public/${imageId}`
 }
 
+export function getCarouselUrls(miniatureId: string, images?:[]){
+    const imagesUrls: string[] = [miniatureId];
+        return images ?  imagesUrls.concat(images) : imagesUrls;
+}
+
 export function getApiFileUrl(imageId: string) {
     return `${API_URL}/files/raw/public/${imageId}`
 }
