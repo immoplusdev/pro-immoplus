@@ -141,11 +141,11 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
 
                                 />
                             </Link>
-                            <Link to={`/residences/show/${record.id}`}>
-                                <Button
-                                    size="small"
-                                    icon={<EyeOutlined/>}/>
-                            </Link>
+                            {/*<Link to={`/residences/show/${record.id}`}>*/}
+                            {/*    <Button*/}
+                            {/*        size="small"*/}
+                            {/*        icon={<EyeOutlined/>}/>*/}
+                            {/*</Link>*/}
                             <DeleteButton
                                 hideText
                                 size="small"

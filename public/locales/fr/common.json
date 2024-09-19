@@ -69,7 +69,11 @@
     },
     "reservation": {
       "reservation": "Réservation",
-      "reservations": "Réservations"
+      "reservations": "Réservations",
+      "valide": {
+        "true": "Oui",
+        "false": "Non"
+      }
     }
 
   },

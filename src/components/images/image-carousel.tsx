@@ -31,9 +31,11 @@ export function ImageCarousel({images}: Props) {
                         <img
                             src={getImageUrl(image)}
                             alt="image"
-                            className="w-full"
+
                             style={{
-                                maxHeight: "100px !important"
+                                width:"50%",
+                                objectFit: "cover"
+
                             }}
                         />
                     </SwiperSlide>

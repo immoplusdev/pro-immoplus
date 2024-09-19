@@ -8,3 +8,9 @@ export enum StatusReservation {
   EnCoursValidationAdmin = "en_cours_validation_admin"
 }
 
+export enum ResidenceValide {
+  True = "Oui",
+  False = "Non"
+}
+
+
