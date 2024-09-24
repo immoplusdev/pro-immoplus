@@ -48,6 +48,15 @@ function App() {
                                 routerProvider={routerBindings}
                                 resources={[
                                     {
+                                        name: "demandes-visites",
+                                        list: "/demandes-visites",
+                                        edit: "/demandes-visites/edit/:id",
+                                        show: "/demandes-visites/show/:id",
+                                        meta: {
+                                            canDelete: true,
+                                        }
+                                    },
+                                    {
                                         name: "residences",
                                         list: "/residences",
                                         // create: "/residences/create",

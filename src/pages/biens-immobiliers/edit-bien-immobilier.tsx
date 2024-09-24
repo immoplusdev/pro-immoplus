@@ -1,271 +1,121 @@
 import React from "react";
-import {Edit, useForm} from "@refinedev/antd";
-import {Form, Input, Checkbox, DatePicker, Select, Upload} from "antd";
-import {useTranslate} from "@refinedev/core";
-import dayjs from "dayjs";
-import {defaultFormColListColProps, defaultFormColListRowProps} from "@/configs";
-import {ColList} from "@/components/layout";
-import {enumToList} from "@/lib/ts-utilities";
-import {StatusReservation} from "@/lib/ts-utilities/enums/status-reservation";
-import {defaultFileUploadProps, getFileIdFromEvent} from "@/components/form";
-import {PlusOutlined} from "@ant-design/icons";
+import { Edit, useForm } from "@refinedev/antd";
+import { Card, Col, Form, Row, Select, Space, Checkbox } from "antd";
+import { useTranslate } from "@refinedev/core";
+import { BaseRecord } from "@refinedev/core";
+import { enumToList, ReadOnlyFormField } from "@/lib/ts-utilities";
+import {bienImmobilierDisponible, StatusReservation} from "@/lib/ts-utilities/enums/status-reservation";
+import { DatabaseOutlined, EditOutlined } from "@ant-design/icons";
+import {ImageCarousel} from "@/components/images/image-carousel";
+import {getCarouselUrls} from "@/lib/helpers";
 
-export const EditBienImmobilier = () => {
+// Main Edit Component
+export const EditBienImmobilier: React.FC = () => {
     const translate = useTranslate();
-    const {formProps, saveButtonProps, queryResult} = useForm();
-
+    const { formProps, saveButtonProps, queryResult } = useForm();
     const biensImmobiliersData = queryResult?.data?.data;
 
     return (
         <Edit saveButtonProps={saveButtonProps}>
             <Form {...formProps} layout="vertical">
-
-                <ColList rowProps={defaultFormColListRowProps} colProps={defaultFormColListColProps}>
-                    <Form.Item
-                        label={translate("fields.nom")}
-                        name={["nom"]}
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                    >
-                        <Input/>
-                    </Form.Item>
-                    <Form.Item
-                        label={translate(
-                            "biens-immobiliers.fields.type_bien_immobilier",
-                        )}
-                        name={["typeBienImmobilier"]}
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                    >
-                        <Input/>
-                    </Form.Item>
-                    <Form.Item
-                        label={translate("fields.description")}
-                        name={["description"]}
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                    >
-                        <Input/>
-                    </Form.Item>
-                    <>
-                        {(biensImmobiliersData?.tags as any[])?.map(
-                            (item, index) => (
-                                <Form.Item
-                                    key={index}
-                                    label={translate(
-                                        "biens-immobiliers.fields.tags",
-                                    )}
-                                    name={["tags", index]}
-                                >
-                                    <Input type="text"/>
-                                </Form.Item>
-                            ),
-                        )}
-                    </>
-
-                    <>
-                        {(biensImmobiliersData?.images as any[])?.map(
-                            (item, index) => (
-                                <Form.Item
-                                    key={index}
-                                    label={translate(
-                                        "fields.images",
-                                    )}
-                                    name={["images", index]}
-                                >
-                                    <Input type="text"/>
-                                </Form.Item>
-                            ),
-                        )}
-                    </>
-                    <Form.Item
-                        label={translate("fields.adresse")}
-                        name={["adresse"]}
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                    >
-                        <Input/>
-                    </Form.Item>
-                    <Form.Item
-                        label={translate(
-                            "fields.status_validation",
-                        )}
-                        name={["statusValidation"]}
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                    >
-                        <Select options={enumToList(StatusReservation).map(item => ({
-                            value: item,
-                            label: <span>{translate(`reservations.status_reservation.${item}`)}</span>
-                        }))}/>
-                    </Form.Item>
-                    <Form.Item
-                        label={translate("biens-immobiliers.fields.prix")}
-                        name={["prix"]}
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                    >
-                        <Input/>
-                    </Form.Item>
-                    <Form.Item
-                        label={translate("biens-immobiliers.fields.featured")}
-                        valuePropName="checked"
-                        name={["featured"]}
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                    >
-                        <Checkbox>Featured</Checkbox>
-                    </Form.Item>
-                    <Form.Item
-                        label={translate("biens-immobiliers.fields.a_louer")}
-                        valuePropName="checked"
-                        name={["aLouer"]}
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                    >
-                        <Checkbox>A Louer</Checkbox>
-                    </Form.Item>
-                    <Form.Item
-                        label={translate(
-                            "biens-immobiliers.fields.disponible",
-                        )}
-                        valuePropName="checked"
-                        name={["bienImmobilierDisponible"]}
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                    >
-                        <Checkbox>Bien Immobilier Disponible</Checkbox>
-                    </Form.Item>
-                    <Form.Item
-                        label={translate(
-                            "residences.fields.nombre_max_occupants",
-                        )}
-                        name={["nombreMaxOccupants"]}
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                    >
-                        <Input/>
-                    </Form.Item>
-                    <Form.Item
-                        label={translate(
-                            "residences.fields.animaux_autorises",
-                        )}
-                        valuePropName="checked"
-                        name={["animauxAutorises"]}
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                    >
-                        <Checkbox>Animaux Autorises</Checkbox>
-                    </Form.Item>
-                    <Form.Item
-                        label={translate("residences.fields.fetes_autorises")}
-                        valuePropName="checked"
-                        name={["fetesAutorises"]}
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                    >
-                        <Checkbox>Fetes Autorises</Checkbox>
-                    </Form.Item>
-                    <Form.Item
-                        label={translate(
-                            "fields.regles_supplementaires",
-                        )}
-                        name={["reglesSupplementaires"]}
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                    >
-                        <Input/>
-                    </Form.Item>
-                    <Form.Item
-                        label={translate("fields.created_at")}
-                        name={["createdAt"]}
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                        getValueProps={(value) => ({
-                            value: value ? dayjs(value) : undefined,
-                        })}
-                    >
-                        <DatePicker/>
-                    </Form.Item>
-                    <Form.Item
-                        label={translate("fields.updated_at")}
-                        name={["updatedAt"]}
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                        getValueProps={(value) => ({
-                            value: value ? dayjs(value) : undefined,
-                        })}
-                    >
-                        <DatePicker/>
-                    </Form.Item>
-                    <Form.Item
-                        label={translate("fields.miniature")}
-                        name={"miniature"}
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                        getValueFromEvent={getFileIdFromEvent}
-                    >
-                        <Upload
-                            {...defaultFileUploadProps}
-                            accept="image/*"
-                            multiple={false}
-                        >
-                            <button style={{border: 0, background: 'none'}} type="button">
-                                <PlusOutlined/>
-                                <div style={{marginTop: 8}}>{translate("files.file_upload.upload")}</div>
-                            </button>
-                        </Upload>
-                    </Form.Item>
-                </ColList>
+                {/* Image Carousel and File Upload */}
+                <div className="w-50 mb-4">
+                    <ImageCarousel
+                        images={getCarouselUrls(biensImmobiliersData?.miniatureId, biensImmobiliersData?.images)}
+                    />
+                </div>
+                <Row gutter={[32, 32]} style={{marginTop: 32}}>
+                    <Col xs={24} md={24} lg={16}>
+                        <DataField translate={translate} data={biensImmobiliersData}/>
+                    </Col>
+                    <Col xs={24} md={24} lg={8}>
+                        <ActionsField translate={translate}/>
+                    </Col>
+                </Row>
             </Form>
         </Edit>
     );
 };
+
+// DataField Component for Read-Only Data
+const DataField: React.FC<{ translate: any; data?: BaseRecord }> = ({translate, data}) => {
+    return (
+        <Card
+            title={
+                <Space>
+                    <DatabaseOutlined />
+                    <p>{translate("biens_immobiliers.fields.data")}</p>
+                </Space>
+            }
+            headStyle={{ padding: "1rem" }}
+            bodyStyle={{ padding: "2rem", display: "flex", flexDirection: "row" }}
+        >
+            <Card style={{ border: "none", width: "50%" }}>
+                <ReadOnlyFormField label={translate("fields.nom")} content={data?.nom} />
+                <ReadOnlyFormField label={translate("biens_immobiliers.fields.type_bien_immobilier")} content={data?.typeBienImmobilier} />
+                <ReadOnlyFormField label={translate("fields.description")} content={data?.description} />
+                <ReadOnlyFormField label={translate("fields.adresse")} content={data?.adresse} />
+                <ReadOnlyFormField label={translate("biens_immobiliers.fields.prix")} content={data?.prix} />
+                <ReadOnlyFormField label={translate("fields.created_at")} content={new Date(data?.createdAt).toLocaleDateString()} />
+                <ReadOnlyFormField label={translate("fields.updated_at")} content={new Date(data?.updatedAt).toLocaleDateString()} />
+                <ReadOnlyFormField label={translate("biens_immobiliers.fields.a_louer")} content={data?.aLouer ? "Yes" : "No"} />
+            </Card>
+            <Card style={{ width: "50%", border: "none" }}>
+                <ReadOnlyFormField label={translate("biens_immobiliers.fields.nombre_max_occupants")} content={data?.nombreMaxOccupants} />
+                <ReadOnlyFormField label={translate("biens_immobiliers.fields.animaux_autorises")} content={data?.animauxAutorises ? "Oui" : "Non"} />
+                <ReadOnlyFormField label={translate("biens_immobiliers.fields.fetes_autorises")} content={data?.fetesAutorises ? "Oui" : "Non"} />
+                <ReadOnlyFormField label={translate("fields.regles_supplementaires")} content={data?.reglesSupplementaires} />
+                <ReadOnlyFormField label={translate("biens_immobiliers.fields.featured")} content={data?.featured ? "Yes" : "No"} />
+                <ReadOnlyFormField label={translate("biens_immobiliers.fields.a_louer")} content={data?.aLouer ? "Yes" : "No"} />
+                <ReadOnlyFormField label={translate("biens_immobiliers.fields.featured")} content={data?.aLouer ? "Yes" : "No"} />
+            </Card>
+        </Card>
+    );
+};
+
+// ActionsField Component for Editable Actions
+const ActionsField: React.FC<{ translate: any }> = ({ translate }) => {
+    const renderSelectFormItem = (labelKey: string, name: string) => (
+        <Form.Item
+            label={translate(labelKey)}
+            style={{ width: 300 }}
+            name={name}
+            rules={[{ required: true }]}
+        >
+            <Select
+                options={enumToList(StatusReservation).map((item) => ({
+                    value: item,
+                    label: <span>{translate(`reservations.status_reservation.${item}`)}</span>,
+                }))}
+            />
+        </Form.Item>
+    );
+
+    return (
+        <Card
+            title={
+                <Space>
+                    <EditOutlined />
+                    <p>{translate("Actions")}</p>
+                </Space>
+            }
+            headStyle={{ padding: "1rem" }}
+            bodyStyle={{ padding: "2rem" }}
+        >
+            <Form.Item
+                label={translate("biens_immobiliers.fields.bien_immobilier_disponible")}
+                style={{ width: 300 }}
+                name={["bienImmobilierDisponible"]}
+                rules={[{ required: true }]}
+            >
+                <Select options={enumToList(bienImmobilierDisponible).map(item => ({
+                    value: item,
+                    label: <span>{translate(`biens_immobiliers.fields.${item}`)}</span>
+                }))}/>
+                {/*<Checkbox>Bien Immobilier Disponible</Checkbox>*/}
+            </Form.Item>
+            {renderSelectFormItem("fields.status_validation", "statusValidation")}
+        </Card>
+    );
+};
+

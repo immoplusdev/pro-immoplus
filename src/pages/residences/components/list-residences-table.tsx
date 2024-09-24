@@ -9,7 +9,7 @@ import React from "react";
 import {type CrudFilter} from "@refinedev/core/src/contexts/data/types";
 import {TypeResidenceTag} from "@/pages/residences/components/type-residence-tag";
 import {Link} from "react-router-dom";
-import {EditOutlined, EyeOutlined} from "@ant-design/icons";
+import {ArrowRightOutlined, EditOutlined, EyeOutlined} from "@ant-design/icons";
 
 type Props = {
     filters?: {
@@ -137,7 +137,7 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                             <Link to={`/residences/edit/${record.id}`}>
                                 <Button
                                     size="small"
-                                    icon={<EditOutlined/>}
+                                    icon={<ArrowRightOutlined/>}
 
                                 />
                             </Link>

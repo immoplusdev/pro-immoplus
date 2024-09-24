@@ -65,7 +65,7 @@ export const ShowBienImmobilier = () => {
                     {/*</Image.PreviewGroup>*/}
                     <ReadOnlyFormField label={translate("fields.name")} content={record?.nom}
                                        isLoading={isLoading}/>
-                    <ReadOnlyFormField label={translate("biens-immobiliers.fields.type_bien_immobilier")}
+                    <ReadOnlyFormField label={translate("biens_immobiliers.fields.type_bien_immobilier")}
                                        content={record?.typeBienImmobilier} isLoading={isLoading}/>
                     <ReadOnlyFormField label={translate("fields.description")} content={record?.description}
                                        isLoading={isLoading}/>
@@ -74,18 +74,18 @@ export const ShowBienImmobilier = () => {
                                        isLoading={isLoading}/>
                     <ReadOnlyFormField label={translate("fields.status_validation")}
                                        content={record?.statusValidation} isLoading={isLoading}/>
-                    <ReadOnlyFormField label={translate("biens-immobiliers.fields.prix")} content={record?.prix}
+                    <ReadOnlyFormField label={translate("biens_immobiliers.fields.prix")} content={record?.prix}
                                        isLoading={isLoading}/>
                     <>
-                        <Title level={5}>{translate("biens-immobiliers.fields.featured")}</Title>
+                        <Title level={5}>{translate("biens_immobiliers.fields.featured")}</Title>
                         <BooleanField value={record?.featured}/>
                     </>
                     <>
-                        <Title level={5}>{translate("biens-immobiliers.fields.a_louer")}</Title>
+                        <Title level={5}>{translate("biens_immobiliers.fields.a_louer")}</Title>
                         <BooleanField value={record?.aLouer}/>
                     </>
                     <>
-                        <Title level={5}>{translate("biens-immobiliers.fields.disponible")}</Title>
+                        <Title level={5}>{translate("biens_immobiliers.fields.disponible")}</Title>
                         <BooleanField value={record?.bienImmobilierDisponible}/>
                     </>
                     <>

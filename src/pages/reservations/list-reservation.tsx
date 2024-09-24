@@ -9,11 +9,13 @@ import {
   BooleanField,
   DateField, useModalForm,
 } from "@refinedev/antd";
-import {Table, Space, Tag, Modal} from "antd";
+import {Table, Space, Tag, Modal, Button} from "antd";
 import {StatusValidationReservation, statusValidationReservation} from "@/core/domain/reservations";
 import {StatusValidationReservationTag} from "@/pages/reservations/components";
 import {defaultFormColListColProps, defaultFormColListRowProps} from "@/configs";
 import {ColList} from "@/components/layout";
+import {Link} from "react-router-dom";
+import {ArrowRightOutlined} from "@ant-design/icons";
 
 export const ListReservations = () => {
   const translate = useTranslate();
@@ -89,16 +91,18 @@ export const ListReservations = () => {
                   align="center"
                   render={(_, record: BaseRecord) => (
                       <Space>
-                        <EditButton
-                            hideText
-                            size="small"
-                            recordItemId={record.id}
-                        />
-                        <ShowButton
-                            hideText
-                            size="small"
-                            recordItemId={record.id}
-                        />
+                          <Link to={`/reservations/edit/${record.id}`}>
+                              <Button
+                                  size="small"
+                                  icon={<ArrowRightOutlined/>}
+
+                              />
+                          </Link>
+                        {/*<ShowButton*/}
+                        {/*    hideText*/}
+                        {/*    size="small"*/}
+                        {/*    recordItemId={record.id}*/}
+                        {/*/>*/}
                         <DeleteButton
                             hideText
                             size="small"

@@ -13,7 +13,7 @@ import {
 import {Table, Space, Button} from "antd";
 import {Link} from "react-router-dom";
 import type {CrudFilter} from "@refinedev/core/src/contexts/data/types";
-import {EditOutlined, EyeOutlined} from "@ant-design/icons";
+import {ArrowRightOutlined, EditOutlined, EyeOutlined} from "@ant-design/icons";
 
 
 type Props = {
@@ -140,15 +140,15 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
                             <Link to={`/users/edit/${record.id}`}>
                                 <Button
                                     size="small"
-                                    icon={<EditOutlined/>}
+                                    icon={<ArrowRightOutlined/>}
 
                                 />
                             </Link>
-                            <Link to={`/users/show/${record.id}`}>
-                                <Button
-                                    size="small"
-                                    icon={<EyeOutlined/>}/>
-                            </Link>
+                            {/*<Link to={`/users/show/${record.id}`}>*/}
+                            {/*    <Button*/}
+                            {/*        size="small"*/}
+                            {/*        icon={<EyeOutlined/>}/>*/}
+                            {/*</Link>*/}
                             <DeleteButton
                                 hideText
                                 size="small"

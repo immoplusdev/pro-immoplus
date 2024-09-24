@@ -69,11 +69,7 @@
     },
     "reservation": {
       "reservation": "Réservation",
-      "reservations": "Réservations",
-      "valide": {
-        "true": "Oui",
-        "false": "Non"
-      }
+      "reservations": "Réservations"
     }
 
   },
@@ -147,7 +143,9 @@
       "montant_total_reservation": "Montant total de reservation",
       "retrait_pro_effectue": "Retrait Pro Effectué",
       "status_facture": "Status facture",
-      "proprietaire": "Proprietaire"
+      "proprietaire": "Proprietaire",
+      "true": "Oui",
+      "false": "Non"
     },
     "status_reservation": {
       "rejete": "Rejeté",
@@ -157,7 +155,7 @@
       "en_cours_validation_admin" : "En cours de validation admin"
     }
   },
-  "biens-immobiliers": {
+  "biens_immobiliers": {
     "fields": {
       "type_bien_immobilier": "Type de bien immobilier",
       "tags": "Tag",
@@ -165,9 +163,39 @@
       "featured": "Fonctionnalité",
       "a_louer": "À louer",
       "type_location": "Type de location",
-      "disponible": "Disponibilité"
+      "disponible": "Disponibilité",
+      "data": "Données",
+      "nombre_max_occupants": "Nombre maximum d'occupants",
+      "animaux_autorises": "Animaux autorisés",
+      "fetes_autorises": "Fêtes autorisées",
+      "bien_immobilier_disponible": "Bien immobilier disponible",
+      "false": "No",
+      "true": "Oui",
+      "compte_pro_valide": "Compte pro valide"
     }
-
+  },
+  "demandes_visites": {
+    "fields": {
+      "status_demande_visite": "Status demande visite",
+      "type_demande_visite": "Type demande visite",
+      "status_facture": "Status facture",
+      "retrait_pro_effectue": "Retrait Pro Effectué",
+      "notes": "Notes",
+      "client_phone_number": "Numéro de client",
+      "data": "Données",
+      "actions": "Actions",
+      "montant_total_demande_visite": "Montant total demande visite",
+      "montant_demande_visite_sans_commission": "Montant demande visite sans commission",
+      "created_at": "Date de création",
+      "updated_at": "Date de mise à jour",
+      "express": "Express",
+      "normal": "Normal",
+      "rejete": "Rejete",
+      "valide": "Valide",
+      "en_cours": "en cours",
+      "en_cours_validation_user": "User en cours validation",
+      "en_cours_validation_admin":"Admin en cours validation"
+    }
   },
   "users": {
     "fields": {
@@ -186,7 +214,8 @@
       "status": "Status",
       "role": "Role",
       "users": "Utilisateurs",
-      "customer": "Client"
+      "customer": "Client",
+      "data": "Données"
     }
   },
   "dashboard": {

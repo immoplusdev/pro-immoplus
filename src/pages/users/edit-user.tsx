@@ -1,212 +1,106 @@
 import React from "react";
 import { Edit, useForm } from "@refinedev/antd";
-import { Form, Input, DatePicker, Checkbox } from "antd";
+import {Card, Col, Form, Row, Space, Input, Checkbox, DatePicker, Select} from "antd";
 import { useTranslate } from "@refinedev/core";
+import { BaseRecord } from "@refinedev/core";
 import dayjs from "dayjs";
-import {ColList} from "@/components/layout";
-import {defaultFormColListColProps, defaultFormColListRowProps} from "@/configs";
+import {enumToList, ReadOnlyFormField} from "@/lib/ts-utilities"; // Assuming you have a utility for read-only fields
+import { DatabaseOutlined, EditOutlined } from "@ant-design/icons";
+import {StatusReservation, StatusUser} from "@/lib/ts-utilities/enums/status-reservation";
+import {statusValidationResidence} from "@/core/domain/residences";
 
-export const EditUser = () => {
-  const translate = useTranslate();
-  const { formProps, saveButtonProps, queryResult } = useForm();
+// Main EditUser Component
+export const EditUser: React.FC = () => {
+    const translate = useTranslate();
+    const { formProps, saveButtonProps, queryResult } = useForm();
+    const usersData = queryResult?.data?.data;
 
-  const usersData = queryResult?.data?.data;
+    return (
+        <Edit saveButtonProps={saveButtonProps}>
+            <Form {...formProps} layout="vertical">
+                <Row gutter={[32, 32]} style={{ marginTop: 32 }}>
+                    <Col xs={24} md={24} lg={16}>
+                        <UserDataField translate={translate} data={usersData} />
+                    </Col>
+                    <Col xs={24} md={24} lg={8}>
+                        <UserActionsField translate={translate} />
+                    </Col>
+                </Row>
+            </Form>
+        </Edit>
+    );
+};
 
-  return (
-      <Edit saveButtonProps={saveButtonProps}>
-        <Form {...formProps} layout="vertical">
-            <ColList rowProps={defaultFormColListRowProps} colProps={defaultFormColListColProps}>
+// UserDataField Component for Read-Only Data
+const UserDataField: React.FC<{ translate: any; data?: BaseRecord }> = ({ translate, data }) => {
+    return (
+        <Card
+            title={
+                <Space>
+                    <DatabaseOutlined />
+                    <p>{translate("users.fields.data")}</p>
+                </Space>
+            }
+            headStyle={{ padding: "1rem",}}
+            bodyStyle={{ padding: "2rem", display: "flex", flexDirection: "row" }}
+        >
+            <Card style={{ border: "none", width: "50%" }}>
+                <ReadOnlyFormField label={translate("users.fields.lastname")} content={data?.lastName} />
+                <ReadOnlyFormField label={translate("users.fields.firstname")} content={data?.firstName} />
+                <ReadOnlyFormField label={translate("users.fields.email")} content={data?.email} />
+                <ReadOnlyFormField label={translate("users.fields.phone_number")} content={data?.phoneNumber} />
+                <ReadOnlyFormField label={translate("fields.created_at")} content={new Date(data?.createdAt).toLocaleDateString()} />
+                <ReadOnlyFormField label={translate("fields.updated_at")} content={new Date(data?.updatedAt).toLocaleDateString()} />
+            </Card>
+            <Card style={{ width: "50%", border: "none" }}>
+                <ReadOnlyFormField label={translate("users.fields.role")} content={data?.role?.id} />
+                <ReadOnlyFormField label={translate("users.fields.identity_verified")} content={data?.identityVerified ? "Yes" : "No"} />
+                <ReadOnlyFormField label={translate("users.fields.email_verified")} content={data?.emailVerified ? "Yes" : "No"} />
+                <ReadOnlyFormField label={translate("users.fields.phone_number_verified")} content={data?.phoneNumberVerified ? "Yes" : "No"} />
+                <ReadOnlyFormField label={translate("users.fields.compte_pro_valide")} content={data?.compteProValide ? "Yes" : "No"} />
+                <ReadOnlyFormField label={translate("users.fields.auth_login_attempts")} content={data?.authLoginAttempts} />
+            </Card>
+        </Card>
+    );
+};
+
+// UserActionsField Component for Editable Fields
+const UserActionsField: React.FC<{ translate: any }> = ({ translate }) => {
+    return (
+        <Card
+            title={
+                <Space>
+                    <EditOutlined />
+                    <p>{translate("Actions")}</p>
+                </Space>
+            }
+            headStyle={{ padding: "1rem" }}
+            bodyStyle={{ padding: "2rem" }}
+        >
             <Form.Item
-              label={translate("users.fields.firstname")}
-              name={["firstName"]}
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-              label={translate("users.fields.lastname")}
-              name={["lastName"]}
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-              label={translate("users.fields.email")}
-              name={["email"]}
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-              label={translate("users.fields.password")}
-              name={["password"]}
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-              label={translate("users.fields.phone_number")}
-              name={["phoneNumber"]}
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-              label={translate("users.fields.otp")}
-              name={["otp"]}
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-              label={translate("users.fields.otp_expiration")}
-              name={["otpExpiration"]}
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-              getValueProps={(value) => ({
-                value: value ? dayjs(value) : undefined,
-              })}
-          >
-            <DatePicker />
-          </Form.Item>
-          <Form.Item
-              label={translate("users.fields.identity_verified")}
-              valuePropName="checked"
-              name={["identityVerified"]}
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-          >
-            <Checkbox>Identity Verified</Checkbox>
-          </Form.Item>
-          <Form.Item
-              label={translate("users.fields.email_verified")}
-              valuePropName="checked"
-              name={["emailVerified"]}
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-          >
-            <Checkbox>Email Verified</Checkbox>
-          </Form.Item>
-          <Form.Item
-              label={translate("users.fields.phone_number_verified")}
-              valuePropName="checked"
-              name={["phoneNumberVerified"]}
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-          >
-            <Checkbox>Phone Number Verified</Checkbox>
-          </Form.Item>
-          <Form.Item
-              label={translate("users.fields.compte_pro_valide")}
-              valuePropName="checked"
-              name={["compteProValide"]}
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-          >
-            <Checkbox>Compte Pro Valide</Checkbox>
-          </Form.Item>
-          <Form.Item
-              label={translate("users.fields.auth_login_attempts")}
-              name={["authLoginAttempts"]}
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-              label={translate("users.fields.status")}
-              name={["status"]}
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-              label={translate("fields.created_at")}
-              name={["createdAt"]}
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-              getValueProps={(value) => ({
-                value: value ? dayjs(value) : undefined,
-              })}
-          >
-            <DatePicker />
-          </Form.Item>
-          <Form.Item
-              label={translate("fields.updated_at")}
-              name={["updatedAt"]}
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-              getValueProps={(value) => ({
-                value: value ? dayjs(value) : undefined,
-              })}
-          >
-            <DatePicker />
-          </Form.Item>
-          <Form.Item
-              label={translate("users.fields.role")}
-              name={["role", "id"]}
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-          >
-            <Input />
-          </Form.Item>
-            </ColList>
-        </Form>
-      </Edit>
-  );
+                label={translate("users.fields.status")}
+                name={["status"]}
+                rules={[{ required: true }]}
+            >
+               <Select
+                    options={enumToList(StatusUser).map((item) =>({
+                        value: item,
+                        label:  <span>{translate(`users.status_reservation.${item}`)}</span>
+                    }))}
+               />
+            </Form.Item>
+            <Form.Item
+                label={translate("users.fields.compte_pro_valide")}
+                name={["compteProValide"]}
+                rules={[{ required: true }]}
+            >
+               <Select
+                    options={enumToList(StatusUser).map((item) =>({
+                        value: item,
+                        label:  <span>{translate(`user.status_reservation.${item}`)}</span>
+                    }))}
+               />
+            </Form.Item>
+        </Card>
+    );
 };

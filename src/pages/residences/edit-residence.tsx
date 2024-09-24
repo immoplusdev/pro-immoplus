@@ -165,7 +165,7 @@ export const ActionsField: React.FC<ReadOnlySectionProps> = ({ translate }) => {
             >
                 <Select options={enumToList(ResidenceValide).map(item => ({
                     value: item,
-                    label: <span>{translate(`reservation.valide.${item}`)}</span>
+                    label: <span>{translate(`reservations.fields.${item}`)}</span>
                 }))}/>
             </Form.Item>
             <Form.Item
