@@ -27,38 +27,42 @@ export const ListReservations = () => {
       <List
         title={translate("pages.reservation.reservations")}>
         <Table {...tableProps} rowKey="id">
-              <Table.Column
-                  dataIndex="datesReservation"
-                  title={translate("reservations.fields.date")}
-                  render={(dateObjects: Record<string, any>[])=> {
-                    return (
-                        <div>
-                          {
-                            dateObjects.map((dateObject)=>(
-                                <Tag>{new Date(dateObject.date).toLocaleDateString()}</Tag>
-                            ))
-                          }
-                        </div>
-                    );
-                  }}
-                  align="center"
-              />
+            <Table.Column
+                dataIndex="clientPhoneNumber"
+                title={translate("fields.client_phone_number")}
+                align="center"
+            />
+              {/*<Table.Column*/}
+              {/*    dataIndex="datesReservation"*/}
+              {/*    title={translate("reservations.fields.date")}*/}
+              {/*    render={(dateObjects: Record<string, any>[])=> {*/}
+              {/*      return (*/}
+              {/*          <div>*/}
+              {/*            {*/}
+              {/*              dateObjects.map((dateObject)=>(*/}
+              {/*                  <Tag>{new Date(dateObject.date).toLocaleDateString()}</Tag>*/}
+              {/*              ))*/}
+              {/*            }*/}
+              {/*          </div>*/}
+              {/*      );*/}
+              {/*    }}*/}
+              {/*    align="center"*/}
+              {/*/>*/}
               <Table.Column
                   dataIndex="statusReservation"
                   title={translate("reservations.fields.status_reservation")}
                   align="center"
               />
+            <Table.Column
+                dataIndex="notes"
+                title={translate("fields.notes")}
+                align="center"
+            />
               <Table.Column
                   dataIndex="statusFacture"
                   title={translate("reservations.fields.status_facture")}
                   render={(value: StatusValidationReservation) => <StatusValidationReservationTag
                       statusValidation={value}/>}
-                  align="center"
-              />
-              <Table.Column
-                  dataIndex={["retraitProEffectue"]}
-                  title={translate("reservations.fields.retrait_pro_effectue")}
-                  render={(value: any) => <BooleanField value={value} />}
                   align="center"
               />
               <Table.Column
@@ -75,16 +79,12 @@ export const ListReservations = () => {
                   )}
                   align="center"
               />
-              <Table.Column
-                  dataIndex="notes"
-                  title={translate("fields.notes")}
-                  align="center"
-              />
-              <Table.Column
-                  dataIndex="clientPhoneNumber"
-                  title={translate("fields.client_phone_number")}
-                  align="center"
-              />
+            <Table.Column
+                dataIndex={["retraitProEffectue"]}
+                title={translate("reservations.fields.retrait_pro_effectue")}
+                render={(value: any) => <BooleanField value={value} />}
+                align="center"
+            />
               <Table.Column
                   title={translate("table.actions")}
                   dataIndex="actions"

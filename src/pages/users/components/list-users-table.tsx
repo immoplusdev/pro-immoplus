@@ -104,12 +104,6 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
                     align="center"
                 />
                 <Table.Column
-                    dataIndex={["createdAt"]}
-                    title={translate("fields.created_at")}
-                    render={(value: any) => <DateField value={value} />}
-                    align="center"
-                />
-                <Table.Column
                     dataIndex={["role", "name"]}
                     title={translate("users.fields.role")}
                     align="center"

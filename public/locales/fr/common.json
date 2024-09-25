@@ -144,6 +144,8 @@
       "retrait_pro_effectue": "Retrait Pro Effectué",
       "status_facture": "Status facture",
       "proprietaire": "Proprietaire",
+      "data": "Données",
+      "actions": "Actions",
       "true": "Oui",
       "false": "Non"
     },
@@ -171,7 +173,7 @@
       "bien_immobilier_disponible": "Bien immobilier disponible",
       "false": "No",
       "true": "Oui",
-      "compte_pro_valide": "Compte pro valide"
+      "compte_pro_Valide": "Compte pro valide"
     }
   },
   "demandes_visites": {
