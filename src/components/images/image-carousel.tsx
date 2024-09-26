@@ -12,13 +12,14 @@ export function ImageCarousel({images}: Props) {
 
     return (
         <Swiper
-            className={"w-96 h-72"}
+            className={"h-48 flex items-center justify-start"}
+            style={{width: 300}}
             autoplay={{
                 delay: 2500,
                 disableOnInteraction: false,
             }}
             modules={[Navigation, Pagination, A11y, Autoplay]}
-            spaceBetween={2}
+            spaceBetween={1}
             slidesPerView={1}
             // navigation
             pagination={{ clickable: true }}
@@ -28,13 +29,13 @@ export function ImageCarousel({images}: Props) {
                     <SwiperSlide key={index} className={"w-full h-full  flex items-center justify-center"} style={{
 
                     }}>
-                        <img
+                        <Image
                             src={getImageUrl(image)}
                             alt="image"
-
                             style={{
-                                height:"50%",
-                                objectFit: "contain"
+                                height:"100%",
+                                width:"100%",
+                                objectFit: "cover"
                             }}
                         />
                     </SwiperSlide>

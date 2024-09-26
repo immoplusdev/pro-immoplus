@@ -14,7 +14,7 @@ export const ReadOnlyFormField = ({label, content, isLoading}: propsType) => {
     return(
     <Form.Item
         label={translate(label)}>
-        <Button style={{width: 300, display: "flex", justifyContent: "flex-start", textOverflow: "ellipsis", overflow:"hidden"}}>
+        <Button style={{width: 300, border:"0.5px solid black", display: "flex", justifyContent: "flex-start", textOverflow: "ellipsis", overflow:"hidden"}}>
             {isLoading ? <>Loading...</> : content}
         </Button>
     </Form.Item>

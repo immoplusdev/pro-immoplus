@@ -37,12 +37,12 @@ export const ResidenceEditActionFields: React.FC<ReadOnlySectionProps> = ({ tran
                     <p>{translate("Actions")}</p>
                 </Space>
             }
-            headStyle={{ padding: "1rem" }}
-            bodyStyle={{ padding: "2rem" }}
+            headStyle={{ padding: "1rem", border:"0.5px solid black" }}
+            bodyStyle={{ padding: "2rem", border:"0.5px solid black" }}
         >
             <Form.Item
                 label={translate("residences.fields.residence_disponible")}
-                style={{width: 300}}
+                style={{width: 300, }}
                 name={["residenceDisponible"]}
                 rules={[
                     {
@@ -50,7 +50,7 @@ export const ResidenceEditActionFields: React.FC<ReadOnlySectionProps> = ({ tran
                     },
                 ]}
             >
-                <Select options={enumToList(ResidenceValide).map(item => ({
+                <Select style={{border:"0.5px solid black", borderRadius:"7px"}} options={enumToList(ResidenceValide).map(item => ({
                     value: item,
                     label: <span>{translate(`reservations.fields.${item}`)}</span>
                 }))}/>
@@ -65,7 +65,7 @@ export const ResidenceEditActionFields: React.FC<ReadOnlySectionProps> = ({ tran
                     },
                 ]}
             >
-                <Select options={enumToList(StatusReservation).map(item => ({
+                <Select style={{border:"0.5px solid black", borderRadius:"7px"}} options={enumToList(StatusReservation).map(item => ({
                     value: item,
                     label: <span>{translate(`reservations.status_reservation.${item}`)}</span>
                 }))}/>

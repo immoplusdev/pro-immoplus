@@ -122,7 +122,8 @@
       "duree_min_sejour": "Durée minimum de séjour",
       "duree_max_sejour": "Durée maximum de séjour",
       "heure_entree": "Heure d'entrée",
-      "heure_depart": "Heure de départ"
+      "heure_depart": "Heure de départ",
+      "images": "Images"
     },
     "status_validation": {
       "valide": "Validé",
