@@ -1,5 +1,5 @@
 import React from "react";
-import {Card, Form, Input, Space} from "antd";
+import {Card, Form, Space} from "antd";
 import {DatabaseOutlined} from "@ant-design/icons";
 import {ReadOnlyFormField} from "@/lib/ts-utilities";
 import {BaseRecord} from "@refinedev/core";

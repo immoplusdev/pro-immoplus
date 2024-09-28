@@ -14,8 +14,8 @@ export const UsersEditDataFields: React.FC<{ translate: any; data?: BaseRecord }
                     <p>{translate("users.fields.data")}</p>
                 </Space>
             }
-            headStyle={{ padding: "1rem",}}
-            bodyStyle={{ padding: "2rem", display: "flex", flexDirection: "row" }}
+            headStyle={{ padding: "1rem", border:"0.5px solid black" }}
+            bodyStyle={{ padding: "2rem", border:"0.5px solid black", display:"flex", flexDirection:"row"}}
         >
             <Card style={{ border: "none", width: "50%" }}>
                 <ReadOnlyFormField label={translate("users.fields.lastname")} content={data?.lastName} />

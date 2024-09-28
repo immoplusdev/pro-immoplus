@@ -14,8 +14,8 @@ export const UsersEditActionFields: React.FC<{ translate: any }> = ({ translate 
                     <p>{translate("Actions")}</p>
                 </Space>
             }
-            headStyle={{ padding: "1rem" }}
-            bodyStyle={{ padding: "2rem" }}
+            headStyle={{ padding: "1rem", border:"0.5px solid black" }}
+            bodyStyle={{ padding: "2rem", border:"0.5px solid black" }}
         >
             <Form.Item
                 label={translate("users.fields.status")}
@@ -23,9 +23,10 @@ export const UsersEditActionFields: React.FC<{ translate: any }> = ({ translate 
                 rules={[{ required: true }]}
             >
                 <Select
+                    style={{border:"0.5px solid black", borderRadius:"7px"}}
                     options={enumToList(StatusUser).map((item) =>({
                         value: item,
-                        label:  <span>{translate(`users.status_reservation.${item}`)}</span>
+                        label:  <span>{translate(`users.fields.${item}`)}</span>
                     }))}
                 />
             </Form.Item>
@@ -35,9 +36,10 @@ export const UsersEditActionFields: React.FC<{ translate: any }> = ({ translate 
                 rules={[{ required: true }]}
             >
                 <Select
+                    style={{border:"0.5px solid black", borderRadius:"7px"}}
                     options={enumToList(StatusUser).map((item) =>({
                         value: item,
-                        label:  <span>{translate(`user.status_reservation.${item}`)}</span>
+                        label:  <span>{translate(`users.fields.${item}`)}</span>
                     }))}
                 />
             </Form.Item>

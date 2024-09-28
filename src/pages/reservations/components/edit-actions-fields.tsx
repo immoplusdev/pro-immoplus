@@ -4,6 +4,7 @@ import {enumToList} from "@/lib/ts-utilities";
 import {StatusReservation} from "@/lib/ts-utilities/enums/status-reservation";
 import React from "react";
 import {BaseRecord} from "@refinedev/core";
+import {StatusFacture} from "@/core/domain/reservations";
 
 type TranslateFunction = (key: string, params?: Record<string, any>) => string;
 interface ReadOnlySectionProps {
@@ -19,15 +20,21 @@ export const ReservationEditActionFields: React.FC<ReadOnlySectionProps> = ({tra
                     <p>{translate("reservations.fields.actions", )}</p>
                 </Space>
             }
-            headStyle={{padding: "1rem"}}
-            bodyStyle={{padding: "2rem"}}
+            headStyle={{ padding: "1rem", border:"0.5px solid black" }}
+            bodyStyle={{ padding: "2rem", border:"0.5px solid black" }}
         >
             <Form.Item
                 label={translate("reservations.fields.status_facture")}
                 name={["statusFacture"]}
                 rules={[{required: true}]}
             >
-                <Input/>
+                <Select
+                    style={{border:"0.5px solid black", borderRadius:"7px"}}
+                    options={enumToList(StatusFacture).map((item) =>({
+                        value: item,
+                        label:(<span>{translate(`reservations.fields.${item}`)}</span>)
+                    }))}
+                />
             </Form.Item>
             <Form.Item
                 label={translate("reservations.fields.status_reservation")}
@@ -35,6 +42,7 @@ export const ReservationEditActionFields: React.FC<ReadOnlySectionProps> = ({tra
                 rules={[{required: true}]}
             >
                 <Select
+                    style={{border:"0.5px solid black", borderRadius:"7px"}}
                     options={enumToList(StatusReservation).map((item) => ({
                         value: item,
                         label: (

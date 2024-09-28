@@ -16,6 +16,8 @@ import {defaultFormColListColProps, defaultFormColListRowProps} from "@/configs"
 import {ColList} from "@/components/layout";
 import {Link} from "react-router-dom";
 import {ArrowRightOutlined} from "@ant-design/icons";
+import {Thumbnail} from "@/components";
+import {getApiFileUrl} from "@/lib/helpers";
 
 export const ListReservations = () => {
   const translate = useTranslate();
@@ -32,22 +34,6 @@ export const ListReservations = () => {
                 title={translate("fields.client_phone_number")}
                 align="center"
             />
-              {/*<Table.Column*/}
-              {/*    dataIndex="datesReservation"*/}
-              {/*    title={translate("reservations.fields.date")}*/}
-              {/*    render={(dateObjects: Record<string, any>[])=> {*/}
-              {/*      return (*/}
-              {/*          <div>*/}
-              {/*            {*/}
-              {/*              dateObjects.map((dateObject)=>(*/}
-              {/*                  <Tag>{new Date(dateObject.date).toLocaleDateString()}</Tag>*/}
-              {/*              ))*/}
-              {/*            }*/}
-              {/*          </div>*/}
-              {/*      );*/}
-              {/*    }}*/}
-              {/*    align="center"*/}
-              {/*/>*/}
               <Table.Column
                   dataIndex="statusReservation"
                   title={translate("reservations.fields.status_reservation")}

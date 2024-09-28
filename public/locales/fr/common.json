@@ -123,7 +123,9 @@
       "duree_max_sejour": "Durée maximum de séjour",
       "heure_entree": "Heure d'entrée",
       "heure_depart": "Heure de départ",
-      "images": "Images"
+      "images": "Images",
+      "oui": "Oui",
+      "non": "Non"
     },
     "status_validation": {
       "valide": "Validé",
@@ -147,8 +149,10 @@
       "proprietaire": "Proprietaire",
       "data": "Données",
       "actions": "Actions",
-      "true": "Oui",
-      "false": "Non"
+      "oui": "Oui",
+      "non": "Non",
+      "paye": "Payé",
+      "non_paye": "Non payé"
     },
     "status_reservation": {
       "rejete": "Rejeté",
@@ -172,8 +176,8 @@
       "animaux_autorises": "Animaux autorisés",
       "fetes_autorises": "Fêtes autorisées",
       "bien_immobilier_disponible": "Bien immobilier disponible",
-      "false": "No",
-      "true": "Oui",
+      "non": "No",
+      "oui": "Oui",
       "compte_pro_Valide": "Compte pro valide"
     }
   },
@@ -218,7 +222,12 @@
       "role": "Role",
       "users": "Utilisateurs",
       "customer": "Client",
-      "data": "Données"
+      "data": "Données",
+      "rejete" : "Rejeté",
+      "valide": "Validé",
+      "en_cours": "en cours",
+      "en_cours_validation_user": "User en cours validation",
+      "en_cours_validation_admin":"Admin en cours validation"
     }
   },
   "dashboard": {

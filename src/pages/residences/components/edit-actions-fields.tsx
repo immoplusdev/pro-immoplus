@@ -50,9 +50,11 @@ export const ResidenceEditActionFields: React.FC<ReadOnlySectionProps> = ({ tran
                     },
                 ]}
             >
-                <Select style={{border:"0.5px solid black", borderRadius:"7px"}} options={enumToList(ResidenceValide).map(item => ({
+                <Select
+                    style={{border:"0.5px solid black", borderRadius:"7px"}}
+                    options={enumToList(ResidenceValide).map(item => ({
                     value: item,
-                    label: <span>{translate(`reservations.fields.${item}`)}</span>
+                    label: <span>{translate(`residences.fields.${item}`)}</span>
                 }))}/>
             </Form.Item>
             <Form.Item

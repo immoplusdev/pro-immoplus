@@ -66,7 +66,7 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
             <Table {...tableProps} rowKey="id">
                 <Table.Column
                     dataIndex="miniatureId"
-                    title={translate("fields.miniature")}
+                    title={translate("fields.images")}
                     render={(value: string) => <Thumbnail src={getApiFileUrl(value)}/>}
                     align="center"
                 />

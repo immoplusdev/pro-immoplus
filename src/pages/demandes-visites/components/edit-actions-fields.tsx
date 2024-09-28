@@ -16,15 +16,17 @@ export const DemandeVisiteEditActionFields: React.FC<VisiteActionsFieldProps> = 
                     <p>{translate("demandes_visites.fields.actions")}</p>
                 </Space>
             }
-            headStyle={{ padding: "1rem" }}
-            bodyStyle={{ padding: "2rem" }}
+            headStyle={{ padding: "1rem", border:"0.5px solid black"}}
+            bodyStyle={{ padding: "2rem", border:"0.5px solid black", display:"flex", flexDirection: "column" }}
         >
             <Form.Item
                 label={translate("demandes_visites.fields.status_demande_visite")}
                 name={["statusDemandeVisite"]}
                 rules={[{ required: true }]}
             >
-                <Select options={statusDemandeVisite.map(item => ({
+                <Select
+                    style={{border:"0.5px solid black", borderRadius:"7px"}}
+                    options={statusDemandeVisite.map(item => ({
                     value: item,
                     label: <span>{translate(`demandes_visites.fields.${item}`)}</span>
                 }))}/>
@@ -34,7 +36,9 @@ export const DemandeVisiteEditActionFields: React.FC<VisiteActionsFieldProps> = 
                 name={["typeDemandeVisite"]}
                 rules={[{ required: true }]}
             >
-                <Select options={typeDemandeVisiteList.map(item => ({
+                <Select
+                    style={{border:"0.5px solid black", borderRadius:"7px"}}
+                    options={typeDemandeVisiteList.map(item => ({
                     value: item,
                     label: <span>{translate(`demandes_visites.fields.${item}`)}</span>
                 }))}/>

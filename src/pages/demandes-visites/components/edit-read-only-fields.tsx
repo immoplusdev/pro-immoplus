@@ -17,10 +17,10 @@ export const DemandeVisiteEditDataFields: React.FC<VisiteDataFieldProps> = ({ tr
                     <p>{translate("demandes_visites.fields.data")}</p>
                 </Space>
             }
-            headStyle={{ padding: "1rem" }}
-            bodyStyle={{ padding: "2rem", display: "flex", flexDirection: "row" }}
+            headStyle={{ padding: "1rem", border:"0.5px solid black" }}
+            bodyStyle={{ padding: "2rem", border:"0.5px solid black",  display: "flex" , flexDirection:"row" }}
         >
-            <Card style={{ border: "none", width: "50%" }}>
+            <Card style={{ border: "none", width: "50%", display: "flex" , flexDirection:"row"}}>
                 <ReadOnlyFormField
                     label={translate("demandes_visites.fields.type_demande_visite")}
                     content={demandesVisitesData?.typeDemandeVisite}

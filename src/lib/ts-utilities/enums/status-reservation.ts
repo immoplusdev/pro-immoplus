@@ -16,12 +16,12 @@ export enum StatusUser {
 }
 
 export enum ResidenceValide {
-  true = "Oui",
-  false = "Non"
+  Oui = "oui",
+  Non = "non"
 }
 export enum bienImmobilierDisponible {
-  true = "Oui",
-  false = "Non"
+  Oui = "oui",
+  Non = "non"
 }
 export enum TypeDemandeVisite {
   Express = "express",

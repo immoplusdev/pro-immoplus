@@ -17,11 +17,6 @@ export const EditBienImmobilier: React.FC = () => {
     return (
         <Edit saveButtonProps={saveButtonProps}>
             <Form {...formProps} layout="vertical">
-                <div className="w-50 mb-4">
-                    <ImageCarousel
-                        images={getCarouselUrls(biensImmobiliersData?.miniatureId, biensImmobiliersData?.images)}
-                    />
-                </div>
                 <Row gutter={[32, 32]} style={{marginTop: 32}}>
                     <Col xs={24} md={24} lg={16}>
                         <BienImmobilierDataFields translate={translate} data={biensImmobiliersData}/>
