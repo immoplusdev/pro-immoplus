@@ -4,8 +4,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
-  // base: '/backoffice/',
   build: {
-    outDir: "dist",
+    outDir: "web",
   },
 });
