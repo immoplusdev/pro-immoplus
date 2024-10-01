@@ -3,17 +3,13 @@ import { BaseRecord, useTranslate } from "@refinedev/core";
 import {
     useTable,
     List,
-    EditButton,
-    ShowButton,
     DeleteButton,
-    EmailField,
-    DateField,
     BooleanField,
 } from "@refinedev/antd";
 import {Table, Space, Button} from "antd";
 import {Link} from "react-router-dom";
 import type {CrudFilter} from "@refinedev/core/src/contexts/data/types";
-import {ArrowRightOutlined, EditOutlined, EyeOutlined} from "@ant-design/icons";
+import {ArrowRightOutlined} from "@ant-design/icons";
 
 
 type Props = {
