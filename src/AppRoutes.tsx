@@ -5,7 +5,7 @@ import {ErrorComponent, ThemedLayoutV2, ThemedSiderV2, ThemedTitleV2} from "@ref
 import {AppIcon, Header} from "@/components";
 import {EditResidence, ListResidences, ShowResidence} from "@/pages/residences";
 import { EditReservation, ListReservations, ShowReservation} from "@/pages/reservations";
-import {Login} from "@/pages/auth";
+import {Login, Register} from "@/pages/auth";
 import {ForgotPassword} from "@/pages/forgotPassword";
 import {ListResidencesEnValidation} from "./pages/residences/list-residences-en-validation";
 import {
@@ -93,7 +93,7 @@ export function AppRoutes(){
             </Route>
             <Route>
                 <Route path={"/login"} element={<Login/>}/>
-                {/*<Route path={"/register"} element={<Register />} />*/}
+                <Route path={"/register"} element={<Register />} />
                 <Route
                     path={"/forgot-password"}
                     element={<ForgotPassword/>}
