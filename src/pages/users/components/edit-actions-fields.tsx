@@ -5,7 +5,6 @@ import {enumToList} from "@/lib/ts-utilities";
 import {yesNoOptions} from "@/core/domain/shared/form";
 import {UserStatus, UserRole} from "@/lib/ts-utilities/enums/users-enum";
 
-
 export const UsersEditActionFields: React.FC<{ translate: any }> = ({ translate }) => {
     return (
         <Card
@@ -18,7 +17,6 @@ export const UsersEditActionFields: React.FC<{ translate: any }> = ({ translate 
             headStyle={{ padding: "1rem", border:"0.5px solid black" }}
             bodyStyle={{ padding: "2rem", border:"0.5px solid black" }}
         >
-            {/*<ReadOnlyFormField label={translate("users.fields.role")} content={data?.role?.id} />*/}
             <Form.Item
                 label={translate("users.fields.role")}
                 name={["role"]}
