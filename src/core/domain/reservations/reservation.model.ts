@@ -3,7 +3,3 @@ export enum StatusValidationReservation {
     EnAttenteValidation = "en attente validation",
     Rejete = "rejete"
 }
-export enum StatusFacture {
-    Paye = "paye",
-    NonPaye = "non_paye",
-}

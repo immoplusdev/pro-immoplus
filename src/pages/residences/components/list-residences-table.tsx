@@ -10,6 +10,10 @@ import {type CrudFilter} from "@refinedev/core/src/contexts/data/types";
 import {TypeResidenceTag} from "@/pages/residences/components/type-residence-tag";
 import {Link} from "react-router-dom";
 import {ArrowRightOutlined, EditOutlined, EyeOutlined} from "@ant-design/icons";
+import {
+    StatusValidationBiensImmobilersTag
+} from "@/pages/biens-immobiliers/components/status-validation-biens-immobilers-tag";
+import {StatusValidationBiensImmobilers} from "@/lib/ts-utilities/enums/status-biens-immobiliers";
 
 type Props = {
     filters?: {
@@ -112,8 +116,7 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                 <Table.Column
                     dataIndex="statusValidation"
                     title={translate("fields.status_validation")}
-                    render={(value: StatusValidationResidence) => <StatusValidationResidenceTag
-                        statusValidation={value}/>}
+                    render={(value: StatusValidationBiensImmobilers) => <StatusValidationBiensImmobilersTag statusValidation={value}/>}
                     align="center"
                 />
                 <Table.Column

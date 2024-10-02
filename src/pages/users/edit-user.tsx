@@ -16,6 +16,8 @@ export const EditUser: React.FC = () => {
 
     return (
         <Edit
+            title={`${translate(`actions.edit`)} Utilisateur`}
+            breadcrumb={null}
             saveButtonProps={saveButtonProps}
             footerButtons={() => (<></>)}
             headerButtons={
@@ -41,7 +43,7 @@ export const EditUser: React.FC = () => {
                         icon={<SaveOutlined />}
                         {...saveButtonProps}
                     >
-                        Save
+                        {translate('buttons.save')}
                     </Button>
                 </Space>
             }

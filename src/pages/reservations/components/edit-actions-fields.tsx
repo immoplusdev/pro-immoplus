@@ -1,10 +1,10 @@
-import {Card, Form, Input, Select, Space} from "antd";
+import {Card, Form, Select, Space} from "antd";
 import {EditOutlined} from "@ant-design/icons";
 import {enumToList} from "@/lib/ts-utilities";
 import {StatusReservation} from "@/lib/ts-utilities/enums/status-reservation";
 import React from "react";
 import {BaseRecord} from "@refinedev/core";
-import {StatusFacture} from "@/core/domain/reservations";
+import {StatusFacture} from "@/lib/ts-utilities/enums/status-facture";
 
 type TranslateFunction = (key: string, params?: Record<string, any>) => string;
 interface ReadOnlySectionProps {

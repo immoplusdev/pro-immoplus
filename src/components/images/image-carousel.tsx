@@ -13,7 +13,7 @@ export function ImageCarousel({images}: Props) {
     return (
         <Swiper
             className={"h-48 flex items-center justify-start"}
-            style={{width: 300}}
+            style={{width: "17vw"}}
             autoplay={{
                 delay: 2500,
                 disableOnInteraction: false,

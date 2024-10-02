@@ -2,8 +2,6 @@ import React from "react";
 import {DeleteButton, Edit, useForm} from "@refinedev/antd";
 import {Button, Col, Form, Row, Space} from "antd";
 import { useTranslate } from "@refinedev/core";
-import {ImageCarousel} from "@/components/images/image-carousel";
-import {getCarouselUrls} from "@/lib/helpers";
 import {BienImmobilierDataFields} from "@/pages/biens-immobiliers/components/edit-read-only-fields";
 import {BienImmobilierEditActionFields} from "@/pages/biens-immobiliers/components/edit-actions-fields";
 import {OrderedListOutlined, ReloadOutlined, SaveOutlined} from "@ant-design/icons";
@@ -19,7 +17,8 @@ export const EditBienImmobilier: React.FC = () => {
 
     return (
         <Edit
-            saveButtonProps={saveButtonProps}
+            title={`${translate(`actions.edit`)} Bien immobilier`}
+            breadcrumb={null}
             footerButtons={() => (<></>)}
             headerButtons={
                 <Space>
@@ -27,7 +26,7 @@ export const EditBienImmobilier: React.FC = () => {
                         icon={<OrderedListOutlined/>}
                         onClick={() => navigate("/biens-immobiliers")}
                     >
-                        Demandes visites
+                        Biens immobiliers
                     </Button>
                     <Button
                         icon={<ReloadOutlined />}
@@ -44,7 +43,7 @@ export const EditBienImmobilier: React.FC = () => {
                         icon={<SaveOutlined />}
                         {...saveButtonProps}
                     >
-                        Save
+                        {translate('buttons.save')}
                     </Button>
                 </Space>
             }

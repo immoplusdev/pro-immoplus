@@ -97,11 +97,13 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
                 <Table.Column
                     dataIndex="status"
                     title={translate("users.fields.status")}
+                    render={(value) => <span>{translate(`users.fields.${value}`)}</span>}
                     align="center"
                 />
                 <Table.Column
                     dataIndex={["role", "name"]}
                     title={translate("users.fields.role")}
+                    render={(value) => <span>{translate(`users.fields.${value}`)}</span>}
                     align="center"
                 />
                 <Table.Column

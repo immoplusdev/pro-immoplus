@@ -4,6 +4,7 @@ import {enumToList} from "@/lib/ts-utilities";
 import {ResidenceValide, StatusReservation} from "@/lib/ts-utilities/enums/status-reservation";
 import {EditOutlined} from "@ant-design/icons";
 import {BaseRecord} from "@refinedev/core";
+import {yesNoOptions} from "@/core/domain/shared/form";
 
 
 type TranslateFunction = (key: string, params?: Record<string, any>) => string;
@@ -13,21 +14,6 @@ interface ReadOnlySectionProps {
 }
 
 export const ResidenceEditActionFields: React.FC<ReadOnlySectionProps> = ({ translate }) => {
-    const renderSelectFormItem = (labelKey: string, name: string) => (
-        <Form.Item
-            label={translate(labelKey)}
-            style={{ width: 300 }}
-            name={name}
-            rules={[{ required: true }]}
-        >
-            <Select
-                options={enumToList(StatusReservation).map((item) => ({
-                    value: item,
-                    label: <span>{translate(`reservations.status_reservation.${item}`)}</span>,
-                }))}
-            />
-        </Form.Item>
-    );
 
     return (
         <Card
@@ -42,7 +28,7 @@ export const ResidenceEditActionFields: React.FC<ReadOnlySectionProps> = ({ tran
         >
             <Form.Item
                 label={translate("residences.fields.residence_disponible")}
-                style={{width: 300, }}
+                style={{width: "17vw", }}
                 name={["residenceDisponible"]}
                 rules={[
                     {
@@ -52,9 +38,9 @@ export const ResidenceEditActionFields: React.FC<ReadOnlySectionProps> = ({ tran
             >
                 <Select
                     style={{border:"0.5px solid black", borderRadius:"7px"}}
-                    options={enumToList(ResidenceValide).map(item => ({
-                    value: item,
-                    label: <span>{translate(`residences.fields.${item}`)}</span>
+                    options={yesNoOptions.map(option => ({
+                    value: option.value || false,
+                    label: translate(option.label)
                 }))}/>
             </Form.Item>
             <Form.Item

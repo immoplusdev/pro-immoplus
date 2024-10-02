@@ -8,8 +8,6 @@ import {ResidenceEditActionFields} from "@/pages/residences/components/edit-acti
 import {useNavigate} from "react-router-dom";
 
 
-
-
 export const EditResidence: React.FC = () => {
     const translate = useTranslate();
     const { formProps, saveButtonProps, queryResult, form } = useForm();
@@ -19,6 +17,8 @@ export const EditResidence: React.FC = () => {
 
     return (
         <Edit
+            title={`${translate(`actions.edit`)} Residence`}
+            breadcrumb={null}
             footerButtons={() => (<></>)}
             headerButtons={
                 <Space>
@@ -43,7 +43,7 @@ export const EditResidence: React.FC = () => {
                         icon={<SaveOutlined />}
                         {...saveButtonProps}
                     >
-                        Save
+                        {translate('buttons.save')}
                     </Button>
                 </Space>
             }

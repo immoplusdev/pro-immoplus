@@ -80,10 +80,6 @@ export const ResidenceEditDataFields: React.FC<ReadOnlySectionProps> = ({ transl
                     content={residencesData?.reglesSupplementaires}
                 />
                 <ReadOnlyFormField
-                    label={translate("residences.fields.residence_disponible")}
-                    content={residencesData?.statusValidation}
-                />
-                <ReadOnlyFormField
                     label={translate("residences.fields.duree_min_sejour")}
                     content={residencesData?.dureeMinSejour}
                 />

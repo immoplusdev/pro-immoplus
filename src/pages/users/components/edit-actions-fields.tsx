@@ -2,7 +2,8 @@ import React from "react";
 import {Card, Form, Select, Space} from "antd";
 import {EditOutlined} from "@ant-design/icons";
 import {enumToList} from "@/lib/ts-utilities";
-import {StatusUser} from "@/lib/ts-utilities/enums/status-reservation";
+import {yesNoOptions} from "@/core/domain/shared/form";
+import {UserStatus, UserRole} from "@/lib/ts-utilities/enums/users-enum";
 
 
 export const UsersEditActionFields: React.FC<{ translate: any }> = ({ translate }) => {
@@ -17,6 +18,20 @@ export const UsersEditActionFields: React.FC<{ translate: any }> = ({ translate 
             headStyle={{ padding: "1rem", border:"0.5px solid black" }}
             bodyStyle={{ padding: "2rem", border:"0.5px solid black" }}
         >
+            {/*<ReadOnlyFormField label={translate("users.fields.role")} content={data?.role?.id} />*/}
+            <Form.Item
+                label={translate("users.fields.role")}
+                name={["role"]}
+                rules={[{ required: true }]}
+            >
+                <Select
+                    style={{border:"0.5px solid black", borderRadius:"7px"}}
+                    options={enumToList(UserRole).map((role) =>({
+                        value: role,
+                        label:  <span>{translate(`users.fields.${role}`)}</span>
+                    }))}
+                />
+            </Form.Item>
             <Form.Item
                 label={translate("users.fields.status")}
                 name={["status"]}
@@ -24,9 +39,9 @@ export const UsersEditActionFields: React.FC<{ translate: any }> = ({ translate 
             >
                 <Select
                     style={{border:"0.5px solid black", borderRadius:"7px"}}
-                    options={enumToList(StatusUser).map((item) =>({
-                        value: item,
-                        label:  <span>{translate(`users.fields.${item}`)}</span>
+                    options={enumToList(UserStatus).map((status) =>({
+                        value: status,
+                        label:  <span>{translate(`users.fields.${status}`)}</span>
                     }))}
                 />
             </Form.Item>
@@ -37,9 +52,9 @@ export const UsersEditActionFields: React.FC<{ translate: any }> = ({ translate 
             >
                 <Select
                     style={{border:"0.5px solid black", borderRadius:"7px"}}
-                    options={enumToList(StatusUser).map((item) =>({
-                        value: item,
-                        label:  <span>{translate(`users.fields.${item}`)}</span>
+                    options={yesNoOptions.map((option) =>({
+                        value: option.value || false,
+                        label: translate(option.label)
                     }))}
                 />
             </Form.Item>
