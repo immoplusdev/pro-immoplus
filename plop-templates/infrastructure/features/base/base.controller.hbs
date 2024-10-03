@@ -24,7 +24,7 @@ export class {{classify name}}Controller {
     type: WrapperResponse{{classify name}}Dto,
   })
   @Post()
-  @RequiredRoles(UserRole.Admin, UserRole.Customer, UserRole.ProEntreprise, UserRole.ProParticulier)
+  @RequiredRoles(UsersEnum.Admin, UsersEnum.Customer, UsersEnum.ProEntreprise, UsersEnum.ProParticulier)
   @RequiredPermissions([PermissionCollection.{{classify name}}s, PermissionAction.Create])
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -43,7 +43,7 @@ export class {{classify name}}Controller {
   @ApiResponse({
   type: WrapperResponse{{classify name}}ListDto,
   })
-  @RequiredRoles(UserRole.Admin, UserRole.Customer, UserRole.ProEntreprise, UserRole.ProParticulier)
+  @RequiredRoles(UsersEnum.Admin, UsersEnum.Customer, UsersEnum.ProEntreprise, UsersEnum.ProParticulier)
   @RequiredPermissions([PermissionCollection.{{classify name}}s, PermissionAction.Read])
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -71,7 +71,7 @@ export class {{classify name}}Controller {
   @ApiResponse({
   type: WrapperResponse{{classify name}}Dto,
   })
-  @RequiredRoles(UserRole.Admin, UserRole.Customer, UserRole.ProEntreprise, UserRole.ProParticulier)
+  @RequiredRoles(UsersEnum.Admin, UsersEnum.Customer, UsersEnum.ProEntreprise, UsersEnum.ProParticulier)
   @RequiredPermissions([PermissionCollection.{{classify name}}s, PermissionAction.Read])
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -92,7 +92,7 @@ export class {{classify name}}Controller {
   @ApiResponse({
   type: WrapperResponse{{classify name}}Dto,
   })
-  @RequiredRoles(UserRole.Admin, UserRole.Customer, UserRole.ProEntreprise, UserRole.ProParticulier)
+  @RequiredRoles(UsersEnum.Admin, UsersEnum.Customer, UsersEnum.ProEntreprise, UsersEnum.ProParticulier)
   @RequiredPermissions([PermissionCollection.{{classify name}}s, PermissionAction.Update])
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -124,7 +124,7 @@ export class {{classify name}}Controller {
       @ApiResponse({
       type: WrapperResponse{{classify name}}Dto,
       })
-      @RequiredRoles(UserRole.Admin, UserRole.Customer, UserRole.ProEntreprise, UserRole.ProParticulier)
+      @RequiredRoles(UsersEnum.Admin, UsersEnum.Customer, UsersEnum.ProEntreprise, UsersEnum.ProParticulier)
       @RequiredPermissions([PermissionCollection.{{classify name}}s, PermissionAction.Delete])
       @UseGuards(JwtAuthGuard)
       @ApiBearerAuth()

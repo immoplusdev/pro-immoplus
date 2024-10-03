@@ -9,7 +9,6 @@ import {useNavigate} from "react-router-dom";
 
 export const EditDemandeVisite: React.FC = () => {
   const translate = useTranslate();
-  const { goBack, list } = useNavigation();
   const navigate = useNavigate()
   const { formProps, saveButtonProps, queryResult, form } = useForm();
   const demandesVisitesData = queryResult?.data?.data;
@@ -58,7 +57,7 @@ export const EditDemandeVisite: React.FC = () => {
               <DemandeVisiteEditDataFields translate={translate} demandesVisitesData={demandesVisitesData} />
             </Col>
             <Col xs={24} md={24} lg={8}>
-              <DemandeVisiteEditActionFields translate={translate} />
+              <DemandeVisiteEditActionFields translate={translate} id={demandesVisitesData?.id}/>
             </Col>
           </Row>
         </Form>
