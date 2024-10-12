@@ -13,21 +13,6 @@ interface ReadOnlySectionProps {
 }
 
 export const ResidenceEditActionFields: React.FC<ReadOnlySectionProps> = ({ translate }) => {
-    const renderSelectFormItem = (labelKey: string, name: string) => (
-        <Form.Item
-            label={translate(labelKey)}
-            style={{ width: 300 }}
-            name={name}
-            rules={[{ required: true }]}
-        >
-            <Select
-                options={enumToList(StatusReservation).map((item) => ({
-                    value: item,
-                    label: <span>{translate(`reservations.status_reservation.${item}`)}</span>,
-                }))}
-            />
-        </Form.Item>
-    );
 
     return (
         <Card

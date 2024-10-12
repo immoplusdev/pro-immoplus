@@ -204,6 +204,18 @@
       "en_cours_validation_admin":"Admin en cours validation"
     }
   },
+  "configs":{
+    "fields":{
+      "normal_visit_price": "Prix visite normal",
+      "express_visit_price": "Prix visite express",
+      "contact_phone_number": "Numéro de téléphone de contact",
+      "contact_email": "E-mail de contact",
+      "proximity_radius": "Rayon de proximité",
+      "sms_sender_name": "Nom de l'expéditeur SMS",
+      "standard_shipping_price": "Prix de livraison standard",
+      "flash_shipping_price": "Prix de livraison flash"
+    }
+},
   "users": {
     "fields": {
       "firstname": "Prénom",

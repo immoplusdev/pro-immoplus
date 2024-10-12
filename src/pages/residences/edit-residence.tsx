@@ -4,7 +4,7 @@ import { Col, Form, Row } from "antd";
 import { useTranslate } from "@refinedev/core";
 import { ImageCarousel } from "@/components/images/image-carousel";
 import { getCarouselUrls } from "@/lib/helpers";
-import {ResidenceEditDataFields} from "@/pages/residences/components/edit-read-only-fields";
+import {ResidenceDataFields} from "@/pages/residences/components/edit-read-only-fields";
 import {ResidenceEditActionFields} from "@/pages/residences/components/edit-actions-fields";
 
 export const EditResidence: React.FC = () => {
@@ -17,7 +17,7 @@ export const EditResidence: React.FC = () => {
             <Form {...formProps} layout="vertical">
                 <Row gutter={[32, 32]} style={{ marginTop: 32,}}>
                     <Col xs={24} md={24} lg={24} xl={16}>
-                        <ResidenceEditDataFields translate={translate} residencesData={residencesData} />
+                        <ResidenceDataFields translate={translate} residencesData={residencesData} />
                     </Col>
                     <Col xs={24} md={24} lg={24} xl={8}>
                         <ResidenceEditActionFields translate={translate} />
