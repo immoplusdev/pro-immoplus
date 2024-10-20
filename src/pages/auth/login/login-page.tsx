@@ -29,7 +29,15 @@ export const Login: React.FC = () => {
 
 
     const CardTitle = (
-        <Title level={3} style={{display:"flex", justifyContent:"center", color: "#4096ff",  fontSize: "30px", letterSpacing:"-0.04em", paddingTop:"20px"}}>
+        <Title level={3}
+               style={{
+                   display:"flex",
+                   justifyContent:"center",
+                   color: "#4096ff",
+                   fontSize: "30px",
+                   letterSpacing:"-0.04em",
+                   paddingTop:"20px"}}
+        >
             
         </Title>
     );
