@@ -17,7 +17,7 @@ import {ColList} from "@/components/layout";
 import {Link} from "react-router-dom";
 import {ArrowRightOutlined} from "@ant-design/icons";
 import {Thumbnail} from "@/components";
-import {getApiFileUrl} from "@/lib/helpers";
+import {formatAmount, getApiFileUrl} from "@/lib/helpers";
 
 export const ListReservations = () => {
   const translate = useTranslate();
@@ -37,6 +37,7 @@ export const ListReservations = () => {
               <Table.Column
                   dataIndex="statusReservation"
                   title={translate("reservations.fields.status_reservation")}
+                  render={(value) => <span>{translate(`reservations.fields.${value}`)}</span>}
                   align="center"
               />
             <Table.Column
@@ -56,6 +57,7 @@ export const ListReservations = () => {
                   title={translate(
                       "reservations.fields.montant_total_reservation",
                   )}
+                  render={(value: number) => <span>{formatAmount(value)}</span>}
                   align="center"
               />
               <Table.Column
@@ -63,6 +65,7 @@ export const ListReservations = () => {
                   title={translate(
                       "reservations.fields.montant_reservation_sans_commission",
                   )}
+                  render={(value: number) => <span>{formatAmount(value)}</span>}
                   align="center"
               />
             <Table.Column

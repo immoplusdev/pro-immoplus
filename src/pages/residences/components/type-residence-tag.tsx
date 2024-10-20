@@ -1,7 +1,5 @@
 import {Tag} from "antd";
 import {useTranslate} from "@refinedev/core";
-import {StatusFacture, StatusValidationReservation} from "@/core/domain/reservations";
-import {TypeResidence} from "@/core/domain/residences";
 
 type Props = {
     typeResidence: string;

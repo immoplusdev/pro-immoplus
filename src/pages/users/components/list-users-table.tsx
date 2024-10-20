@@ -3,17 +3,13 @@ import { BaseRecord, useTranslate } from "@refinedev/core";
 import {
     useTable,
     List,
-    EditButton,
-    ShowButton,
     DeleteButton,
-    EmailField,
-    DateField,
     BooleanField,
 } from "@refinedev/antd";
 import {Table, Space, Button} from "antd";
 import {Link} from "react-router-dom";
 import type {CrudFilter} from "@refinedev/core/src/contexts/data/types";
-import {ArrowRightOutlined, EditOutlined, EyeOutlined} from "@ant-design/icons";
+import {ArrowRightOutlined} from "@ant-design/icons";
 
 
 type Props = {
@@ -101,11 +97,13 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
                 <Table.Column
                     dataIndex="status"
                     title={translate("users.fields.status")}
+                    render={(value) => <span>{translate(`users.fields.${value}`)}</span>}
                     align="center"
                 />
                 <Table.Column
                     dataIndex={["role", "name"]}
                     title={translate("users.fields.role")}
+                    render={(value) => <span>{translate(`users.fields.${value}`)}</span>}
                     align="center"
                 />
                 <Table.Column

@@ -22,11 +22,9 @@ export const UsersEditDataFields: React.FC<{ translate: any; data?: BaseRecord }
                 <ReadOnlyFormField label={translate("users.fields.firstname")} content={data?.firstName} />
                 <ReadOnlyFormField label={translate("users.fields.email")} content={data?.email} />
                 <ReadOnlyFormField label={translate("users.fields.phone_number")} content={data?.phoneNumber} />
-                <ReadOnlyFormField label={translate("fields.created_at")} content={new Date(data?.createdAt).toLocaleDateString()} />
                 <ReadOnlyFormField label={translate("fields.updated_at")} content={new Date(data?.updatedAt).toLocaleDateString()} />
             </Card>
             <Card style={{ width: "50%", border: "none" }}>
-                <ReadOnlyFormField label={translate("users.fields.role")} content={data?.role?.id} />
                 <ReadOnlyFormField label={translate("users.fields.identity_verified")} content={data?.identityVerified ? "Yes" : "No"} />
                 <ReadOnlyFormField label={translate("users.fields.email_verified")} content={data?.emailVerified ? "Yes" : "No"} />
                 <ReadOnlyFormField label={translate("users.fields.phone_number_verified")} content={data?.phoneNumberVerified ? "Yes" : "No"} />

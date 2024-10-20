@@ -11,6 +11,9 @@ import {
 import {Table, Space, Button} from "antd";
 import {Link} from "react-router-dom";
 import {ArrowRightOutlined} from "@ant-design/icons";
+import {
+    StatusValidationDemandeVisiteTag
+} from "@/pages/demandes-visites/components/status-validation-demande-visite-tag";
 
 export const ListDemandeVisites = () => {
   const translate = useTranslate();
@@ -38,6 +41,7 @@ export const ListDemandeVisites = () => {
                 title={translate(
                     "demandes_visites.fields.type_demande_visite",
                 )}
+                render={(value) => <span>{translate(`demandes_visites.fields.${value}`)}</span>}
                 align="center"
             />
           <Table.Column
@@ -45,12 +49,14 @@ export const ListDemandeVisites = () => {
               title={translate(
                   "demandes_visites.fields.status_demande_visite",
               )}
+              render={(value) => <StatusValidationDemandeVisiteTag statusValidation={value}/> }
               align="center"
           />
           <Table.Column
               dataIndex="statusFacture"
               title={translate("demandes_visites.fields.status_facture")}
               align="center"
+              render={(value) => <span>{translate(`demandes_visites.fields.${value}`)}</span>}
           />
           <Table.Column
               dataIndex={["retraitProEffectue"]}

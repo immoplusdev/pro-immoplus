@@ -140,7 +140,7 @@
   },
   "reservations": {
     "fields": {
-      "status_reservation": "Statut de la réservation",
+      "status_reservation": "Statut de réservation",
       "date": "Date",
       "montant_reservation_sans_commission": "Montant reservation sans commission",
       "montant_total_reservation": "Montant total de reservation",
@@ -152,14 +152,19 @@
       "oui": "Oui",
       "non": "Non",
       "paye": "Payé",
-      "non_paye": "Non payé"
+      "non_paye": "Non payé",
+      "rejete": "Rejeté",
+      "valide": "Validé",
+      "en_cours": "En cours",
+      "en_cours_validation_user" : "Utilisateur en cours de validation ",
+      "en_cours_validation_admin" : "Admin en cours de validation "
     },
     "status_reservation": {
       "rejete": "Rejeté",
       "valide": "Validé",
       "en_cours": "En cours",
-      "en_cours_validation_user" : "En cours de validation utilisateur ",
-      "en_cours_validation_admin" : "En cours de validation admin"
+      "en_cours_validation_user" : "Utilisateur en cours de validation ",
+      "en_cours_validation_admin" : "Admin en cours de validation "
     }
   },
   "biens_immobiliers": {
@@ -176,8 +181,8 @@
       "animaux_autorises": "Animaux autorisés",
       "fetes_autorises": "Fêtes autorisées",
       "bien_immobilier_disponible": "Bien immobilier disponible",
-      "non": "No",
       "oui": "Oui",
+      "non": "Non",
       "compte_pro_Valide": "Compte pro valide"
     }
   },
@@ -200,8 +205,11 @@
       "rejete": "Rejete",
       "valide": "Valide",
       "en_cours": "en cours",
-      "en_cours_validation_user": "User en cours validation",
-      "en_cours_validation_admin":"Admin en cours validation"
+      "en_cours_validation_user": "Utilisateur en cours validation",
+      "en_cours_validation_admin":"Admin en cours validation",
+      "paye": "Payé",
+      "non_paye": "Non payé",
+      "programmer_une_visite": "Programmer une visite"
     }
   },
   "configs":{
@@ -239,7 +247,14 @@
       "valide": "Validé",
       "en_cours": "en cours",
       "en_cours_validation_user": "User en cours validation",
-      "en_cours_validation_admin":"Admin en cours validation"
+      "en_cours_validation_admin":"Admin en cours validation",
+      "customer":"Client",
+      "admin": "Admin",
+      "pro_entreprise": "ProEntreprise",
+      "pro_particulier" : "ProParticulier",
+      "active": "Active",
+      "blocked": "Blocked"
+
     }
   },
   "dashboard": {
@@ -338,8 +353,12 @@
     "pro_particulier": "Pro particulier",
     "utilisateurs_valides": "Utilisateurs validés",
     "utilisateurs_non_valides": "Utilisateurs non validés",
-    "customer": "Client"
-
+    "customer": "Client",
+    "en_attente_validation": "En cours de validation",
+    "en_cours": "En cours",
+    "en_cours_validation_admin": "Admin en cours de validation",
+    "en_cours_validation_user": "Utilisateur en cours de validation",
+    "valide": "Validé"
   },
   "files": {
     "file_upload": {
@@ -347,5 +366,9 @@
       "drag_and_drop_image_uploader_description": "Assurez-vous que le fichier est au format PNG, JPG ou SVG et ne dépasse pas 2 Mo.",
       "upload": "Téléverser"
     }
+  },
+  "common": {
+    "yes": "Oui",
+    "no": "Non"
   }
 }

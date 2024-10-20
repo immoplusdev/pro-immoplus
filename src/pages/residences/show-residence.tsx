@@ -59,7 +59,7 @@ export const ShowResidence = () => {
 
                     <Form.Item label={translate("fields.status_validation")}>
                         <Tag color="warning" style={{
-                            width: 300,
+                            width: "17vw",
                             height: 30,
                             display: "flex",
                             alignItems: "center",

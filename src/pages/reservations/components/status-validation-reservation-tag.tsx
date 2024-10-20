@@ -1,6 +1,7 @@
 import {Tag} from "antd";
 import {useTranslate} from "@refinedev/core";
-import {StatusFacture, StatusValidationReservation} from "@/core/domain/reservations";
+import {StatusFacture} from "@/lib/ts-utilities/enums/status-facture";
+
 
 type Props = {
     statusValidation: string;

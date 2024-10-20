@@ -22,14 +22,6 @@ export const DemandeVisiteEditDataFields: React.FC<VisiteDataFieldProps> = ({ tr
         >
             <Card style={{ border: "none", width: "50%", display: "flex" , flexDirection:"row"}}>
                 <ReadOnlyFormField
-                    label={translate("demandes_visites.fields.type_demande_visite")}
-                    content={demandesVisitesData?.typeDemandeVisite}
-                />
-                <ReadOnlyFormField
-                    label={translate("demandes_visites.fields.status_facture")}
-                    content={demandesVisitesData?.statusFacture}
-                />
-                <ReadOnlyFormField
                     label={translate("demandes_visites.fields.client_phone_number")}
                     content={demandesVisitesData?.clientPhoneNumber}
                 />
@@ -55,10 +47,6 @@ export const DemandeVisiteEditDataFields: React.FC<VisiteDataFieldProps> = ({ tr
                 <ReadOnlyFormField
                     label={translate("demandes_visites.fields.created_at")}
                     content={new Date(demandesVisitesData?.createdAt).toLocaleDateString()}
-                />
-                <ReadOnlyFormField
-                    label={translate("demandes_visites.fields.updated_at")}
-                    content={new Date(demandesVisitesData?.updatedAt).toLocaleDateString()}
                 />
             </Card>
         </Card>

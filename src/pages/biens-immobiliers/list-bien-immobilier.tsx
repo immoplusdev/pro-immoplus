@@ -3,20 +3,18 @@ import {BaseRecord, useTranslate} from "@refinedev/core";
 import {
     useTable,
     List,
-    EditButton,
-    ShowButton,
     DeleteButton,
-    TagField,
     BooleanField,
-    DateField, ImageField,
 } from "@refinedev/antd";
-import {Table, Space, Tag, Image, Button} from "antd";
-import {StatusValidationResidence} from "@/core/domain/residences";
-import {StatusValidationResidenceTag} from "@/pages/residences/components";
-import {getApiFileUrl, getImageUrl} from "@/lib/helpers";
+import {Table, Space, Tag, Button} from "antd";
+import {formatAmount, getApiFileUrl} from "@/lib/helpers";
 import {Thumbnail} from "@/components";
 import {Link} from "react-router-dom";
 import {ArrowRightOutlined} from "@ant-design/icons";
+import {
+    StatusValidationBiensImmobilersTag
+} from "@/pages/biens-immobiliers/components/status-validation-biens-immobilers-tag";
+import {StatusValidationBiensImmobilers} from "@/lib/ts-utilities/enums/status-biens-immobiliers";
 
 export const ListBienImmobiliers = () => {
     const translate = useTranslate();
@@ -62,12 +60,12 @@ export const ListBienImmobiliers = () => {
                     dataIndex="statusValidation"
                     title={translate("fields.status_validation")}
                     align="center"
-                    render={(value: StatusValidationResidence) => <StatusValidationResidenceTag
-                        statusValidation={value}/>}
+                    render={(value: StatusValidationBiensImmobilers) =>  <StatusValidationBiensImmobilersTag statusValidation={value}/>}
                 />
                 <Table.Column
                     dataIndex="prix"
                     align="center"
+                    render={(value: number) => <span>{formatAmount(value)}</span>}
                     title={translate("biens_immobiliers.fields.prix")}
                 />
                 <Table.Column
