@@ -2,16 +2,10 @@ import React from "react";
 import {useNavigate} from "react-router-dom";
 import {OrderedListOutlined, ReloadOutlined, SaveOutlined} from "@ant-design/icons"
 import {DeleteButton, Edit, useForm} from "@refinedev/antd";
-import {Button, Col, Form, Row, Space} from "antd";
-import {useTranslate} from "@refinedev/core";
-import {ResidenceEditDataFields} from "@/pages/residences/components/edit-read-only-fields";
 import {ResidenceEditActionFields} from "@/pages/residences/components/edit-actions-fields";
-import { Edit, useForm } from "@refinedev/antd";
-import { Col, Form, Row } from "antd";
-import { useTranslate } from "@refinedev/core";
-import { ImageCarousel } from "@/components/images/image-carousel";
-import { getCarouselUrls } from "@/lib/helpers";
 import {ResidenceDataFields} from "@/pages/residences/components/edit-read-only-fields";
+import {useTranslate} from "@refinedev/core";
+import {Button, Col, Form, Row, Space} from "antd";
 
 
 
