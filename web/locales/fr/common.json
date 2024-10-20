@@ -1,0 +1,351 @@
+{
+  "pages": {
+    "login": {
+      "title": "Connectez-vous à votre compte",
+      "signin": "Se connecter",
+      "signup": "S'inscrire",
+      "divider": "ou",
+      "fields": {
+        "email": "Email",
+        "password": "Mot de passe"
+      },
+      "errors": {
+        "validEmail": "Adresse email invalide"
+      },
+      "buttons": {
+        "submit": "Connexion",
+        "forgotPassword": "Mot de passe oublié?",
+        "noAccount": "Vous n'avez pas de compte?",
+        "rememberMe": "Se souvenir de moi"
+      }
+    },
+    "forgotPassword": {
+      "title": "Mot de passe oublié?",
+      "fields": {
+        "email": "Email"
+      },
+      "errors": {
+        "validEmail": "Adresse email invalide"
+      },
+      "buttons": {
+        "submit": "Envoyer les instructions de réinitialisation"
+      }
+    },
+    "register": {
+      "title": "Inscrivez-vous pour votre compte",
+      "fields": {
+        "email": "Email",
+        "password": "Mot de passe"
+      },
+      "errors": {
+        "validEmail": "Adresse email invalide"
+      },
+      "buttons": {
+        "submit": "S'inscrire",
+        "haveAccount": "Vous avez déjà un compte?"
+      }
+    },
+    "updatePassword": {
+      "title": "Mettre à jour le mot de passe",
+      "fields": {
+        "password": "Nouveau mot de passe",
+        "confirmPassword": "Confirmer le nouveau mot de passe"
+      },
+      "errors": {
+        "confirmPasswordNotMatch": "Les mots de passe ne correspondent pas"
+      },
+      "buttons": {
+        "submit": "Mettre à jour"
+      }
+    },
+    "error": {
+      "info": "Vous avez peut-être oublié d'ajouter le composant {{action}} à la ressource {{resource}}.",
+      "404": "Désolé, la page que vous avez visitée n'existe pas.",
+      "resource404": "Êtes-vous sûr d'avoir créé la ressource {{resource}}?",
+      "backHome": "Retour à l'accueil"
+    },
+    "residence": {
+      "residences": "Résidences"
+    },
+    "reservation": {
+      "reservation": "Réservation",
+      "reservations": "Réservations"
+    }
+
+  },
+  "actions": {
+    "list": "Liste",
+    "create": "Créer",
+    "edit": "Modifier",
+    "show": "Afficher"
+  },
+  "buttons": {
+    "create": "Créer",
+    "save": "Enregistrer",
+    "logout": "Déconnexion",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "cancel": "Annuler",
+    "confirm": "Êtes-vous sûr?",
+    "filter": "Filtrer",
+    "clear": "Effacer",
+    "refresh": "Actualiser",
+    "show": "Afficher",
+    "undo": "Annuler",
+    "import": "Importer",
+    "clone": "Cloner",
+    "notAccessTitle": "Vous n'avez pas la permission d'accéder"
+  },
+  "warnWhenUnsavedChanges": "Êtes-vous sûr de vouloir partir? Vous avez des modifications non enregistrées.",
+  "notifications": {
+    "success": "Succès",
+    "error": "Erreur (code de statut: {{statusCode}})",
+    "undoable": "Vous avez {{seconds}} secondes pour annuler",
+    "createSuccess": "Création réussie de {{resource}}",
+    "createError": "Erreur lors de la création de {{resource}} (code de statut: {{statusCode}})",
+    "deleteSuccess": "Suppression réussie de {{resource}}",
+    "deleteError": "Erreur lors de la suppression de {{resource}} (code de statut: {{statusCode}})",
+    "editSuccess": "Modification réussie de {{resource}}",
+    "editError": "Erreur lors de la modification de {{resource}} (code de statut: {{statusCode}})",
+    "importProgress": "Importation en cours: {{processed}}/{{total}}"
+  },
+  "loading": "Chargement",
+  "residences": {
+    "fields": {
+      "type_residence": "Type de résidence",
+      "residence_disponible": "Residence disponible",
+      "nombre_max_occupants": "Nombre maximum d'occupants",
+      "animaux_autorises": "Animaux autorisés",
+      "fetes_autorises": "Fêtes autorisées",
+      "residence_id": "Résidence identifiant",
+      "residence": "Résidence",
+      "duree_min_sejour": "Durée minimum de séjour",
+      "duree_max_sejour": "Durée maximum de séjour",
+      "heure_entree": "Heure d'entrée",
+      "heure_depart": "Heure de départ",
+      "images": "Images",
+      "oui": "Oui",
+      "non": "Non"
+    },
+    "status_validation": {
+      "valide": "Validé",
+      "en_attente_validation": "En attente de validation",
+      "rejete": "Rejeté"
+    },
+    "type_residence": {
+      "appartement": "Appartement",
+      "maison": "Maison",
+      "villa": "Villa"
+    }
+  },
+  "reservations": {
+    "fields": {
+      "status_reservation": "Statut de la réservation",
+      "date": "Date",
+      "montant_reservation_sans_commission": "Montant reservation sans commission",
+      "montant_total_reservation": "Montant total de reservation",
+      "retrait_pro_effectue": "Retrait Pro Effectué",
+      "status_facture": "Status facture",
+      "proprietaire": "Proprietaire",
+      "data": "Données",
+      "actions": "Actions",
+      "oui": "Oui",
+      "non": "Non",
+      "paye": "Payé",
+      "non_paye": "Non payé"
+    },
+    "status_reservation": {
+      "rejete": "Rejeté",
+      "valide": "Validé",
+      "en_cours": "En cours",
+      "en_cours_validation_user" : "En cours de validation utilisateur ",
+      "en_cours_validation_admin" : "En cours de validation admin"
+    }
+  },
+  "biens_immobiliers": {
+    "fields": {
+      "type_bien_immobilier": "Type de bien immobilier",
+      "tags": "Tag",
+      "prix": "Prix",
+      "featured": "Fonctionnalité",
+      "a_louer": "À louer",
+      "type_location": "Type de location",
+      "disponible": "Disponibilité",
+      "data": "Données",
+      "nombre_max_occupants": "Nombre maximum d'occupants",
+      "animaux_autorises": "Animaux autorisés",
+      "fetes_autorises": "Fêtes autorisées",
+      "bien_immobilier_disponible": "Bien immobilier disponible",
+      "non": "No",
+      "oui": "Oui",
+      "compte_pro_Valide": "Compte pro valide"
+    }
+  },
+  "demandes_visites": {
+    "fields": {
+      "status_demande_visite": "Status demande visite",
+      "type_demande_visite": "Type demande visite",
+      "status_facture": "Status facture",
+      "retrait_pro_effectue": "Retrait Pro Effectué",
+      "notes": "Notes",
+      "client_phone_number": "Numéro de client",
+      "data": "Données",
+      "actions": "Actions",
+      "montant_total_demande_visite": "Montant total demande visite",
+      "montant_demande_visite_sans_commission": "Montant demande visite sans commission",
+      "created_at": "Date de création",
+      "updated_at": "Date de mise à jour",
+      "express": "Express",
+      "normal": "Normal",
+      "rejete": "Rejete",
+      "valide": "Valide",
+      "en_cours": "en cours",
+      "en_cours_validation_user": "User en cours validation",
+      "en_cours_validation_admin":"Admin en cours validation"
+    }
+  },
+  "configs":{
+    "fields":{
+      "normal_visit_price": "Prix visite normal",
+      "express_visit_price": "Prix visite express",
+      "contact_phone_number": "Numéro de téléphone de contact",
+      "contact_email": "E-mail de contact",
+      "proximity_radius": "Rayon de proximité",
+      "sms_sender_name": "Nom de l'expéditeur SMS",
+      "standard_shipping_price": "Prix de livraison standard",
+      "flash_shipping_price": "Prix de livraison flash"
+    }
+},
+  "users": {
+    "fields": {
+      "firstname": "Prénom",
+      "lastname": "Nom de famille",
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "phone_number": "Numéro de téléphone",
+      "otp": "Opt",
+      "otp_expiration": "Date d'expiration otp",
+      "identity_verified": "Verification identité",
+      "email_verified": "E-mail verifié",
+      "phone_number_verified": "Numéro de téléphone verifié ",
+      "compte_pro_valide": "Compte pro valide",
+      "auth_login_attempts": "Tentatives d'authentification",
+      "status": "Status",
+      "role": "Role",
+      "users": "Utilisateurs",
+      "customer": "Client",
+      "data": "Données",
+      "rejete" : "Rejeté",
+      "valide": "Validé",
+      "en_cours": "en cours",
+      "en_cours_validation_user": "User en cours validation",
+      "en_cours_validation_admin":"Admin en cours validation"
+    }
+  },
+  "dashboard": {
+    "title": "Tableau de bord"
+  },
+  "products": {
+    "fields": {
+      "product_types": {
+        "to_contact": "Contacter",
+        "visit_to_ask": "Demande de visite",
+        "to_order": "À commander",
+        "service": "Service",
+        "booking": "Réservation"
+      }
+    }
+  },
+  "categories": {
+    "categories": "Catégories",
+    "fields": {
+      "id": "Id",
+      "title": "Titre",
+      "createdAt": "Créé à",
+      "payment_types": {
+        "lifetime": "À vie",
+        "monthly": "Mensuel",
+        "daily": "Journalier",
+        "yearly": "Annuel"
+      }
+    },
+    "titles": {
+      "create": "Créer une catégorie",
+      "edit": "Modifier la catégorie",
+      "list": "Catégories",
+      "show": "Afficher la catégorie"
+    }
+  },
+  "documentTitle": {
+    "default": "raffiner",
+    "suffix": " | raffiner",
+    "blog_posts": {
+      "list": "Articles de blog | raffiner",
+      "show": "#{{id}} Afficher l'article de blog | raffiner",
+      "edit": "#{{id}} Modifier l'article de blog | raffiner",
+      "create": "Créer un nouvel article de blog | raffiner",
+      "clone": "#{{id}} Cloner l'article de blog | raffiner"
+    },
+    "categories": {
+      "list": "Catégories | raffiner",
+      "show": "#{{id}} Afficher la catégorie | raffiner",
+      "edit": "#{{id}} Modifier la catégorie | raffiner",
+      "create": "Créer une nouvelle catégorie | raffiner",
+      "clone": "#{{id}} Cloner la catégorie | raffiner"
+    }
+  },
+  "table": {
+    "actions": "Actions"
+  },
+  "fields": {
+    "id": "Identifiant",
+    "title": "Titre",
+    "client": "Client",
+    "name": "Nom",
+    "description": "Description",
+    "adresse": "Adresse",
+    "payment_type": "Type de paiement",
+    "product_type": "Type de produit",
+    "thumb": "Miniature",
+    "sub_categories": "Sous Catégories",
+    "created_at": "Date de création",
+    "updated_at": "Date de mise à jour",
+    "nom": "Nom",
+    "status_validation": "Statut de validation",
+    "prix_reservation": "Prix de la réservation",
+    "miniature": "Miniature",
+    "location": "Localisation",
+    "client_phone_number": "Numéro client",
+    "notes": "Note",
+    "images": "Images",
+    "regles_supplementaires": "Règles supplémentaires"
+
+  },
+  "tags": {
+    "valided": "Validé",
+    "pending": "En attente",
+    "rejected": "Rejeté",
+    "paye": "Paye",
+    "clone": "Cloner",
+    "non_paye": "Non paye",
+    "en_validation":"En validation",
+    "all_e": "Toutes",
+    "all": "Tous",
+    "maison": "maison",
+    "villa": "villa",
+    "appartement": "appartement",
+    "pro_entreprise": "Pro entreprise",
+    "pro_particulier": "Pro particulier",
+    "utilisateurs_valides": "Utilisateurs validés",
+    "utilisateurs_non_valides": "Utilisateurs non validés",
+    "customer": "Client"
+
+  },
+  "files": {
+    "file_upload": {
+      "drag_and_drop_image_uploader_title": "Cliquez ou faites glisser un fichier pour l'ajouter",
+      "drag_and_drop_image_uploader_description": "Assurez-vous que le fichier est au format PNG, JPG ou SVG et ne dépasse pas 2 Mo.",
+      "upload": "Téléverser"
+    }
+  }
+}

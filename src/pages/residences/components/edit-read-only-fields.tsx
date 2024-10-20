@@ -12,7 +12,7 @@ interface ReadOnlySectionProps {
     residencesData?: BaseRecord;
 }
 
-export const ResidenceEditDataFields: React.FC<ReadOnlySectionProps> = ({ translate, residencesData }) => {
+export const ResidenceDataFields: React.FC<ReadOnlySectionProps> = ({ translate, residencesData }) => {
     return (
         <Card
             title={
