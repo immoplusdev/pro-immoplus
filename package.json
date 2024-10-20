@@ -14,6 +14,7 @@
     "@refinedev/react-router-v6": "^4.5.5",
     "antd": "^5.0.5",
     "axios": "^1.6.7",
+    "classnames": "^2.5.1",
     "i18next": "^20.1.0",
     "i18next-browser-languagedetector": "^6.1.1",
     "i18next-xhr-backend": "^3.2.2",
@@ -26,6 +27,7 @@
     "react-i18next": "^11.8.11",
     "react-map-gl": "^7.1.7",
     "react-router-dom": "^6.8.1",
+    "swiper": "^11.1.14",
     "tsyringe": "^4.8.0"
   },
   "devDependencies": {
@@ -51,11 +53,14 @@
   },
   "scripts": {
     "dev": "concurrently \"npx refine devtools start\" \"vite dev\"",
+    "debug": "concurrently \"npx refine devtools start\" \"vite dev\"",
     "start": "vite preview",
     "build": "vite build",
-    "build:prod": "tsc && vite build",
+    "build:prod": "vite build",
+    "build:prod:tsc": "tsc && vite build",
     "preview": "vite start",
     "refine": "vite",
+    "refine-devtools": "npx refine devtools start",
     "api": "cd ../api-immoplus && npm run dev"
   },
   "browserslist": {

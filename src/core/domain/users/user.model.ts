@@ -49,6 +49,8 @@ export enum UserStatus {
 export enum UserRole {
     Customer = "customer",
     Admin = "admin",
-    ProEntreprise = "pro_entreprise",
+    ProEntreprise = "pro_" +
+        "" +
+        "entreprise",
     ProParticulier = "pro_particulier",
 }

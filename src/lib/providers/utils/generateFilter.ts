@@ -4,6 +4,7 @@ import {ItemsParamsCriterias} from "@/lib/providers/utils";
 
 export const generateFilter = (filters?: CrudFilters) => {
     const queryFilters: Partial<ItemsParamsCriterias>[] = [];
+
     if (filters) {
         filters.map((filter) => {
 
@@ -25,5 +26,6 @@ export const generateFilter = (filters?: CrudFilters) => {
         });
     }
 
+    console.log(queryFilters)
     return queryFilters;
 };

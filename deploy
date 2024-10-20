@@ -1,0 +1,5 @@
+#!/bin/bash
+
+rm -r /home/immoplus-admin/htdocs/admin.immoplus.ci/*
+cp -r ./web/* /home/immoplus-admin/htdocs/admin.immoplus.ci/
+
