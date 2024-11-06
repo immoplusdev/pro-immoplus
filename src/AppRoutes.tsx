@@ -22,6 +22,8 @@ import {ListUsersCustomers} from "@/pages/users/list-users-customers";
 import {ListResidencesValides} from "@/pages/residences/list-residences-valides";
 import {EditConfig, ShowConfig} from "@/pages/configs";
 import {EditDemandeVisite, ListDemandeVisites, ShowDemandeVisite} from "@/pages/demandes-visites";
+import {ListDemandeVisiteEnValidation} from "@/pages/demandes-visites/list-demande-visite-en-validation";
+import {ListDemandeVisitesValides} from "@/pages/demandes-visites/list-demande-visite-vaildes";
 
 export function AppRoutes(){
     return (
@@ -85,6 +87,8 @@ export function AppRoutes(){
                     <Route index element={<ListDemandeVisites/>}/>
                     <Route path="edit/:id" element={<EditDemandeVisite/>}/>
                     <Route path="show/:id" element={<ShowDemandeVisite/>}/>
+                    <Route path="en-validation" element={<ListDemandeVisiteEnValidation/>}/>
+                    <Route path="validé" element={<ListDemandeVisitesValides/>}/>
                 </Route>
                 <Route path={"/configs"}>
                     <Route index element={<EditConfig/>}/>

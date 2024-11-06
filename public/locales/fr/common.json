@@ -209,7 +209,10 @@
       "en_cours_validation_admin":"Admin en cours validation",
       "paye": "Payé",
       "non_paye": "Non payé",
-      "programmer_une_visite": "Programmer une visite"
+      "programmer_une_visite": "Programmer une visite",
+      "demandes_visites": "Demandes visites",
+      "en_validation": "En validation",
+      "valide": "Validé"
     }
   },
   "configs":{
