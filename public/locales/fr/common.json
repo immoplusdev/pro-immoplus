@@ -157,7 +157,10 @@
       "valide": "Validé",
       "en_cours": "En cours",
       "en_cours_validation_user" : "Utilisateur en cours de validation ",
-      "en_cours_validation_admin" : "Admin en cours de validation "
+      "en_cours_validation_admin" : "Admin en cours de validation ",
+      "en_cours_validation" : "En cours de validation ",
+      "en_attente_validation" : "En attente de validation ",
+      "en_validation" : "En validation "
     },
     "status_reservation": {
       "rejete": "Rejeté",
@@ -203,7 +206,6 @@
       "express": "Express",
       "normal": "Normal",
       "rejete": "Rejete",
-      "valide": "Valide",
       "en_cours": "en cours",
       "en_cours_validation_user": "Utilisateur en cours validation",
       "en_cours_validation_admin":"Admin en cours validation",
