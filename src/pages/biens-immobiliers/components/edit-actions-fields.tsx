@@ -4,6 +4,7 @@ import {enumToList} from "@/lib/ts-utilities";
 import {StatusReservation} from "@/lib/ts-utilities/enums/status-reservation";
 import {EditOutlined} from "@ant-design/icons";
 import {yesNoOptions} from "@/core/domain/shared/form";
+import {StatusValidationBiensImmobilers} from "@/lib/ts-utilities/enums/status-biens-immobiliers";
 
 export const BienImmobilierEditActionFields: React.FC<{ translate: any }> = ({ translate }) => {
 
@@ -43,9 +44,9 @@ export const BienImmobilierEditActionFields: React.FC<{ translate: any }> = ({ t
             >
                 <Select
                     style={{border:"0.5px solid black", borderRadius:"7px"}}
-                    options={enumToList(StatusReservation).map((item) => ({
+                    options={enumToList(StatusValidationBiensImmobilers).map((item) => ({
                         value: item,
-                        label: <span>{translate(`reservations.status_reservation.${item}`)}</span>,
+                        label: <span>{translate(`biens_immobiliers.fields.${item}`)}</span>,
                     }))}
                 />
             </Form.Item>

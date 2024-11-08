@@ -26,6 +26,10 @@ import {ListDemandeVisiteEnValidation} from "@/pages/demandes-visites/list-deman
 import {ListDemandeVisitesValides} from "@/pages/demandes-visites/list-demande-visite-vaildes";
 import {ListReservationsEnValidation} from "@/pages/reservations/List-reservations-en-validation";
 import {ListReservationsValides} from "@/pages/reservations/List-reservations-valides";
+import {ListBienImmobilierDisponible} from "@/pages/biens-immobiliers/list-bien-immobilier-disponible";
+import {ListBienImmobilierNonDisponible} from "@/pages/biens-immobiliers/list-bien-immobilier-non-disponible";
+import {ListBienImmobilierValide} from "@/pages/biens-immobiliers/list-bien-immobilier-valide";
+import {ListBienImmobilierEnValidation} from "@/pages/biens-immobiliers/list-bien-immobilier-en-validation";
 
 export function AppRoutes(){
     return (
@@ -75,6 +79,10 @@ export function AppRoutes(){
                     <Route index element={<ListBienImmobiliers/>}/>
                     <Route path="edit/:id" element={<EditBienImmobilier/>}/>
                     <Route path="show/:id" element={<ShowBienImmobilier/>}/>
+                    <Route path="en-validation" element={<ListBienImmobilierEnValidation/>}/>
+                    <Route path="validé" element={<ListBienImmobilierValide/>}/>
+                    <Route path="non-disponible" element={<ListBienImmobilierNonDisponible/>}/>
+                    <Route path="disponible" element={<ListBienImmobilierDisponible/>}/>
                 </Route>
                 <Route path={"/users"}>
                     <Route index element={<ListUsers/>}/>
