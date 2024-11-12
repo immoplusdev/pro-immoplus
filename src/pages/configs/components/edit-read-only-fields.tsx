@@ -20,9 +20,9 @@ export const ConfigDataFields: React.FC<{ data?: BaseRecord }> = ({data}) => {
         >
             <Card style={{border: "none", width: "50%"}}>
                 <ReadOnlyFormField label={translate("configs.fields.project_name")} content={data?.projectName}/>
-                <ReadOnlyFormField label={translate("configs.fields.contact_phone_number")}
-                                   content={data?.contactPhoneNumber}/>
-                <ReadOnlyFormField label={translate("configs.fields.contact_email")} content={data?.contactEmail}/>
+                {/*<ReadOnlyFormField label={translate("configs.fields.contact_phone_number")}*/}
+                {/*                   content={data?.contactPhoneNumber}/>*/}
+                {/*<ReadOnlyFormField label={translate("configs.fields.contact_email")} content={data?.contactEmail}/>*/}
 
             </Card>
             <Card style={{width: "50%", border: "none"}}>

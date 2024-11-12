@@ -40,6 +40,30 @@ export function ConfigEditActionFields() {
             >
                 <Input/>
             </Form.Item>
+            <Form.Item
+                label={translate("configs.fields.contact_email")}
+                style={{width: 300}}
+                name={["contactEmail"]}
+                rules={[
+                    {
+                        required: true,
+                    },
+                ]}
+            >
+                <Input/>
+            </Form.Item>
+            <Form.Item
+                label={translate("configs.fields.contact_phone_number")}
+                style={{width: 300}}
+                name={["contactPhoneNumber"]}
+                rules={[
+                    {
+                        required: true,
+                    },
+                ]}
+            >
+                <Input/>
+            </Form.Item>
         </Card>
     );
 };
