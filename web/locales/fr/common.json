@@ -157,7 +157,10 @@
       "valide": "Validé",
       "en_cours": "En cours",
       "en_cours_validation_user" : "Utilisateur en cours de validation ",
-      "en_cours_validation_admin" : "Admin en cours de validation "
+      "en_cours_validation_admin" : "Admin en cours de validation ",
+      "en_cours_validation" : "En cours de validation ",
+      "en_attente_validation" : "En attente de validation ",
+      "en_validation" : "En validation "
     },
     "status_reservation": {
       "rejete": "Rejeté",
@@ -175,7 +178,12 @@
       "featured": "Fonctionnalité",
       "a_louer": "À louer",
       "type_location": "Type de location",
-      "disponible": "Disponibilité",
+      "disponible": "Disponible",
+      "non_disponible": "Non disponible",
+      "non_valide": "Non valide",
+      "valide": "Validé",
+      "en_validation": "En validation",
+      "rejete": "Rejeté",
       "data": "Données",
       "nombre_max_occupants": "Nombre maximum d'occupants",
       "animaux_autorises": "Animaux autorisés",
@@ -183,7 +191,8 @@
       "bien_immobilier_disponible": "Bien immobilier disponible",
       "oui": "Oui",
       "non": "Non",
-      "compte_pro_Valide": "Compte pro valide"
+      "compte_pro_Valide": "Compte pro valide",
+      "en_attente_validation": "En attente de validation"
     }
   },
   "demandes_visites": {
@@ -203,13 +212,15 @@
       "express": "Express",
       "normal": "Normal",
       "rejete": "Rejete",
-      "valide": "Valide",
       "en_cours": "en cours",
       "en_cours_validation_user": "Utilisateur en cours validation",
       "en_cours_validation_admin":"Admin en cours validation",
       "paye": "Payé",
       "non_paye": "Non payé",
-      "programmer_une_visite": "Programmer une visite"
+      "programmer_une_visite": "Programmer une visite",
+      "demandes_visites": "Demandes visites",
+      "en_validation": "En validation",
+      "valide": "Validé"
     }
   },
   "configs":{
