@@ -15,101 +15,10 @@ import {
     StatusValidationBiensImmobilersTag
 } from "@/pages/biens-immobiliers/components/status-validation-biens-immobilers-tag";
 import {StatusValidationBiensImmobilers} from "@/lib/ts-utilities/enums/status-biens-immobiliers";
+import {ListBienImmobilierTable} from "@/pages/biens-immobiliers/list-bien-immobilier-table";
 
 export const ListBienImmobiliers = () => {
-    const translate = useTranslate();
-    const {tableProps} = useTable({
-        syncWithLocation: true,
-        sorters: {
-            initial: [{
-                field: "createdAt",
-                order: "desc"
-            }]
-        },
-    });
-
-    return (
-        <List>
-            <Table {...tableProps} rowKey="id">
-                <Table.Column
-                    dataIndex="images"
-                    title={translate("fields.images")}
-                    align="center"
-                    render={(value: string) => <Thumbnail src={getApiFileUrl(value[0])}/>}
-                />
-                <Table.Column
-                    dataIndex="nom"
-                    title={translate("fields.nom")}
-                    align="center"
-                />
-                <Table.Column
-                    dataIndex="typeBienImmobilier"
-                    title={translate(
-                        "biens_immobiliers.fields.type_bien_immobilier",
-                    )}
-                    render={(value: string) => <Tag>{value}</Tag>}
-                    align="center"
-                />
-                <Table.Column
-                    dataIndex="adresse"
-                    title={translate("fields.adresse")}
-                    align="center"
-                />
-
-                <Table.Column
-                    dataIndex="statusValidation"
-                    title={translate("fields.status_validation")}
-                    align="center"
-                    render={(value: StatusValidationBiensImmobilers) =>  <StatusValidationBiensImmobilersTag statusValidation={value}/>}
-                />
-                <Table.Column
-                    dataIndex="prix"
-                    align="center"
-                    render={(value: number) => <span>{formatAmount(value)}</span>}
-                    title={translate("biens_immobiliers.fields.prix")}
-                />
-                <Table.Column
-                    dataIndex="nombreMaxOccupants"
-                    title={translate(
-                        "residences.fields.nombre_max_occupants",
-                    )}
-                    align="center"
-                />
-                <Table.Column
-                    dataIndex={["bienImmobilierDisponible"]}
-                    title={translate(
-                        "biens_immobiliers.fields.disponible",
-                    )}
-                    render={(value: any) => <BooleanField value={value}/>}
-                    align="center"
-                />
-                <Table.Column
-                    title={translate("table.actions")}
-                    dataIndex="actions"
-                    align="center"
-                    render={(_, record: BaseRecord) => (
-                        <Space>
-                            <Link to={`/biens-immobiliers/edit/${record.id}`}>
-                                <Button
-                                    size="small"
-                                    icon={<ArrowRightOutlined/>}
-
-                                />
-                            </Link>
-                            {/*<ShowButton*/}
-                            {/*    hideText*/}
-                            {/*    size="small"*/}
-                            {/*    recordItemId={record.id}*/}
-                            {/*/>*/}
-                            <DeleteButton
-                                hideText
-                                size="small"
-                                recordItemId={record.id}
-                            />
-                        </Space>
-                    )}
-                />
-            </Table>
-        </List>
-    );
+  return (
+      <ListBienImmobilierTable activeMenu={"all_e"}/>
+  )
 };

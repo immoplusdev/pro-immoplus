@@ -20,8 +20,16 @@ import {ListUsersValides} from "@/pages/users/list-users-valides";
 import {ListUsersNonValides} from "@/pages/users/list-users-non-valides";
 import {ListUsersCustomers} from "@/pages/users/list-users-customers";
 import {ListResidencesValides} from "@/pages/residences/list-residences-valides";
-import {EditConfig, ShowConfig} from "@/pages/configs";
+import {EditConfig} from "@/pages/configs";
 import {EditDemandeVisite, ListDemandeVisites, ShowDemandeVisite} from "@/pages/demandes-visites";
+import {ListDemandeVisiteEnValidation} from "@/pages/demandes-visites/list-demande-visite-en-validation";
+import {ListDemandeVisitesValides} from "@/pages/demandes-visites/list-demande-visite-vaildes";
+import {ListReservationsEnValidation} from "@/pages/reservations/List-reservations-en-validation";
+import {ListReservationsValides} from "@/pages/reservations/List-reservations-valides";
+import {ListBienImmobilierDisponible} from "@/pages/biens-immobiliers/list-bien-immobilier-disponible";
+import {ListBienImmobilierNonDisponible} from "@/pages/biens-immobiliers/list-bien-immobilier-non-disponible";
+import {ListBienImmobilierValide} from "@/pages/biens-immobiliers/list-bien-immobilier-valide";
+import {ListBienImmobilierEnValidation} from "@/pages/biens-immobiliers/list-bien-immobilier-en-validation";
 
 export function AppRoutes(){
     return (
@@ -64,11 +72,17 @@ export function AppRoutes(){
                     {/*<Route path="create" element={<CreateReservation/>}/>*/}
                     <Route path="edit/:id" element={<EditReservation/>}/>
                     <Route path="show/:id" element={<ShowReservation/>}/>
+                    <Route path="en-validation" element={<ListReservationsEnValidation/>}/>
+                    <Route path="validé" element={<ListReservationsValides/>}/>
                 </Route>
                 <Route path={"/biens-immobiliers"}>
                     <Route index element={<ListBienImmobiliers/>}/>
                     <Route path="edit/:id" element={<EditBienImmobilier/>}/>
                     <Route path="show/:id" element={<ShowBienImmobilier/>}/>
+                    <Route path="en-validation" element={<ListBienImmobilierEnValidation/>}/>
+                    <Route path="validé" element={<ListBienImmobilierValide/>}/>
+                    <Route path="non-disponible" element={<ListBienImmobilierNonDisponible/>}/>
+                    <Route path="disponible" element={<ListBienImmobilierDisponible/>}/>
                 </Route>
                 <Route path={"/users"}>
                     <Route index element={<ListUsers/>}/>
@@ -85,6 +99,8 @@ export function AppRoutes(){
                     <Route index element={<ListDemandeVisites/>}/>
                     <Route path="edit/:id" element={<EditDemandeVisite/>}/>
                     <Route path="show/:id" element={<ShowDemandeVisite/>}/>
+                    <Route path="en-validation" element={<ListDemandeVisiteEnValidation/>}/>
+                    <Route path="validé" element={<ListDemandeVisitesValides/>}/>
                 </Route>
                 <Route path={"/configs"}>
                     <Route index element={<EditConfig/>}/>
