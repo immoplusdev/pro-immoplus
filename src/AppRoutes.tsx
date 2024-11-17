@@ -4,8 +4,8 @@ import {CatchAllNavigate, NavigateToResource} from "@refinedev/react-router-v6";
 import {ErrorComponent, ThemedLayoutV2, ThemedSiderV2, ThemedTitleV2} from "@refinedev/antd";
 import {AppIcon, Header} from "@/components";
 import {EditResidence, ListResidences, ShowResidence} from "@/pages/residences";
-import { EditReservation, ListReservations, ShowReservation} from "@/pages/reservations";
-import {Login, Register} from "@/pages/auth";
+import {EditReservation, ListReservations, ShowReservation} from "@/pages/reservations";
+import {Login} from "@/pages/auth";
 import {ForgotPassword} from "@/pages/forgotPassword";
 import {ListResidencesEnValidation} from "./pages/residences/list-residences-en-validation";
 import {
@@ -31,7 +31,7 @@ import {ListBienImmobilierNonDisponible} from "@/pages/biens-immobiliers/list-bi
 import {ListBienImmobilierValide} from "@/pages/biens-immobiliers/list-bien-immobilier-valide";
 import {ListBienImmobilierEnValidation} from "@/pages/biens-immobiliers/list-bien-immobilier-en-validation";
 
-export function AppRoutes(){
+export function AppRoutes() {
     return (
         <Routes>
             <Route
@@ -109,7 +109,6 @@ export function AppRoutes(){
             </Route>
             <Route>
                 <Route path={"/login"} element={<Login/>}/>
-                <Route path={"/register"} element={<Register />} />
                 <Route
                     path={"/forgot-password"}
                     element={<ForgotPassword/>}

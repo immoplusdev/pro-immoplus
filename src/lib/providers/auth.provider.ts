@@ -10,6 +10,8 @@ export const authProvider: AuthBindings = {
 
     login: async (params) => {
         const response = await authService.login(params.email, params.password);
+
+
         return response.access_token
             ? {
                 success: true,

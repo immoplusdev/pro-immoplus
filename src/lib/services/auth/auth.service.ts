@@ -18,7 +18,12 @@ export const authService: AuthService = {
 
         try {
             const response = await axios.post(`${API_URL}/auth/login`, body);
-            const {accessToken, refreshToken, expires, role} = response.data.data;
+
+
+            const {accessToken, refreshToken, expires, user} = response.data.data;
+
+            const role = user?.role?.id;
+            if (role != "admin") throw new Error();
 
             const authData = {
                 access_token: accessToken,

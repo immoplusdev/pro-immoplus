@@ -1,5 +1,5 @@
-import {Role} from "@/core/domain/auth/role.model";
-import {UserData} from "@/core/domain/users/user-data.model";
+import {Role} from "@/core/domain/auth";
+import {UserData} from "./user-data.model";
 
 export interface User {
 

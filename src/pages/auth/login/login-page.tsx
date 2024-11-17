@@ -1,5 +1,5 @@
 import React from "react";
-import { useLogin } from "@refinedev/core";
+import {useLogin} from "@refinedev/core";
 import {
     Row,
     Col,
@@ -14,7 +14,7 @@ import {
 import {AppIcon} from "@/components";
 import {Link} from "react-router-dom";
 
-const { Text, Title } = Typography;
+const {Text, Title} = Typography;
 
 export interface ILoginForm {
     email: string;
@@ -25,20 +25,21 @@ export interface ILoginForm {
 export const Login: React.FC = () => {
     const [form] = Form.useForm<ILoginForm>();
 
-    const { mutate: login } = useLogin<ILoginForm>();
+    const {mutate: login, isLoading} = useLogin<ILoginForm>();
 
 
     const CardTitle = (
         <Title level={3}
                style={{
-                   display:"flex",
-                   justifyContent:"center",
+                   display: "flex",
+                   justifyContent: "center",
                    color: "#4096ff",
                    fontSize: "30px",
-                   letterSpacing:"-0.04em",
-                   paddingTop:"20px"}}
+                   letterSpacing: "-0.04em",
+                   paddingTop: "20px"
+               }}
         >
-            
+
         </Title>
     );
 
@@ -52,23 +53,24 @@ export const Login: React.FC = () => {
                 }}
             >
                 <Col xs={22}>
-                    <div style={{maxWidth: "408px", margin:"auto"}}>
+                    <div style={{maxWidth: "408px", margin: "auto"}}>
                         <div style={{
-                            width:"100%",
-                            display:"flex",
-                            alignItems:"center",
-                            justifyContent:"center",
-                            gap:"10px",
-                            marginBottom:"16px"}}
+                            width: "100%",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "10px",
+                            marginBottom: "16px"
+                        }}
                         >
                             <AppIcon/>
-                            <span style={{fontWeight:"700"}}>Immoplus</span>
+                            <span style={{fontWeight: "700"}}>Immoplus</span>
                         </div>
-                        <Card title={CardTitle} headStyle={{ borderBottom: 0 }}>
+                        <Card title={CardTitle} headStyle={{borderBottom: 0}}>
                             <Form
                                 layout="vertical"
                                 form={form}
-                                onFinish={(values) =>{
+                                onFinish={(values) => {
                                     login(values)
                                 }}
                                 requiredMark={false}
@@ -79,19 +81,19 @@ export const Login: React.FC = () => {
                                 <Form.Item
                                     name="email"
                                     label="Email"
-                                    rules={[{ required: true }]}
+                                    rules={[{required: true}]}
                                 >
-                                    <Input type="text" size="large" placeholder="Email" />
+                                    <Input type="text" size="large" placeholder="Email"/>
                                 </Form.Item>
                                 <Form.Item
                                     name="password"
                                     label="Password"
-                                    rules={[{ required: true }]}
-                                    style={{ marginBottom: "12px" }}
+                                    rules={[{required: true}]}
+                                    style={{marginBottom: "12px"}}
                                 >
-                                    <Input type="password" placeholder="●●●●●●●●" size="large" />
+                                    <Input type="password" placeholder="●●●●●●●●" size="large"/>
                                 </Form.Item>
-                                <div style={{ marginBottom: "12px" }}>
+                                <div style={{marginBottom: "12px"}}>
                                     <Form.Item name="remember" valuePropName="checked" noStyle>
                                         <Checkbox
                                             style={{
@@ -113,18 +115,10 @@ export const Login: React.FC = () => {
                                         Forgot password?
                                     </a>
                                 </div>
-                                <Button type="primary" size="large" htmlType="submit" block>
+                                <Button type="primary" size="large" htmlType="submit" block loading={isLoading}>
                                     Sign in
                                 </Button>
                             </Form>
-                            <div style={{ marginTop: 8 }}>
-                                <Text style={{ fontSize: 12 }}>
-                                    Don’t have an account?{" "}
-                                    <Link to="/register" style={{ fontWeight: "bold" }}>
-                                        Sign up
-                                    </Link>
-                                </Text>
-                            </div>
                         </Card>
                     </div>
                 </Col>

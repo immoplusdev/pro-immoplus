@@ -1,4 +1,4 @@
 import {enumToList} from "@/lib/ts-utilities";
-import {StatusValidationReservation} from "@/core/domain/reservations/reservation.model";
+import {StatusValidationReservation} from "./reservation.model";
 
 export const statusValidationReservation = enumToList(StatusValidationReservation);
