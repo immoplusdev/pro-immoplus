@@ -5,52 +5,53 @@ import {enumToList} from "@/lib/ts-utilities";
 import {yesNoOptions} from "@/core/domain/shared/form";
 import {UserStatus, UserRole} from "@/lib/ts-utilities/enums/users-enum";
 
-export const UsersEditActionFields: React.FC<{ translate: any }> = ({ translate }) => {
+export const UsersEditActionFields: React.FC<{ translate: any }> = ({translate}) => {
     return (
         <Card
             title={
                 <Space>
-                    <EditOutlined />
+                    <EditOutlined/>
                     <p>{translate("Actions")}</p>
                 </Space>
             }
-            headStyle={{ padding: "1rem", border:"0.5px solid black" }}
-            bodyStyle={{ padding: "2rem", border:"0.5px solid black" }}
+            headStyle={{padding: "1rem", border: "0.5px solid black"}}
+            bodyStyle={{padding: "2rem", border: "0.5px solid black"}}
         >
             <Form.Item
                 label={translate("users.fields.role")}
+                getValueProps={(value) => ({value: value?.id})}
                 name={["role"]}
-                rules={[{ required: true }]}
+                rules={[{required: true}]}
             >
                 <Select
-                    style={{border:"0.5px solid black", borderRadius:"7px"}}
-                    options={enumToList(UserRole).map((role) =>({
+                    style={{border: "0.5px solid black", borderRadius: "7px"}}
+                    options={enumToList(UserRole).map((role) => ({
                         value: role,
-                        label:  <span>{translate(`users.fields.${role}`)}</span>
+                        label: <span>{translate(`users.tags.roles.${role}`)}</span>
                     }))}
                 />
             </Form.Item>
             <Form.Item
                 label={translate("users.fields.status")}
                 name={["status"]}
-                rules={[{ required: true }]}
+                rules={[{required: true}]}
             >
                 <Select
-                    style={{border:"0.5px solid black", borderRadius:"7px"}}
-                    options={enumToList(UserStatus).map((status) =>({
+                    style={{border: "0.5px solid black", borderRadius: "7px"}}
+                    options={enumToList(UserStatus).map((status) => ({
                         value: status,
-                        label:  <span>{translate(`users.fields.${status}`)}</span>
+                        label: <span>{translate(`users.tags.status.${status}`)}</span>
                     }))}
                 />
             </Form.Item>
             <Form.Item
                 label={translate("users.fields.compte_pro_valide")}
                 name={["compteProValide"]}
-                rules={[{ required: true }]}
+                rules={[{required: true}]}
             >
                 <Select
-                    style={{border:"0.5px solid black", borderRadius:"7px"}}
-                    options={yesNoOptions.map((option) =>({
+                    style={{border: "0.5px solid black", borderRadius: "7px"}}
+                    options={yesNoOptions.map((option) => ({
                         value: option.value || false,
                         label: translate(option.label)
                     }))}

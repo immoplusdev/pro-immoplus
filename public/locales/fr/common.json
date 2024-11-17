@@ -71,7 +71,6 @@
       "reservation": "Réservation",
       "reservations": "Réservations"
     }
-
   },
   "actions": {
     "list": "Liste",
@@ -156,18 +155,18 @@
       "rejete": "Rejeté",
       "valide": "Validé",
       "en_cours": "En cours",
-      "en_cours_validation_user" : "Utilisateur en cours de validation ",
-      "en_cours_validation_admin" : "Admin en cours de validation ",
-      "en_cours_validation" : "En cours de validation ",
-      "en_attente_validation" : "En attente de validation ",
-      "en_validation" : "En validation "
+      "en_cours_validation_user": "Utilisateur en cours de validation ",
+      "en_cours_validation_admin": "Admin en cours de validation ",
+      "en_cours_validation": "En cours de validation ",
+      "en_attente_validation": "En attente de validation ",
+      "en_validation": "En validation "
     },
     "status_reservation": {
       "rejete": "Rejeté",
       "valide": "Validé",
       "en_cours": "En cours",
-      "en_cours_validation_user" : "Utilisateur en cours de validation ",
-      "en_cours_validation_admin" : "Admin en cours de validation "
+      "en_cours_validation_user": "Utilisateur en cours de validation ",
+      "en_cours_validation_admin": "Admin en cours de validation "
     }
   },
   "biens_immobiliers": {
@@ -214,7 +213,7 @@
       "rejete": "Rejete",
       "en_cours": "en cours",
       "en_cours_validation_user": "Utilisateur en cours validation",
-      "en_cours_validation_admin":"Admin en cours validation",
+      "en_cours_validation_admin": "Admin en cours validation",
       "paye": "Payé",
       "non_paye": "Non payé",
       "programmer_une_visite": "Programmer une visite",
@@ -223,8 +222,8 @@
       "valide": "Validé"
     }
   },
-  "configs":{
-    "fields":{
+  "configs": {
+    "fields": {
       "normal_visit_price": "Prix visite normal",
       "express_visit_price": "Prix visite express",
       "contact_phone_number": "Numéro de téléphone de contact",
@@ -234,7 +233,7 @@
       "standard_shipping_price": "Prix de livraison standard",
       "flash_shipping_price": "Prix de livraison flash"
     }
-},
+  },
   "users": {
     "fields": {
       "firstname": "Prénom",
@@ -252,20 +251,30 @@
       "status": "Status",
       "role": "Role",
       "users": "Utilisateurs",
-      "customer": "Client",
       "data": "Données",
-      "rejete" : "Rejeté",
+      "rejete": "Rejeté",
       "valide": "Validé",
       "en_cours": "en cours",
       "en_cours_validation_user": "User en cours validation",
-      "en_cours_validation_admin":"Admin en cours validation",
-      "customer":"Client",
+      "en_cours_validation_admin": "Admin en cours validation",
+      "customer": "Client",
       "admin": "Admin",
       "pro_entreprise": "ProEntreprise",
-      "pro_particulier" : "ProParticulier",
+      "pro_particulier": "ProParticulier",
       "active": "Active",
       "blocked": "Blocked"
-
+    },
+    "tags": {
+      "status": {
+        "active": "Actif",
+        "blocked": "Bloqué"
+      },
+      "roles": {
+        "admin": "Administateur",
+        "pro_entreprise": "Pro Entreprise",
+        "pro_particulier": "Pro Particulier",
+        "customer": "Client"
+      }
     }
   },
   "dashboard": {
@@ -345,7 +354,6 @@
     "notes": "Note",
     "images": "Images",
     "regles_supplementaires": "Règles supplémentaires"
-
   },
   "tags": {
     "valided": "Validé",
@@ -354,7 +362,7 @@
     "paye": "Paye",
     "clone": "Cloner",
     "non_paye": "Non paye",
-    "en_validation":"En validation",
+    "en_validation": "En validation",
     "all_e": "Toutes",
     "all": "Tous",
     "maison": "maison",

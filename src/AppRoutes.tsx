@@ -14,11 +14,6 @@ import {
     ShowBienImmobilier
 } from "@/pages/biens-immobiliers";
 import {CreateUser, EditUser, ListUsers, ShowUser} from "@/pages/users";
-import {ListUsersProEntreprise} from "@/pages/users/list-users-pro-entreprise";
-import {ListUsersProParticulier} from "@/pages/users/list-users-pro-particulier";
-import {ListUsersValides} from "@/pages/users/list-users-valides";
-import {ListUsersNonValides} from "@/pages/users/list-users-non-valides";
-import {ListUsersCustomers} from "@/pages/users/list-users-customers";
 import {ListResidencesValides} from "@/pages/residences/list-residences-valides";
 import {EditConfig} from "@/pages/configs";
 import {EditDemandeVisite, ListDemandeVisites, ShowDemandeVisite} from "@/pages/demandes-visites";
@@ -30,6 +25,13 @@ import {ListBienImmobilierDisponible} from "@/pages/biens-immobiliers/list-bien-
 import {ListBienImmobilierNonDisponible} from "@/pages/biens-immobiliers/list-bien-immobilier-non-disponible";
 import {ListBienImmobilierValide} from "@/pages/biens-immobiliers/list-bien-immobilier-valide";
 import {ListBienImmobilierEnValidation} from "@/pages/biens-immobiliers/list-bien-immobilier-en-validation";
+import React from "react";
+import {ListProEntreprise} from "@/pages/users/list-pro-entreprise";
+import {ListProParticulier} from "@/pages/users/list-pro-particulier";
+import {ListValidUsers} from "@/pages/users/list-valid-users";
+import {ListNoneValidUsers} from "@/pages/users/list-none-valid-users";
+import {ListCustomers} from "@/pages/users/list-customers";
+import {ListAdmins} from "@/pages/users/list-admins";
 
 export function AppRoutes() {
     return (
@@ -58,8 +60,11 @@ export function AppRoutes() {
             >
                 <Route
                     index
-                    element={<NavigateToResource resource="residences"/>}
+                    element={<NavigateToResource resource="configs"/>}
                 />
+                <Route path={"/configs"}>
+                    <Route index element={<EditConfig/>}/>
+                </Route>
                 <Route path={"/residences"}>
                     <Route index element={<ListResidences/>}/>
                     <Route path="edit/:id" element={<EditResidence/>}/>
@@ -86,11 +91,12 @@ export function AppRoutes() {
                 </Route>
                 <Route path={"/users"}>
                     <Route index element={<ListUsers/>}/>
-                    <Route path="pro-entreprise" element={<ListUsersProEntreprise/>}/>
-                    <Route path="pro-particulier" element={<ListUsersProParticulier/>}/>
-                    <Route path="utilisateurs-valides" element={<ListUsersValides/>}/>
-                    <Route path="utilisateurs-non-valides" element={<ListUsersNonValides/>}/>
-                    <Route path="customer" element={<ListUsersCustomers/>}/>
+                    <Route path="admin" element={<ListAdmins/>}/>
+                    <Route path="pro-entreprise" element={<ListProEntreprise/>}/>
+                    <Route path="pro-particulier" element={<ListProParticulier/>}/>
+                    <Route path="utilisateurs-valides" element={<ListValidUsers/>}/>
+                    <Route path="utilisateurs-non-valides" element={<ListNoneValidUsers/>}/>
+                    <Route path="customer" element={<ListCustomers/>}/>
                     <Route path="create" element={<CreateUser/>}/>
                     <Route path="edit/:id" element={<EditUser/>}/>
                     <Route path="show/:id" element={<ShowUser/>}/>
@@ -101,9 +107,6 @@ export function AppRoutes() {
                     <Route path="show/:id" element={<ShowDemandeVisite/>}/>
                     <Route path="en-validation" element={<ListDemandeVisiteEnValidation/>}/>
                     <Route path="validé" element={<ListDemandeVisitesValides/>}/>
-                </Route>
-                <Route path={"/configs"}>
-                    <Route index element={<EditConfig/>}/>
                 </Route>
                 <Route path="*" element={<ErrorComponent/>}/>
             </Route>

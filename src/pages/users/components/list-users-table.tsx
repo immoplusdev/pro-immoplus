@@ -1,15 +1,16 @@
 import React from "react";
-import { BaseRecord, useTranslate } from "@refinedev/core";
+import {BaseRecord, useTranslate} from "@refinedev/core";
 import {
     useTable,
     List,
     DeleteButton,
     BooleanField,
 } from "@refinedev/antd";
-import {Table, Space, Button} from "antd";
+import {Table, Space, Button, Tag} from "antd";
 import {Link} from "react-router-dom";
 import type {CrudFilter} from "@refinedev/core/src/contexts/data/types";
 import {ArrowRightOutlined} from "@ant-design/icons";
+import {UserRole} from "@/core/domain/users";
 
 
 type Props = {
@@ -18,11 +19,11 @@ type Props = {
         permanent?: CrudFilter[];
         mode?: "server" | "off";
     };
-    activeMenu?: "all_e" | "pro_entreprise" | "pro_particulier" | "utilisateurs_valides" | "utilisateurs_non_valides" | "customer"
+    activeMenu?: "all_e" | "admin" | "pro_entreprise" | "pro_particulier" | "utilisateurs_valides" | "utilisateurs_non_valides" | "customer"
 }
 export const ListUsersTable = ({filters, activeMenu}: Props) => {
     const translate = useTranslate();
-    const { tableProps } = useTable({
+    const {tableProps} = useTable({
         syncWithLocation: true,
         resource: "users",
         sorters: {
@@ -31,7 +32,7 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
                 order: "desc"
             }]
         },
-        filters
+        filters,
     });
 
     return (
@@ -44,18 +45,32 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
                           {translate("tags.all_e")}
                       </Button>
                   </Link>,
+                  <Link to="/users/customer">
+                      <Button
+                          type={activeMenu == "customer" ? "primary" : "default"}
+                      >
+                          {translate("users.tags.roles.customer")}
+                      </Button>
+                  </Link>,
+                  <Link to="/users/admin">
+                      <Button
+                          type={activeMenu == "admin" ? "primary" : "default"}
+                      >
+                          {translate("users.tags.roles.admin")}
+                      </Button>
+                  </Link>,
                   <Link to="/users/pro-entreprise">
                       <Button
                           type={activeMenu == "pro_entreprise" ? "primary" : "default"}
                       >
-                          {translate("tags.pro_entreprise")}
+                          {translate("users.tags.roles.pro_entreprise")}
                       </Button>
                   </Link>,
                   <Link to="/users/pro-particulier">
                       <Button
                           type={activeMenu == "pro_particulier" ? "primary" : "default"}
                       >
-                          {translate("tags.pro_particulier")}
+                          {translate("users.tags.roles.pro_particulier")}
                       </Button>
                   </Link>,
                   <Link to="/users/utilisateurs-valides">
@@ -72,13 +87,6 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
                           {translate("tags.utilisateurs_non_valides")}
                       </Button>
                   </Link>,
-                  <Link to="/users/customer">
-                      <Button
-                          type={activeMenu == "customer" ? "primary" : "default"}
-                      >
-                          {translate("tags.customer")}
-                      </Button>
-                  </Link>
               ]}
         >
             <Table {...tableProps} rowKey="id"
@@ -94,33 +102,29 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
                     title={translate("users.fields.firstname")}
                     align="center"
                 />
-                <Table.Column
-                    dataIndex="status"
-                    title={translate("users.fields.status")}
-                    render={(value) => <span>{translate(`users.fields.${value}`)}</span>}
-                    align="center"
-                />
-                <Table.Column
-                    dataIndex={["role", "name"]}
-                    title={translate("users.fields.role")}
-                    render={(value) => <span>{translate(`users.fields.${value}`)}</span>}
-                    align="center"
-                />
+
                 <Table.Column
                     dataIndex={["identityVerified"]}
                     title={translate("users.fields.identity_verified")}
-                    render={(value: any) => <BooleanField value={value} />}
+                    render={(value: any) => <BooleanField value={value}/>}
                     align="center"
                 />
                 <Table.Column
-                    dataIndex={["emailVerified"]}
-                    title={translate("users.fields.email_verified")}
-                    render={(value: any) => <BooleanField value={value} />}
-                    align="center"            />
-                <Table.Column
                     dataIndex={["compteProValide"]}
                     title={translate("users.fields.compte_pro_valide")}
-                    render={(value: any) => <BooleanField value={value} />}
+                    render={(value: boolean) => <BooleanField value={value}/>}
+                    align="center"
+                />
+                {activeMenu == "all_e" && <Table.Column
+                    dataIndex={["role", "name"]}
+                    title={translate("users.fields.role")}
+                    render={(value) => <Tag>{translate(`users.tags.roles.${value}`)}</Tag>}
+                    align="center"
+                />}
+                <Table.Column
+                    dataIndex="status"
+                    title={translate("users.fields.status")}
+                    render={(value: string) => <Tag>{translate(`users.tags.status.${value.toLowerCase()}`)}</Tag>}
                     align="center"
                 />
                 <Table.Column
