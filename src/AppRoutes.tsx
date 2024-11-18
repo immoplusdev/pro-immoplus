@@ -60,7 +60,7 @@ export function AppRoutes() {
             >
                 <Route
                     index
-                    element={<NavigateToResource resource="configs"/>}
+                    element={<NavigateToResource resource="demandes-visites"/>}
                 />
                 <Route path={"/configs"}>
                     <Route index element={<EditConfig/>}/>
