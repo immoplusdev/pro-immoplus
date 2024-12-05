@@ -17,7 +17,7 @@ import routerBindings, {
 } from "@refinedev/react-router-v6";
 import {App as AntdApp} from "antd";
 import {useTranslation} from "react-i18next";
-import {BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
+import {BrowserRouter} from "react-router-dom";
 import {ColorModeContextProvider} from "./contexts/color-mode";
 import {API_URL, PROJECT_ID} from "@/configs/app.config";
 import {authProvider, getAccessControlProvider, getDataProvider} from "@/lib/providers";
@@ -38,80 +38,83 @@ function App() {
             <RefineKbarProvider>
                 <ColorModeContextProvider>
                     <AntdApp>
-                        <DevtoolsProvider>
-                            <Refine
-                                dataProvider={getDataProvider(API_URL)}
-                                notificationProvider={useNotificationProvider}
-                                authProvider={authProvider}
-                                i18nProvider={i18nProvider}
-                                accessControlProvider={getAccessControlProvider()}
-                                routerProvider={routerBindings}
-                                resources={[
-                                    {
-                                        name: "demandes-visites",
-                                        list: "/demandes-visites",
-                                        edit: "/demandes-visites/edit/:id",
-                                        show: "/demandes-visites/show/:id",
-                                        meta: {
-                                            canDelete: true,
-                                        }
+                        <Refine
+                            dataProvider={getDataProvider(API_URL)}
+                            notificationProvider={useNotificationProvider}
+                            authProvider={authProvider}
+                            i18nProvider={i18nProvider}
+                            accessControlProvider={getAccessControlProvider()}
+                            routerProvider={routerBindings}
+                            resources={[
+                                {
+                                    name: "demandes-visites",
+                                    list: "/demandes-visites",
+                                    edit: "/demandes-visites/edit/:id",
+                                    show: "/demandes-visites/show/:id",
+                                    meta: {
+                                        canDelete: true,
+                                    }
+                                },
+                                {
+                                    name: "residences",
+                                    list: "/residences",
+                                    // create: "/residences/create",
+                                    edit: "/residences/edit/:id",
+                                    show: "/residences/show/:id",
+                                    meta: {
+                                        canDelete: true,
                                     },
-                                    {
-                                        name: "residences",
-                                        list: "/residences",
-                                        // create: "/residences/create",
-                                        edit: "/residences/edit/:id",
-                                        show: "/residences/show/:id",
-                                        meta: {
-                                            canDelete: true,
-                                        },
+                                },
+                                {
+                                    name: "reservations",
+                                    list: "/reservations",
+                                    // create: "/reservations/create",
+                                    edit: "/reservations/edit/:id",
+                                    show: "/reservations/show/:id",
+                                    meta: {
+                                        canDelete: true,
                                     },
-                                    {
-                                        name: "reservations",
-                                        list: "/reservations",
-                                        // create: "/reservations/create",
-                                        edit: "/reservations/edit/:id",
-                                        show: "/reservations/show/:id",
-                                        meta: {
-                                            canDelete: true,
-                                        },
-                                    },{
-                                        name: "biens-immobiliers",
-                                        list: "/biens-immobiliers",
-                                        edit: "/biens-immobiliers/edit/:id",
-                                        show: "/biens-immobiliers/show/:id",
-                                        meta: {
-                                            canDelete: true,
-                                        },
-                                    },{
-                                        name: "users",
-                                        list: "/users",
-                                        create: "/users/create",
-                                        edit: "/users/edit/:id",
-                                        show: "/users/show/:id",
-                                        meta: {
-                                            canDelete: true,
-                                        },
+                                }, {
+                                    name: "biens-immobiliers",
+                                    list: "/biens-immobiliers",
+                                    edit: "/biens-immobiliers/edit/:id",
+                                    show: "/biens-immobiliers/show/:id",
+                                    meta: {
+                                        canDelete: true,
                                     },
-                                    {
-                                        name: "configs",
-                                        list: "/configs",
+                                },
+                                {
+                                    name: "users",
+                                    list: "/users",
+                                    create: "/users/create",
+                                    edit: "/users/edit/:id",
+                                    show: "/users/show/:id",
+                                    meta: {
+                                        canDelete: true,
                                     },
-                                ]}
-                                options={{
-                                    syncWithLocation: true,
-                                    warnWhenUnsavedChanges: true,
-                                    useNewQueryKeys: true,
-                                    projectId: PROJECT_ID,
-                                }}
-                            >
-                                <AppRoutes/>
-                                <RefineKbar/>
-                                <UnsavedChangesNotifier/>
-                                <DocumentTitleHandler/>
-                            </Refine>
-                            <DevtoolsPanel/>
-                        </DevtoolsProvider>
+                                },
+                                {
+                                    name: "payments",
+                                    list: "/payments"
+                                },
+                                {
+                                    name: "configs",
+                                    list: "/configs",
+                                },
+                            ]}
+                            options={{
+                                syncWithLocation: true,
+                                warnWhenUnsavedChanges: true,
+                                useNewQueryKeys: true,
+                                projectId: PROJECT_ID,
+                            }}
+                        >
+                            <AppRoutes/>
+                            <RefineKbar/>
+                            <UnsavedChangesNotifier/>
+                            <DocumentTitleHandler/>
+                        </Refine>
+
                     </AntdApp>
                 </ColorModeContextProvider>
             </RefineKbarProvider>

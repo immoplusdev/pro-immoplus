@@ -6,7 +6,7 @@ export const generateFilter = (filters?: CrudFilters) => {
     const queryFilters: Partial<ItemsParamsCriterias>[] = [];
 
     if (filters) {
-        filters.map((filter) => {
+        filters.forEach((filter) => {
 
             if (filter.operator === "or" || filter.operator === "and") {
                 throw new Error(
@@ -16,8 +16,9 @@ export const generateFilter = (filters?: CrudFilters) => {
 
             if ((filter as Record<string, any>).field) {
                 const field = (filter as any).field;
+                if (field == "q") return;
                 const queryFilter: Partial<ItemsParamsCriterias> = {
-                    _field: field == "q" ? "id" : filter as never,
+                    _field: field,
                     _op: filter.operator as never,
                     _val: filter.value,
                 }

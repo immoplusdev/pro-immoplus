@@ -1,5 +1,5 @@
 import {BaseRecord, useTranslate} from "@refinedev/core";
-import {BooleanField, DeleteButton, List, useTable} from "@refinedev/antd";
+import {BooleanField, DateField, DeleteButton, List, useTable} from "@refinedev/antd";
 import {Button, Space, Table, Tag} from "antd";
 import {Thumbnail} from "@/components";
 import {formatAmount, getApiFileUrl} from "@/lib/helpers";
@@ -36,10 +36,10 @@ export function ListBienImmobilierTable ({filters, activeMenu}: Props) {
     });
 
     return (
-        <List 
+        <List
             headerButtons={[
                 <Link to="/biens-immobiliers">
-                    <Button 
+                    <Button
                         type={activeMenu == "all_e" ? "primary" : "default"}
                     >
                         {translate("tags.all_e")}
@@ -131,6 +131,13 @@ export function ListBienImmobilierTable ({filters, activeMenu}: Props) {
                     )}
                     render={(value: any) => <BooleanField value={value}/>}
                     align="center"
+                />
+                <Table.Column
+                    dataIndex="createdAt"
+                    title={translate("fields.created_at")}
+                    render={(value) => <DateField value={value}/>}
+                    align="center"
+                    sorter
                 />
                 <Table.Column
                     title={translate("table.actions")}

@@ -1,6 +1,6 @@
 import type {AxiosInstance} from "axios";
 import type {DataProvider} from "@refinedev/core";
-import {axiosInstance, generateSort, generateFilter} from "./utils";
+import {axiosInstance, generateSort, generateFilter, generateSearch} from "./utils";
 import queryString from "query-string";
 import {normalizeStringArray, serializeWhereParameterToQueryFiltersString} from "@/lib/helpers";
 
@@ -28,18 +28,23 @@ export const getDataProvider = (
 
             const queryFilters = generateFilter(filters);
 
+            const search = generateSearch(filters);
+
             const query: {
                 _page?: number;
                 _pageSize?: number;
                 _order_by?: string;
                 _order_dir?: string;
                 _select?: string[];
+                _search?: string;
             } = {};
 
             if (mode === "server") {
                 query._page = current;
                 query._pageSize = pageSize;
             }
+
+            if (search) query._search = search;
 
             const generatedSort = generateSort(sorters);
             if (generatedSort) {
@@ -51,8 +56,6 @@ export const getDataProvider = (
             const urlWithQuery = Object.keys(query).length
                 ? `${url}?${queryString.stringify(query)}&${serializeWhereParameterToQueryFiltersString(queryFilters)}`
                 : url;
-
-            console.log(urlWithQuery);
 
             const {data} = await httpClient[requestMethod](urlWithQuery, {
                 headers: headersFromMeta,

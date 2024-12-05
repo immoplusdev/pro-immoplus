@@ -36,7 +36,7 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
     });
 
     return (
-        <List title={translate("users.fields.users")}
+        <List title={translate("users.title")}
               headerButtons={[
                   <Link to="/users">
                       <Button

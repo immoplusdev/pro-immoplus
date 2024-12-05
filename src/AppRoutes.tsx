@@ -5,8 +5,6 @@ import {ErrorComponent, ThemedLayoutV2, ThemedSiderV2, ThemedTitleV2} from "@ref
 import {AppIcon, Header} from "@/components";
 import {EditResidence, ListResidences, ShowResidence} from "@/pages/residences";
 import {EditReservation, ListReservations, ShowReservation} from "@/pages/reservations";
-import {Login} from "@/pages/auth";
-import {ForgotPassword} from "@/pages/forgotPassword";
 import {ListResidencesEnValidation} from "./pages/residences/list-residences-en-validation";
 import {
     EditBienImmobilier,
@@ -32,6 +30,7 @@ import {ListValidUsers} from "@/pages/users/list-valid-users";
 import {ListNoneValidUsers} from "@/pages/users/list-none-valid-users";
 import {ListCustomers} from "@/pages/users/list-customers";
 import {ListAdmins} from "@/pages/users/list-admins";
+import {ListPayments, ListPaymentsDemandesRetrait, ListPaymentsFactures} from "@/pages/payments";
 
 export function AppRoutes() {
     return (
@@ -108,14 +107,12 @@ export function AppRoutes() {
                     <Route path="en-validation" element={<ListDemandeVisiteEnValidation/>}/>
                     <Route path="validé" element={<ListDemandeVisitesValides/>}/>
                 </Route>
+                <Route path={"/payments"}>
+                    <Route index element={<ListPayments/>}/>
+                    <Route path="factures" element={<ListPaymentsFactures/>}/>
+                    <Route path="retraits" element={<ListPaymentsDemandesRetrait/>}/>
+                </Route>
                 <Route path="*" element={<ErrorComponent/>}/>
-            </Route>
-            <Route>
-                <Route path={"/login"} element={<Login/>}/>
-                <Route
-                    path={"/forgot-password"}
-                    element={<ForgotPassword/>}
-                />
             </Route>
         </Routes>
 

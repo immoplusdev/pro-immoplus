@@ -1,6 +1,6 @@
 import {CrudFilter} from "@refinedev/core/src/contexts/data/types";
 import {BaseRecord, useTranslate} from "@refinedev/core";
-import {BooleanField, DeleteButton, List, useTable} from "@refinedev/antd";
+import {BooleanField, DateField, DeleteButton, List, useTable} from "@refinedev/antd";
 import {Button, Space, Table} from "antd";
 import {StatusValidationReservation} from "@/core/domain/reservations";
 import {StatusValidationReservationTag} from "@/pages/reservations/components/status-validation-reservation-tag";
@@ -104,6 +104,13 @@ export function ListReservationTable({activeMenu, filters}: Props) {
                     title={translate("reservations.fields.retrait_pro_effectue")}
                     render={(value: any) => <BooleanField value={value} />}
                     align="center"
+                />
+                <Table.Column
+                    dataIndex="createdAt"
+                    title={translate("pages.payment.fields.created_at")}
+                    render={(value) => <DateField value={value}/>}
+                    align="center"
+                    sorter
                 />
                 <Table.Column
                     title={translate("table.actions")}

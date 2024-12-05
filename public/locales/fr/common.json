@@ -70,6 +70,44 @@
     "reservation": {
       "reservation": "Réservation",
       "reservations": "Réservations"
+    },
+    "payment": {
+      "title": "Paiements",
+      "fields": {
+        "status": "Statut",
+        "amount": "Montant",
+        "amount_with_fees": "Montant avec frais",
+        "amount_no_fees": "Montant sans frais",
+        "payment_type": "Type de paiement",
+        "collection": "Groupe",
+        "payment_status": "Statut de paiement",
+        "payment_method": "Méthode de paiement",
+        "created_at": "Date de création"
+      },
+      "common": {
+        "factures": "Factures",
+        "retraits": "Demandes de retrait"
+      },
+      "tags": {
+        "facture": "Facture",
+        "purchase": "Facture",
+        "retrait": "Retrait",
+        "demandes_visites": "Demandes de visites",
+        "reservations": "Réservations",
+        "waiting_for_validation": "En attente de validation",
+        "payment_required": "Paiement requis",
+        "processing": "En cours de traitement",
+        "action_required": "Action requise",
+        "successful": "Réussi",
+        "failed": "Échoué",
+        "payment_method": "Méthode de paiement",
+        "orange": "Orange",
+        "mtn": "MTN",
+        "moov": "Moov",
+        "visa": "Visa",
+        "mastercard": "Mastercard",
+        "wave": "Wave"
+      }
     }
   },
   "actions": {
@@ -234,9 +272,9 @@
       "flash_shipping_price": "Prix de livraison flash",
       "project_name": "Nom du projet"
     }
-
   },
   "users": {
+    "title": "Utilisateurs",
     "fields": {
       "firstname": "Prénom",
       "lastname": "Nom de famille",
@@ -277,6 +315,11 @@
         "pro_particulier": "Pro Particulier",
         "customer": "Client"
       }
+    },
+    "common": {
+      "see_user": "Voir l'utilisateur",
+      "see_owner": "Voir le propriétaire",
+      "see_customer": "Voir le client"
     }
   },
   "dashboard": {
@@ -337,6 +380,7 @@
   "fields": {
     "id": "Identifiant",
     "title": "Titre",
+    "search": "Rechercher",
     "client": "Client",
     "name": "Nom",
     "description": "Description",
@@ -390,6 +434,9 @@
   },
   "common": {
     "yes": "Oui",
-    "no": "Non"
+    "no": "Non",
+    "write_something_here": "Écrivez quelque chose ici...",
+    "filter": "Filtrer",
+    "select_a_value": "Sélectionnez une valeur"
   }
 }

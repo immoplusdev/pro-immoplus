@@ -6,6 +6,7 @@ import {BienImmobilierDataFields} from "@/pages/biens-immobiliers/components/edi
 import {BienImmobilierEditActionFields} from "@/pages/biens-immobiliers/components/edit-actions-fields";
 import {OrderedListOutlined, ReloadOutlined, SaveOutlined} from "@ant-design/icons";
 import {useNavigate} from "react-router-dom";
+import {ShowUserButton} from "@/pages/users/components";
 
 
 // Main Edit Component

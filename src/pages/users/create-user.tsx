@@ -8,10 +8,10 @@ import {defaultFormColListColProps, defaultFormColListRowProps} from "@/configs"
 
 export const CreateUser = () => {
     const translate = useTranslate();
-    const {formProps, saveButtonProps, queryResult} = useForm();
+    const {formProps, saveButtonProps} = useForm();
 
     return (
-        <Create saveButtonProps={saveButtonProps}>
+        <Create saveButtonProps={saveButtonProps} title={translate("users.title")}>
             <Form {...formProps} layout="vertical">
                 <ColList rowProps={defaultFormColListRowProps} colProps={defaultFormColListColProps}>
                     <Form.Item
