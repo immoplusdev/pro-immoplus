@@ -1,13 +1,14 @@
 import {CrudFilter} from "@refinedev/core/src/contexts/data/types";
 import {BaseRecord, useTranslate} from "@refinedev/core";
 import {BooleanField, DateField, DeleteButton, List, useTable} from "@refinedev/antd";
-import {Button, Space, Table} from "antd";
+import {Button, Space, Table, Tag} from "antd";
 import {StatusValidationReservation} from "@/core/domain/reservations";
 import {StatusValidationReservationTag} from "@/pages/reservations/components/status-validation-reservation-tag";
 import {formatAmount} from "@/lib/helpers";
 import {Link} from "react-router-dom";
 import {ArrowRightOutlined} from "@ant-design/icons";
 import React from "react";
+import {SearchInput} from "@/components/filters";
 
 type Props = {
     activeMenu: "all_e" | "en_validation" | "valide",
@@ -20,7 +21,7 @@ type Props = {
 
 export function ListReservationTable({activeMenu, filters}: Props) {
     const translate = useTranslate();
-    const { tableProps } = useTable({
+    const {tableProps, filters: searchFilters, setFilters, tableQuery} = useTable({
         resource: "reservations",
         syncWithLocation: true,
         sorters: {
@@ -36,6 +37,11 @@ export function ListReservationTable({activeMenu, filters}: Props) {
         <List
             title={translate("pages.reservation.reservations")}
             headerButtons={[
+                <SearchInput
+                    filters={searchFilters}
+                    setFilters={setFilters}
+                    tableQuery={tableQuery}
+                />,
                 <Link to="/reservations">
                     <Button
                         type={activeMenu == "all_e" ? "primary" : "default"}
@@ -68,13 +74,9 @@ export function ListReservationTable({activeMenu, filters}: Props) {
                 <Table.Column
                     dataIndex="statusReservation"
                     title={translate("reservations.fields.status_reservation")}
-                    render={(value) => <span>{translate(`reservations.fields.${value}`)}</span>}
+                    render={(value) => <Tag>{translate(`reservations.fields.${value}`)}</Tag>}
                     align="center"
-                />
-                <Table.Column
-                    dataIndex="notes"
-                    title={translate("fields.notes")}
-                    align="center"
+                    sorter={true}
                 />
                 <Table.Column
                     dataIndex="statusFacture"
@@ -82,6 +84,7 @@ export function ListReservationTable({activeMenu, filters}: Props) {
                     render={(value: StatusValidationReservation) => <StatusValidationReservationTag
                         statusValidation={value}/>}
                     align="center"
+                    sorter={true}
                 />
                 <Table.Column
                     dataIndex="montantTotalReservation"
@@ -90,6 +93,7 @@ export function ListReservationTable({activeMenu, filters}: Props) {
                     )}
                     render={(value: number) => <span>{formatAmount(value)}</span>}
                     align="center"
+                    sorter={true}
                 />
                 <Table.Column
                     dataIndex="montantReservationSansCommission"
@@ -98,19 +102,27 @@ export function ListReservationTable({activeMenu, filters}: Props) {
                     )}
                     render={(value: number) => <span>{formatAmount(value)}</span>}
                     align="center"
+                    sorter={true}
                 />
                 <Table.Column
                     dataIndex={["retraitProEffectue"]}
                     title={translate("reservations.fields.retrait_pro_effectue")}
-                    render={(value: any) => <BooleanField value={value} />}
+                    render={(value: any) => <BooleanField value={value}/>}
                     align="center"
+                    sorter={true}
                 />
                 <Table.Column
-                    dataIndex="createdAt"
-                    title={translate("pages.payment.fields.created_at")}
-                    render={(value) => <DateField value={value}/>}
+                    dataIndex={["createdAt"]}
+                    title={translate("fields.created_at")}
+                    render={(date: string) => {
+                        return (
+                            <div>
+                                <Tag>{new Date(date).toLocaleDateString()}</Tag>
+                            </div>
+                        );
+                    }}
                     align="center"
-                    sorter
+                    sorter={true}
                 />
                 <Table.Column
                     title={translate("table.actions")}

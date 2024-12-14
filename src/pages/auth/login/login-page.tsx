@@ -22,7 +22,7 @@ export interface ILoginForm {
     remember: boolean;
 }
 
-export const Login: React.FC = () => {
+export const LoginPage: React.FC = () => {
     const [form] = Form.useForm<ILoginForm>();
 
     const {mutate: login, isLoading} = useLogin<ILoginForm>();
@@ -42,7 +42,6 @@ export const Login: React.FC = () => {
 
         </Title>
     );
-
     return (
         <AntdLayout>
             <Row

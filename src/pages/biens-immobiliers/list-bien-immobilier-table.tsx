@@ -3,13 +3,17 @@ import {BooleanField, DateField, DeleteButton, List, useTable} from "@refinedev/
 import {Button, Space, Table, Tag} from "antd";
 import {Thumbnail} from "@/components";
 import {formatAmount, getApiFileUrl} from "@/lib/helpers";
-import { StatusValidationBiensImmobilers} from "@/lib/ts-utilities/enums/status-biens-immobiliers";
-import { StatusValidationBiensImmobilersTag } from "@/pages/biens-immobiliers/components/status-validation-biens-immobilers-tag";
+import {StatusValidationBiensImmobilers} from "@/lib/ts-utilities/enums/status-biens-immobiliers";
+import {
+    StatusValidationBiensImmobilersTag
+} from "@/pages/biens-immobiliers/components/status-validation-biens-immobilers-tag";
 import {Link} from "react-router-dom";
 import {ArrowRightOutlined} from "@ant-design/icons";
-import React from "react";
+import React, {useEffect} from "react";
 import {CrudFilter} from "@refinedev/core/src/contexts/data/types";
-
+import {StatusReservation} from "@/lib/ts-utilities/enums/status-reservation";
+import {SearchInput} from "@/components/filters";
+import {DateDisplayField} from "@/components/table";
 
 
 type Props = {
@@ -21,9 +25,9 @@ type Props = {
     activeMenu?: "all_e" | "en_validation" | "valide" | "disponible" | "non_disponible";
 }
 
-export function ListBienImmobilierTable ({filters, activeMenu}: Props) {
+export function ListBienImmobilierTable({filters, activeMenu}: Props) {
     const translate = useTranslate();
-    const {tableProps} = useTable({
+    const {tableProps, filters: currentFilters, setFilters, tableQuery} = useTable({
         resource: "biens-immobiliers",
         syncWithLocation: true,
         sorters: {
@@ -38,7 +42,12 @@ export function ListBienImmobilierTable ({filters, activeMenu}: Props) {
     return (
         <List
             headerButtons={[
+                <SearchInput
+                    setFilters={setFilters}
+                    tableQuery={tableQuery}
+                />,
                 <Link to="/biens-immobiliers">
+
                     <Button
                         type={activeMenu == "all_e" ? "primary" : "default"}
                     >
@@ -90,6 +99,7 @@ export function ListBienImmobilierTable ({filters, activeMenu}: Props) {
                     dataIndex="nom"
                     title={translate("fields.nom")}
                     align="center"
+                    sorter={true}
                 />
                 <Table.Column
                     dataIndex="typeBienImmobilier"
@@ -98,31 +108,22 @@ export function ListBienImmobilierTable ({filters, activeMenu}: Props) {
                     )}
                     render={(value: string) => <Tag>{value}</Tag>}
                     align="center"
+                    sorter={true}
                 />
-                <Table.Column
-                    dataIndex="adresse"
-                    title={translate("fields.adresse")}
-                    align="center"
-                />
-
                 <Table.Column
                     dataIndex="statusValidation"
                     title={translate("fields.status_validation")}
                     align="center"
-                    render={(value: StatusValidationBiensImmobilers) =>  <StatusValidationBiensImmobilersTag statusValidation={value}/>}
+                    render={(value: StatusValidationBiensImmobilers) => <StatusValidationBiensImmobilersTag
+                        statusValidation={value}/>}
+                    sorter={true}
                 />
                 <Table.Column
                     dataIndex="prix"
                     align="center"
                     render={(value: number) => <span>{formatAmount(value)}</span>}
                     title={translate("biens_immobiliers.fields.prix")}
-                />
-                <Table.Column
-                    dataIndex="nombreMaxOccupants"
-                    title={translate(
-                        "residences.fields.nombre_max_occupants",
-                    )}
-                    align="center"
+                    sorter={true}
                 />
                 <Table.Column
                     dataIndex={["bienImmobilierDisponible"]}
@@ -131,13 +132,14 @@ export function ListBienImmobilierTable ({filters, activeMenu}: Props) {
                     )}
                     render={(value: any) => <BooleanField value={value}/>}
                     align="center"
+                    sorter={true}
                 />
                 <Table.Column
                     dataIndex="createdAt"
                     title={translate("fields.created_at")}
-                    render={(value) => <DateField value={value}/>}
+                    render={(date: string) => <DateDisplayField value={date}/>}
                     align="center"
-                    sorter
+                    sorter={true}
                 />
                 <Table.Column
                     title={translate("table.actions")}

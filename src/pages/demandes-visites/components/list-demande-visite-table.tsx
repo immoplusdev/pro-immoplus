@@ -1,6 +1,6 @@
 import {BaseRecord, useTranslate} from "@refinedev/core";
 import {BooleanField, DeleteButton, List, useTable} from "@refinedev/antd";
-import {Button, Space, Table} from "antd";
+import {Button, Space, Table, Tag} from "antd";
 import {
     StatusValidationDemandeVisiteTag
 } from "@/pages/demandes-visites/components/status-validation-demande-visite-tag";
@@ -8,6 +8,8 @@ import {Link} from "react-router-dom";
 import {ArrowRightOutlined} from "@ant-design/icons";
 import React from "react";
 import type {CrudFilter} from "@refinedev/core/src/contexts/data/types";
+import {SearchInput} from "@/components/filters";
+import {DateDisplayField} from "@/components/table";
 
 
 type Props = {
@@ -19,9 +21,9 @@ type Props = {
     activeMenu?: "all_e" | "en_validation" | "valide"
 }
 
-export function ListDemandeVisiteTable({filters, activeMenu}:Props){
+export function ListDemandeVisiteTable({filters, activeMenu}: Props) {
     const translate = useTranslate();
-    const { tableProps } = useTable({
+    const {tableProps, setFilters, tableQuery} = useTable({
         resource: "demandes-visites",
         syncWithLocation: true,
         sorters: {
@@ -37,6 +39,10 @@ export function ListDemandeVisiteTable({filters, activeMenu}:Props){
         <List
             title={translate("demandes_visites.fields.demandes_visites")}
             headerButtons={[
+                <SearchInput
+                    setFilters={setFilters}
+                    tableQuery={tableQuery}
+                />,
                 <Link to="/demandes-visites">
                     <Button
                         type={activeMenu == "all_e" ? "primary" : "default"}
@@ -70,41 +76,46 @@ export function ListDemandeVisiteTable({filters, activeMenu}:Props){
                     align="center"
                 />
                 <Table.Column
-                    dataIndex="notes"
-                    title={translate("demandes_visites.fields.notes")}
-                    align="center"
-                />
-                <Table.Column
                     dataIndex="typeDemandeVisite"
                     title={translate(
                         "demandes_visites.fields.type_demande_visite",
                     )}
-                    render={(value) => <span>{translate(`demandes_visites.fields.${value}`)}</span>}
+                    render={(value) => <Tag>{translate(`demandes_visites.fields.${value}`)}</Tag>}
                     align="center"
+                    sorter={true}
                 />
                 <Table.Column
                     dataIndex="statusDemandeVisite"
                     title={translate(
                         "demandes_visites.fields.status_demande_visite",
                     )}
-                    render={(value) => <StatusValidationDemandeVisiteTag statusValidation={value}/> }
+                    render={(value) => <StatusValidationDemandeVisiteTag statusValidation={value}/>}
                     align="center"
+                    sorter={true}
                 />
                 <Table.Column
                     dataIndex="statusFacture"
                     title={translate("demandes_visites.fields.status_facture")}
                     align="center"
-                    render={(value) => <span>{translate(`demandes_visites.fields.${value}`)}</span>}
+                    render={(value) => <Tag>{translate(`demandes_visites.fields.${value}`)}</Tag>}
+                    sorter={true}
                 />
                 <Table.Column
                     dataIndex={["retraitProEffectue"]}
                     title={translate(
                         "demandes_visites.fields.retrait_pro_effectue",
                     )}
-                    render={(value: any) => <BooleanField value={value} />}
+                    render={(value: any) => <BooleanField value={value}/>}
                     align="center"
+                    sorter={true}
                 />
-
+                <Table.Column
+                    dataIndex={["createdAt"]}
+                    title={translate("fields.created_at")}
+                    render={(date: string) => <DateDisplayField value={date}/>}
+                    align="center"
+                    sorter={true}
+                />
                 <Table.Column
                     title={translate("table.actions")}
                     dataIndex="actions"

@@ -14,6 +14,7 @@ import {
     StatusValidationBiensImmobilersTag
 } from "@/pages/biens-immobiliers/components/status-validation-biens-immobilers-tag";
 import {StatusValidationBiensImmobilers} from "@/lib/ts-utilities/enums/status-biens-immobiliers";
+import {SearchInput} from "@/components/filters";
 
 type Props = {
     filters?: {
@@ -26,7 +27,7 @@ type Props = {
 
 export function ListResidenceTable({filters, activeMenu}: Props) {
     const translate = useTranslate();
-    const {tableProps} = useTable(
+    const {tableProps, setFilters, filters: searchFilters, tableQuery} = useTable(
         {
             resource: "residences",
             syncWithLocation: true,
@@ -44,6 +45,11 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
         <List
             title={translate("pages.residence.residences")}
             headerButtons={[
+                <SearchInput
+                    filters={searchFilters}
+                    setFilters={setFilters}
+                    tableQuery={tableQuery}
+                />,
                 <Link to="/residences">
                     <Button
                         type={activeMenu == "all_e" ? "primary" : "default"}
@@ -78,46 +84,29 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                     dataIndex="nom"
                     title={translate("fields.nom")}
                     align="center"
+                    sorter={true}
                 />
                 <Table.Column
                     dataIndex="typeResidence"
                     title={translate("residences.fields.type_residence")}
                     render={(value: string) => <TypeResidenceTag typeResidence={value}/>}
                     align="center"
+                    sorter={true}
                 />
-
-                {/*<Table.Column*/}
-                {/*    dataIndex="adresse"*/}
-                {/*    title={translate("fields.adresse")}*/}
-                {/*/>*/}
-
-
                 <Table.Column
                     dataIndex="prixReservation"
                     title={translate("fields.prix_reservation")}
                     render={(value: number) => <span>{formatAmount(value)}</span>}
                     align="center"
+                    sorter={true}
                 />
-                {/*<Table.Column*/}
-                {/*    dataIndex="nombreMaxOccupants"*/}
-                {/*    title={translate("residences.fields.nombre_max_occupants")}*/}
-                {/*    render={(value: boolean) => <BooleanField value={value}/>}*/}
-                {/*/>*/}
-                {/*<Table.Column*/}
-                {/*    dataIndex={["animauxAutorises"]}*/}
-                {/*    title={translate("residences.fields.animaux_autorises")}*/}
-                {/*    render={(value: any) => <BooleanField value={value}/>}*/}
-                {/*/>*/}
-                {/*<Table.Column*/}
-                {/*    dataIndex={["fetesAutorises"]}*/}
-                {/*    title={translate("residences.fields.fetes_autorises")}*/}
-                {/*    render={(value: any) => <BooleanField value={value}/>}*/}
-                {/*/>*/}
                 <Table.Column
                     dataIndex="statusValidation"
                     title={translate("fields.status_validation")}
-                    render={(value: StatusValidationBiensImmobilers) => <StatusValidationBiensImmobilersTag statusValidation={value}/>}
+                    render={(value: StatusValidationBiensImmobilers) => <StatusValidationBiensImmobilersTag
+                        statusValidation={value}/>}
                     align="center"
+                    sorter={true}
                 />
                 <Table.Column
                     dataIndex={["createdAt"]}
@@ -130,6 +119,7 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                         );
                     }}
                     align="center"
+                    sorter={true}
                 />
                 <Table.Column
                     title={translate("table.actions")}

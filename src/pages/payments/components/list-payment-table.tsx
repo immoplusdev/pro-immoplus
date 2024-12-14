@@ -11,6 +11,7 @@ import {PaymentStatus} from "@/core/domain/payments";
 import {StatusPaymentTag} from "./status-payment-tag";
 import {enumToList} from "@/lib/ts-utilities";
 import {SearchInput} from "@/components/filters";
+import {DateDisplayField} from "@/components/table";
 
 
 type Props = {
@@ -25,7 +26,7 @@ type Props = {
 export function ListPaymentTable({activeMenu, filters}: Props) {
     const translate = useTranslate();
 
-    const {tableProps, setFilters, filters: searchFilters} = useTable<Payment>({
+    const {tableProps, setFilters, tableQuery} = useTable<Payment>({
         resource: "payments",
         syncWithLocation: true,
         sorters: {
@@ -42,7 +43,10 @@ export function ListPaymentTable({activeMenu, filters}: Props) {
         <List
             title={translate("pages.payment.title")}
             headerButtons={[
-                <SearchInput setFilters={setFilters} filters={searchFilters}/>,
+                <SearchInput
+                    setFilters={setFilters}
+                    tableQuery={tableQuery}
+                />,
                 <Link to="/payments">
                     <Button
                         type={activeMenu == "all_e" ? "primary" : "default"}
@@ -125,7 +129,7 @@ export function ListPaymentTable({activeMenu, filters}: Props) {
                 <Table.Column
                     dataIndex="createdAt"
                     title={translate("pages.payment.fields.created_at")}
-                    render={(value) => <DateField value={value}/>}
+                    render={(value) => <DateDisplayField value={value}/>}
                     align="center"
                     sorter
                 />

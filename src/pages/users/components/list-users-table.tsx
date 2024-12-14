@@ -10,8 +10,8 @@ import {Table, Space, Button, Tag} from "antd";
 import {Link} from "react-router-dom";
 import type {CrudFilter} from "@refinedev/core/src/contexts/data/types";
 import {ArrowRightOutlined} from "@ant-design/icons";
-import {UserRole} from "@/core/domain/users";
-
+import {SearchInput} from "@/components/filters";
+import {DateDisplayField} from "@/components/table";
 
 type Props = {
     filters?: {
@@ -23,7 +23,7 @@ type Props = {
 }
 export const ListUsersTable = ({filters, activeMenu}: Props) => {
     const translate = useTranslate();
-    const {tableProps} = useTable({
+    const {tableProps, filters: searchFilters, setFilters, tableQuery} = useTable({
         syncWithLocation: true,
         resource: "users",
         sorters: {
@@ -38,6 +38,10 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
     return (
         <List title={translate("users.title")}
               headerButtons={[
+                  <SearchInput
+                      setFilters={setFilters}
+                      tableQuery={tableQuery}
+                  />,
                   <Link to="/users">
                       <Button
                           type={activeMenu == "all_e" ? "primary" : "default"}
@@ -80,13 +84,13 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
                           {translate("tags.utilisateurs_valides")}
                       </Button>
                   </Link>,
-                  <Link to="/users/utilisateurs-non-valides">
-                      <Button
-                          type={activeMenu == "utilisateurs_non_valides" ? "primary" : "default"}
-                      >
-                          {translate("tags.utilisateurs_non_valides")}
-                      </Button>
-                  </Link>,
+                  // <Link to="/users/utilisateurs-non-valides">
+                  //     <Button
+                  //         type={activeMenu == "utilisateurs_non_valides" ? "primary" : "default"}
+                  //     >
+                  //         {translate("tags.utilisateurs_non_valides")}
+                  //     </Button>
+                  // </Link>,
               ]}
         >
             <Table {...tableProps} rowKey="id"
@@ -96,11 +100,13 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
                     dataIndex="lastName"
                     title={translate("users.fields.lastname")}
                     align="center"
+                    sorter={true}
                 />
                 <Table.Column
                     dataIndex="firstName"
                     title={translate("users.fields.firstname")}
                     align="center"
+                    sorter={true}
                 />
 
                 <Table.Column
@@ -108,24 +114,35 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
                     title={translate("users.fields.identity_verified")}
                     render={(value: any) => <BooleanField value={value}/>}
                     align="center"
+                    sorter={true}
                 />
                 <Table.Column
                     dataIndex={["compteProValide"]}
                     title={translate("users.fields.compte_pro_valide")}
                     render={(value: boolean) => <BooleanField value={value}/>}
                     align="center"
+                    sorter={true}
                 />
                 {activeMenu == "all_e" && <Table.Column
                     dataIndex={["role", "name"]}
                     title={translate("users.fields.role")}
                     render={(value) => <Tag>{translate(`users.tags.roles.${value}`)}</Tag>}
                     align="center"
+
                 />}
                 <Table.Column
                     dataIndex="status"
                     title={translate("users.fields.status")}
                     render={(value: string) => <Tag>{translate(`users.tags.status.${value.toLowerCase()}`)}</Tag>}
                     align="center"
+                    sorter={true}
+                />
+                <Table.Column
+                    dataIndex="createdAt"
+                    title={translate("fields.created_at")}
+                    render={(date: string) => <DateDisplayField value={date}/>}
+                    align="center"
+                    sorter={true}
                 />
                 <Table.Column
                     title={translate("table.actions")}

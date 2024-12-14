@@ -110,8 +110,8 @@ function App() {
                             }}
                         >
                             <AppRoutes/>
-                            <RefineKbar/>
-                            <UnsavedChangesNotifier/>
+                            {/*<RefineKbar/>*/}
+                            {/*<UnsavedChangesNotifier/>*/}
                             <DocumentTitleHandler/>
                         </Refine>
 

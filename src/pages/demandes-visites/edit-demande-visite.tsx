@@ -16,9 +16,7 @@ export const EditDemandeVisite: React.FC = () => {
   return (
       <Edit
           title={`${translate(`actions.edit`)} Demandes visites`}
-          breadcrumb={null}
           saveButtonProps={saveButtonProps}
-          footerButtons={() => (<></>)}
           // breadcrumb={<Breadcrumb separator="/" items={[
           //   {title: "Demandes visites", href: '/demandes-visites'},
           //   {title: translate('actions.edit')}

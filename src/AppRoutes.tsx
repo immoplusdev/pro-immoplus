@@ -1,3 +1,4 @@
+import React from "react";
 import {Outlet, Route, Routes} from "react-router-dom";
 import {Authenticated} from "@refinedev/core";
 import {CatchAllNavigate, NavigateToResource} from "@refinedev/react-router-v6";
@@ -23,14 +24,15 @@ import {ListBienImmobilierDisponible} from "@/pages/biens-immobiliers/list-bien-
 import {ListBienImmobilierNonDisponible} from "@/pages/biens-immobiliers/list-bien-immobilier-non-disponible";
 import {ListBienImmobilierValide} from "@/pages/biens-immobiliers/list-bien-immobilier-valide";
 import {ListBienImmobilierEnValidation} from "@/pages/biens-immobiliers/list-bien-immobilier-en-validation";
-import React from "react";
+
 import {ListProEntreprise} from "@/pages/users/list-pro-entreprise";
 import {ListProParticulier} from "@/pages/users/list-pro-particulier";
 import {ListValidUsers} from "@/pages/users/list-valid-users";
 import {ListNoneValidUsers} from "@/pages/users/list-none-valid-users";
 import {ListCustomers} from "@/pages/users/list-customers";
 import {ListAdmins} from "@/pages/users/list-admins";
-import {ListPayments, ListPaymentsDemandesRetrait, ListPaymentsFactures} from "@/pages/payments";
+import {EditPayment, ListPayments, ListPaymentsDemandesRetrait, ListPaymentsFactures} from "@/pages/payments";
+import {LoginPage} from "@/pages/auth";
 
 export function AppRoutes() {
     return (
@@ -39,8 +41,8 @@ export function AppRoutes() {
                 element={
                     <Authenticated
                         key="authenticated-inner"
-                        fallback={<CatchAllNavigate to={"/login"}/>}
-                    >
+                        fallback={<LoginPage/>}
+                        v3LegacyAuthProviderCompatible={true}>
                         <ThemedLayoutV2
                             Header={() => <Header sticky/>}
                             Sider={(props) => <ThemedSiderV2 {...props} fixed/>}
@@ -111,6 +113,7 @@ export function AppRoutes() {
                     <Route index element={<ListPayments/>}/>
                     <Route path="factures" element={<ListPaymentsFactures/>}/>
                     <Route path="retraits" element={<ListPaymentsDemandesRetrait/>}/>
+                    <Route path="edit/:id" element={<EditPayment/>}/>
                 </Route>
                 <Route path="*" element={<ErrorComponent/>}/>
             </Route>

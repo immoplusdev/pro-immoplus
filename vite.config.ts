@@ -5,6 +5,6 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   build: {
-    outDir: "web",
-  },
+    outDir: "dist",
+  }
 });
