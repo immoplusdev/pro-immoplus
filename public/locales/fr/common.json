@@ -108,6 +108,57 @@
         "mastercard": "Mastercard",
         "wave": "Wave"
       }
+    },
+    "wallet": {
+      "wallets": "Portefeuilles",
+      "fields": {
+        "available_balance": "Solde disponible",
+        "pending_balance": "Solde en attente",
+        "currency": "Devise",
+        "owner": "Propriétaire",
+        "created_at": "Date de création",
+        "updated_at": "Date de mise à jour",
+        "creditAmount": "Montant à crediter",
+        "source": "Source",
+        "operator": "Operateur",
+        "note":"Note de transaction",
+        "refundDate":"Date de reversement"
+      },
+      "validation": {
+        "creditAmount": {
+          "required": "Le montant du crédit est obligatoire",
+          "min": "Le montant du crédit doit être supérieur ou égal à 100"
+        },
+        "currency": {
+          "required": "La devise est obligatoire"
+        },
+        "source": {
+          "required": "La source est obligatoire"
+        },
+        "operator": {
+          "required": "L'operateur est obligatoire"
+        }
+      },
+      "placeholders": {
+        "creditAmount": "Saisir le montant du crédit",
+        "currency": "Sélectionnez la devise",
+        "source": "Saisir la source",
+        "operator":"Sélectionnez l'opérateur",
+        "note":"Saisir une note",
+        "refundDate":"Saisir la date de reversement"
+      },
+      "tags": {
+        "active": "Actif",
+        "inactive": "Inactif"
+      },
+      "messages": {
+        "walletCreditSuccess": "Le crédit a bien été ajouté au portefeuille.",
+        "walletCreditFailed": "Une erreur s'est produite lors de l'ajout du crédit au portefeuille. Veuillez contacter l'administrateur."
+
+      },
+      "sections": {
+        "walletCredit": "Crediter le portefeuille"
+      }
     }
   },
   "actions": {
@@ -302,7 +353,16 @@
       "pro_entreprise": "ProEntreprise",
       "pro_particulier": "ProParticulier",
       "active": "Active",
-      "blocked": "Blocked"
+      "blocked": "Blocked",
+      "wallet": "Portefeuille",
+      "available_balance": "Solde disponible",
+      "pending_balance": "Solde en attente",
+      "currency": "Devise",
+      "owner": "Propriétaire",
+      "created_at": "Date de création",
+      "updated_at": "Date de mise à jour",
+      "user_transactions": "Transactions utilisateur",
+      "list_transactions": "Liste des Transactions"
     },
     "tags": {
       "status": {
@@ -437,6 +497,288 @@
     "no": "Non",
     "write_something_here": "Écrivez quelque chose ici...",
     "filter": "Filtrer",
-    "select_a_value": "Sélectionnez une valeur"
-  }
+    "select_a_value": "Sélectionnez une valeur",
+    "notAvailable": "Non disponible"
+  },
+  "walletTransactions": {
+    "title": "Liste des Transactions",
+    "fields": {
+      "id": "Identifiant",
+      "amount": "Montant",
+      "is_realeased": "État de reversement",
+      "type": "Type",
+      "status": "Statut",
+      "note": "Note de transaction",
+      "created_at": "Date de création",
+      "updated_at": "Date de mise à jour",
+      "description": "Description"
+    },
+    "tags": {
+      "credit": "Crédit",
+      "debit": "Débit",
+      "pending": "En attente",
+      "completed": "Terminé",
+      "failed": "Échoué"
+    }
+  },
+  "withdrawalRequests": {
+    "title": "Demandes de Retrait",
+    "withdrawalRequests": "Demandes de Retrait",
+    "withdrawalRequest": "Demande de Retrait",
+    "fields": {
+      "id": "Identifiant",
+      "owner": "Demandeur",
+      "amount": "Montant",
+      "status": "Statut",
+      "operator": "Opérateur",
+      "payment_method": "Méthode de paiement",
+      "bank_account": "Compte bancaire",
+      "phoneNumber": "Numéro Mobile Money",
+      "notes": "Notes",
+      "admin_notes": "Notes administratives",
+      "created_at": "Date de création",
+      "updated_at": "Date de mise à jour",
+      "processed_at": "Date de traitement",
+      "user": "Utilisateur",
+      "wallet": "Portefeuille",
+      "note": "Note",
+      "currency": "Devise",
+      "transferDescription": "Description de transfert"
+    },
+    "validation": {
+      "amount": {
+        "required": "Le montant est requis",
+        "min": "Le montant doit être supérieur ou égal à 100"
+      },
+      "currency": {
+        "required": "La devise est requise"
+      },
+      "phoneNumber": {
+        "required": "Le numéro Mobile Money est requis",
+        "pattern": "Le numéro Mobile Money doit être un numéro valide"
+      },
+      "operator": {
+        "required": "L'opérateur est requis"
+      },
+      "transferDescription": {
+        "required": "La description de transfert est requise"
+      }
+    },
+    "status": {
+      "pending": "En attente",
+      "approved": "Approuvé",
+      "rejected": "Rejeté",
+      "completed": "Terminé",
+      "failed": "Échoué"
+    },
+    "operators": {
+      "orange": "Orange Money",
+      "mtn": "MTN Money",
+      "wave": "Wave",
+      "moov": "Moov Money",
+      "ecobank": "Ecobank",
+      "cash": "cash"
+    },
+    "placeholders": {
+      "phoneNumber": "Numéro Mobile Money",
+      "status": "Sélectionnez le statut",
+      "note": "Ajoutez des notes (facultatif)",
+      "operator": "Sélectionnez l'opérateur",
+      "amount": "Saisissez le montant",
+      "currency": "Sélectionnez la devise",
+      "transferDescription": "Saisissez la description du transfert"
+    },
+    "tags": {
+      "pending": "En attente",
+      "approved": "Approuvé",
+      "rejected": "Rejeté",
+      "processing": "En cours de traitement",
+      "completed": "Terminé",
+      "failed": "Échoué",
+      "bank_transfer": "Virement bancaire",
+      "mobile_money": "Mobile Money",
+      "orange": "Orange Money",
+      "mtn": "MTN Money",
+      "moov": "Moov Money",
+      "wave": "Wave"
+    },
+    "sections": {
+      "requestInfo": "Informations de la demande",
+      "adminActions": "Actions administratives",
+      "ownerDetails": "Détails du demandeur",
+      "timestamps": "Horodatages",
+      "requestDetails": "Détails de la demande",
+      "statusAndNotes": "Statut et notes",
+      "transferValidation": "Validation du virement"
+    },
+    "actions": {
+      "approve": "Approuver",
+      "reject": "Rejeter",
+      "process": "Traiter",
+      "complete": "Marquer comme terminé",
+      "validateTransfer": "Valider la demande"
+    }
+  },
+  "transfers": {
+    "title": "Virements",
+    "transfers": "Virements",
+    "transfer": "Virement",
+    "fields": {
+      "id": "Identifiant",
+      "amount": "Montant",
+      "currency": "Devise",
+      "fees": "Frais",
+      "customer": "Client",
+      "itemType": "Type du transfert",
+      "itemId": "Identifiant de l'élément",
+      "transfetStatus": "Statut du virement",
+      "transferType": "Type de virement",
+      "country": "Pays",
+      "accountNumber": "Numéro de compte",
+      "bank": "Banque",
+      "recipientName": "Nom du bénéficiaire",
+      "transferProvider": "Fournisseur de virement",
+      "hub2TransferId": "Identifiant Hub2",
+      "hub2Exception": "Exception Hub2",
+      "hub2Metadata": "Métadonnées Hub2",
+      "created_at": "Date de création",
+      "createdBy": "Créé par",
+      "updated_at": "Date de mise à jour",
+      "deletedAt": "Date de suppression",
+      "status": "Statut"
+    },
+    "status": {
+      "created": "Créé",
+      "successful": "Réussi",
+      "pending": "En attente",
+      "failed": "Échoué"
+    },
+    "transferType": {
+      "bank_transfer": "Virement bancaire",
+      "mobile_money": "Mobile Money",
+      "airtime": "Airtime"
+    },
+    "transferItemType": {
+      "wallet_withdrawal_request": "Demande de retrait",
+      "admin_withdrawal": "Retrait administrateur"
+    },
+    "paymentMethod": {
+      "ORANGE_MONEY": "Orange Money",
+      "MTN_MONEY": "MTN Money",
+      "MOOV_MONEY": "Moov Money",
+      "WAVE": "Wave",
+      "BANK_TRANSFER": "Virement bancaire",
+      "CASH": "Espèces",
+      "CARD": "Carte"
+    },
+    "tags": {
+      "pending": "En attente",
+      "processing": "En cours de traitement",
+      "completed": "Terminé",
+      "failed": "Échoué",
+      "cancelled": "Annulé",
+      "bank_transfer": "Virement bancaire",
+      "mobile_money": "Mobile Money",
+      "cash": "Espèces",
+      "wire_transfer": "Virement électronique",
+      "digital_wallet": "Portefeuille numérique",
+      "orange_money": "Orange Money",
+      "mtn_money": "MTN Money",
+      "moov_money": "Moov Money",
+      "wave": "Wave",
+      "card": "Carte",
+      "reservation": "Réservation",
+      "residence": "Résidence",
+      "user": "Utilisateur",
+      "payment": "Paiement",
+      "other": "Autre"
+    },
+    "placeholders": {
+      "amount": "Saisissez le montant",
+      "currency": "Sélectionnez la devise",
+      "transferType": "Sélectionnez le type de virement",
+      "transferStatus": "Sélectionnez le statut",
+      "recipientName": "Nom du bénéficiaire",
+      "accountNumber": "Numéro de compte",
+      "country": "Sélectionnez le pays",
+      "fees": "Saisissez les frais",
+      "transferProvider": "Sélectionnez le type de fournisseur de virement",
+      "itemType": "Sélectionnez le type d'élément",
+      "itemId": "Saisissez l'identifiant de l'élément"
+    },
+    "sections": {
+      "transferInfo": "Informations du virement",
+      "recipientInfo": "Informations du bénéficiaire",
+      "bankInfo": "Informations bancaires",
+      "metadata": "Métadonnées",
+      "timestamps": "Horodatages",
+      "adminActions": "Actions administrateurs"
+    },
+    "actions": {
+      "process": "Traiter",
+      "cancel": "Annuler",
+      "retry": "Réessayer",
+      "complete": "Marquer comme terminé"
+    }
+  },
+  "wallet": {
+      "wallets": "Portefeuilles",
+      "fields": {
+        "available_balance": "Solde disponible",
+        "pending_balance": "Solde en attente",
+        "currency": "Devise",
+        "owner": "Propriétaire",
+        "created_at": "Date de création",
+        "updated_at": "Date de mise à jour",
+        "creditAmount": "Montant à crediter",
+        "source": "Source",
+        "sourceId": "ID de la source",
+        "operator": "Operateur",
+        "note":"Note de transaction",
+        "refundDate":"Date de reversement"
+
+      },
+      "validation": {
+        "creditAmount": {
+          "required": "Le montant du crédit est obligatoire",
+          "min": "Le montant du crédit doit être supérieur ou égal à 100"
+        },
+        "currency": {
+          "required": "La devise est obligatoire"
+        },
+        "source": {
+          "required": "La source est obligatoire"
+        },
+        "sourceId": {
+          "required": "L'ID de la source est obligatoire"
+        },
+        "operator": {
+          "required": "L'operateur est obligatoire"
+        }
+      },
+      "placeholders": {
+        "creditAmount": "Saisir le montant du crédit",
+        "currency": "Sélectionnez la devise",
+        "source": "Saisir la source",
+        "operator":"Sélectionnez l'opérateur",
+        "note":"Saisir une note",
+        "refundDate":"Saisir la date de reversement",
+        "sourceId": "Saisir l'ID de la source"
+      },
+      "tags": {
+        "active": "Actif",
+        "inactive": "Inactif"
+      },
+      "messages": {
+        "walletCreditSuccess": "Le crédit a bien été ajouté au portefeuille.",
+        "walletCreditFailed": "Une erreur s'est produite lors de l'ajout du crédit au portefeuille. Veuillez contacter l'administrateur."
+
+      },
+      "sections": {
+        "walletCredit": "Crediter le portefeuille"
+      },
+      "actions": {
+        "creditWallet": "Crediter le portefeuille"
+      }
+    }
 }

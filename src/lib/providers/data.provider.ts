@@ -18,7 +18,20 @@ export const getDataProvider = (
     return {
         getList: async ({resource, pagination, filters, sorters, meta}) => {
 
-            const url = `${apiUrl}/${resource}`;
+            console.log("getList", {resource, pagination, filters, sorters, meta});
+            let url = `${apiUrl}/${resource}`;
+            
+            if (resource === "wallet-transactions" && meta?.ownerId) {
+                url = `${apiUrl}/wallet/admin/wallet-transactions/${meta.ownerId}`;
+            }
+            
+            if (resource === "withdrawal-requests") {
+                url = `${apiUrl}/wallet/withdrawal-request`;
+            }
+            
+            if (resource === "transfers") {
+                url = `${apiUrl}/transfers/all`;
+            }
 
             const {current = 1, pageSize = 10, mode = "server"} = pagination ?? {};
 
@@ -84,7 +97,15 @@ export const getDataProvider = (
         },
 
         create: async ({resource, variables, meta}) => {
-            const url = `${apiUrl}/${resource}`;
+            let url = `${apiUrl}/${resource}`;
+            
+            if (resource === "withdrawal-request") {
+                url = `${apiUrl}/wallet/withdrawal-request`;
+            }
+            
+            if (resource === "transfers") {
+                url = `${apiUrl}/transfers`;
+            }
 
             const {headers, method} = meta ?? {};
             const requestMethod = (method as MethodTypesWithBody) ?? "post";
@@ -99,7 +120,15 @@ export const getDataProvider = (
         },
 
         update: async ({resource, id, variables, meta}) => {
-            const url = `${apiUrl}/${resource}/${id}`;
+            let url = `${apiUrl}/${resource}/${id}`;
+            
+            if (resource === "withdrawal-requests") {
+                url = `${apiUrl}/wallet/withdrawal-request/${id}`;
+            }
+            
+            if (resource === "transfers") {
+                url = `${apiUrl}/transfers/${id}`;
+            }
 
             const {headers, method} = meta ?? {};
             const requestMethod = (method as MethodTypesWithBody) ?? "patch";
@@ -114,7 +143,17 @@ export const getDataProvider = (
         },
 
         getOne: async ({resource, id, meta}) => {
-            const url = `${apiUrl}/${resource}/${id}`;
+            let url = `${apiUrl}/${resource}/${id}`;
+            
+            if (resource === "withdrawal-requests") {
+                url = `${apiUrl}/wallet/withdrawal-request/${id}`;
+            }
+            
+            if (resource === "transfers") {
+                url = `${apiUrl}/transfers/${id}`;
+            }
+
+            console.log("getOne url", url);
 
             const {headers, method} = meta ?? {};
             const requestMethod = (method as MethodTypes) ?? "get";
@@ -122,12 +161,20 @@ export const getDataProvider = (
             const {data} = await httpClient[requestMethod](url, {headers});
 
             return {
-                data: data.data,
+                data: data.data || data,
             };
         },
 
         deleteOne: async ({resource, id, variables, meta}) => {
-            const url = `${apiUrl}/${resource}/${id}`;
+            let url = `${apiUrl}/${resource}/${id}`;
+            
+            if (resource === "withdrawal-requests") {
+                url = `${apiUrl}/wallet/withdrawal-request/${id}`;
+            }
+            
+            if (resource === "transfers") {
+                url = `${apiUrl}/transfers/${id}`;
+            }
 
             const {headers, method} = meta ?? {};
             const requestMethod = (method as MethodTypesWithBody) ?? "delete";

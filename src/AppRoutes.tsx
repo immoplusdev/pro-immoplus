@@ -33,6 +33,11 @@ import {ListCustomers} from "@/pages/users/list-customers";
 import {ListAdmins} from "@/pages/users/list-admins";
 import {EditPayment, ListPayments, ListPaymentsDemandesRetrait, ListPaymentsFactures} from "@/pages/payments";
 import {LoginPage} from "@/pages/auth";
+import ListWithdrawalRequest from "./pages/withdrawal-request/list-withdrawal-request";
+import EditWithdrawalRequest from "./pages/withdrawal-request/edit-withdrawal-request";
+import CreateWithdrawalRequest from "./pages/withdrawal-request/create-withdrawal-request";
+import ShowWithdrawalRequest from "./pages/withdrawal-request/show-withdrawal-request";
+import {CreateTransfer, EditTransfer, ListTransfers, ShowTransfer} from "./pages/transfers";
 
 export function AppRoutes() {
     return (
@@ -114,6 +119,18 @@ export function AppRoutes() {
                     <Route path="factures" element={<ListPaymentsFactures/>}/>
                     <Route path="retraits" element={<ListPaymentsDemandesRetrait/>}/>
                     <Route path="edit/:id" element={<EditPayment/>}/>
+                </Route>
+                <Route path={"withdrawal-requests"}>
+                    <Route index element={<ListWithdrawalRequest/>}/>
+                    <Route path="create" element={<CreateWithdrawalRequest/>}/>
+                    <Route path="edit/:id" element={<EditWithdrawalRequest/>}/>
+                    <Route path="show/:id" element={<ShowWithdrawalRequest/>}/>
+                </Route>
+                <Route path={"transfers"}>
+                    <Route index element={<ListTransfers/>}/>
+                    <Route path="create" element={<CreateTransfer/>}/>
+                    <Route path="edit/:id" element={<EditTransfer/>}/>
+                    <Route path="show/:id" element={<ShowTransfer/>}/>
                 </Route>
                 <Route path="*" element={<ErrorComponent/>}/>
             </Route>

@@ -93,7 +93,7 @@ export function ListBienImmobilierTable({filters, activeMenu}: Props) {
                     dataIndex="images"
                     title={translate("fields.images")}
                     align="center"
-                    render={(value: string) => <Thumbnail src={getApiFileUrl(value[0])}/>}
+                    render={(value: string) => <Thumbnail src={getApiFileUrl(value??"")}/>}
                 />
                 <Table.Column
                     dataIndex="nom"
