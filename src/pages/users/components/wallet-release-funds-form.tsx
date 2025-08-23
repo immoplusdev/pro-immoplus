@@ -5,12 +5,11 @@ import {
   InputNumber,
   Select,
   Button,
-  DatePicker,
   Space,
   message,
   Collapse,
 } from "antd";
-import { CreditCardOutlined } from "@ant-design/icons";
+import { SwapOutlined } from "@ant-design/icons";
 import { useApiUrl } from "@refinedev/core";
 import axios from "axios";
 import { getLocalStorageProvider } from "@/lib/providers/local-storage.provider";
@@ -18,12 +17,12 @@ import { useParams } from "react-router-dom";
 
 const { Option } = Select;
 
-interface WalletCreditFormProps {
+interface WalletReleaseFundsFormProps {
   translate: any;
   onSuccess?: () => void;
 }
 
-export const WalletCreditForm: React.FC<WalletCreditFormProps> = ({
+export const WalletReleaseFundsForm: React.FC<WalletReleaseFundsFormProps> = ({
   translate,
   onSuccess,
 }) => {
@@ -33,7 +32,7 @@ export const WalletCreditForm: React.FC<WalletCreditFormProps> = ({
   const { id: userId } = useParams<{ id: string }>();
   const authStorageManager = getLocalStorageProvider();
 
-  const handleCreditWallet = async (values: any) => {
+  const handleReleaseFunds = async (values: any) => {
     if (isLoading) return;
 
     try {
@@ -51,21 +50,19 @@ export const WalletCreditForm: React.FC<WalletCreditFormProps> = ({
       const payload = {
         ownerId: userId,
         amount: values.amount,
+        currency: values.currency,
         source: values.source,
         sourceId: values.sourceId,
-        currency: values.currency,
-        operator: values.operator,
         note: values.note,
-        refundDate: values.refundDate?.toISOString(),
       };
 
-      await axios.post(`${apiUrl}/wallet/admin/credit`, payload, {
+      await axios.post(`${apiUrl}/wallet/admin/release-funds`, payload, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      message.success(translate("wallet.messages.walletCreditSuccess"));
+      message.success(translate("wallet.messages.walletReleaseFundsSuccess"));
       form.resetFields();
       if (onSuccess) {
         onSuccess();
@@ -73,7 +70,7 @@ export const WalletCreditForm: React.FC<WalletCreditFormProps> = ({
     } catch (error: unknown) {
       const errorMessage =
         (error as any)?.response?.data?.message ||
-        translate("wallet.messages.walletCreditFailed");
+        translate("wallet.messages.walletReleaseFundsFailed");
       message.error(errorMessage);
     } finally {
       setIsLoading(false);
@@ -87,38 +84,38 @@ export const WalletCreditForm: React.FC<WalletCreditFormProps> = ({
           key: "1",
           label: (
             <Space>
-              <CreditCardOutlined />
-              <span>{translate("wallet.sections.walletCredit")}</span>
+              <SwapOutlined />
+              <span>{translate("wallet.sections.walletReleaseFunds")}</span>
             </Space>
           ),
           children: (
             <Form
               form={form}
               layout="vertical"
-              onFinish={handleCreditWallet}
+              onFinish={handleReleaseFunds}
               onFinishFailed={(errorInfo) => {
                 console.log("Failed:", errorInfo);
               }}
             >
               <Form.Item
-                label={translate("wallet.fields.creditAmount")}
+                label={translate("wallet.fields.releaseAmount")}
                 name="amount"
                 rules={[
                   {
                     required: true,
                     message: translate(
-                      "wallet.validation.creditAmount.required"
+                      "wallet.validation.releaseAmount.required"
                     ),
                   },
                   {
                     type: "number",
-                    min: 100,
-                    message: translate("wallet.validation.creditAmount.min"),
+                    min: 1,
+                    message: translate("wallet.validation.releaseAmount.min"),
                   },
                 ]}
               >
                 <InputNumber
-                  placeholder={translate("wallet.placeholders.creditAmount")}
+                  placeholder={translate("wallet.placeholders.releaseAmount")}
                   style={{ width: "100%" }}
                   size="large"
                   min={1}
@@ -188,46 +185,10 @@ export const WalletCreditForm: React.FC<WalletCreditFormProps> = ({
                 />
               </Form.Item>
 
-              <Form.Item
-                label={translate("wallet.fields.operator")}
-                name="operator"
-                initialValue="moov"
-                rules={[
-                  {
-                    required: true,
-                    message: translate("wallet.validation.operator.required"),
-                  },
-                ]}
-              >
-                <Select
-                  placeholder={translate("wallet.placeholders.operator")}
-                  size="large"
-                >
-                  <Option value="orange">Orange Money</Option>
-                  <Option value="mtn">MTN Money</Option>
-                  <Option value="moov">Moov Money</Option>
-                  <Option value="wave">Wave</Option>
-                  <Option value="ecobank">Ecobank</Option>
-                  <Option value="cash">Cash</Option>
-                </Select>
-              </Form.Item>
-
               <Form.Item label={translate("wallet.fields.note")} name="note">
                 <Input.TextArea
                   rows={3}
                   placeholder={translate("wallet.placeholders.note")}
-                />
-              </Form.Item>
-
-              <Form.Item
-                label={translate("wallet.fields.refundDate")}
-                name="refundDate"
-              >
-                <DatePicker
-                  showTime
-                  placeholder={translate("wallet.placeholders.refundDate")}
-                  style={{ width: "100%" }}
-                  size="large"
                 />
               </Form.Item>
 
@@ -239,7 +200,7 @@ export const WalletCreditForm: React.FC<WalletCreditFormProps> = ({
                   style={{ width: "100%" }}
                   size="large"
                 >
-                  {translate("wallet.actions.creditWallet")}
+                  {translate("wallet.actions.releaseFunds")}
                 </Button>
               </Form.Item>
             </Form>

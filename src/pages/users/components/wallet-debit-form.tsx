@@ -5,12 +5,11 @@ import {
   InputNumber,
   Select,
   Button,
-  DatePicker,
   Space,
   message,
   Collapse,
 } from "antd";
-import { CreditCardOutlined } from "@ant-design/icons";
+import { MinusCircleOutlined } from "@ant-design/icons";
 import { useApiUrl } from "@refinedev/core";
 import axios from "axios";
 import { getLocalStorageProvider } from "@/lib/providers/local-storage.provider";
@@ -18,12 +17,12 @@ import { useParams } from "react-router-dom";
 
 const { Option } = Select;
 
-interface WalletCreditFormProps {
+interface WalletDebitFormProps {
   translate: any;
   onSuccess?: () => void;
 }
 
-export const WalletCreditForm: React.FC<WalletCreditFormProps> = ({
+export const WalletDebitForm: React.FC<WalletDebitFormProps> = ({
   translate,
   onSuccess,
 }) => {
@@ -33,7 +32,7 @@ export const WalletCreditForm: React.FC<WalletCreditFormProps> = ({
   const { id: userId } = useParams<{ id: string }>();
   const authStorageManager = getLocalStorageProvider();
 
-  const handleCreditWallet = async (values: any) => {
+  const handleDebitWallet = async (values: any) => {
     if (isLoading) return;
 
     try {
@@ -56,16 +55,15 @@ export const WalletCreditForm: React.FC<WalletCreditFormProps> = ({
         currency: values.currency,
         operator: values.operator,
         note: values.note,
-        refundDate: values.refundDate?.toISOString(),
       };
 
-      await axios.post(`${apiUrl}/wallet/admin/credit`, payload, {
+      await axios.post(`${apiUrl}/wallet/admin/debit`, payload, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      message.success(translate("wallet.messages.walletCreditSuccess"));
+      message.success(translate("wallet.messages.walletDebitSuccess"));
       form.resetFields();
       if (onSuccess) {
         onSuccess();
@@ -73,7 +71,7 @@ export const WalletCreditForm: React.FC<WalletCreditFormProps> = ({
     } catch (error: unknown) {
       const errorMessage =
         (error as any)?.response?.data?.message ||
-        translate("wallet.messages.walletCreditFailed");
+        translate("wallet.messages.walletDebitFailed");
       message.error(errorMessage);
     } finally {
       setIsLoading(false);
@@ -87,38 +85,38 @@ export const WalletCreditForm: React.FC<WalletCreditFormProps> = ({
           key: "1",
           label: (
             <Space>
-              <CreditCardOutlined />
-              <span>{translate("wallet.sections.walletCredit")}</span>
+              <MinusCircleOutlined />
+              <span>{translate("wallet.sections.walletDebit")}</span>
             </Space>
           ),
           children: (
             <Form
               form={form}
               layout="vertical"
-              onFinish={handleCreditWallet}
+              onFinish={handleDebitWallet}
               onFinishFailed={(errorInfo) => {
                 console.log("Failed:", errorInfo);
               }}
             >
               <Form.Item
-                label={translate("wallet.fields.creditAmount")}
+                label={translate("wallet.fields.debitAmount")}
                 name="amount"
                 rules={[
                   {
                     required: true,
                     message: translate(
-                      "wallet.validation.creditAmount.required"
+                      "wallet.validation.debitAmount.required"
                     ),
                   },
                   {
                     type: "number",
-                    min: 100,
-                    message: translate("wallet.validation.creditAmount.min"),
+                    min: 1,
+                    message: translate("wallet.validation.debitAmount.min"),
                   },
                 ]}
               >
                 <InputNumber
-                  placeholder={translate("wallet.placeholders.creditAmount")}
+                  placeholder={translate("wallet.placeholders.debitAmount")}
                   style={{ width: "100%" }}
                   size="large"
                   min={1}
@@ -219,18 +217,6 @@ export const WalletCreditForm: React.FC<WalletCreditFormProps> = ({
                 />
               </Form.Item>
 
-              <Form.Item
-                label={translate("wallet.fields.refundDate")}
-                name="refundDate"
-              >
-                <DatePicker
-                  showTime
-                  placeholder={translate("wallet.placeholders.refundDate")}
-                  style={{ width: "100%" }}
-                  size="large"
-                />
-              </Form.Item>
-
               <Form.Item>
                 <Button
                   type="primary"
@@ -238,8 +224,9 @@ export const WalletCreditForm: React.FC<WalletCreditFormProps> = ({
                   loading={isLoading}
                   style={{ width: "100%" }}
                   size="large"
+                  danger
                 >
-                  {translate("wallet.actions.creditWallet")}
+                  {translate("wallet.actions.debitWallet")}
                 </Button>
               </Form.Item>
             </Form>

@@ -121,8 +121,8 @@
         "creditAmount": "Montant à crediter",
         "source": "Source",
         "operator": "Operateur",
-        "note":"Note de transaction",
-        "refundDate":"Date de reversement"
+        "note": "Note de transaction",
+        "refundDate": "Date de reversement"
       },
       "validation": {
         "creditAmount": {
@@ -143,9 +143,9 @@
         "creditAmount": "Saisir le montant du crédit",
         "currency": "Sélectionnez la devise",
         "source": "Saisir la source",
-        "operator":"Sélectionnez l'opérateur",
-        "note":"Saisir une note",
-        "refundDate":"Saisir la date de reversement"
+        "operator": "Sélectionnez l'opérateur",
+        "note": "Saisir une note",
+        "refundDate": "Saisir la date de reversement"
       },
       "tags": {
         "active": "Actif",
@@ -154,11 +154,18 @@
       "messages": {
         "walletCreditSuccess": "Le crédit a bien été ajouté au portefeuille.",
         "walletCreditFailed": "Une erreur s'est produite lors de l'ajout du crédit au portefeuille. Veuillez contacter l'administrateur."
-
       },
       "sections": {
         "walletCredit": "Crediter le portefeuille"
       }
+    }
+  },
+  "auth": {
+    "messages": {
+      "loginSuccess": "Connexion reussie",
+      "logoutSuccess": "Deconnexion reussie",
+      "registerSuccess": "Inscription reussie",
+      "tokenNotFound": "Le token n'a pas été trouvé."
     }
   },
   "actions": {
@@ -722,63 +729,80 @@
     }
   },
   "wallet": {
-      "wallets": "Portefeuilles",
-      "fields": {
-        "available_balance": "Solde disponible",
-        "pending_balance": "Solde en attente",
-        "currency": "Devise",
-        "owner": "Propriétaire",
-        "created_at": "Date de création",
-        "updated_at": "Date de mise à jour",
-        "creditAmount": "Montant à crediter",
-        "source": "Source",
-        "sourceId": "ID de la source",
-        "operator": "Operateur",
-        "note":"Note de transaction",
-        "refundDate":"Date de reversement"
-
+    "wallets": "Portefeuilles",
+    "fields": {
+      "available_balance": "Solde disponible",
+      "pending_balance": "Solde en attente",
+      "currency": "Devise",
+      "owner": "Propriétaire",
+      "created_at": "Date de création",
+      "updated_at": "Date de mise à jour",
+      "creditAmount": "Montant à crediter",
+      "source": "Source",
+      "sourceId": "ID de la source",
+      "operator": "Operateur",
+      "note": "Note de transaction",
+      "refundDate": "Date de reversement",
+      "debitAmount": "Montant à debiter",
+      "releaseAmount": "Montant à reverser"
+    },
+    "validation": {
+      "creditAmount": {
+        "required": "Le montant du crédit est obligatoire",
+        "min": "Le montant du crédit doit être supérieur ou égal à 100"
       },
-      "validation": {
-        "creditAmount": {
-          "required": "Le montant du crédit est obligatoire",
-          "min": "Le montant du crédit doit être supérieur ou égal à 100"
-        },
-        "currency": {
-          "required": "La devise est obligatoire"
-        },
-        "source": {
-          "required": "La source est obligatoire"
-        },
-        "sourceId": {
-          "required": "L'ID de la source est obligatoire"
-        },
-        "operator": {
-          "required": "L'operateur est obligatoire"
-        }
+      "currency": {
+        "required": "La devise est obligatoire"
       },
-      "placeholders": {
-        "creditAmount": "Saisir le montant du crédit",
-        "currency": "Sélectionnez la devise",
-        "source": "Saisir la source",
-        "operator":"Sélectionnez l'opérateur",
-        "note":"Saisir une note",
-        "refundDate":"Saisir la date de reversement",
-        "sourceId": "Saisir l'ID de la source"
+      "source": {
+        "required": "La source est obligatoire"
       },
-      "tags": {
-        "active": "Actif",
-        "inactive": "Inactif"
+      "sourceId": {
+        "required": "L'ID de la source est obligatoire"
       },
-      "messages": {
-        "walletCreditSuccess": "Le crédit a bien été ajouté au portefeuille.",
-        "walletCreditFailed": "Une erreur s'est produite lors de l'ajout du crédit au portefeuille. Veuillez contacter l'administrateur."
-
+      "operator": {
+        "required": "L'operateur est obligatoire"
       },
-      "sections": {
-        "walletCredit": "Crediter le portefeuille"
+      "debitAmount": {
+        "required": "Le montant du débit est obligatoire",
+        "min": "Le montant du débit doit être supérieur ou égal à 100"
       },
-      "actions": {
-        "creditWallet": "Crediter le portefeuille"
+      "releaseAmount": {
+        "required": "Le montant de liberation est obligatoire",
+        "min": "Le montant de liberation doit être supérieur ou égal à 100"
       }
+    },
+    "placeholders": {
+      "creditAmount": "Saisir le montant du crédit",
+      "currency": "Sélectionnez la devise",
+      "source": "Saisir la source",
+      "operator": "Sélectionnez l'opérateur",
+      "note": "Saisir une note",
+      "refundDate": "Saisir la date de reversement",
+      "sourceId": "Saisir l'ID de la source",
+      "debitAmount": "Montant à debiter",
+      "releaseAmount": "Montant à reverser"
+    },
+    "tags": {
+      "active": "Actif",
+      "inactive": "Inactif"
+    },
+    "messages": {
+      "walletCreditSuccess": "Le crédit a bien été ajouté au portefeuille.",
+      "walletCreditFailed": "Une erreur s'est produite lors de l'ajout du crédit au portefeuille.",
+      "tokenNotFound": "Le token n'a pas été trouvé.",
+      "walletDebitSuccess": "Le débit a bien été ajouté au portefeuille.",
+      "walletDebitFailed": "Une erreur s'est produite lors de l'ajout du débit au portefeuille."
+    },
+    "sections": {
+      "walletCredit": "Crediter le portefeuille",
+      "walletDebit": "Débiter le portefeuille",
+      "walletReleaseFunds": "Reverser des fonds"
+    },
+    "actions": {
+      "creditWallet": "Crediter le portefeuille",
+      "debitWallet": "Débiter le portefeuille",
+      "releaseFunds": "Reverser des fonds"
     }
+  }
 }

@@ -6,12 +6,15 @@ import { ReadOnlyFormField } from "@/lib/ts-utilities";
 import { formatAmount } from "@/lib/helpers";
 import { ListUserTransactionsTable } from "./list-transactions-table";
 import { WalletCreditForm } from "./wallet-credit-form";
+import { WalletDebitForm } from "./wallet-debit-form";
+import { WalletReleaseFundsForm } from "./wallet-release-funds-form";
 
 export const UsersEditDataFields: React.FC<{
   translate: any;
   data?: BaseRecord;
   walletData?: BaseRecord;
-}> = ({ translate, data, walletData }) => {
+  onWalletUpdate?: () => void;
+}> = ({ translate, data, walletData, onWalletUpdate }) => {
   console.log("data", data);
   return (
     <>
@@ -114,8 +117,46 @@ export const UsersEditDataFields: React.FC<{
         </Card>
       </Card>
 
-      <div style={{ marginTop: "2rem" }}>
-        <WalletCreditForm translate={translate} />
+      <div
+        style={{
+          display:
+            data?.role?.name === "pro_entreprise" ||
+            data?.role?.name === "pro_particulier"
+              ? ""
+              : "None",
+          marginTop: "2rem",
+        }}
+      >
+        <WalletCreditForm translate={translate} onSuccess={onWalletUpdate} />
+      </div>
+
+      <div
+        style={{
+          display:
+            data?.role?.name === "pro_entreprise" ||
+            data?.role?.name === "pro_particulier"
+              ? ""
+              : "None",
+          marginTop: "2rem",
+        }}
+      >
+        <WalletDebitForm translate={translate} onSuccess={onWalletUpdate} />
+      </div>
+
+      <div
+        style={{
+          display:
+            data?.role?.name === "pro_entreprise" ||
+            data?.role?.name === "pro_particulier"
+              ? ""
+              : "None",
+          marginTop: "2rem",
+        }}
+      >
+        <WalletReleaseFundsForm
+          translate={translate}
+          onSuccess={onWalletUpdate}
+        />
       </div>
 
       <Card

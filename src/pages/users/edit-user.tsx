@@ -19,7 +19,7 @@ export const EditUser: React.FC = () => {
   const { formProps, saveButtonProps, queryResult, form } = useForm();
   const usersData = queryResult?.data?.data;
 
-  const { data: walletQuery, isLoading: walletIsLoading } = useCustom({
+  const { data: walletQuery, isLoading: walletIsLoading, refetch: refetchWallet } = useCustom({
     url: `${API_URL}/wallet/admin/user-wallet/${userId}`,
     method: "get",
     meta: {
@@ -63,6 +63,7 @@ export const EditUser: React.FC = () => {
               translate={translate}
               data={usersData}
               walletData={walletData}
+              onWalletUpdate={() => refetchWallet()}
             />
           </Col>
           <Col xs={24} md={24} lg={8}>
