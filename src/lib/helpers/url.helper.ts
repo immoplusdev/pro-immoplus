@@ -6,8 +6,13 @@ export function getImageUrl(imageId: string) {
 }
 
 export function getCarouselUrls(miniatureId: string, images?:[]){
-    const imagesUrls: string[] = [miniatureId];
-        return images ?  imagesUrls.concat(images) : imagesUrls;
+    const imagesUrls: string[] = [];
+    
+    if (miniatureId) {
+        imagesUrls.push(miniatureId);
+    }
+    
+    return images ? imagesUrls.concat(images) : imagesUrls;
 }
 
 export function getApiFileUrl(imageId: string) {
