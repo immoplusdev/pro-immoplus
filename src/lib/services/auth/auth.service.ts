@@ -13,7 +13,8 @@ export const authService: AuthService = {
     async login(username: string, password: string) {
         const body = {
             username,
-            password
+            password,
+            source: "admin_app"
         }
 
         try {

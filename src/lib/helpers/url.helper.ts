@@ -2,7 +2,8 @@ import { API_URL } from "@/configs/app.config";
 import queryString from "query-string";
 
 export function getImageUrl(imageId: string) {
-    return `${API_URL}/files/raw/public/${imageId}`
+    const baseUrl = API_URL.replace(/^http:/, 'https:');
+    return `${baseUrl}/files/raw/public/${imageId}`
 }
 
 export function getCarouselUrls(miniatureId: string, images?:[]){
@@ -16,7 +17,8 @@ export function getCarouselUrls(miniatureId: string, images?:[]){
 }
 
 export function getApiFileUrl(imageId: string) {
-    return `${API_URL}/files/raw/public/${imageId}`
+    const baseUrl = API_URL.replace(/^http:/, 'https:');
+    return `${baseUrl}/files/raw/public/${imageId}`
 }
 
 export function serializeWhereParameterToQueryFiltersString(where: Record<string, any>[]): string {

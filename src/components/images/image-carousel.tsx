@@ -1,5 +1,4 @@
 import {getImageUrl} from "@/lib/helpers";
-import React from "react";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {A11y, Autoplay, Navigation, Pagination} from "swiper/modules";
 import {Image} from "antd";
