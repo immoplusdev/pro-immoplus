@@ -7,6 +7,7 @@ export default function CategoryPaymentTypeListItem() {
     <Table.Column
       title={translate("fields.payment_type")}
       dataIndex="payment_type"
+      align="center"
       render={(_, record: BaseRecord) => (
         <>
           {translate(

@@ -65,8 +65,107 @@
       "backHome": "Retour à l'accueil"
     },
     "residence": {
-      "residence": "Résidence",
       "residences": "Résidences"
+    },
+    "reservation": {
+      "reservation": "Réservation",
+      "reservations": "Réservations"
+    },
+    "payment": {
+      "title": "Paiements",
+      "fields": {
+        "status": "Statut",
+        "amount": "Montant",
+        "amount_with_fees": "Montant avec frais",
+        "amount_no_fees": "Montant sans frais",
+        "payment_type": "Type de paiement",
+        "collection": "Groupe",
+        "payment_status": "Statut de paiement",
+        "payment_method": "Méthode de paiement",
+        "created_at": "Date de création"
+      },
+      "common": {
+        "factures": "Factures",
+        "retraits": "Demandes de retrait"
+      },
+      "tags": {
+        "facture": "Facture",
+        "purchase": "Facture",
+        "retrait": "Retrait",
+        "demandes_visites": "Demandes de visites",
+        "reservations": "Réservations",
+        "waiting_for_validation": "En attente de validation",
+        "payment_required": "Paiement requis",
+        "processing": "En cours de traitement",
+        "action_required": "Action requise",
+        "successful": "Réussi",
+        "failed": "Échoué",
+        "payment_method": "Méthode de paiement",
+        "orange": "Orange",
+        "mtn": "MTN",
+        "moov": "Moov",
+        "visa": "Visa",
+        "mastercard": "Mastercard",
+        "wave": "Wave"
+      }
+    },
+    "wallet": {
+      "wallets": "Portefeuilles",
+      "fields": {
+        "available_balance": "Solde disponible",
+        "pending_balance": "Solde en attente",
+        "currency": "Devise",
+        "owner": "Propriétaire",
+        "created_at": "Date de création",
+        "updated_at": "Date de mise à jour",
+        "creditAmount": "Montant à crediter",
+        "source": "Source",
+        "operator": "Operateur",
+        "note": "Note de transaction",
+        "refundDate": "Date de reversement"
+      },
+      "validation": {
+        "creditAmount": {
+          "required": "Le montant du crédit est obligatoire",
+          "min": "Le montant du crédit doit être supérieur ou égal à 100"
+        },
+        "currency": {
+          "required": "La devise est obligatoire"
+        },
+        "source": {
+          "required": "La source est obligatoire"
+        },
+        "operator": {
+          "required": "L'operateur est obligatoire"
+        }
+      },
+      "placeholders": {
+        "creditAmount": "Saisir le montant du crédit",
+        "currency": "Sélectionnez la devise",
+        "source": "Saisir la source",
+        "operator": "Sélectionnez l'opérateur",
+        "note": "Saisir une note",
+        "refundDate": "Saisir la date de reversement"
+      },
+      "tags": {
+        "active": "Actif",
+        "inactive": "Inactif"
+      },
+      "messages": {
+        "walletCreditSuccess": "Le crédit a bien été ajouté au portefeuille.",
+        "walletCreditFailed": "Une erreur s'est produite lors de l'ajout du crédit au portefeuille. Veuillez contacter l'administrateur."
+      },
+      "sections": {
+        "walletCredit": "Crediter le portefeuille"
+      }
+    }
+  },
+  "auth": {
+    "messages": {
+      "loginSuccess": "Connexion reussie",
+      "logoutSuccess": "Deconnexion reussie",
+      "registerSuccess": "Inscription reussie",
+      "tokenNotFound": "Le token n'a pas été trouvé."
     }
   },
   "actions": {
@@ -112,11 +211,183 @@
       "residence_disponible": "Residence disponible",
       "nombre_max_occupants": "Nombre maximum d'occupants",
       "animaux_autorises": "Animaux autorisés",
-      "fetes_autorises": "Fêtes autorisées"
+      "fetes_autorises": "Fêtes autorisées",
+      "residence_id": "Résidence identifiant",
+      "residence": "Résidence",
+      "duree_min_sejour": "Durée minimum de séjour",
+      "duree_max_sejour": "Durée maximum de séjour",
+      "heure_entree": "Heure d'entrée",
+      "heure_depart": "Heure de départ",
+      "images": "Images",
+      "oui": "Oui",
+      "non": "Non"
+    },
+    "status_validation": {
+      "valide": "Validé",
+      "en_attente_validation": "En attente de validation",
+      "rejete": "Rejeté"
+    },
+    "type_residence": {
+      "appartement": "Appartement",
+      "maison": "Maison",
+      "villa": "Villa"
     }
   },
-  "tags": {
-    "clone": "Cloner"
+  "reservations": {
+    "fields": {
+      "status_reservation": "Statut de réservation",
+      "date": "Date",
+      "montant_reservation_sans_commission": "Montant reservation sans commission",
+      "montant_total_reservation": "Montant total de reservation",
+      "retrait_pro_effectue": "Retrait Pro Effectué",
+      "status_facture": "Status facture",
+      "proprietaire": "Proprietaire",
+      "data": "Données",
+      "actions": "Actions",
+      "oui": "Oui",
+      "non": "Non",
+      "paye": "Payé",
+      "non_paye": "Non payé",
+      "rejete": "Rejeté",
+      "valide": "Validé",
+      "en_cours": "En cours",
+      "en_cours_validation_user": "Utilisateur en cours de validation ",
+      "en_cours_validation_admin": "Admin en cours de validation ",
+      "en_cours_validation": "En cours de validation ",
+      "en_attente_validation": "En attente de validation ",
+      "en_validation": "En validation "
+    },
+    "status_reservation": {
+      "rejete": "Rejeté",
+      "valide": "Validé",
+      "en_cours": "En cours",
+      "en_cours_validation_user": "Utilisateur en cours de validation ",
+      "en_cours_validation_admin": "Admin en cours de validation "
+    }
+  },
+  "biens_immobiliers": {
+    "fields": {
+      "type_bien_immobilier": "Type de bien immobilier",
+      "tags": "Tag",
+      "prix": "Prix",
+      "featured": "Fonctionnalité",
+      "a_louer": "À louer",
+      "type_location": "Type de location",
+      "disponible": "Disponible",
+      "non_disponible": "Non disponible",
+      "non_valide": "Non valide",
+      "valide": "Validé",
+      "en_validation": "En validation",
+      "rejete": "Rejeté",
+      "data": "Données",
+      "nombre_max_occupants": "Nombre maximum d'occupants",
+      "animaux_autorises": "Animaux autorisés",
+      "fetes_autorises": "Fêtes autorisées",
+      "bien_immobilier_disponible": "Bien immobilier disponible",
+      "oui": "Oui",
+      "non": "Non",
+      "compte_pro_Valide": "Compte pro valide",
+      "en_attente_validation": "En attente de validation"
+    }
+  },
+  "demandes_visites": {
+    "fields": {
+      "status_demande_visite": "Status demande visite",
+      "type_demande_visite": "Type demande visite",
+      "status_facture": "Status facture",
+      "retrait_pro_effectue": "Retrait Pro Effectué",
+      "notes": "Notes",
+      "client_phone_number": "Numéro de client",
+      "data": "Données",
+      "actions": "Actions",
+      "montant_total_demande_visite": "Montant total demande visite",
+      "montant_demande_visite_sans_commission": "Montant demande visite sans commission",
+      "created_at": "Date de création",
+      "updated_at": "Date de mise à jour",
+      "express": "Express",
+      "normal": "Normal",
+      "rejete": "Rejete",
+      "en_cours": "en cours",
+      "en_cours_validation_user": "Utilisateur en cours validation",
+      "en_cours_validation_admin": "Admin en cours validation",
+      "paye": "Payé",
+      "non_paye": "Non payé",
+      "programmer_une_visite": "Programmer une visite",
+      "demandes_visites": "Demandes visites",
+      "en_validation": "En validation",
+      "valide": "Validé"
+    }
+  },
+  "configs": {
+    "fields": {
+      "normal_visit_price": "Prix visite normal",
+      "express_visit_price": "Prix visite express",
+      "contact_phone_number": "Numéro de téléphone de contact",
+      "contact_email": "E-mail de contact",
+      "proximity_radius": "Rayon de proximité",
+      "sms_sender_name": "Nom de l'expéditeur SMS",
+      "standard_shipping_price": "Prix de livraison standard",
+      "flash_shipping_price": "Prix de livraison flash",
+      "project_name": "Nom du projet"
+    }
+  },
+  "users": {
+    "title": "Utilisateurs",
+    "fields": {
+      "firstname": "Prénom",
+      "lastname": "Nom de famille",
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "phone_number": "Numéro de téléphone",
+      "otp": "Opt",
+      "otp_expiration": "Date d'expiration otp",
+      "identity_verified": "Verification identité",
+      "email_verified": "E-mail verifié",
+      "phone_number_verified": "Numéro de téléphone verifié ",
+      "compte_pro_valide": "Compte pro valide",
+      "auth_login_attempts": "Tentatives d'authentification",
+      "status": "Status",
+      "role": "Role",
+      "users": "Utilisateurs",
+      "data": "Données",
+      "rejete": "Rejeté",
+      "valide": "Validé",
+      "en_cours": "en cours",
+      "en_cours_validation_user": "User en cours validation",
+      "en_cours_validation_admin": "Admin en cours validation",
+      "customer": "Client",
+      "admin": "Admin",
+      "pro_entreprise": "ProEntreprise",
+      "pro_particulier": "ProParticulier",
+      "active": "Active",
+      "blocked": "Blocked",
+      "wallet": "Portefeuille",
+      "available_balance": "Solde disponible",
+      "pending_balance": "Solde en attente",
+      "currency": "Devise",
+      "owner": "Propriétaire",
+      "created_at": "Date de création",
+      "updated_at": "Date de mise à jour",
+      "user_transactions": "Transactions utilisateur",
+      "list_transactions": "Liste des Transactions"
+    },
+    "tags": {
+      "status": {
+        "active": "Actif",
+        "blocked": "Bloqué"
+      },
+      "roles": {
+        "admin": "Administateur",
+        "pro_entreprise": "Pro Entreprise",
+        "pro_particulier": "Pro Particulier",
+        "customer": "Client"
+      }
+    },
+    "common": {
+      "see_user": "Voir l'utilisateur",
+      "see_owner": "Voir le propriétaire",
+      "see_customer": "Voir le client"
+    }
   },
   "dashboard": {
     "title": "Tableau de bord"
@@ -176,6 +447,8 @@
   "fields": {
     "id": "Identifiant",
     "title": "Titre",
+    "search": "Rechercher",
+    "client": "Client",
     "name": "Nom",
     "description": "Description",
     "adresse": "Adresse",
@@ -188,11 +461,348 @@
     "nom": "Nom",
     "status_validation": "Statut de validation",
     "prix_reservation": "Prix de la réservation",
-    "miniature": "Miniature"
+    "miniature": "Miniature",
+    "location": "Localisation",
+    "client_phone_number": "Numéro client",
+    "notes": "Note",
+    "images": "Images",
+    "regles_supplementaires": "Règles supplémentaires"
   },
   "tags": {
     "valided": "Validé",
     "pending": "En attente",
-    "rejected": "Rejeté"
+    "rejected": "Rejeté",
+    "paye": "Paye",
+    "clone": "Cloner",
+    "non_paye": "Non paye",
+    "en_validation": "En validation",
+    "all_e": "Toutes",
+    "all": "Tous",
+    "maison": "maison",
+    "villa": "villa",
+    "appartement": "appartement",
+    "pro_entreprise": "Pro entreprise",
+    "pro_particulier": "Pro particulier",
+    "utilisateurs_valides": "Utilisateurs validés",
+    "utilisateurs_non_valides": "Utilisateurs non validés",
+    "customer": "Client",
+    "en_attente_validation": "En cours de validation",
+    "en_cours": "En cours",
+    "en_cours_validation_admin": "Admin en cours de validation",
+    "en_cours_validation_user": "Utilisateur en cours de validation",
+    "valide": "Validé"
+  },
+  "files": {
+    "file_upload": {
+      "drag_and_drop_image_uploader_title": "Cliquez ou faites glisser un fichier pour l'ajouter",
+      "drag_and_drop_image_uploader_description": "Assurez-vous que le fichier est au format PNG, JPG ou SVG et ne dépasse pas 2 Mo.",
+      "upload": "Téléverser"
+    }
+  },
+  "common": {
+    "yes": "Oui",
+    "no": "Non",
+    "write_something_here": "Écrivez quelque chose ici...",
+    "filter": "Filtrer",
+    "select_a_value": "Sélectionnez une valeur",
+    "notAvailable": "Non disponible"
+  },
+  "walletTransactions": {
+    "title": "Liste des Transactions",
+    "fields": {
+      "id": "Identifiant",
+      "amount": "Montant",
+      "is_realeased": "État de reversement",
+      "type": "Type",
+      "status": "Statut",
+      "note": "Note de transaction",
+      "created_at": "Date de création",
+      "updated_at": "Date de mise à jour",
+      "description": "Description"
+    },
+    "tags": {
+      "credit": "Crédit",
+      "debit": "Débit",
+      "pending": "En attente",
+      "completed": "Terminé",
+      "failed": "Échoué"
+    }
+  },
+  "withdrawalRequests": {
+    "title": "Demandes de Retrait",
+    "withdrawalRequests": "Demandes de Retrait",
+    "withdrawalRequest": "Demande de Retrait",
+    "fields": {
+      "id": "Identifiant",
+      "owner": "Demandeur",
+      "amount": "Montant",
+      "status": "Statut",
+      "operator": "Opérateur",
+      "payment_method": "Méthode de paiement",
+      "bank_account": "Compte bancaire",
+      "phoneNumber": "Numéro Mobile Money",
+      "notes": "Notes",
+      "admin_notes": "Notes administratives",
+      "created_at": "Date de création",
+      "updated_at": "Date de mise à jour",
+      "processed_at": "Date de traitement",
+      "user": "Utilisateur",
+      "wallet": "Portefeuille",
+      "note": "Note",
+      "currency": "Devise",
+      "transferDescription": "Description de transfert"
+    },
+    "validation": {
+      "amount": {
+        "required": "Le montant est requis",
+        "min": "Le montant doit être supérieur ou égal à 100"
+      },
+      "currency": {
+        "required": "La devise est requise"
+      },
+      "phoneNumber": {
+        "required": "Le numéro Mobile Money est requis",
+        "pattern": "Le numéro Mobile Money doit être un numéro valide"
+      },
+      "operator": {
+        "required": "L'opérateur est requis"
+      },
+      "transferDescription": {
+        "required": "La description de transfert est requise"
+      }
+    },
+    "status": {
+      "pending": "En attente",
+      "approved": "Approuvé",
+      "rejected": "Rejeté",
+      "completed": "Terminé",
+      "failed": "Échoué"
+    },
+    "operators": {
+      "orange": "Orange Money",
+      "mtn": "MTN Money",
+      "wave": "Wave",
+      "moov": "Moov Money",
+      "ecobank": "Ecobank",
+      "cash": "cash"
+    },
+    "placeholders": {
+      "phoneNumber": "Numéro Mobile Money",
+      "status": "Sélectionnez le statut",
+      "note": "Ajoutez des notes (facultatif)",
+      "operator": "Sélectionnez l'opérateur",
+      "amount": "Saisissez le montant",
+      "currency": "Sélectionnez la devise",
+      "transferDescription": "Saisissez la description du transfert"
+    },
+    "tags": {
+      "pending": "En attente",
+      "approved": "Approuvé",
+      "rejected": "Rejeté",
+      "processing": "En cours de traitement",
+      "completed": "Terminé",
+      "failed": "Échoué",
+      "bank_transfer": "Virement bancaire",
+      "mobile_money": "Mobile Money",
+      "orange": "Orange Money",
+      "mtn": "MTN Money",
+      "moov": "Moov Money",
+      "wave": "Wave"
+    },
+    "sections": {
+      "requestInfo": "Informations de la demande",
+      "adminActions": "Actions administratives",
+      "ownerDetails": "Détails du demandeur",
+      "timestamps": "Horodatages",
+      "requestDetails": "Détails de la demande",
+      "statusAndNotes": "Statut et notes",
+      "transferValidation": "Validation du virement"
+    },
+    "actions": {
+      "approve": "Approuver",
+      "reject": "Rejeter",
+      "process": "Traiter",
+      "complete": "Marquer comme terminé",
+      "validateTransfer": "Valider la demande"
+    }
+  },
+  "transfers": {
+    "title": "Virements",
+    "transfers": "Virements",
+    "transfer": "Virement",
+    "fields": {
+      "id": "Identifiant",
+      "amount": "Montant",
+      "currency": "Devise",
+      "fees": "Frais",
+      "customer": "Client",
+      "itemType": "Type du transfert",
+      "itemId": "Identifiant de l'élément",
+      "transfetStatus": "Statut du virement",
+      "transferType": "Type de virement",
+      "country": "Pays",
+      "accountNumber": "Numéro de compte",
+      "bank": "Banque",
+      "recipientName": "Nom du bénéficiaire",
+      "transferProvider": "Fournisseur de virement",
+      "hub2TransferId": "Identifiant Hub2",
+      "hub2Exception": "Exception Hub2",
+      "hub2Metadata": "Métadonnées Hub2",
+      "created_at": "Date de création",
+      "createdBy": "Créé par",
+      "updated_at": "Date de mise à jour",
+      "deletedAt": "Date de suppression",
+      "status": "Statut"
+    },
+    "status": {
+      "created": "Créé",
+      "successful": "Réussi",
+      "pending": "En attente",
+      "failed": "Échoué"
+    },
+    "transferType": {
+      "bank_transfer": "Virement bancaire",
+      "mobile_money": "Mobile Money",
+      "airtime": "Airtime"
+    },
+    "transferItemType": {
+      "wallet_withdrawal_request": "Demande de retrait",
+      "admin_withdrawal": "Retrait administrateur"
+    },
+    "paymentMethod": {
+      "ORANGE_MONEY": "Orange Money",
+      "MTN_MONEY": "MTN Money",
+      "MOOV_MONEY": "Moov Money",
+      "WAVE": "Wave",
+      "BANK_TRANSFER": "Virement bancaire",
+      "CASH": "Espèces",
+      "CARD": "Carte"
+    },
+    "tags": {
+      "pending": "En attente",
+      "processing": "En cours de traitement",
+      "completed": "Terminé",
+      "failed": "Échoué",
+      "cancelled": "Annulé",
+      "bank_transfer": "Virement bancaire",
+      "mobile_money": "Mobile Money",
+      "cash": "Espèces",
+      "wire_transfer": "Virement électronique",
+      "digital_wallet": "Portefeuille numérique",
+      "orange_money": "Orange Money",
+      "mtn_money": "MTN Money",
+      "moov_money": "Moov Money",
+      "wave": "Wave",
+      "card": "Carte",
+      "reservation": "Réservation",
+      "residence": "Résidence",
+      "user": "Utilisateur",
+      "payment": "Paiement",
+      "other": "Autre"
+    },
+    "placeholders": {
+      "amount": "Saisissez le montant",
+      "currency": "Sélectionnez la devise",
+      "transferType": "Sélectionnez le type de virement",
+      "transferStatus": "Sélectionnez le statut",
+      "recipientName": "Nom du bénéficiaire",
+      "accountNumber": "Numéro de compte",
+      "country": "Sélectionnez le pays",
+      "fees": "Saisissez les frais",
+      "transferProvider": "Sélectionnez le type de fournisseur de virement",
+      "itemType": "Sélectionnez le type d'élément",
+      "itemId": "Saisissez l'identifiant de l'élément"
+    },
+    "sections": {
+      "transferInfo": "Informations du virement",
+      "recipientInfo": "Informations du bénéficiaire",
+      "bankInfo": "Informations bancaires",
+      "metadata": "Métadonnées",
+      "timestamps": "Horodatages",
+      "adminActions": "Actions administrateurs"
+    },
+    "actions": {
+      "process": "Traiter",
+      "cancel": "Annuler",
+      "retry": "Réessayer",
+      "complete": "Marquer comme terminé"
+    }
+  },
+  "wallet": {
+    "wallets": "Portefeuilles",
+    "fields": {
+      "available_balance": "Solde disponible",
+      "pending_balance": "Solde en attente",
+      "currency": "Devise",
+      "owner": "Propriétaire",
+      "created_at": "Date de création",
+      "updated_at": "Date de mise à jour",
+      "creditAmount": "Montant à crediter",
+      "source": "Source",
+      "sourceId": "ID de la source",
+      "operator": "Operateur",
+      "note": "Note de transaction",
+      "refundDate": "Date de reversement",
+      "debitAmount": "Montant à debiter",
+      "releaseAmount": "Montant à reverser"
+    },
+    "validation": {
+      "creditAmount": {
+        "required": "Le montant du crédit est obligatoire",
+        "min": "Le montant du crédit doit être supérieur ou égal à 100"
+      },
+      "currency": {
+        "required": "La devise est obligatoire"
+      },
+      "source": {
+        "required": "La source est obligatoire"
+      },
+      "sourceId": {
+        "required": "L'ID de la source est obligatoire"
+      },
+      "operator": {
+        "required": "L'operateur est obligatoire"
+      },
+      "debitAmount": {
+        "required": "Le montant du débit est obligatoire",
+        "min": "Le montant du débit doit être supérieur ou égal à 100"
+      },
+      "releaseAmount": {
+        "required": "Le montant de liberation est obligatoire",
+        "min": "Le montant de liberation doit être supérieur ou égal à 100"
+      }
+    },
+    "placeholders": {
+      "creditAmount": "Saisir le montant du crédit",
+      "currency": "Sélectionnez la devise",
+      "source": "Saisir la source",
+      "operator": "Sélectionnez l'opérateur",
+      "note": "Saisir une note",
+      "refundDate": "Saisir la date de reversement",
+      "sourceId": "Saisir l'ID de la source",
+      "debitAmount": "Montant à debiter",
+      "releaseAmount": "Montant à reverser"
+    },
+    "tags": {
+      "active": "Actif",
+      "inactive": "Inactif"
+    },
+    "messages": {
+      "walletCreditSuccess": "Le crédit a bien été ajouté au portefeuille.",
+      "walletCreditFailed": "Une erreur s'est produite lors de l'ajout du crédit au portefeuille.",
+      "tokenNotFound": "Le token n'a pas été trouvé.",
+      "walletDebitSuccess": "Le débit a bien été ajouté au portefeuille.",
+      "walletDebitFailed": "Une erreur s'est produite lors de l'ajout du débit au portefeuille."
+    },
+    "sections": {
+      "walletCredit": "Crediter le portefeuille",
+      "walletDebit": "Débiter le portefeuille",
+      "walletReleaseFunds": "Reverser des fonds"
+    },
+    "actions": {
+      "creditWallet": "Crediter le portefeuille",
+      "debitWallet": "Débiter le portefeuille",
+      "releaseFunds": "Reverser des fonds"
+    }
   }
 }

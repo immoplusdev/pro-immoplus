@@ -47,6 +47,8 @@ module.exports = function (plop) {
         text.replaceAll("-", "_").toUpperCase()
     );
 
+    plop.setHelper("timestampify", () => moment().format("YYYYMMDDHHmmss"));
+
     const namePrompt = [
         {
             type: "input",

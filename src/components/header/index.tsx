@@ -1,6 +1,6 @@
 import { DownOutlined } from "@ant-design/icons";
 import type { RefineThemedLayoutV2HeaderProps } from "@refinedev/antd";
-import { useGetIdentity, useGetLocale, useSetLocale } from "@refinedev/core";
+import { useGetIdentity, useSetLocale } from "@refinedev/core";
 import {
   Avatar,
   Button,
@@ -29,12 +29,12 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
 }) => {
   const { token } = useToken();
   // const { i18n } = useTranslation();
-  const locale = useGetLocale();
+  // const locale = useGetLocale();
   const changeLanguage = useSetLocale();
   const { data: user } = useGetIdentity<IUser>();
   const { mode, setMode } = useContext(ColorModeContext);
 
-  const currentLocale = locale();
+  const currentLocale = "fr"//locale();
   const languages = ["fr", "en"];
   // [...(i18n.languages || [])]
   const menuItems: MenuProps["items"] = languages
