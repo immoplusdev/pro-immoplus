@@ -1,5 +1,4 @@
 import { API_URL } from "@/configs/app.config";
-import queryString from "query-string";
 
 export function getImageUrl(imageId: string) {
     return `${API_URL}/files/raw/public/${imageId}`
@@ -11,7 +10,7 @@ export function getCarouselUrls(miniatureId: string, images?:[]){
 }
 
 export function getApiFileUrl(imageId: string) {
-    return `${API_URL}/files/raw/public/${imageId}`
+    return `${API_URL}/files/raw/public/${imageId}`.replace("https://", "http://");
 }
 
 export function serializeWhereParameterToQueryFiltersString(where: Record<string, any>[]): string {
