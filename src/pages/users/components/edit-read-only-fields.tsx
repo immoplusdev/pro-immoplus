@@ -3,7 +3,7 @@ import { BaseRecord } from "@refinedev/core";
 import { Card, Space } from "antd";
 import { DatabaseOutlined } from "@ant-design/icons";
 import { ReadOnlyFormField } from "@/lib/ts-utilities";
-import { formatAmount } from "@/lib/helpers";
+import { formatAmount, getApiFileUrl } from "@/lib/helpers";
 import { ListUserTransactionsTable } from "./list-transactions-table";
 import { WalletCreditForm } from "./wallet-credit-form";
 import { WalletDebitForm } from "./wallet-debit-form";
@@ -75,6 +75,130 @@ export const UsersEditDataFields: React.FC<{
           <ReadOnlyFormField
             label={translate("users.fields.auth_login_attempts")}
             content={data?.authLoginAttempts}
+          />
+        </Card>
+      </Card>
+
+      {/* Informations Entreprise */}
+      <Card
+        style={{
+          display: data?.role?.name === "pro_entreprise" ? "" : "None",
+          marginTop: "2rem",
+        }}
+        title={
+          <Space>
+            <DatabaseOutlined />
+            <p>Informations Entreprise</p>
+          </Space>
+        }
+        headStyle={{ padding: "1rem", border: "0.5px solid black" }}
+        bodyStyle={{
+          padding: "2rem",
+          border: "0.5px solid black",
+          display: "flex",
+          flexDirection: "row",
+        }}
+      >
+        <Card style={{ border: "none", width: "50%" }}>
+          <ReadOnlyFormField
+            label="Nom Entreprise"
+            content={data?.additionalData?.nomEntreprise}
+          />
+          <ReadOnlyFormField
+            label="Activité"
+            content={data?.additionalData?.activite}
+          />
+          <ReadOnlyFormField
+            label="Email Entreprise"
+            content={data?.additionalData?.emailEntreprise}
+          />
+        </Card>
+        <Card style={{ width: "50%", border: "none" }}>
+          <ReadOnlyFormField
+            label="Numéro Contribuable"
+            content={data?.additionalData?.numeroContribuable}
+          />
+          <ReadOnlyFormField
+            label="Type Entreprise"
+            content={data?.additionalData?.typeEntreprise}
+          />
+          <ReadOnlyFormField
+            label="Registre de Commerce"
+            content={
+              data?.additionalData?.registreCommerceId ? (
+                <a
+                  href={getApiFileUrl(data.additionalData.registreCommerceId)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Voir le document
+                </a>
+              ) : (
+                "Non fourni"
+              )
+            }
+          />
+        </Card>
+      </Card>
+
+      {/* Informations Pro Particulier */}
+      <Card
+        style={{
+          display: data?.role?.name === "pro_particulier" ? "" : "None",
+          marginTop: "2rem",
+        }}
+        title={
+          <Space>
+            <DatabaseOutlined />
+            <p>Informations Professionnel Particulier</p>
+          </Space>
+        }
+        headStyle={{ padding: "1rem", border: "0.5px solid black" }}
+        bodyStyle={{
+          padding: "2rem",
+          border: "0.5px solid black",
+          display: "flex",
+          flexDirection: "row",
+        }}
+      >
+        <Card style={{ border: "none", width: "50%" }}>
+          <ReadOnlyFormField
+            label="Activité"
+            content={data?.additionalData?.activite}
+          />
+          <ReadOnlyFormField
+            label="Photo d'Identité"
+            content={
+              data?.additionalData?.photoIdentiteId ? (
+                <a
+                  href={getApiFileUrl(data.additionalData.photoIdentiteId)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Voir le document
+                </a>
+              ) : (
+                "Non fourni"
+              )
+            }
+          />
+        </Card>
+        <Card style={{ width: "50%", border: "none" }}>
+          <ReadOnlyFormField
+            label="Pièce d'Identité"
+            content={
+              data?.additionalData?.pieceIdentiteId ? (
+                <a
+                  href={getApiFileUrl(data.additionalData.pieceIdentiteId)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Voir le document
+                </a>
+              ) : (
+                "Non fourni"
+              )
+            }
           />
         </Card>
       </Card>

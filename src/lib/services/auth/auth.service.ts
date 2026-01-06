@@ -1,7 +1,7 @@
 import {API_URL} from "@/configs/app.config";
 import {httpExceptionToMessage} from "@/lib/helpers";
 import axios, {AxiosError} from "axios";
-import {axiosInstance} from "@/lib/providers/utils";
+import {axiosInstance, setRefreshTokenHandler} from "@/lib/providers/utils";
 import {AuthService} from "@/core/domain/auth";
 import {User, UserRole} from "@/core/domain/users";
 import {getLocalStorageProvider} from "@/lib/providers/local-storage.provider";
@@ -48,6 +48,42 @@ export const authService: AuthService = {
         }
     },
 
+    async refreshToken() {
+        try {
+            const authData = authStorageManager.getAuthData();
+            if (!authData || !authData.refresh_token) {
+                return null;
+            }
+
+            const response = await axios.post(`${API_URL}/auth/refresh-token`, {
+                refreshToken: authData.refresh_token
+            });
+
+            const {accessToken, refreshToken, expires} = response.data.data;
+
+            const newAuthData = {
+                access_token: accessToken,
+                refresh_token: refreshToken,
+                expires,
+                expires_at: expires,
+                role: authData.role
+            };
+
+            this.setUserToken(newAuthData.access_token);
+            authStorageManager.setAuthData(newAuthData);
+
+            return {
+                access_token: accessToken,
+                refresh_token: refreshToken,
+                expires
+            };
+        } catch (error) {
+            console.error("Failed to refresh token:", error);
+            await this.logout();
+            return null;
+        }
+    },
+
     getToken() {
         const token = authStorageManager.getAuthData();
         if (token && token.access_token) {
@@ -58,7 +94,7 @@ export const authService: AuthService = {
     },
 
     async logout() {
-        await authStorageManager.setAuthData(null);
+        authStorageManager.setAuthData(null);
     },
 
     setUserToken(token: string) {
@@ -67,14 +103,10 @@ export const authService: AuthService = {
 
     async getUserData() {
         try {
-            const token = await authStorageManager.getAuthData();
+            const token = authStorageManager.getAuthData();
             if (!token) return null;
 
-            const response = await axios.get(`${API_URL}/users/data/me`, {
-                headers: {
-                    Authorization: `Bearer ${token.access_token}`
-                }
-            });
+            const response = await axiosInstance.get(`${API_URL}/users/data/me`);
 
             return response.data.data;
         } catch (error) {
@@ -95,3 +127,6 @@ export const authService: AuthService = {
         return true;
     }
 }
+
+// Configure refresh token handler for axios interceptor
+setRefreshTokenHandler(() => authService.refreshToken());

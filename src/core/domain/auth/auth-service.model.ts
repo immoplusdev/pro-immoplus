@@ -10,6 +10,12 @@ export interface AuthService {
             message?: undefined
         } | { message: string; access_token: null; }>;
 
+    refreshToken(): Promise<{
+        access_token: string;
+        refresh_token: string;
+        expires: number;
+    } | null>;
+
     getToken(): boolean;
 
     logout(): Promise<void>;
