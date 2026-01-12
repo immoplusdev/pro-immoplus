@@ -128,7 +128,6 @@ export const UsersEditDataFields: React.FC<{
             content={
               data?.additionalData?.registreCommerceId ? (
                 <FilePreviewModal
-                  fileId={data.additionalData.registreCommerceId}
                   fileUrl={getApiFileUrl(data.additionalData.registreCommerceId)}
                   label="Voir le document"
                 />
@@ -170,7 +169,6 @@ export const UsersEditDataFields: React.FC<{
             content={
               data?.additionalData?.photoIdentiteId ? (
                 <FilePreviewModal
-                  fileId={data.additionalData.photoIdentiteId}
                   fileUrl={getApiFileUrl(data.additionalData.photoIdentiteId)}
                   label="Voir le document"
                 />
@@ -186,7 +184,6 @@ export const UsersEditDataFields: React.FC<{
             content={
               data?.additionalData?.pieceIdentiteId ? (
                 <FilePreviewModal
-                  fileId={data.additionalData.pieceIdentiteId}
                   fileUrl={getApiFileUrl(data.additionalData.pieceIdentiteId)}
                   label="Voir le document"
                 />
