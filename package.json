@@ -57,7 +57,7 @@
     "dev": "vite dev",
     "debug": "concurrently \"npx refine devtools start\" \"vite dev\"",
     "start": "vite preview",
-    "build": "vite build",
+    "build": "vite build --mode production",
     "build:prod": "vite build",
     "build:prod:tsc": "tsc && vite build",
     "preview": "vite start",
