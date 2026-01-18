@@ -172,7 +172,8 @@
     "list": "Liste",
     "create": "Créer",
     "edit": "Modifier",
-    "show": "Afficher"
+    "show": "Afficher",
+    "details": "Détails"
   },
   "buttons": {
     "create": "Créer",
@@ -206,6 +207,7 @@
   },
   "loading": "Chargement",
   "residences": {
+    "residence": "Résidence",
     "fields": {
       "type_residence": "Type de résidence",
       "residence_disponible": "Residence disponible",
@@ -450,6 +452,9 @@
     "search": "Rechercher",
     "client": "Client",
     "name": "Nom",
+    "full_name": "Nom complet",
+    "email": "E-mail",
+    "phone_number": "Numéro de téléphone",
     "description": "Description",
     "adresse": "Adresse",
     "payment_type": "Type de paiement",

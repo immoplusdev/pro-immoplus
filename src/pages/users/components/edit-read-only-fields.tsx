@@ -8,6 +8,7 @@ import { ListUserTransactionsTable } from "./list-transactions-table";
 import { WalletCreditForm } from "./wallet-credit-form";
 import { WalletDebitForm } from "./wallet-debit-form";
 import { WalletReleaseFundsForm } from "./wallet-release-funds-form";
+import { FilePreviewModal } from "./file-preview";
 
 export const UsersEditDataFields: React.FC<{
   translate: any;
@@ -126,13 +127,10 @@ export const UsersEditDataFields: React.FC<{
             label="Registre de Commerce"
             content={
               data?.additionalData?.registreCommerceId ? (
-                <a
-                  href={getApiFileUrl(data.additionalData.registreCommerceId)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Voir le document
-                </a>
+                <FilePreviewModal
+                  fileUrl={getApiFileUrl(data.additionalData.registreCommerceId)}
+                  label="Voir le document"
+                />
               ) : (
                 "Non fourni"
               )
@@ -170,13 +168,10 @@ export const UsersEditDataFields: React.FC<{
             label="Photo d'Identité"
             content={
               data?.additionalData?.photoIdentiteId ? (
-                <a
-                  href={getApiFileUrl(data.additionalData.photoIdentiteId)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Voir le document
-                </a>
+                <FilePreviewModal
+                  fileUrl={getApiFileUrl(data.additionalData.photoIdentiteId)}
+                  label="Voir le document"
+                />
               ) : (
                 "Non fourni"
               )
@@ -188,13 +183,10 @@ export const UsersEditDataFields: React.FC<{
             label="Pièce d'Identité"
             content={
               data?.additionalData?.pieceIdentiteId ? (
-                <a
-                  href={getApiFileUrl(data.additionalData.pieceIdentiteId)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Voir le document
-                </a>
+                <FilePreviewModal
+                  fileUrl={getApiFileUrl(data.additionalData.pieceIdentiteId)}
+                  label="Voir le document"
+                />
               ) : (
                 "Non fourni"
               )
