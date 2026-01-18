@@ -24,7 +24,8 @@ export const authService: AuthService = {
             const {accessToken, refreshToken, expires, user} = response.data.data;
 
             const role = user?.role?.id;
-            if (role != "admin") throw new Error();
+            const allowedRoles = ["admin", "financier", "commercial"];
+            if (!allowedRoles.includes(role)) throw new Error();
 
             const authData = {
                 access_token: accessToken,
