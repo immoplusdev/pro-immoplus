@@ -46,6 +46,7 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
         style={{ top: 20 }}
         styles={{ body: { height: "calc(100vh - 200px)", overflow: "auto" } }}
       >
+        <p>{fileUrl}</p>
         <FilePreview preview={fileUrl} />
       </Modal>
     </>
