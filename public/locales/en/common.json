@@ -69,7 +69,8 @@
     "list": "List",
     "create": "Create",
     "edit": "Edit",
-    "show": "Show"
+    "show": "Show",
+    "details": "Details"
   },
   "buttons": {
     "create": "Create",
@@ -159,5 +160,36 @@
   },
   "table": {
     "actions": "Actions"
+  },
+  "fields": {
+    "id": "ID",
+    "nom": "Name",
+    "full_name": "Full name",
+    "email": "Email",
+    "phone_number": "Phone number",
+    "description": "Description",
+    "adresse": "Address",
+    "client": "Customer",
+    "notes": "Notes",
+    "client_phone_number": "Customer phone number",
+    "created_at": "Created at",
+    "updated_at": "Updated at",
+    "prix_reservation": "Reservation price"
+  },
+  "residences": {
+    "residence": "Residence",
+    "fields": {
+      "type_residence": "Residence type",
+      "nombre_max_occupants": "Max occupants"
+    }
+  },
+  "reservations": {
+    "fields": {
+      "data": "Data",
+      "proprietaire": "Owner",
+      "retrait_pro_effectue": "Pro withdrawal done",
+      "montant_total_reservation": "Total reservation amount",
+      "montant_reservation_sans_commission": "Reservation amount without commission"
+    }
   }
 }

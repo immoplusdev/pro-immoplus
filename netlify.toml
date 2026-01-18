@@ -1,0 +1,6 @@
+[build]
+  command = ""
+  publish = "dist"
+
+[build.environment]
+  NETLIFY_SKIP_INSTALL = "true"
