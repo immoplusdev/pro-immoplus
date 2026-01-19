@@ -191,5 +191,26 @@
       "montant_total_reservation": "Total reservation amount",
       "montant_reservation_sans_commission": "Reservation amount without commission"
     }
+  },
+  "users": {
+    "fields": {
+      "role": "Role",
+      "status": "Status",
+      "compte_pro_valide": "Pro account validated"
+    },
+    "tags": {
+      "status": {
+        "active": "Active",
+        "blocked": "Blocked"
+      },
+      "roles": {
+        "admin": "Administrator",
+        "pro_entreprise": "Pro Enterprise",
+        "pro_particulier": "Pro Individual",
+        "customer": "Customer",
+        "financier": "Financial",
+        "commercial": "Commercial"
+      }
+    }
   }
 }
