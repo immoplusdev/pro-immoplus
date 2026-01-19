@@ -15,6 +15,18 @@ import routerBindings, {
 import { App as AntdApp } from "antd";
 import { useTranslation } from "react-i18next";
 import { BrowserRouter } from "react-router-dom";
+import {
+  CalendarOutlined,
+  HomeOutlined,
+  BookOutlined,
+  BuildOutlined,
+  UserOutlined,
+  WalletOutlined,
+  BankOutlined,
+  SwapOutlined,
+  DollarOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { API_URL, PROJECT_ID } from "@/configs/app.config";
 import {
@@ -53,26 +65,30 @@ function App() {
                   show: "/demandes-visites/show/:id",
                   meta: {
                     canDelete: true,
+                    icon: <CalendarOutlined />,
+                    label: "Demandes de visites",
                   },
                 },
                 {
                   name: "residences",
                   list: "/residences",
-                  // create: "/residences/create",
                   edit: "/residences/edit/:id",
                   show: "/residences/show/:id",
                   meta: {
                     canDelete: true,
+                    icon: <HomeOutlined />,
+                    label: "Résidences",
                   },
                 },
                 {
                   name: "reservations",
                   list: "/reservations",
-                  // create: "/reservations/create",
                   edit: "/reservations/edit/:id",
                   show: "/reservations/show/:id",
                   meta: {
                     canDelete: true,
+                    icon: <BookOutlined />,
+                    label: "Réservations",
                   },
                 },
                 {
@@ -82,6 +98,8 @@ function App() {
                   show: "/biens-immobiliers/show/:id",
                   meta: {
                     canDelete: true,
+                    icon: <BuildOutlined />,
+                    label: "Biens immobiliers",
                   },
                 },
                 {
@@ -92,6 +110,7 @@ function App() {
                   show: "/users/show/:id",
                   meta: {
                     canDelete: true,
+                    icon: <UserOutlined />,
                     label: "Utilisateurs",
                   },
                 },
@@ -100,6 +119,7 @@ function App() {
                   list: "/wallet/admin/wallet-transactions/:userId",
                   meta: {
                     canDelete: true,
+                    icon: <WalletOutlined />,
                   },
                 },
                 {
@@ -110,6 +130,7 @@ function App() {
                   show: "/users/show/:id",
                   meta: {
                     canDelete: true,
+                    icon: <WalletOutlined />,
                   },
                 },
                 {
@@ -120,7 +141,8 @@ function App() {
                   show: "/withdrawal-requests/show/:id",
                   meta: {
                     canDelete: true,
-                    label: "Demande de retraits",
+                    icon: <BankOutlined />,
+                    label: "Demandes de retraits",
                   },
                 },
                 {
@@ -131,6 +153,7 @@ function App() {
                   show: "/transfers/show/:id",
                   meta: {
                     canDelete: true,
+                    icon: <SwapOutlined />,
                     label: "Transferts",
                   },
                 },
@@ -138,12 +161,17 @@ function App() {
                   name: "payments",
                   list: "/payments",
                   meta: {
+                    icon: <DollarOutlined />,
                     label: "Paiements",
-                  }
+                  },
                 },
                 {
                   name: "configs",
                   list: "/configs",
+                  meta: {
+                    icon: <SettingOutlined />,
+                    label: "Configurations",
+                  },
                 },
               ]}
               options={{

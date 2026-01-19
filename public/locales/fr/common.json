@@ -379,10 +379,12 @@
         "blocked": "Bloqué"
       },
       "roles": {
-        "admin": "Administateur",
+        "admin": "Administrateur",
         "pro_entreprise": "Pro Entreprise",
         "pro_particulier": "Pro Particulier",
-        "customer": "Client"
+        "customer": "Client",
+        "financier": "Financier",
+        "commercial": "Commercial"
       }
     },
     "common": {

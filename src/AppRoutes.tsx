@@ -1,9 +1,9 @@
 import React from "react";
 import {Outlet, Route, Routes} from "react-router-dom";
 import {Authenticated} from "@refinedev/core";
-import {CatchAllNavigate, NavigateToResource} from "@refinedev/react-router-v6";
-import {ErrorComponent, ThemedLayoutV2, ThemedSiderV2, ThemedTitleV2} from "@refinedev/antd";
-import {AppIcon, Header} from "@/components";
+import {CatchAllNavigate} from "@refinedev/react-router-v6";
+import {ErrorComponent, ThemedLayoutV2, ThemedTitleV2} from "@refinedev/antd";
+import {AppIcon, Header, CustomSider, RoleBasedRedirect} from "@/components";
 import {EditResidence, ListResidences, ShowResidence} from "@/pages/residences";
 import {EditReservation, ListReservations, ShowReservation} from "@/pages/reservations";
 import {ListResidencesEnValidation} from "./pages/residences/list-residences-en-validation";
@@ -50,7 +50,7 @@ export function AppRoutes() {
                         v3LegacyAuthProviderCompatible={true}>
                         <ThemedLayoutV2
                             Header={() => <Header sticky/>}
-                            Sider={(props) => <ThemedSiderV2 {...props} fixed/>}
+                            Sider={(props) => <CustomSider {...props} fixed/>}
                             Title={({collapsed}) => (
                                 <ThemedTitleV2
                                     collapsed={collapsed}
@@ -66,7 +66,7 @@ export function AppRoutes() {
             >
                 <Route
                     index
-                    element={<NavigateToResource resource="demandes-visites"/>}
+                    element={<RoleBasedRedirect/>}
                 />
                 <Route path={"/configs"}>
                     <Route index element={<EditConfig/>}/>
