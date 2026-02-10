@@ -1,5 +1,5 @@
 import React from "react";
-import {Card, Form, Space} from "antd";
+import {Card, Form, Input, Space} from "antd";
 import {DatabaseOutlined} from "@ant-design/icons";
 import {ReadOnlyFormField} from "@/lib/ts-utilities";
 import {BaseRecord} from "@refinedev/core";
@@ -43,10 +43,12 @@ export const ResidenceDataFields: React.FC<ReadOnlySectionProps> = ({ translate,
                     label={translate("residences.fields.type_residence")}
                     content={residencesData?.typeResidence}
                 />
-                <ReadOnlyFormField
-                    label={translate("fields.description")}
-                    content={residencesData?.description}
-                />
+                <Form.Item label={translate("fields.description")} name={["description"]}>
+                    <Input.TextArea
+                        autoSize={{ minRows: 3, maxRows: 8 }}
+                        style={{ width: "17vw", border: "0.5px solid black" }}
+                    />
+                </Form.Item>
                 <ReadOnlyFormField
                     label={translate("fields.adresse")}
                     content={residencesData?.adresse}
