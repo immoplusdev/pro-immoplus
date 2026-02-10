@@ -1,6 +1,6 @@
 import React from "react";
 import {BaseRecord} from "@refinedev/core";
-import {Card, Space, Form} from "antd";
+import {Card, Space, Form, Input} from "antd";
 import {DatabaseOutlined, UsergroupAddOutlined} from "@ant-design/icons";
 import {ReadOnlyFormField} from "@/lib/ts-utilities";
 import {ImageCarousel} from "@/components/images/image-carousel";
@@ -34,7 +34,12 @@ export const BienImmobilierDataFields: React.FC<{ translate: any; data?: BaseRec
                 <ReadOnlyFormField label={translate("fields.nom")} content={data?.nom}/>
                 <ReadOnlyFormField label={translate("biens_immobiliers.fields.type_bien_immobilier")}
                                    content={data?.typeBienImmobilier}/>
-                <ReadOnlyFormField label={translate("fields.description")} content={data?.description}/>
+                <Form.Item label={translate("fields.description")} name={["description"]}>
+                    <Input.TextArea
+                        autoSize={{ minRows: 3, maxRows: 8 }}
+                        style={{ width: "17vw", border: "0.5px solid black" }}
+                    />
+                </Form.Item>
                 <ReadOnlyFormField label={translate("fields.adresse")} content={data?.adresse}/>
                 <ReadOnlyFormField label={translate("biens_immobiliers.fields.prix")} content={data?.prix}/>
                 <ShowUserButton id={data?.proprietaire} title={translate("users.common.see_owner")}/>

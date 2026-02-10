@@ -4,7 +4,7 @@ import {OrderedListOutlined, ReloadOutlined, SaveOutlined} from "@ant-design/ico
 import {DeleteButton, Edit, useForm} from "@refinedev/antd";
 import {ResidenceEditActionFields} from "@/pages/residences/components/edit-actions-fields";
 import {ResidenceDataFields} from "@/pages/residences/components/edit-read-only-fields";
-import {useTranslate} from "@refinedev/core";
+import {useOne, useTranslate} from "@refinedev/core";
 import {Button, Col, Form, Row, Space} from "antd";
 
 
@@ -15,6 +15,14 @@ export const EditResidence: React.FC = () => {
     const { formProps, saveButtonProps, queryResult, form } = useForm();
     const residencesData = queryResult?.data?.data;
     const navigate = useNavigate()
+
+    const { data: ownerData, isLoading: ownerLoading } = useOne({
+        resource: "users",
+        id: residencesData?.proprietaire || "",
+        queryOptions: {
+            enabled: !!residencesData?.proprietaire,
+        },
+    });
 
 
     return (
@@ -56,7 +64,7 @@ export const EditResidence: React.FC = () => {
                         <ResidenceDataFields translate={translate} residencesData={residencesData} />
                     </Col>
                     <Col xs={24} md={24} lg={24} xl={8}>
-                        <ResidenceEditActionFields translate={translate} />
+                        <ResidenceEditActionFields translate={translate} ownerData={ownerData?.data} ownerLoading={ownerLoading} />
                     </Col>
                 </Row>
             </Form>
