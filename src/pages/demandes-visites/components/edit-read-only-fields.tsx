@@ -12,7 +12,7 @@ interface VisiteDataFieldProps {
 export const DemandeVisiteEditDataFields: React.FC<VisiteDataFieldProps> = ({ translate, demandesVisitesData }) => {
     const bienImmobilier = demandesVisitesData?.bienImmobilier;
     const proprietaire = demandesVisitesData?.proprietaire;
-    const client = demandesVisitesData?.client;
+    const client = demandesVisitesData?.createdBy;
 
     return (
         <Space direction="vertical" style={{width: "100%"}} size="large">

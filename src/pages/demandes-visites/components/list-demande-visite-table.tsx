@@ -32,8 +32,9 @@ export function ListDemandeVisiteTable({filters, activeMenu}: Props) {
                 order: "desc"
             }]
         },
-        filters
     });
+
+    console.log("tableQuery", tableQuery);
 
     return (
         <List
