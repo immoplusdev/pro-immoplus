@@ -12,7 +12,7 @@ interface VisiteDataFieldProps {
 export const DemandeVisiteEditDataFields: React.FC<VisiteDataFieldProps> = ({ translate, demandesVisitesData }) => {
     const bienImmobilier = demandesVisitesData?.bienImmobilier;
     const proprietaire = demandesVisitesData?.proprietaire;
-    const client = demandesVisitesData?.createdBy;
+    const client = demandesVisitesData?.createdByModel;
 
     return (
         <Space direction="vertical" style={{width: "100%"}} size="large">
@@ -145,7 +145,6 @@ export const DemandeVisiteEditDataFields: React.FC<VisiteDataFieldProps> = ({ tr
                 </Card>
                 <Card style={{border: "none", width: "50%"}}>
                     <ReadOnlyFormField label={translate("fields.phone_number")} content={client?.phoneNumber}/>
-                    <ReadOnlyFormField label={translate("fields.adresse")} content={client?.address}/>
                 </Card>
             </Card>
         </Space>
