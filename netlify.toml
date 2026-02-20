@@ -3,8 +3,7 @@
   publish = "dist"
 
 [build.environment]
-  NODE_VERSION = "20"
-  NPM_FLAGS = "--loglevel verbose"
+  NODE_VERSION = "23"
 
 [build.lifecycle]
-  install = "npm install --include=optional --loglevel verbose || (echo '---- NPM DEBUG LOG ----' && ls -lah /opt/buildhome/.npm/_logs && tail -n 200 /opt/buildhome/.npm/_logs/*debug-0.log && exit 1)"
+  install = "npm install --include=optional --loglevel verbose || (echo '---- NPM DEBUG LOG (full) ----' && cat /opt/buildhome/.npm/_logs/*debug-0.log && exit 1)"
