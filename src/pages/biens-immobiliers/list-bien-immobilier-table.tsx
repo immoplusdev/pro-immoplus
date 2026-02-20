@@ -135,6 +135,13 @@ export function ListBienImmobilierTable({filters, activeMenu}: Props) {
                     sorter={true}
                 />
                 <Table.Column
+                    dataIndex="score"
+                    title="Score"
+                    render={(value: number) => <Tag color="blue">{value ?? 0}</Tag>}
+                    align="center"
+                    sorter={true}
+                />
+                <Table.Column
                     dataIndex="createdAt"
                     title={translate("fields.created_at")}
                     render={(date: string) => <DateDisplayField value={date}/>}

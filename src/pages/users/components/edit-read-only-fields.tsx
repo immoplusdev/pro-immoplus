@@ -1,7 +1,7 @@
 import React from "react";
 import { BaseRecord } from "@refinedev/core";
-import { Card, Space } from "antd";
-import { DatabaseOutlined } from "@ant-design/icons";
+import { Card, Form, Input, Space } from "antd";
+import { DatabaseOutlined, EditOutlined } from "@ant-design/icons";
 import { ReadOnlyFormField } from "@/lib/ts-utilities";
 import { formatAmount, getApiFileUrl } from "@/lib/helpers";
 import { ListUserTransactionsTable } from "./list-transactions-table";
@@ -22,7 +22,7 @@ export const UsersEditDataFields: React.FC<{
       <Card
         title={
           <Space>
-            <DatabaseOutlined />
+            <EditOutlined />
             <p>{translate("users.fields.data")}</p>
           </Space>
         }
@@ -35,22 +35,30 @@ export const UsersEditDataFields: React.FC<{
         }}
       >
         <Card style={{ border: "none", width: "50%" }}>
-          <ReadOnlyFormField
+          <Form.Item
             label={translate("users.fields.lastname")}
-            content={data?.lastName}
-          />
-          <ReadOnlyFormField
+            name={["lastName"]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
             label={translate("users.fields.firstname")}
-            content={data?.firstName}
-          />
-          <ReadOnlyFormField
+            name={["firstName"]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
             label={translate("users.fields.email")}
-            content={data?.email}
-          />
-          <ReadOnlyFormField
+            name={["email"]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
             label={translate("users.fields.phone_number")}
-            content={data?.phoneNumber}
-          />
+            name={["phoneNumber"]}
+          >
+            <Input />
+          </Form.Item>
           <ReadOnlyFormField
             label={translate("fields.updated_at")}
             content={new Date(data?.updatedAt).toLocaleDateString()}
@@ -88,7 +96,7 @@ export const UsersEditDataFields: React.FC<{
         }}
         title={
           <Space>
-            <DatabaseOutlined />
+            <EditOutlined />
             <p>Informations Entreprise</p>
           </Space>
         }
@@ -101,28 +109,38 @@ export const UsersEditDataFields: React.FC<{
         }}
       >
         <Card style={{ border: "none", width: "50%" }}>
-          <ReadOnlyFormField
+          <Form.Item
             label="Nom Entreprise"
-            content={data?.additionalData?.nomEntreprise}
-          />
-          <ReadOnlyFormField
+            name={["additionalData", "nomEntreprise"]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
             label="Activité"
-            content={data?.additionalData?.activite}
-          />
-          <ReadOnlyFormField
+            name={["additionalData", "activite"]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
             label="Email Entreprise"
-            content={data?.additionalData?.emailEntreprise}
-          />
+            name={["additionalData", "emailEntreprise"]}
+          >
+            <Input />
+          </Form.Item>
         </Card>
         <Card style={{ width: "50%", border: "none" }}>
-          <ReadOnlyFormField
+          <Form.Item
             label="Numéro Contribuable"
-            content={data?.additionalData?.numeroContribuable}
-          />
-          <ReadOnlyFormField
+            name={["additionalData", "numeroContribuable"]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
             label="Type Entreprise"
-            content={data?.additionalData?.typeEntreprise}
-          />
+            name={["additionalData", "typeEntreprise"]}
+          >
+            <Input />
+          </Form.Item>
           <ReadOnlyFormField
             label="Registre de Commerce"
             content={
@@ -147,7 +165,7 @@ export const UsersEditDataFields: React.FC<{
         }}
         title={
           <Space>
-            <DatabaseOutlined />
+            <EditOutlined />
             <p>Informations Professionnel Particulier</p>
           </Space>
         }
@@ -160,10 +178,12 @@ export const UsersEditDataFields: React.FC<{
         }}
       >
         <Card style={{ border: "none", width: "50%" }}>
-          <ReadOnlyFormField
+          <Form.Item
             label="Activité"
-            content={data?.additionalData?.activite}
-          />
+            name={["additionalData", "activite"]}
+          >
+            <Input />
+          </Form.Item>
           <ReadOnlyFormField
             label="Photo d'Identité"
             content={

@@ -1,5 +1,5 @@
 import React from "react";
-import {Card, Descriptions, Form, Select, Space, Spin} from "antd";
+import {Card, Descriptions, Form, InputNumber, Select, Space, Spin} from "antd";
 import {enumToList} from "@/lib/ts-utilities";
 import {EditOutlined, UserOutlined} from "@ant-design/icons";
 import {BaseRecord} from "@refinedev/core";
@@ -54,6 +54,16 @@ export const BienImmobilierEditActionFields: React.FC<Props> = ({ translate, own
                             value: item,
                             label: <span>{translate(`biens_immobiliers.fields.${item}`)}</span>,
                         }))}
+                    />
+                </Form.Item>
+                <Form.Item
+                    label={translate("Score")}
+                    style={{ width: "17vw" }}
+                    name={["score"]}
+                >
+                    <InputNumber
+                        min={0}
+                        style={{width: "100%", border:"0.5px solid black", borderRadius:"7px"}}
                     />
                 </Form.Item>
             </Card>
