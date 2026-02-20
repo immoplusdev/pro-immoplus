@@ -101,6 +101,13 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                     sorter={true}
                 />
                 <Table.Column
+                    dataIndex="score"
+                    title="Score"
+                    render={(value: number) => <Tag color="blue">{value ?? 0}</Tag>}
+                    align="center"
+                    sorter={true}
+                />
+                <Table.Column
                     dataIndex="statusValidation"
                     title={translate("fields.status_validation")}
                     render={(value: StatusValidationBiensImmobilers) => <StatusValidationBiensImmobilersTag

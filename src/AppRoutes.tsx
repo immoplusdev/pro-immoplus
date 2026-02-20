@@ -31,6 +31,8 @@ import {ListValidUsers} from "@/pages/users/list-valid-users";
 import {ListNoneValidUsers} from "@/pages/users/list-none-valid-users";
 import {ListCustomers} from "@/pages/users/list-customers";
 import {ListAdmins} from "@/pages/users/list-admins";
+import {ListFinanciers} from "@/pages/users/list-financiers";
+import {ListCommerciaux} from "@/pages/users/list-commerciaux";
 import {EditPayment, ListPayments, ListPaymentsDemandesRetrait, ListPaymentsFactures} from "@/pages/payments";
 import {LoginPage} from "@/pages/auth";
 import ListWithdrawalRequest from "./pages/withdrawal-request/list-withdrawal-request";
@@ -103,6 +105,8 @@ export function AppRoutes() {
                     <Route path="utilisateurs-valides" element={<ListValidUsers/>}/>
                     <Route path="utilisateurs-non-valides" element={<ListNoneValidUsers/>}/>
                     <Route path="customer" element={<ListCustomers/>}/>
+                    <Route path="financier" element={<ListFinanciers/>}/>
+                    <Route path="commercial" element={<ListCommerciaux/>}/>
                     <Route path="create" element={<CreateUser/>}/>
                     <Route path="edit/:id" element={<EditUser/>}/>
                     <Route path="show/:id" element={<ShowUser/>}/>

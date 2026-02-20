@@ -76,9 +76,18 @@ export const getDataProvider = (
 
             const total = data.totalCount
 
+            let items = data.data;
+            if (resource === "withdrawal-requests") {
+                items = items.map((item: any) => ({
+                    ...item,
+                    amount: parseInt(item.amount, 10),
+                    amountWithFees: parseInt(item.amountWithFees, 10),
+                }));
+            }
+
             return {
-                data: data.data,
-                total: total || data.data.length,
+                data: items,
+                total: total || items.length,
             };
         },
 
@@ -137,8 +146,17 @@ export const getDataProvider = (
                 headers,
             });
 
+            let record = data.data;
+            if (resource === "withdrawal-requests" && record) {
+                record = {
+                    ...record,
+                    amount: parseInt(record.amount, 10),
+                    amountWithFees: parseInt(record.amountWithFees, 10),
+                };
+            }
+
             return {
-                data: data.data,
+                data: record,
             };
         },
 
@@ -160,8 +178,17 @@ export const getDataProvider = (
 
             const {data} = await httpClient[requestMethod](url, {headers});
 
+            let record = data.data || data;
+            if (resource === "withdrawal-requests" && record) {
+                record = {
+                    ...record,
+                    amount: parseInt(record.amount, 10),
+                    amountWithFees: parseInt(record.amountWithFees, 10),
+                };
+            }
+
             return {
-                data: data.data || data,
+                data: record,
             };
         },
 

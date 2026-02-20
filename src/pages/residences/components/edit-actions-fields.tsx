@@ -1,5 +1,5 @@
 import React from "react";
-import {Card, Descriptions, Form, Select, Space, Spin} from "antd";
+import {Card, Descriptions, Form, InputNumber, Select, Space, Spin} from "antd";
 import {enumToList} from "@/lib/ts-utilities";
 import {ResidenceValide, StatusReservation} from "@/lib/ts-utilities/enums/status-reservation";
 import {EditOutlined, UserOutlined} from "@ant-design/icons";
@@ -61,6 +61,16 @@ export const ResidenceEditActionFields: React.FC<ReadOnlySectionProps> = ({ tran
                         value: item,
                         label: <span>{translate(`reservations.status_reservation.${item}`)}</span>
                     }))}/>
+                </Form.Item>
+                <Form.Item
+                    label={translate("Score")}
+                    style={{width: 300}}
+                    name={["score"]}
+                >
+                    <InputNumber
+                        min={0}
+                        style={{width: "100%", border:"0.5px solid black", borderRadius:"7px"}}
+                    />
                 </Form.Item>
             </Card>
 

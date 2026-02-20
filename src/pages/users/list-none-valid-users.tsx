@@ -7,8 +7,8 @@ export const ListNoneValidUsers = () => {
                                 permanent: [
                                     {
                                         field: "compteProValide",
-                                        operator: "ne",
-                                        value: "true"
+                                        operator: "eq",
+                                        value: false
                                     },
                                 ]
                             }}

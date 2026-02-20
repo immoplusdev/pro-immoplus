@@ -19,7 +19,7 @@ type Props = {
         permanent?: CrudFilter[];
         mode?: "server" | "off";
     };
-    activeMenu?: "all_e" | "admin" | "pro_entreprise" | "pro_particulier" | "utilisateurs_valides" | "utilisateurs_non_valides" | "customer"
+    activeMenu?: "all_e" | "admin" | "pro_entreprise" | "pro_particulier" | "utilisateurs_valides" | "utilisateurs_non_valides" | "customer" | "financier" | "commercial"
 }
 export const ListUsersTable = ({filters, activeMenu}: Props) => {
     const translate = useTranslate();
@@ -77,6 +77,20 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
                           {translate("users.tags.roles.pro_particulier")}
                       </Button>
                   </Link>,
+                  <Link to="/users/financier">
+                      <Button
+                          type={activeMenu == "financier" ? "primary" : "default"}
+                      >
+                          {translate("users.tags.roles.financier")}
+                      </Button>
+                  </Link>,
+                  <Link to="/users/commercial">
+                      <Button
+                          type={activeMenu == "commercial" ? "primary" : "default"}
+                      >
+                          {translate("users.tags.roles.commercial")}
+                      </Button>
+                  </Link>,
                   <Link to="/users/utilisateurs-valides">
                       <Button
                           type={activeMenu == "utilisateurs_valides" ? "primary" : "default"}
@@ -84,13 +98,13 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
                           {translate("tags.utilisateurs_valides")}
                       </Button>
                   </Link>,
-                  // <Link to="/users/utilisateurs-non-valides">
-                  //     <Button
-                  //         type={activeMenu == "utilisateurs_non_valides" ? "primary" : "default"}
-                  //     >
-                  //         {translate("tags.utilisateurs_non_valides")}
-                  //     </Button>
-                  // </Link>,
+                  <Link to="/users/utilisateurs-non-valides">
+                      <Button
+                          type={activeMenu == "utilisateurs_non_valides" ? "primary" : "default"}
+                      >
+                          {translate("tags.utilisateurs_non_valides")}
+                      </Button>
+                  </Link>,
               ]}
         >
             <Table {...tableProps} rowKey="id"
