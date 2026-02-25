@@ -40,6 +40,7 @@ import EditWithdrawalRequest from "./pages/withdrawal-request/edit-withdrawal-re
 import CreateWithdrawalRequest from "./pages/withdrawal-request/create-withdrawal-request";
 import ShowWithdrawalRequest from "./pages/withdrawal-request/show-withdrawal-request";
 import {CreateTransfer, EditTransfer, ListTransfers, ShowTransfer} from "./pages/transfers";
+import {EditFurniture, ListFurnitures, ShowFurniture} from "@/pages/furnitures";
 
 export function AppRoutes() {
     return (
@@ -87,6 +88,11 @@ export function AppRoutes() {
                     <Route path="show/:id" element={<ShowReservation/>}/>
                     <Route path="en-validation" element={<ListReservationsEnValidation/>}/>
                     <Route path="validé" element={<ListReservationsValides/>}/>
+                </Route>
+                <Route path={"/furnitures"}>
+                    <Route index element={<ListFurnitures/>}/>
+                    <Route path="edit/:id" element={<EditFurniture/>}/>
+                    <Route path="show/:id" element={<ShowFurniture/>}/>
                 </Route>
                 <Route path={"/biens-immobiliers"}>
                     <Route index element={<ListBienImmobiliers/>}/>

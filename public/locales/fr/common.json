@@ -320,6 +320,27 @@
       "valide": "Validé"
     }
   },
+  "furnitures": {
+    "title": "Meubles",
+    "fields": {
+      "titre": "Titre",
+      "type": "Type",
+      "category": "Catégorie",
+      "etat": "État",
+      "prix": "Prix",
+      "status": "Statut",
+      "adresse": "Adresse"
+    },
+    "status": {
+      "active": "Actif",
+      "inactive": "Inactif",
+      "pending": "En attente"
+    },
+    "sections": {
+      "owner": "Propriétaire",
+      "no_owner": "Aucun propriétaire associé"
+    }
+  },
   "configs": {
     "fields": {
       "normal_visit_price": "Prix visite normal",

@@ -26,6 +26,7 @@ import {
   SwapOutlined,
   DollarOutlined,
   SettingOutlined,
+  AppstoreOutlined,
 } from "@ant-design/icons";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { API_URL, PROJECT_ID } from "@/configs/app.config";
@@ -100,6 +101,17 @@ function App() {
                     canDelete: true,
                     icon: <BuildOutlined />,
                     label: "Biens immobiliers",
+                  },
+                },
+                {
+                  name: "furnitures",
+                  list: "/furnitures",
+                  edit: "/furnitures/edit/:id",
+                  show: "/furnitures/show/:id",
+                  meta: {
+                    canDelete: true,
+                    icon: <AppstoreOutlined />,
+                    label: "Meubles",
                   },
                 },
                 {
