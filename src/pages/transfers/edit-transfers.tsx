@@ -40,7 +40,7 @@ export const EditTransfer = () => {
             <Card title={translate("transfers.sections.transferInfo")} size="small">
               <ReadOnlyFormField
                 label="transfers.fields.customer"
-                content={transferData?.customer || ""}
+                content={transferData?.customer?.id || ""}
                 isLoading={query?.isLoading}
               />
 

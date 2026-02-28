@@ -6,8 +6,9 @@ import {
   DeleteButton,
   ListButton,
 } from "@refinedev/antd";
-import { Card, Row, Col, Tag, Typography, Divider, Space } from "antd";
-import { useParams } from "react-router-dom";
+import { Button, Card, Row, Col, Tag, Typography, Divider, Space } from "antd";
+import { UserOutlined, EyeOutlined } from "@ant-design/icons";
+import { useParams, Link } from "react-router-dom";
 import { formatAmount } from "@/lib/helpers";
 import { DateDisplayField } from "@/components/table";
 import { SpinLoader } from "@/components/loading";
@@ -82,9 +83,15 @@ export const ShowTransfer = () => {
             <Space direction="vertical" size="middle" style={{ width: "100%" }}>
               <div>
                 <Text strong>{translate("transfers.fields.customer")}: </Text>
-                <Text>
-                  {transferData?.customer || translate("common.notAvailable")}
-                </Text>
+                {transferData?.customer ? (
+                  <Link to={`/users/edit/${transferData.customer.id}`}>
+                    <Button type="link" icon={<UserOutlined />} style={{ padding: 0 }}>
+                      {`${transferData.customer.firstName} ${transferData.customer.lastName}`}
+                    </Button>
+                  </Link>
+                ) : (
+                  <Text>{translate("common.notAvailable")}</Text>
+                )}
               </div>
 
               <div>
@@ -155,7 +162,7 @@ export const ShowTransfer = () => {
                 <Text strong>{translate("transfers.fields.transferProvider")}: </Text>
                 {transferData?.transferProvider ? (
                   <Tag>
-                    {translate(`transfers.paymentMethod.${transferData.transferProvider.toLowerCase()}`)}
+                    {translate(`transfers.paymentMethod.${transferData.transferProvider.toUpperCase()}`)}
                   </Tag>
                 ) : (
                   <Text>{translate("common.notAvailable")}</Text>
@@ -195,13 +202,17 @@ export const ShowTransfer = () => {
               <Col span={8}>
                 <div>
                   <Text strong>{translate("transfers.fields.itemType")}: </Text>
-                  <Tag>{transferData.itemType}</Tag>
+                  <Tag>{translate(`transfers.itemType.${transferData.itemType.toLowerCase()}`)}</Tag>
                 </div>
               </Col>
               <Col span={8}>
                 <div>
                   <Text strong>{translate("transfers.fields.itemId")}: </Text>
-                  <Text>{transferData.itemId}</Text>
+                  <Link to={`/withdrawal-requests/show/${transferData.itemId}`}>
+                    <Button type="link" icon={<EyeOutlined />} style={{ padding: 0 }}>
+                      {transferData.itemId}
+                    </Button>
+                  </Link>
                 </div>
               </Col>
             </Row>

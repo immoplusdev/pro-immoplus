@@ -104,9 +104,9 @@ export function ListReservationTable({ activeMenu, filters }: Props) {
           sorter={true}
         />
         <Table.Column
-          dataIndex="montantReservationSansCommission"
+          dataIndex="montantCommission"
           title={translate(
-            "reservations.fields.montant_reservation_sans_commission",
+            "reservations.fields.montant_commission",
           )}
           render={(value: string) => <span>{formatAmount(value)}</span>}
           align="center"

@@ -20,12 +20,13 @@ import {
   message,
 } from "antd";
 import { getLocalStorageProvider } from "@/lib/providers/local-storage.provider";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { formatAmount } from "@/lib/helpers";
 import { DateDisplayField } from "@/components/table";
 import { SpinLoader } from "@/components/loading";
 import { useState } from "react";
 import axios from "axios";
+import { EyeOutlined, UserOutlined } from "@ant-design/icons";
 
 const { Text } = Typography;
 
@@ -143,11 +144,13 @@ export const ShowWithdrawalRequest = () => {
                 <Text strong>
                   {translate("withdrawalRequests.fields.owner")}:{" "}
                 </Text>
-                <Text>
-                  {userData
-                    ? `${userData.firstName} ${userData.lastName} (${userData.email})`
-                    : withdrawalData?.owner || translate("common.notAvailable")}
-                </Text>
+                <Link to={`/users/edit/${userData?.id}`}>
+                  <Button type="link" icon={<UserOutlined />} style={{ padding: 0 }}>
+                    {userData
+                      ? `${userData.firstName} ${userData.lastName} (${userData.email})`
+                      : withdrawalData?.owner || translate("common.notAvailable")}
+                  </Button>
+                </Link>
               </div>
 
               <div>

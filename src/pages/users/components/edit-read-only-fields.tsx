@@ -67,19 +67,19 @@ export const UsersEditDataFields: React.FC<{
         <Card style={{ width: "50%", border: "none" }}>
           <ReadOnlyFormField
             label={translate("users.fields.identity_verified")}
-            content={data?.identityVerified ? "Yes" : "No"}
+            content={data?.identityVerified ? "Oui" : "Non"}
           />
           <ReadOnlyFormField
             label={translate("users.fields.email_verified")}
-            content={data?.emailVerified ? "Yes" : "No"}
+            content={data?.emailVerified ? "Oui" : "Non"}
           />
           <ReadOnlyFormField
             label={translate("users.fields.phone_number_verified")}
-            content={data?.phoneNumberVerified ? "Yes" : "No"}
+            content={data?.phoneNumberVerified ? "Oui" : "Non"}
           />
           <ReadOnlyFormField
             label={translate("users.fields.compte_pro_valide")}
-            content={data?.compteProValide ? "Yes" : "No"}
+            content={data?.compteProValide ? "Oui" : "Non"}
           />
           <ReadOnlyFormField
             label={translate("users.fields.auth_login_attempts")}

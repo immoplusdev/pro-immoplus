@@ -78,7 +78,7 @@ export const ListTransfers: React.FC = () => {
         <Table.Column
           dataIndex="customer"
           title={translate("transfers.fields.customer")}
-          render={(value) => value || translate("common.notAvailable")}
+          render={(value) => ((value?.firstName??"") + " " + (value?.lastName??"")).trim() || translate("common.notAvailable")}
         />
         <Table.Column
           dataIndex="transfetStatus"

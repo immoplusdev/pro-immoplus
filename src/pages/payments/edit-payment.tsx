@@ -57,7 +57,7 @@ export function EditPayment() {
                             <Card style={{border: "none", width: "50%", display: "flex", flexDirection: "row"}}>
                                 <ReadOnlyFormField
                                     label={translate("pages.payment.fields.amount")}
-                                    content={<Amount value={data?.amount}></Amount>}
+                                    content={data?.amount}
                                 />
                                 <ReadOnlyFormField
                                     label={translate("pages.payment.fields.payment_type")}
@@ -71,7 +71,7 @@ export function EditPayment() {
                             <Card style={{border: "none", width: "50%"}}>
                                 <ReadOnlyFormField
                                     label={translate("pages.payment.fields.amount_with_fees")}
-                                    content={<Amount value={data?.amountNoFees}></Amount>}
+                                    content={data?.amountNoFees}
                                 />
                                 <ReadOnlyFormField
                                     label={translate("pages.payment.fields.collection")}

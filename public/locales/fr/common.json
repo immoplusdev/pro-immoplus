@@ -82,7 +82,8 @@
         "collection": "Groupe",
         "payment_status": "Statut de paiement",
         "payment_method": "Méthode de paiement",
-        "created_at": "Date de création"
+        "created_at": "Date de création",
+        "actions": "Actions"
       },
       "common": {
         "factures": "Factures",
@@ -240,6 +241,7 @@
       "status_reservation": "Statut de réservation",
       "date": "Date",
       "montant_reservation_sans_commission": "Montant reservation sans commission",
+      "montant_commission": "Montant commission",
       "montant_total_reservation": "Montant total de reservation",
       "retrait_pro_effectue": "Retrait Pro Effectué",
       "status_facture": "Status facture",
@@ -257,14 +259,16 @@
       "en_cours_validation_admin": "Admin en cours de validation ",
       "en_cours_validation": "En cours de validation ",
       "en_attente_validation": "En attente de validation ",
-      "en_validation": "En validation "
+      "en_validation": "En validation ",
+      "terminee": "Terminée"
     },
     "status_reservation": {
       "rejete": "Rejeté",
       "valide": "Validé",
       "en_cours": "En cours",
       "en_cours_validation_user": "Utilisateur en cours de validation ",
-      "en_cours_validation_admin": "Admin en cours de validation "
+      "en_cours_validation_admin": "Admin en cours de validation ",
+      "terminee": "Terminée"
     }
   },
   "biens_immobiliers": {
@@ -341,7 +345,7 @@
       "no_owner": "Aucun propriétaire associé"
     }
   },
-  "configs": {
+    "configs": {
     "fields": {
       "normal_visit_price": "Prix visite normal",
       "express_visit_price": "Prix visite express",
@@ -747,13 +751,18 @@
       "bankInfo": "Informations bancaires",
       "metadata": "Métadonnées",
       "timestamps": "Horodatages",
-      "adminActions": "Actions administrateurs"
+      "adminActions": "Actions administrateurs",
+      "itemDetails": "Détails de l'élément"
     },
     "actions": {
       "process": "Traiter",
       "cancel": "Annuler",
       "retry": "Réessayer",
       "complete": "Marquer comme terminé"
+    },
+    "itemType": {
+      "wallet_withdrawal_request": "Demande de retrait",
+      "admin_withdrawal": "Retrait administrateur"
     }
   },
   "wallet": {

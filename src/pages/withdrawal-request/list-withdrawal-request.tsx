@@ -87,7 +87,11 @@ export const ListWithdrawalRequestTable = ({filters, activeMenu}: Props) => {
                     title={translate("withdrawalRequests.fields.owner")}
                     align="center"
                     render={(_, record: BaseRecord) => (
-                        <span><Link to={`/users/edit/${record.owner}`}>{record.owner}</Link></span>
+                        <span>
+                            <Link to={`/users/edit/${record.owner}`}>
+                                <EyeOutlined/> Voir detail
+                            </Link>
+                        </span>
                     )}
                     sorter={true}
                 />
