@@ -1,6 +1,6 @@
 import React from "react";
 import {DeleteButton, Edit, useForm, ImageField} from "@refinedev/antd";
-import {Button, Card, Col, Descriptions, Form, Input, Row, Select, Space, Spin} from "antd";
+import {Button, Card, Col, Descriptions, Form, Input, InputNumber, Row, Select, Space, Spin} from "antd";
 import {useOne, useTranslate} from "@refinedev/core";
 import {DatabaseOutlined, EditOutlined, OrderedListOutlined, ReloadOutlined, SaveOutlined, UserOutlined} from "@ant-design/icons";
 import {useNavigate} from "react-router-dom";
@@ -151,6 +151,16 @@ export const EditFurniture: React.FC = () => {
                                 <Select
                                     style={{border: "0.5px solid black", borderRadius: "7px"}}
                                     options={statusOptions}
+                                />
+                            </Form.Item>
+                            <Form.Item
+                                label={translate("Score")}
+                                style={{width: "17vw"}}
+                                name={["score"]}
+                            >
+                                <InputNumber
+                                    min={0}
+                                    style={{width: "100%", border: "0.5px solid black", borderRadius: "7px"}}
                                 />
                             </Form.Item>
                         </Card>

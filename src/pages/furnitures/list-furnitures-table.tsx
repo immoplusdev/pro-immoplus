@@ -104,6 +104,13 @@ export function ListFurnituresTable() {
                     sorter={true}
                 />
                 <Table.Column
+                    dataIndex="score"
+                    title="Score"
+                    render={(value: number) => <Tag color="blue">{value ?? 0}</Tag>}
+                    align="center"
+                    sorter={true}
+                />
+                <Table.Column
                     dataIndex="adresse"
                     title={translate("furnitures.fields.adresse")}
                     align="center"
