@@ -196,6 +196,18 @@
       "code_reservation": "Reservation code",
       "date_debut": "Start date",
       "date_fin": "End date"
+    },
+    "status_reservation": {
+      "rejete": "Rejected",
+      "terminee": "Completed",
+      "valide": "Validated",
+      "en_cours": "In progress",
+      "en_attente_reponse_proprietaire": "Waiting for owner response",
+      "en_attente_paiement_client": "Waiting for client payment",
+      "proprietaire_annule_reservation": "Owner cancelled reservation",
+      "proprietaire_sans_reponse": "Owner did not respond",
+      "client_annule_reservation": "Client cancelled reservation",
+      "client_sans_reponse": "Client did not respond"
     }
   },
   "users": {

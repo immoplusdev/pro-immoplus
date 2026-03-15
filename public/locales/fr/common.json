@@ -269,11 +269,15 @@
     },
     "status_reservation": {
       "rejete": "Rejeté",
+      "terminee": "Terminée",
       "valide": "Validé",
       "en_cours": "En cours",
-      "en_cours_validation_user": "Utilisateur en cours de validation ",
-      "en_cours_validation_admin": "Admin en cours de validation ",
-      "terminee": "Terminée"
+      "en_attente_reponse_proprietaire": "En attente de réponse du propriétaire",
+      "en_attente_paiement_client": "En attente de paiement client",
+      "proprietaire_annule_reservation": "Propriétaire a annulé la réservation",
+      "proprietaire_sans_reponse": "Propriétaire sans réponse",
+      "client_annule_reservation": "Client a annulé la réservation",
+      "client_sans_reponse": "Client sans réponse"
     }
   },
   "biens_immobiliers": {

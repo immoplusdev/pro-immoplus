@@ -13,8 +13,9 @@ import { StatusValidationReservationTag } from "@/pages/reservations/components/
 import { formatAmount } from "@/lib/helpers";
 import { Link } from "react-router-dom";
 import { ArrowRightOutlined } from "@ant-design/icons";
-import React from "react";
+import React, { useState } from "react";
 import { SearchInput } from "@/components/filters";
+import { StatusReservation } from "@/lib/ts-utilities/enums/status-reservation";
 
 type Props = {
   activeMenu: "all_e" | "en_validation" | "valide";
@@ -25,8 +26,18 @@ type Props = {
   };
 };
 
+const STATUS_FILTERS = [
+  StatusReservation.EnAttenteReponseProprietaire,
+  StatusReservation.EnAttentePaiementClient,
+  StatusReservation.ProprietaireAnnuleReservation,
+  StatusReservation.ProprietaireSansReponse,
+  StatusReservation.clientAnnuleReservation,
+  StatusReservation.ClientSansReponse,
+];
+
 export function ListReservationTable({ activeMenu, filters }: Props) {
   const translate = useTranslate();
+  const [activeStatus, setActiveStatus] = useState<string | null>(null);
   const {
     tableProps,
     filters: searchFilters,
@@ -45,6 +56,21 @@ export function ListReservationTable({ activeMenu, filters }: Props) {
     },
     filters,
   });
+
+  const handleStatusFilter = (status: string | null) => {
+    setActiveStatus(status);
+    if (status === null) {
+      setFilters([], "replace");
+    } else {
+      setFilters(
+        [
+          { field: "statusReservation", operator: "eq", value: status },
+          { field: "statusFacture", operator: "eq", value: "non_paye" },
+        ],
+        "replace"
+      );
+    }
+  };
 
   return (
     <List
@@ -70,6 +96,19 @@ export function ListReservationTable({ activeMenu, filters }: Props) {
             {translate("reservations.fields.valide")}
           </Button>
         </Link>,
+        ...STATUS_FILTERS.map((status) => (
+          <Button
+            key={status}
+            type={activeStatus === status ? "primary" : "default"}
+            onClick={() =>
+              activeStatus === status
+                ? handleStatusFilter(null)
+                : handleStatusFilter(status)
+            }
+          >
+            {translate(`reservations.status_reservation.${status}`)}
+          </Button>
+        )),
       ]}
     >
       <Table {...tableProps} rowKey="id">
