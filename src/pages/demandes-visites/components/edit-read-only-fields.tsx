@@ -39,6 +39,16 @@ export const DemandeVisiteEditDataFields: React.FC<VisiteDataFieldProps> = ({ tr
                         label={translate("demandes_visites.fields.retrait_pro_effectue")}
                         content={demandesVisitesData?.retraitProEffectue ? "Oui" : "Non"}
                     />
+                    <ReadOnlyFormField
+                        label={translate("demandes_visites.fields.dates_demande_visite")}
+                        content={
+                            Array.isArray(demandesVisitesData?.datesDemandeVisite) && demandesVisitesData.datesDemandeVisite.length > 0
+                                ? demandesVisitesData.datesDemandeVisite
+                                    .map((d: { date: string }) => new Date(d.date).toLocaleString())
+                                    .join(" / ")
+                                : "-"
+                        }
+                    />
                 </Card>
 
                 <Card style={{ width: "50%", border: "none" }}>

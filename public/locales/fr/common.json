@@ -107,7 +107,8 @@
         "moov": "Moov",
         "visa": "Visa",
         "mastercard": "Mastercard",
-        "wave": "Wave"
+        "wave": "Wave",
+        "terminee": "Terminée"
       }
     },
     "wallet": {
@@ -330,7 +331,8 @@
       "programmer_une_visite": "Programmer une visite",
       "demandes_visites": "Demandes visites",
       "en_validation": "En validation",
-      "valide": "Validé"
+      "valide": "Validé",
+      "dates_demande_visite": "Dates de visite souhaitées"
     }
   },
   "furnitures": {
@@ -531,7 +533,9 @@
     "en_cours": "En cours",
     "en_cours_validation_admin": "Admin en cours de validation",
     "en_cours_validation_user": "Utilisateur en cours de validation",
-    "valide": "Validé"
+    "valide": "Validé",
+    "rejete": "Rejeté",
+    "terminee": "Terminée"
   },
   "files": {
     "file_upload": {
