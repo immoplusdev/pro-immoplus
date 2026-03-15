@@ -78,6 +78,14 @@ export function ListReservationTable({ activeMenu, filters }: Props) {
           title={translate("fields.client_phone_number")}
           align="center"
         />
+
+         <Table.Column
+          dataIndex="codeReservation"
+          title={translate("reservations.fields.code_reservation")}
+          align="center"
+        />
+
+        
         <Table.Column
           dataIndex="statusReservation"
           title={translate("reservations.fields.status_reservation")}

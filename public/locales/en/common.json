@@ -189,7 +189,13 @@
       "proprietaire": "Owner",
       "retrait_pro_effectue": "Pro withdrawal done",
       "montant_total_reservation": "Total reservation amount",
-      "montant_reservation_sans_commission": "Reservation amount without commission"
+      "montant_reservation_sans_commission": "Reservation amount without commission",
+      "montant_commission": "Commission amount",
+      "montant_paye": "Amount paid",
+      "pro_reverse": "Reversal to main account",
+      "code_reservation": "Reservation code",
+      "date_debut": "Start date",
+      "date_fin": "End date"
     }
   },
   "users": {

@@ -31,15 +31,21 @@ export const ReservationEditDataFields: React.FC<ReadOnlySectionProps> = ({trans
                 bodyStyle={{ padding: "2rem", border:"0.5px solid black", display:"flex", flexDirection: "row" }}
             >
                 <Card style={{border: "none", width: "50%"}}>
-                    <ReadOnlyFormField label={translate("fields.notes")} content={reservationData?.notes}/>
-                    <ReadOnlyFormField label={translate("reservations.fields.retrait_pro_effectue")} content={reservationData?.retraitProEffectue ? "Oui" : "Non"}/>
+                    <ReadOnlyFormField label={translate("reservations.fields.code_reservation")} content={reservationData?.codeReservation}/>
+                    <ReadOnlyFormField label={translate("reservations.fields.date_debut")} content={reservationData?.dateDebut ? new Date(reservationData.dateDebut).toLocaleString() : "-"}/>
                     <ReadOnlyFormField label={translate("reservations.fields.montant_total_reservation")} content={reservationData?.montantTotalReservation}/>
-                    <ReadOnlyFormField label={translate("reservations.fields.montant_reservation_sans_commission")} content={reservationData?.montantReservationSansCommission}/>
-                </Card>
-                <Card style={{border: "none", width: "50%"}}>
+                     <ReadOnlyFormField label={translate("reservations.fields.retrait_pro_effectue")} content={reservationData?.retraitProEffectue ? "Oui" : "Non"}/>
                     <ReadOnlyFormField label={translate("fields.client_phone_number")} content={reservationData?.clientPhoneNumber}/>
                     <ReadOnlyFormField label={translate("fields.created_at")} content={new Date(reservationData?.createdAt).toLocaleDateString()}/>
-                    <ReadOnlyFormField label={translate("fields.updated_at")} content={new Date(reservationData?.updatedAt).toLocaleDateString()}/>
+                    
+                </Card>
+                <Card style={{border: "none", width: "50%"}}>
+                    <ReadOnlyFormField label={translate("reservations.fields.montant_commission")} content={reservationData?.montantCommission}/>
+                    <ReadOnlyFormField label={translate("reservations.fields.date_fin")} content={reservationData?.dateFin ? new Date(reservationData.dateFin).toLocaleString() : "-"}/>
+                    <ReadOnlyFormField label={translate("reservations.fields.montant_paye")} content={reservationData?.montantPaye}/>
+                    <ReadOnlyFormField label={translate("reservations.fields.pro_reverse")} content={reservationData?.proReverse}/>
+                    <ReadOnlyFormField label={translate("fields.notes")} content={reservationData?.notes}/>
+                   <ReadOnlyFormField label={translate("fields.updated_at")} content={new Date(reservationData?.updatedAt).toLocaleDateString()}/>
                 </Card>
             </Card>
 
