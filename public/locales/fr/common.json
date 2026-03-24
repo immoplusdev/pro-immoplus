@@ -306,6 +306,44 @@
       "en_attente_validation": "En attente de validation"
     }
   },
+  "demandes_pro_particulier": {
+    "title": "Demandes Pro Particulier",
+    "fields": {
+      "activite": "Activité",
+      "status": "Statut",
+      "rejectionReason": "Motif de rejet",
+      "userId": "Utilisateur",
+      "photoIdentite": "Photo d'identité",
+      "pieceIdentite": "Pièce d'identité",
+      "viewPhoto": "Voir la photo",
+      "viewPiece": "Voir la pièce"
+    },
+    "status": {
+      "pending": "En attente",
+      "approved": "Approuvée",
+      "rejected": "Rejetée"
+    },
+    "sections": {
+      "requestInfo": "Informations de la demande",
+      "userInfo": "Informations du demandeur",
+      "documents": "Activité et documents",
+      "approve": "Approuver la demande",
+      "reject": "Rejeter la demande"
+    },
+    "actions": {
+      "approve": "Approuver",
+      "reject": "Rejeter"
+    },
+    "messages": {
+      "approveSuccess": "La demande a été approuvée avec succès.",
+      "approveError": "Une erreur s'est produite lors de l'approbation.",
+      "rejectSuccess": "La demande a été rejetée avec succès.",
+      "rejectError": "Une erreur s'est produite lors du rejet."
+    },
+    "validation": {
+      "rejectionReason": "Le motif de rejet est obligatoire"
+    }
+  },
   "demandes_visites": {
     "fields": {
       "status_demande_visite": "Status demande visite",

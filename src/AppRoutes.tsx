@@ -41,6 +41,13 @@ import CreateWithdrawalRequest from "./pages/withdrawal-request/create-withdrawa
 import ShowWithdrawalRequest from "./pages/withdrawal-request/show-withdrawal-request";
 import {CreateTransfer, EditTransfer, ListTransfers, ShowTransfer} from "./pages/transfers";
 import {EditFurniture, ListFurnitures, ShowFurniture} from "@/pages/furnitures";
+import {
+    ListDemandeProParticulier,
+    ListDemandeProParticulierPending,
+    ListDemandeProParticulierApproved,
+    ListDemandeProParticulierRejected,
+    ShowDemandeProParticulier,
+} from "@/pages/demandes-pro-particulier";
 
 export function AppRoutes() {
     return (
@@ -116,6 +123,13 @@ export function AppRoutes() {
                     <Route path="create" element={<CreateUser/>}/>
                     <Route path="edit/:id" element={<EditUser/>}/>
                     <Route path="show/:id" element={<ShowUser/>}/>
+                </Route>
+                <Route path={"/demandes-pro-particulier"}>
+                    <Route index element={<ListDemandeProParticulier />} />
+                    <Route path="show/:id" element={<ShowDemandeProParticulier />} />
+                    <Route path="en-attente" element={<ListDemandeProParticulierPending />} />
+                    <Route path="approuvées" element={<ListDemandeProParticulierApproved />} />
+                    <Route path="rejetées" element={<ListDemandeProParticulierRejected />} />
                 </Route>
                 <Route path={"/demandes-visites"}>
                     <Route index element={<ListDemandeVisites/>}/>

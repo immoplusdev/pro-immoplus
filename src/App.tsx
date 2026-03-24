@@ -27,6 +27,7 @@ import {
   DollarOutlined,
   SettingOutlined,
   AppstoreOutlined,
+  SolutionOutlined,
 } from "@ant-design/icons";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { API_URL, PROJECT_ID } from "@/configs/app.config";
@@ -59,6 +60,15 @@ function App() {
               accessControlProvider={getAccessControlProvider()}
               routerProvider={routerBindings}
               resources={[
+                {
+                  name: "demandes-pro-particulier",
+                  list: "/demandes-pro-particulier",
+                  show: "/demandes-pro-particulier/show/:id",
+                  meta: {
+                    icon: <SolutionOutlined />,
+                    label: "Demandes Pro Particulier",
+                  },
+                },
                 {
                   name: "demandes-visites",
                   list: "/demandes-visites",
