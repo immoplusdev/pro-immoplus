@@ -8,6 +8,8 @@ export interface RolePermission {
 export const rolePermissions: Record<string, RolePermission> = {
     [UserRole.Admin]: {
         resources: [
+            "feed",
+            "demandes-pro-particulier",
             "demandes-visites",
             "residences",
             "reservations",
@@ -33,6 +35,8 @@ export const rolePermissions: Record<string, RolePermission> = {
     },
     [UserRole.Commercial]: {
         resources: [
+            "feed",
+            "demandes-pro-particulier",
             "demandes-visites",
             "residences",
             "reservations",
