@@ -41,6 +41,7 @@ import CreateWithdrawalRequest from "./pages/withdrawal-request/create-withdrawa
 import ShowWithdrawalRequest from "./pages/withdrawal-request/show-withdrawal-request";
 import {CreateTransfer, EditTransfer, ListTransfers, ShowTransfer} from "./pages/transfers";
 import {EditFurniture, ListFurnitures, ShowFurniture} from "@/pages/furnitures";
+import { ListFeed, ShowFeed } from "@/pages/feed";
 import {
     ListDemandeProParticulier,
     ListDemandeProParticulierPending,
@@ -123,6 +124,10 @@ export function AppRoutes() {
                     <Route path="create" element={<CreateUser/>}/>
                     <Route path="edit/:id" element={<EditUser/>}/>
                     <Route path="show/:id" element={<ShowUser/>}/>
+                </Route>
+                <Route path={"/feed"}>
+                    <Route index element={<ListFeed />} />
+                    <Route path="show/:id" element={<ShowFeed />} />
                 </Route>
                 <Route path={"/demandes-pro-particulier"}>
                     <Route index element={<ListDemandeProParticulier />} />

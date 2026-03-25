@@ -28,6 +28,7 @@ import {
   SettingOutlined,
   AppstoreOutlined,
   SolutionOutlined,
+  PlayCircleOutlined,
 } from "@ant-design/icons";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { API_URL, PROJECT_ID } from "@/configs/app.config";
@@ -60,6 +61,15 @@ function App() {
               accessControlProvider={getAccessControlProvider()}
               routerProvider={routerBindings}
               resources={[
+                {
+                  name: "feed",
+                  list: "/feed",
+                  show: "/feed/show/:id",
+                  meta: {
+                    icon: <PlayCircleOutlined />,
+                    label: "Feed",
+                  },
+                },
                 {
                   name: "demandes-pro-particulier",
                   list: "/demandes-pro-particulier",

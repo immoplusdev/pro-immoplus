@@ -306,6 +306,44 @@
       "en_attente_validation": "En attente de validation"
     }
   },
+  "feed": {
+    "title": "Feed vidéo",
+    "fields": {
+      "title": "Titre",
+      "description": "Description",
+      "price": "Prix",
+      "location": "Localisation",
+      "author": "Auteur",
+      "entity": "Type d'annonce",
+      "shortCode": "Code court",
+      "source": "Source",
+      "likes": "J'aime",
+      "views": "Vues",
+      "stats": "Statistiques",
+      "relatedLink": "Annonce liée",
+      "videoStatus": "Statut vidéo"
+    },
+    "entities": {
+      "residence": "Résidence",
+      "bien_immobilier": "Bien immobilier",
+      "furniture": "Meuble"
+    },
+    "status": {
+      "processing": "En traitement",
+      "ready": "Prêt",
+      "failed": "Échoué"
+    },
+    "sections": {
+      "video": "Vidéo",
+      "content": "Contenu",
+      "metadata": "Métadonnées",
+      "authorStats": "Auteur & Statistiques"
+    },
+    "actions": {
+      "readMore": "Voir plus",
+      "viewRelated": "Voir l'annonce"
+    }
+  },
   "demandes_pro_particulier": {
     "title": "Demandes Pro Particulier",
     "fields": {

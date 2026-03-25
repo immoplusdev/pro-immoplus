@@ -74,7 +74,8 @@ export const getDataProvider = (
                 headers: headersFromMeta,
             });
 
-            const total = data.totalCount
+            // feed uses cursor-based pagination with a different response shape
+            const total = resource === "feed" ? data.count : data.totalCount;
 
             let items = data.data;
             if (resource === "withdrawal-requests") {
@@ -162,11 +163,15 @@ export const getDataProvider = (
 
         getOne: async ({resource, id, meta}) => {
             let url = `${apiUrl}/${resource}/${id}`;
-            
+
+            if (resource === "feed") {
+                url = `${apiUrl}/feed/videos/${id}`;
+            }
+
             if (resource === "withdrawal-requests") {
                 url = `${apiUrl}/wallet/withdrawal-request/${id}`;
             }
-            
+
             if (resource === "transfers") {
                 url = `${apiUrl}/transfers/${id}`;
             }
