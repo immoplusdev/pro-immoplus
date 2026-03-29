@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useTranslate } from "@refinedev/core";
 import { Show, ListButton, DeleteButton } from "@refinedev/antd";
+import { axiosInstance } from "@/lib/providers/utils/axios";
 import {
     Card,
     Row,
@@ -89,35 +90,25 @@ export const ShowFeedLegacy = () => {
     const handleMigrate = async () => {
         setMigrating(true);
         try {
-            const token = localStorage.getItem("auth_token") || localStorage.getItem("access");
-
-            const response = await fetch(`${API_URL}/feed/admin/legacy/${id}/migrate`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
-                },
-                body: JSON.stringify({
+            const result = await axiosInstance.post(
+                `${API_URL}/feed/admin/legacy/${id}/migrate`,
+                {
                     titre: data?.content?.title,
                     description: data?.content?.description,
-                }),
-            });
+                }
+            );
 
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status} ${response.statusText}`);
-            }
-
-            const result = await response.json();
             message.success(translate("feed.legacy.migrateSuccess"));
-            console.log("✅ Migration réussie:", result);
+            console.log("✅ Migration réussie:", result.data);
 
             setTimeout(() => {
                 window.location.href = "/feed/list";
             }, 1500);
-        } catch (error) {
+        } catch (error: any) {
             setMigrating(false);
             console.error("❌ Erreur migration:", error);
-            message.error(`${translate("common.error")}: ${error instanceof Error ? error.message : "Erreur inconnue"}`);
+            const msg = error?.response?.data?.message || translate("common.error");
+            message.error(msg);
         }
     };
 
