@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useTranslate } from "@refinedev/core";
-import { List } from "@refinedev/antd";
+import { useTranslate, useCustomMutation } from "@refinedev/core";
+import { List, useTable } from "@refinedev/antd";
 import {
     Form,
     Button,
@@ -18,8 +18,6 @@ import {
 } from "antd";
 import { Link } from "react-router-dom";
 import { HomeOutlined, CloudUploadOutlined, RocketOutlined } from "@ant-design/icons";
-import { useTable } from "@refinedev/antd";
-import { axiosInstance } from "@/lib/providers/utils/axios";
 import { API_URL } from "@/configs/app.config";
 
 type UploadFormType = {
@@ -33,12 +31,12 @@ type UploadFormType = {
 export const FeedVideosUpload = () => {
     const translate = useTranslate();
     const [form] = Form.useForm<UploadFormType>();
-    const [uploading, setUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [parentType, setParentType] = useState<string | undefined>();
     const [searchResults, setSearchResults] = useState<{ label: string; value: string }[]>([]);
 
-    // Récupérer les données pour la recherche
+    const { mutate: uploadVideo, isPending: uploading } = useCustomMutation();
+
     const { tableProps: residenceProps } = useTable({
         resource: "residences",
         queryOptions: { enabled: parentType === "residence" },
@@ -83,13 +81,12 @@ export const FeedVideosUpload = () => {
         setSearchResults(filtered);
     };
 
-    const onFinish = async (values: UploadFormType) => {
+    const onFinish = (values: UploadFormType) => {
         if (!values.video || values.video.length === 0) {
             message.error(translate("feed.validation.videoRequired"));
             return;
         }
 
-        setUploading(true);
         setUploadProgress(0);
 
         const file = values.video[0].originFileObj;
@@ -101,34 +98,30 @@ export const FeedVideosUpload = () => {
         if (values.parentType) formData.append("parentType", values.parentType);
         if (values.parentId) formData.append("parentId", values.parentId);
 
-        try {
-            const response = await axiosInstance.post(
-                `${API_URL}/feed/videos/upload`,
-                formData,
-                {
-                    onUploadProgress: (progressEvent) => {
-                        if (progressEvent.total) {
-                            const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                            setUploadProgress(Math.min(percent, 90));
-                        }
-                    },
-                }
-            );
-
-            setUploadProgress(100);
-            message.success(translate("feed.upload.success"));
-            console.log("✅ Vidéo uploadée:", response.data);
-            form.resetFields();
-            setParentType(undefined);
-            setSearchResults([]);
-            setUploadProgress(0);
-        } catch (error: any) {
-            console.error("❌ Erreur upload:", error);
-            const msg = error?.response?.data?.message || translate("common.error");
-            message.error(msg);
-        } finally {
-            setUploading(false);
-        }
+        uploadVideo(
+            {
+                url: `${API_URL}/feed/videos/upload`,
+                method: "post",
+                values: formData,
+            },
+            {
+                onSuccess: (data) => {
+                    setUploadProgress(100);
+                    message.success(translate("feed.upload.success"));
+                    console.log("✅ Vidéo uploadée:", data);
+                    form.resetFields();
+                    setParentType(undefined);
+                    setSearchResults([]);
+                    setUploadProgress(0);
+                },
+                onError: (error: any) => {
+                    setUploadProgress(0);
+                    console.error("❌ Erreur upload:", error);
+                    const msg = error?.response?.data?.message || translate("common.error");
+                    message.error(msg);
+                },
+            }
+        );
     };
 
     const parentTypeOptions = [

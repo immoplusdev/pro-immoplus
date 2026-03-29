@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTranslate } from "@refinedev/core";
+import { useTranslate, useCustomMutation } from "@refinedev/core";
 import { List } from "@refinedev/antd";
 import {
     Form,
@@ -15,7 +15,6 @@ import {
 } from "antd";
 import { Link } from "react-router-dom";
 import { HomeOutlined, CloudUploadOutlined, RocketOutlined } from "@ant-design/icons";
-import { axiosInstance } from "@/lib/providers/utils/axios";
 import { API_URL } from "@/configs/app.config";
 
 type UploadFormType = {
@@ -27,8 +26,9 @@ type UploadFormType = {
 export const FeedUploadPromo = () => {
     const translate = useTranslate();
     const [form] = Form.useForm<UploadFormType>();
-    const [uploading, setUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
+
+    const { mutate: uploadVideo, isPending: uploading } = useCustomMutation();
 
     const onFinish = async (values: UploadFormType) => {
         if (!values.video || values.video.length === 0) {
@@ -36,7 +36,6 @@ export const FeedUploadPromo = () => {
             return;
         }
 
-        setUploading(true);
         setUploadProgress(0);
 
         const file = values.video[0].originFileObj;
@@ -46,32 +45,28 @@ export const FeedUploadPromo = () => {
         formData.append("titre", values.title || translate("feed.upload.defaultTitle"));
         if (values.description) formData.append("description", values.description);
 
-        try {
-            const response = await axiosInstance.post(
-                `${API_URL}/feed/videos/upload`,
-                formData,
-                {
-                    onUploadProgress: (progressEvent) => {
-                        if (progressEvent.total) {
-                            const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                            setUploadProgress(Math.min(percent, 90));
-                        }
-                    },
-                }
-            );
-
-            setUploadProgress(100);
-            message.success(translate("feed.upload.success"));
-            console.log("✅ Vidéo uploadée:", response.data);
-            form.resetFields();
-            setUploadProgress(0);
-        } catch (error: any) {
-            console.error("❌ Erreur upload:", error);
-            const msg = error?.response?.data?.message || translate("common.error");
-            message.error(msg);
-        } finally {
-            setUploading(false);
-        }
+        uploadVideo(
+            {
+                url: `${API_URL}/feed/videos/upload`,
+                method: "post",
+                values: formData,
+            },
+            {
+                onSuccess: (data) => {
+                    setUploadProgress(100);
+                    message.success(translate("feed.upload.success"));
+                    console.log("✅ Vidéo uploadée:", data);
+                    form.resetFields();
+                    setUploadProgress(0);
+                },
+                onError: (error: any) => {
+                    setUploadProgress(0);
+                    console.error("❌ Erreur upload:", error);
+                    const msg = error?.response?.data?.message || translate("common.error");
+                    message.error(msg);
+                },
+            }
+        );
     };
 
     return (
