@@ -108,10 +108,10 @@ export const FeedVideosUpload = () => {
                 });
             }, 500);
 
-            // Préparer les données
+            // Préparer les données pour l'upload multipart
             const formData = new FormData();
-            formData.append("video", file);
-            if (values.title) formData.append("title", values.title);
+            formData.append("file", file);
+            formData.append("titre", values.title || translate("feed.upload.defaultTitle"));
             if (values.description) formData.append("description", values.description);
             if (values.parentType) formData.append("parentType", values.parentType);
             if (values.parentId) formData.append("parentId", values.parentId);
@@ -120,19 +120,7 @@ export const FeedVideosUpload = () => {
             createFeed(
                 {
                     resource: "feed",
-                    values: {
-                        content: {
-                            title: values.title || translate("feed.upload.defaultTitle"),
-                            description: values.description,
-                        },
-                        relatedTo: values.parentType
-                            ? {
-                                  entity: values.parentType,
-                                  id: values.parentId,
-                              }
-                            : null,
-                        videoUrl: file, // l'API gérera l'upload
-                    },
+                    values: formData,
                 },
                 {
                     onSuccess: () => {

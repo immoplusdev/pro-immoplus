@@ -54,17 +54,15 @@ export const FeedUploadPromo = () => {
             }, 500);
 
             // Créer le feed SANS parentType/parentId (vidéo 100% promotionnelle)
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("titre", values.title || translate("feed.upload.defaultTitle"));
+            if (values.description) formData.append("description", values.description);
+
             createFeed(
                 {
                     resource: "feed",
-                    values: {
-                        content: {
-                            title: values.title || translate("feed.upload.defaultTitle"),
-                            description: values.description,
-                        },
-                        relatedTo: null, // Pas de bien lié
-                        videoUrl: file,
-                    },
+                    values: formData,
                 },
                 {
                     onSuccess: () => {
