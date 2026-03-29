@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useTranslate, useUpdate } from "@refinedev/core";
+import { useTranslate } from "@refinedev/core";
 import { Show, ListButton, DeleteButton } from "@refinedev/antd";
 import {
     Card,
@@ -67,8 +67,6 @@ export const ShowFeedLegacy = () => {
         }
     }, [id]);
 
-    const { mutate: migrateVideo } = useUpdate();
-
     if (isLoading) return <SpinLoader />;
 
     if (!data) {
@@ -88,31 +86,39 @@ export const ShowFeedLegacy = () => {
     };
     const entityPath = entityPathMap[data?.relatedTo?.entity] ?? "residences";
 
-    const handleMigrate = () => {
+    const handleMigrate = async () => {
         setMigrating(true);
-        migrateVideo(
-            {
-                resource: "feed/legacy",
-                id: id!,
-                values: {
-                    migrated: true,
+        try {
+            const token = localStorage.getItem("auth_token") || localStorage.getItem("access");
+
+            const response = await fetch(`${API_URL}/feed/admin/legacy/${id}/migrate`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
                 },
-            },
-            {
-                onSuccess: () => {
-                    setMigrating(false);
-                    message.success(translate("feed.legacy.migrateSuccess"));
-                    // Rediriger vers le feed actif
-                    setTimeout(() => {
-                        window.location.href = "/feed/list";
-                    }, 1500);
-                },
-                onError: () => {
-                    setMigrating(false);
-                    message.error(translate("common.error"));
-                },
+                body: JSON.stringify({
+                    titre: data?.content?.title,
+                    description: data?.content?.description,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status} ${response.statusText}`);
             }
-        );
+
+            const result = await response.json();
+            message.success(translate("feed.legacy.migrateSuccess"));
+            console.log("✅ Migration réussie:", result);
+
+            setTimeout(() => {
+                window.location.href = "/feed/list";
+            }, 1500);
+        } catch (error) {
+            setMigrating(false);
+            console.error("❌ Erreur migration:", error);
+            message.error(`${translate("common.error")}: ${error instanceof Error ? error.message : "Erreur inconnue"}`);
+        }
     };
 
     return (

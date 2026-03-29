@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTranslate, useCreate } from "@refinedev/core";
+import { useTranslate } from "@refinedev/core";
 import { List } from "@refinedev/antd";
 import {
     Form,
@@ -15,6 +15,8 @@ import {
 } from "antd";
 import { Link } from "react-router-dom";
 import { HomeOutlined, CloudUploadOutlined, RocketOutlined } from "@ant-design/icons";
+import { axiosInstance } from "@/lib/providers/utils/axios";
+import { API_URL } from "@/configs/app.config";
 
 type UploadFormType = {
     video: any[];
@@ -28,62 +30,46 @@ export const FeedUploadPromo = () => {
     const [uploading, setUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
 
-    const { mutate: createFeed } = useCreate();
-
     const onFinish = async (values: UploadFormType) => {
+        if (!values.video || values.video.length === 0) {
+            message.error(translate("feed.validation.videoRequired"));
+            return;
+        }
+
+        setUploading(true);
+        setUploadProgress(0);
+
+        const file = values.video[0].originFileObj;
+
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("titre", values.title || translate("feed.upload.defaultTitle"));
+        if (values.description) formData.append("description", values.description);
+
         try {
-            if (!values.video || values.video.length === 0) {
-                message.error(translate("feed.validation.videoRequired"));
-                return;
-            }
-
-            setUploading(true);
-            setUploadProgress(0);
-
-            const file = values.video[0].originFileObj;
-
-            // Simuler la progression
-            const progressInterval = setInterval(() => {
-                setUploadProgress((prev) => {
-                    if (prev >= 90) {
-                        clearInterval(progressInterval);
-                        return 90;
-                    }
-                    return prev + Math.random() * 30;
-                });
-            }, 500);
-
-            // Créer le feed SANS parentType/parentId (vidéo 100% promotionnelle)
-            createFeed(
+            const response = await axiosInstance.post(
+                `${API_URL}/feed/videos/upload`,
+                formData,
                 {
-                    resource: "feed",
-                    values: {
-                        content: {
-                            title: values.title || translate("feed.upload.defaultTitle"),
-                            description: values.description,
-                        },
-                        relatedTo: null, // Pas de bien lié
-                        videoUrl: file,
-                    },
-                },
-                {
-                    onSuccess: () => {
-                        clearInterval(progressInterval);
-                        setUploadProgress(100);
-                        message.success(translate("feed.upload.success"));
-                        setUploading(false);
-                        form.resetFields();
-                        setUploadProgress(0);
-                    },
-                    onError: () => {
-                        clearInterval(progressInterval);
-                        setUploading(false);
-                        message.error(translate("common.error"));
+                    onUploadProgress: (progressEvent) => {
+                        if (progressEvent.total) {
+                            const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                            setUploadProgress(Math.min(percent, 90));
+                        }
                     },
                 }
             );
-        } catch (error) {
-            message.error(translate("common.error"));
+
+            setUploadProgress(100);
+            message.success(translate("feed.upload.success"));
+            console.log("✅ Vidéo uploadée:", response.data);
+            form.resetFields();
+            setUploadProgress(0);
+        } catch (error: any) {
+            console.error("❌ Erreur upload:", error);
+            const msg = error?.response?.data?.message || translate("common.error");
+            message.error(msg);
+        } finally {
             setUploading(false);
         }
     };
@@ -113,17 +99,13 @@ export const FeedUploadPromo = () => {
                                 name="video"
                                 valuePropName="fileList"
                                 getValueFromEvent={(e) => {
-                                    if (Array.isArray(e)) {
-                                        return e;
-                                    }
+                                    if (Array.isArray(e)) return e;
                                     return e?.fileList;
                                 }}
                                 rules={[
                                     {
                                         required: true,
-                                        message: translate(
-                                            "feed.validation.videoRequired"
-                                        ),
+                                        message: translate("feed.validation.videoRequired"),
                                     },
                                 ]}
                             >
@@ -134,10 +116,7 @@ export const FeedUploadPromo = () => {
                                     beforeUpload={() => false}
                                     accept="video/mp4"
                                     listType="picture"
-                                    style={{
-                                        borderRadius: 8,
-                                        padding: 40,
-                                    }}
+                                    style={{ borderRadius: 8, padding: 40 }}
                                 >
                                     <Space direction="vertical" align="center" size={0}>
                                         <CloudUploadOutlined style={{ fontSize: 48, color: "#1890ff" }} />
@@ -151,16 +130,11 @@ export const FeedUploadPromo = () => {
                                 </Upload.Dragger>
                             </Form.Item>
 
-                            {/* Titre et Description */}
+                            {/* Titre */}
                             <Form.Item
                                 name="title"
                                 label={translate("feed.fields.title")}
-                                rules={[
-                                    {
-                                        max: 200,
-                                        message: translate("feed.validation.titleMax"),
-                                    },
-                                ]}
+                                rules={[{ max: 200, message: translate("feed.validation.titleMax") }]}
                             >
                                 <Input
                                     placeholder={translate("feed.upload.titlePlaceholder")}
@@ -168,15 +142,11 @@ export const FeedUploadPromo = () => {
                                 />
                             </Form.Item>
 
+                            {/* Description */}
                             <Form.Item
                                 name="description"
                                 label={translate("feed.fields.description")}
-                                rules={[
-                                    {
-                                        max: 1000,
-                                        message: translate("feed.validation.descriptionMax"),
-                                    },
-                                ]}
+                                rules={[{ max: 1000, message: translate("feed.validation.descriptionMax") }]}
                             >
                                 <Input.TextArea
                                     placeholder={translate("feed.upload.descriptionPlaceholder")}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTranslate, useCreate } from "@refinedev/core";
+import { useTranslate } from "@refinedev/core";
 import { List } from "@refinedev/antd";
 import {
     Form,
@@ -19,6 +19,8 @@ import {
 import { Link } from "react-router-dom";
 import { HomeOutlined, CloudUploadOutlined, RocketOutlined } from "@ant-design/icons";
 import { useTable } from "@refinedev/antd";
+import { axiosInstance } from "@/lib/providers/utils/axios";
+import { API_URL } from "@/configs/app.config";
 
 type UploadFormType = {
     video: any[];
@@ -35,8 +37,6 @@ export const FeedVideosUpload = () => {
     const [uploadProgress, setUploadProgress] = useState(0);
     const [parentType, setParentType] = useState<string | undefined>();
     const [searchResults, setSearchResults] = useState<{ label: string; value: string }[]>([]);
-
-    const { mutate: createFeed } = useCreate();
 
     // Récupérer les données pour la recherche
     const { tableProps: residenceProps } = useTable({
@@ -60,7 +60,6 @@ export const FeedVideosUpload = () => {
             return;
         }
 
-        // Déterminer la source selon le type
         let dataSource: any[] = [];
         if (parentType === "residence") {
             dataSource = (residenceProps.dataSource || []) as any[];
@@ -70,7 +69,6 @@ export const FeedVideosUpload = () => {
             dataSource = (furnitureProps.dataSource || []) as any[];
         }
 
-        // Filtrer et mapper
         const filtered = dataSource
             .filter((item: any) => {
                 const searchText = (item.nom || item.name || "").toLowerCase();
@@ -86,72 +84,49 @@ export const FeedVideosUpload = () => {
     };
 
     const onFinish = async (values: UploadFormType) => {
+        if (!values.video || values.video.length === 0) {
+            message.error(translate("feed.validation.videoRequired"));
+            return;
+        }
+
+        setUploading(true);
+        setUploadProgress(0);
+
+        const file = values.video[0].originFileObj;
+
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("titre", values.title || translate("feed.upload.defaultTitle"));
+        if (values.description) formData.append("description", values.description);
+        if (values.parentType) formData.append("parentType", values.parentType);
+        if (values.parentId) formData.append("parentId", values.parentId);
+
         try {
-            if (!values.video || values.video.length === 0) {
-                message.error(translate("feed.validation.videoRequired"));
-                return;
-            }
-
-            setUploading(true);
-            setUploadProgress(0);
-
-            const file = values.video[0].originFileObj;
-
-            // Simuler la progression (dans la vraie app, utiliser les events du upload)
-            const progressInterval = setInterval(() => {
-                setUploadProgress((prev) => {
-                    if (prev >= 90) {
-                        clearInterval(progressInterval);
-                        return 90;
-                    }
-                    return prev + Math.random() * 30;
-                });
-            }, 500);
-
-            // Préparer les données
-            const formData = new FormData();
-            formData.append("video", file);
-            if (values.title) formData.append("title", values.title);
-            if (values.description) formData.append("description", values.description);
-            if (values.parentType) formData.append("parentType", values.parentType);
-            if (values.parentId) formData.append("parentId", values.parentId);
-
-            // Créer le feed (l'API gérera l'upload et le traitement)
-            createFeed(
+            const response = await axiosInstance.post(
+                `${API_URL}/feed/videos/upload`,
+                formData,
                 {
-                    resource: "feed",
-                    values: {
-                        content: {
-                            title: values.title || translate("feed.upload.defaultTitle"),
-                            description: values.description,
-                        },
-                        relatedTo: values.parentType
-                            ? {
-                                  entity: values.parentType,
-                                  id: values.parentId,
-                              }
-                            : null,
-                        videoUrl: file, // l'API gérera l'upload
-                    },
-                },
-                {
-                    onSuccess: () => {
-                        clearInterval(progressInterval);
-                        setUploadProgress(100);
-                        message.success(translate("feed.upload.success"));
-                        setUploading(false);
-                        form.resetFields();
-                        setUploadProgress(0);
-                    },
-                    onError: () => {
-                        clearInterval(progressInterval);
-                        setUploading(false);
-                        message.error(translate("common.error"));
+                    onUploadProgress: (progressEvent) => {
+                        if (progressEvent.total) {
+                            const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                            setUploadProgress(Math.min(percent, 90));
+                        }
                     },
                 }
             );
-        } catch (error) {
-            message.error(translate("common.error"));
+
+            setUploadProgress(100);
+            message.success(translate("feed.upload.success"));
+            console.log("✅ Vidéo uploadée:", response.data);
+            form.resetFields();
+            setParentType(undefined);
+            setSearchResults([]);
+            setUploadProgress(0);
+        } catch (error: any) {
+            console.error("❌ Erreur upload:", error);
+            const msg = error?.response?.data?.message || translate("common.error");
+            message.error(msg);
+        } finally {
             setUploading(false);
         }
     };
@@ -187,17 +162,13 @@ export const FeedVideosUpload = () => {
                                 name="video"
                                 valuePropName="fileList"
                                 getValueFromEvent={(e) => {
-                                    if (Array.isArray(e)) {
-                                        return e;
-                                    }
+                                    if (Array.isArray(e)) return e;
                                     return e?.fileList;
                                 }}
                                 rules={[
                                     {
                                         required: true,
-                                        message: translate(
-                                            "feed.validation.videoRequired"
-                                        ),
+                                        message: translate("feed.validation.videoRequired"),
                                     },
                                 ]}
                             >
@@ -208,10 +179,7 @@ export const FeedVideosUpload = () => {
                                     beforeUpload={() => false}
                                     accept="video/mp4"
                                     listType="picture"
-                                    style={{
-                                        borderRadius: 8,
-                                        padding: 40,
-                                    }}
+                                    style={{ borderRadius: 8, padding: 40 }}
                                 >
                                     <Space direction="vertical" align="center" size={0}>
                                         <CloudUploadOutlined style={{ fontSize: 48, color: "#1890ff" }} />
@@ -225,16 +193,11 @@ export const FeedVideosUpload = () => {
                                 </Upload.Dragger>
                             </Form.Item>
 
-                            {/* Titre et Description */}
+                            {/* Titre */}
                             <Form.Item
                                 name="title"
                                 label={translate("feed.fields.title")}
-                                rules={[
-                                    {
-                                        max: 200,
-                                        message: translate("feed.validation.titleMax"),
-                                    },
-                                ]}
+                                rules={[{ max: 200, message: translate("feed.validation.titleMax") }]}
                             >
                                 <Input
                                     placeholder={translate("feed.upload.titlePlaceholder")}
@@ -242,15 +205,11 @@ export const FeedVideosUpload = () => {
                                 />
                             </Form.Item>
 
+                            {/* Description */}
                             <Form.Item
                                 name="description"
                                 label={translate("feed.fields.description")}
-                                rules={[
-                                    {
-                                        max: 1000,
-                                        message: translate("feed.validation.descriptionMax"),
-                                    },
-                                ]}
+                                rules={[{ max: 1000, message: translate("feed.validation.descriptionMax") }]}
                             >
                                 <Input.TextArea
                                     placeholder={translate("feed.upload.descriptionPlaceholder")}
@@ -268,17 +227,11 @@ export const FeedVideosUpload = () => {
                                         label: (
                                             <Space size={8}>
                                                 <span>➕</span>
-                                                <span>
-                                                    {translate("feed.upload.advancedOption")}
-                                                </span>
+                                                <span>{translate("feed.upload.advancedOption")}</span>
                                             </Space>
                                         ),
                                         children: (
-                                            <Space
-                                                direction="vertical"
-                                                style={{ width: "100%" }}
-                                                size="large"
-                                            >
+                                            <Space direction="vertical" style={{ width: "100%" }} size="large">
                                                 <Form.Item
                                                     name="parentType"
                                                     label={translate("feed.fields.parentType")}
@@ -287,9 +240,7 @@ export const FeedVideosUpload = () => {
                                                     <Select
                                                         placeholder={translate("feed.upload.selectType")}
                                                         options={parentTypeOptions}
-                                                        onChange={(value) =>
-                                                            setParentType(value)
-                                                        }
+                                                        onChange={(value) => setParentType(value)}
                                                         allowClear
                                                     />
                                                 </Form.Item>

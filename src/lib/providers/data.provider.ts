@@ -108,13 +108,17 @@ export const getDataProvider = (
 
         create: async ({resource, variables, meta}) => {
             let url = `${apiUrl}/${resource}`;
-            
+
             if (resource === "withdrawal-request") {
                 url = `${apiUrl}/wallet/withdrawal-request`;
             }
-            
+
             if (resource === "transfers") {
                 url = `${apiUrl}/transfers`;
+            }
+
+            if (resource === "feed") {
+                url = `${apiUrl}/feed/videos/upload`;
             }
 
             const {headers, method} = meta ?? {};
