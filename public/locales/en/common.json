@@ -230,5 +230,107 @@
         "commercial": "Commercial"
       }
     }
+  },
+  "common": {
+    "notFound": "Not Found",
+    "notAvailable": "Not available",
+    "yes": "Yes",
+    "no": "No",
+    "deleteTitle": "Delete",
+    "deleteConfirm": "Are you sure you want to delete this item?",
+    "noData": "No data",
+    "noMore": "No more data",
+    "back": "Back",
+    "deleteSuccess": "Item deleted successfully",
+    "error": "Error"
+  },
+  "feed": {
+    "title": "Feed",
+    "sections": {
+      "video": "Video",
+      "content": "Content",
+      "metadata": "Metadata",
+      "authorStats": "Author & Statistics",
+      "legacyFlow": "Legacy Flow",
+      "activeFlow": "Active Flow",
+      "uploader": "Uploader"
+    },
+    "descriptions": {
+      "activeFlow": "Manage active feed videos with high performance HLS",
+      "legacyFlow": "View and migrate old videos to the active feed",
+      "uploader": "Upload new promotional videos"
+    },
+    "fields": {
+      "title": "Title",
+      "author": "Author",
+      "entity": "Entity",
+      "price": "Price",
+      "location": "Location",
+      "description": "Description",
+      "status": "Status",
+      "shortCode": "Short Code",
+      "source": "Source",
+      "relatedLink": "Related Link",
+      "likes": "Likes",
+      "views": "Views",
+      "stats": "Statistics",
+      "parentType": "Type",
+      "identifier": "Identifier"
+    },
+    "entities": {
+      "residence": "Residence",
+      "bien_immobilier": "Real Estate Property",
+      "furniture": "Furniture"
+    },
+    "status": {
+      "ready": "Ready",
+      "processing": "Processing",
+      "failed": "Failed",
+      "deleted": "Deleted"
+    },
+    "actions": {
+      "readMore": "Read more",
+      "viewRelated": "View related",
+      "backToHome": "Back to home",
+      "uploadVideo": "Upload video",
+      "migrateToActive": "Migrate to active feed",
+      "viewActive": "View active feed",
+      "viewLegacy": "View legacy feed",
+      "upload": "Upload"
+    },
+    "filters": {
+      "status": "Status",
+      "all": "All"
+    },
+    "legacy": {
+      "migrateTitle": "Migrate this video?",
+      "migrateDescription": "This video will be converted to HLS high performance format and appear in the active feed.",
+      "migrateButton": "🔄 Migrate to Feed",
+      "migrateSuccess": "Video migrated successfully to active feed! It will be processed in HLS within a few minutes."
+    },
+    "upload": {
+      "promoTitle": "New Promotional Video",
+      "promoDescription": "Upload a simple promotional video. Perfect for general campaigns without a specific property.",
+      "startPromo": "Start →",
+      "propertyTitle": "Video Linked to Property",
+      "propertyDescription": "Upload a video linked to a residence, real estate property, or specific furniture.",
+      "startProperty": "Start →",
+      "backToUpload": "← Back",
+      "success": "Success! The video has been sent to the HLS processor. It will appear in the general feed within 3 minutes.",
+      "dragHint": "Drag your promotional video here or click to browse your files.",
+      "formatWarning": "MP4 format only. Maximum size: 100 MB.",
+      "titlePlaceholder": "Give a catchy title to your campaign",
+      "descriptionPlaceholder": "Tell the story of this video, add hashtags or your contact numbers...",
+      "submitButton": "🚀 Publish and Encode Video",
+      "defaultTitle": "Promotional video",
+      "advancedOption": "Attach this video to a specific residence (Optional)",
+      "selectType": "Choose a type...",
+      "searchPlaceholder": "Type the property name..."
+    },
+    "validation": {
+      "videoRequired": "Video is required",
+      "titleMax": "Maximum 200 characters",
+      "descriptionMax": "Maximum 1000 characters"
+    }
   }
 }
