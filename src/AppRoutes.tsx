@@ -41,7 +41,7 @@ import CreateWithdrawalRequest from "./pages/withdrawal-request/create-withdrawa
 import ShowWithdrawalRequest from "./pages/withdrawal-request/show-withdrawal-request";
 import {CreateTransfer, EditTransfer, ListTransfers, ShowTransfer} from "./pages/transfers";
 import {EditFurniture, ListFurnitures, ShowFurniture} from "@/pages/furnitures";
-import { ListFeed, ShowFeed } from "@/pages/feed";
+import { FeedIndex, ListFeed, ListFeedLegacy, ShowFeedLegacy, FeedUploadIndex, FeedUploadPromo, FeedVideosUpload, ShowFeed } from "@/pages/feed";
 import {
     ListDemandeProParticulier,
     ListDemandeProParticulierPending,
@@ -126,7 +126,13 @@ export function AppRoutes() {
                     <Route path="show/:id" element={<ShowUser/>}/>
                 </Route>
                 <Route path={"/feed"}>
-                    <Route index element={<ListFeed />} />
+                    <Route index element={<FeedIndex />} />
+                    <Route path="list" element={<ListFeed />} />
+                    <Route path="legacy" element={<ListFeedLegacy />} />
+                    <Route path="legacy/show/:id" element={<ShowFeedLegacy />} />
+                    <Route path="videos/upload" element={<FeedUploadIndex />} />
+                    <Route path="videos/upload/promo" element={<FeedUploadPromo />} />
+                    <Route path="videos/upload/with-property" element={<FeedVideosUpload />} />
                     <Route path="show/:id" element={<ShowFeed />} />
                 </Route>
                 <Route path={"/demandes-pro-particulier"}>
