@@ -1,6 +1,7 @@
-import React from "react";
-import { useTranslate, useShow } from "@refinedev/core";
+import { useState, useEffect } from "react";
+import { useTranslate } from "@refinedev/core";
 import { Show, ListButton, DeleteButton } from "@refinedev/antd";
+import { axiosInstance } from "@/lib/providers/utils/axios";
 import {
     Card,
     Row,
@@ -9,30 +10,75 @@ import {
     Space,
     Tag,
     Divider,
+    Button,
+    Popconfirm,
+    message,
 } from "antd";
 import {
     EyeOutlined,
     LikeOutlined,
     LinkOutlined,
     UserOutlined,
+    SwapOutlined,
+    ArrowLeftOutlined,
 } from "@ant-design/icons";
 import { useParams, Link } from "react-router-dom";
 import { DateDisplayField } from "@/components/table";
 import { SpinLoader } from "@/components/loading";
 import { FeedEntityTag, FeedParentType } from "./components/feed-entity-tag";
 import { FeedVideoStatusTag } from "./components/feed-video-status-tag";
+import { API_URL } from "@/configs/app.config";
 
 const { Text, Paragraph, Title } = Typography;
 
-export const ShowFeed = () => {
+export const ShowFeedLegacy = () => {
     const translate = useTranslate();
     const { id } = useParams<{ id: string }>();
+    const [migrating, setMigrating] = useState(false);
+    const [data, setData] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const { query } = useShow({ resource: "feed", id });
-    const data = query?.data?.data;
-    const isLoading = query?.isLoading;
+    // Récupérer les détails avec le query param ?id=
+    useEffect(() => {
+        const fetchDetail = async () => {
+            try {
+                setIsLoading(true);
+                console.log(`🔵 Fetch détail: GET ${API_URL}/feed/legacy?id=${id}`);
+
+                const response = await fetch(`${API_URL}/feed/legacy?id=${id}`);
+                console.log("📊 Status:", response.status, response.statusText);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status} ${response.statusText}`);
+                }
+
+                const json = await response.json();
+                console.log("✅ Données reçues:", json);
+                setData(json.data);
+            } catch (error) {
+                console.error("❌ Erreur fetch détail:", error);
+                message.error(`Erreur: ${error instanceof Error ? error.message : "Erreur inconnue"}`);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        if (id) {
+            fetchDetail();
+        }
+    }, [id]);
 
     if (isLoading) return <SpinLoader />;
+
+    if (!data) {
+        return (
+            <Show headerButtons={[<ListButton key="list" />]}>
+                <div style={{ textAlign: "center", padding: "40px" }}>
+                    <Text type="danger">{translate("common.notFound")}</Text>
+                </div>
+            </Show>
+        );
+    }
 
     const entityPathMap: Record<string, string> = {
         [FeedParentType.Residence]: "residences",
@@ -41,12 +87,45 @@ export const ShowFeed = () => {
     };
     const entityPath = entityPathMap[data?.relatedTo?.entity] ?? "residences";
 
+    const handleMigrate = async () => {
+        setMigrating(true);
+        try {
+            const result = await axiosInstance.post(
+                `${API_URL}/feed/admin/legacy/${id}/migrate`,
+                {
+                    titre: data?.content?.title,
+                    description: data?.content?.description,
+                }
+            );
+
+            message.success(translate("feed.legacy.migrateSuccess"));
+            console.log("✅ Migration réussie:", result.data);
+
+            setTimeout(() => {
+                window.location.href = "/feed/list";
+            }, 1500);
+        } catch (error: any) {
+            setMigrating(false);
+            console.error("❌ Erreur migration:", error);
+            const msg = error?.response?.data?.message || translate("common.error");
+            message.error(msg);
+        }
+    };
+
     return (
         <Show
             isLoading={isLoading}
             headerButtons={[
-                <ListButton key="list" />,
-                <DeleteButton key="delete" recordItemId={id} />,
+                <Link key="back" to="/feed/legacy">
+                    <Button icon={<ArrowLeftOutlined />}>
+                        {translate("common.back") || "← Retour"}
+                    </Button>
+                </Link>,
+                <DeleteButton
+                    key="delete"
+                    resource="feed/videos"
+                    recordItemId={id}
+                />,
             ]}
         >
             <Row gutter={[16, 16]}>
@@ -163,6 +242,31 @@ export const ShowFeed = () => {
                             </div>
                         </Space>
                     </Card>
+                </Col>
+            </Row>
+
+            <Divider />
+
+            {/* Bouton Migration */}
+            <Row justify="center" style={{ marginTop: 24 }}>
+                <Col>
+                    <Popconfirm
+                        title={translate("feed.legacy.migrateTitle")}
+                        description={translate("feed.legacy.migrateDescription")}
+                        onConfirm={handleMigrate}
+                        okText={translate("common.yes")}
+                        cancelText={translate("common.no")}
+                    >
+                        <Button
+                            type="primary"
+                            size="large"
+                            icon={<SwapOutlined />}
+                            loading={migrating}
+                            disabled={migrating}
+                        >
+                            {translate("feed.legacy.migrateButton")}
+                        </Button>
+                    </Popconfirm>
                 </Col>
             </Row>
         </Show>

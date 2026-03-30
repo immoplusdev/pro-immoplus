@@ -1,17 +1,25 @@
-import React from "react";
 import { BaseRecord, useTranslate } from "@refinedev/core";
 import { List, DeleteButton, useTable } from "@refinedev/antd";
-import { Table, Space, Button, Typography, Tag } from "antd";
-import { Link } from "react-router-dom";
-import { ArrowRightOutlined, EyeOutlined, LikeOutlined } from "@ant-design/icons";
+import { Table, Space, Button, Typography } from "antd";
+import { Link, useSearchParams } from "react-router-dom";
+import { ArrowRightOutlined, EyeOutlined, LikeOutlined, HomeOutlined } from "@ant-design/icons";
 import { DateDisplayField } from "@/components/table";
 import { FeedEntityTag } from "./components/feed-entity-tag";
 import { FeedVideoStatusTag } from "./components/feed-video-status-tag";
 
 const { Text } = Typography;
 
+const STATUS_OPTIONS = [
+    { label: "🟢 Ready", value: "ready" },
+    { label: "⏳ Processing", value: "processing" },
+    { label: "❌ Failed", value: "failed" },
+    { label: "🗑️ Deleted", value: "deleted" },
+];
+
 export const ListFeed = () => {
     const translate = useTranslate();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const selectedStatus = searchParams.get("status");
 
     const { tableProps } = useTable({
         resource: "feed",
@@ -19,8 +27,45 @@ export const ListFeed = () => {
         pagination: { pageSize: 20 },
     });
 
+    const handleStatusFilter = (status: string | null) => {
+        if (status) {
+            setSearchParams({ status });
+        } else {
+            setSearchParams({});
+        }
+    };
+
     return (
-        <List title={translate("feed.title")}>
+        <List
+            title={translate("feed.title")}
+            headerButtons={[
+                <Link key="home" to="/feed">
+                    <Button icon={<HomeOutlined />}>
+                        {translate("feed.actions.backToHome")}
+                    </Button>
+                </Link>,
+            ]}
+        >
+            <div style={{ marginBottom: 16 }}>
+                <Space wrap>
+                    <Text strong>{translate("feed.filters.status") || "Status:"}</Text>
+                    <Button
+                        type={selectedStatus === null ? "primary" : "default"}
+                        onClick={() => handleStatusFilter(null)}
+                    >
+                        {translate("feed.filters.all") || "All"}
+                    </Button>
+                    {STATUS_OPTIONS.map((option) => (
+                        <Button
+                            key={option.value}
+                            type={selectedStatus === option.value ? "primary" : "default"}
+                            onClick={() => handleStatusFilter(option.value)}
+                        >
+                            {option.label}
+                        </Button>
+                    ))}
+                </Space>
+            </div>
             <Table {...tableProps} rowKey="id">
                 <Table.Column
                     dataIndex={["content", "title"]}
@@ -55,8 +100,8 @@ export const ListFeed = () => {
                     ellipsis
                 />
                 <Table.Column
-                    dataIndex="videoStatus"
-                    title={translate("feed.fields.videoStatus")}
+                    dataIndex="status"
+                    title={translate("feed.fields.status")}
                     align="center"
                     render={(value) => value ? <FeedVideoStatusTag status={value} /> : null}
                 />

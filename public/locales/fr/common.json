@@ -930,5 +930,107 @@
       "debitWallet": "Débiter le portefeuille",
       "releaseFunds": "Reverser des fonds"
     }
+  },
+  "common": {
+    "notFound": "Non trouvé",
+    "notAvailable": "Non disponible",
+    "yes": "Oui",
+    "no": "Non",
+    "deleteTitle": "Supprimer",
+    "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cet élément ?",
+    "noData": "Aucune donnée",
+    "noMore": "Aucune donnée supplémentaire",
+    "back": "Retour",
+    "deleteSuccess": "Élément supprimé avec succès",
+    "error": "Erreur"
+  },
+  "feed": {
+    "title": "Fil d'actualité",
+    "sections": {
+      "video": "Vidéo",
+      "content": "Contenu",
+      "metadata": "Métadonnées",
+      "authorStats": "Auteur et Statistiques",
+      "legacyFlow": "Flux Legacy",
+      "activeFlow": "Flux Actif",
+      "uploader": "Uploader"
+    },
+    "descriptions": {
+      "activeFlow": "Gérer les vidéos du flux actif avec HLS haute performance",
+      "legacyFlow": "Consulter et migrer les anciennes vidéos vers le flux actif",
+      "uploader": "Télécharger de nouvelles vidéos promotionnelles"
+    },
+    "fields": {
+      "title": "Titre",
+      "author": "Auteur",
+      "entity": "Entité",
+      "price": "Prix",
+      "location": "Localisation",
+      "description": "Description",
+      "status": "Statut",
+      "shortCode": "Code court",
+      "source": "Source",
+      "relatedLink": "Lien associé",
+      "likes": "J'aime",
+      "views": "Vues",
+      "stats": "Statistiques",
+      "parentType": "Type",
+      "identifier": "Identifiant"
+    },
+    "entities": {
+      "residence": "Résidence",
+      "bien_immobilier": "Bien Immobilier",
+      "furniture": "Meuble"
+    },
+    "status": {
+      "ready": "Prêt",
+      "processing": "En cours de traitement",
+      "failed": "Échec",
+      "deleted": "Supprimé"
+    },
+    "actions": {
+      "readMore": "Lire la suite",
+      "viewRelated": "Voir l'élément associé",
+      "backToHome": "Retour à l'accueil",
+      "uploadVideo": "Télécharger une vidéo",
+      "migrateToActive": "Migrer vers le flux actif",
+      "viewActive": "Voir le flux actif",
+      "viewLegacy": "Voir le flux legacy",
+      "upload": "Télécharger"
+    },
+    "filters": {
+      "status": "Statut",
+      "all": "Tous"
+    },
+    "legacy": {
+      "migrateTitle": "Migrer cette vidéo ?",
+      "migrateDescription": "Cette vidéo sera convertie au format HLS haute performance et apparaîtra dans le flux actif.",
+      "migrateButton": "🔄 Migrer vers le Flux",
+      "migrateSuccess": "Vidéo migrée avec succès vers le flux actif ! Elle sera traitée en HLS d'ici quelques minutes."
+    },
+    "upload": {
+      "promoTitle": "Nouvelle Vidéo Promo",
+      "promoDescription": "Uploadez une vidéo promotionnelle simple. Idéal pour les campagnes générales sans bien ciblé.",
+      "startPromo": "Commencer →",
+      "propertyTitle": "Vidéo rattachée à un Bien",
+      "propertyDescription": "Uploadez une vidéo liée à une résidence, un bien immobilier ou un meuble spécifique.",
+      "startProperty": "Commencer →",
+      "backToUpload": "← Retour",
+      "success": "Succès ! La vidéo a été envoyée au processeur HLS. Elle apparaîtra dans le flux général d'ici 3 minutes.",
+      "dragHint": "Glissez votre vidéo promotionnelle ici ou cliquez pour parcourir vos fichiers.",
+      "formatWarning": "Format MP4 uniquement. Taille maximum : 100 Mo.",
+      "titlePlaceholder": "Donnez un titre percutant à votre campagne",
+      "descriptionPlaceholder": "Racontez l'histoire de cette vidéo, ajoutez des hashtags ou vos numéros de contact...",
+      "submitButton": "🚀 Publier et Encoder la Vidéo",
+      "defaultTitle": "Vidéo promotionnelle",
+      "advancedOption": "Attacher cette vidéo à une résidence spécifique (Optionnel)",
+      "selectType": "Choisir un type...",
+      "searchPlaceholder": "Tapez le nom du bien..."
+    },
+    "validation": {
+      "videoRequired": "La vidéo est obligatoire",
+      "titleMax": "Maximum 200 caractères",
+      "descriptionMax": "Maximum 1000 caractères"
+    }
   }
 }
