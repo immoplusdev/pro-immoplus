@@ -1,203 +1,236 @@
 import { CrudFilter } from "@refinedev/core/src/contexts/data/types";
-import { BaseRecord, useTranslate } from "@refinedev/core";
-import {
-  BooleanField,
-  DateField,
-  DeleteButton,
-  List,
-  useTable,
-} from "@refinedev/antd";
-import { Button, Space, Table, Tag } from "antd";
-import { StatusValidationReservation } from "@/core/domain/reservations";
-import { StatusValidationReservationTag } from "@/pages/reservations/components/status-validation-reservation-tag";
-import { formatAmount } from "@/lib/helpers";
+import { useTranslate } from "@refinedev/core";
+import { List, useTable } from "@refinedev/antd";
+import { Button, Pagination, Spin, theme } from "antd";
 import { Link } from "react-router-dom";
-import { ArrowRightOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 import { SearchInput } from "@/components/filters";
+import { ReservationCard } from "@/pages/reservations/components/reservation-card";
 import { StatusReservation } from "@/lib/ts-utilities/enums/status-reservation";
 
+// ─── config sous-filtres par onglet ───────────────────────────────────────
+const SUB_FILTERS: Record<string, Array<{ key: string; label: string; value: string | null }>> = {
+  en_validation: [
+    { key: "tous", label: "Tous", value: null },
+    {
+      key: StatusReservation.EnAttenteReponseProprietaire,
+      label: "En attente du pro",
+      value: StatusReservation.EnAttenteReponseProprietaire,
+    },
+    {
+      key: StatusReservation.EnAttentePaiementClient,
+      label: "En attente paiement client",
+      value: StatusReservation.EnAttentePaiementClient,
+    },
+  ],
+  echoue_annule: [
+    { key: "tous", label: "Tous", value: null },
+    {
+      key: StatusReservation.ProprietaireAnnuleReservation,
+      label: "Propriétaire a annulé la réservation",
+      value: StatusReservation.ProprietaireAnnuleReservation,
+    },
+    {
+      key: StatusReservation.ProprietaireSansReponse,
+      label: "Propriétaire sans réponse",
+      value: StatusReservation.ProprietaireSansReponse,
+    },
+    {
+      key: StatusReservation.ClientSansReponse,
+      label: "Client sans réponse",
+      value: StatusReservation.ClientSansReponse,
+    },
+    {
+      key: StatusReservation.clientAnnuleReservation,
+      label: "Client a annulé la réservation",
+      value: StatusReservation.clientAnnuleReservation,
+    },
+  ],
+};
+
+// ─── props ─────────────────────────────────────────────────────────────────
 type Props = {
-  activeMenu: "all_e" | "en_validation" | "valide";
+  activeMenu: "all_e" | "valide_termine" | "en_validation" | "echoue_annule";
   filters?: {
     initial?: CrudFilter[];
     permanent?: CrudFilter[];
     mode?: "server" | "off";
   };
+  defaultSortField?: "createdAt" | "updatedAt";
+  /**
+   * Filtres non-permanents à restaurer quand l'utilisateur clique "Tous".
+   * Doit correspondre aux filtres passés dans filters.initial.
+   */
+  defaultNonPermanentFilters?: CrudFilter[];
 };
 
-const STATUS_FILTERS = [
-  StatusReservation.EnAttenteReponseProprietaire,
-  StatusReservation.EnAttentePaiementClient,
-  StatusReservation.ProprietaireAnnuleReservation,
-  StatusReservation.ProprietaireSansReponse,
-  StatusReservation.clientAnnuleReservation,
-  StatusReservation.ClientSansReponse,
-];
-
-export function ListReservationTable({ activeMenu, filters }: Props) {
+// ─── composant ─────────────────────────────────────────────────────────────
+export function ListReservationTable({
+  activeMenu,
+  filters,
+  defaultSortField = "createdAt",
+  defaultNonPermanentFilters = [],
+}: Props) {
   const translate = useTranslate();
-  const [activeStatus, setActiveStatus] = useState<string | null>(null);
+  const { token } = theme.useToken();
+  const [activeSubFilter, setActiveSubFilter] = useState<string>("tous");
+
   const {
     tableProps,
     filters: searchFilters,
     setFilters,
     tableQuery,
+    current,
+    setCurrent,
+    pageSize,
   } = useTable({
     resource: "reservations",
     syncWithLocation: true,
     sorters: {
-      initial: [
-        {
-          field: "createdAt",
-          order: "desc",
-        },
-      ],
+      initial: [{ field: defaultSortField, order: "desc" }],
     },
     filters,
   });
 
-  const handleStatusFilter = (status: string | null) => {
-    setActiveStatus(status);
-    if (status === null) {
-      setFilters([], "replace");
+  const { dataSource, loading } = tableProps;
+  const total = tableQuery.data?.total ?? 0;
+
+  const subFilters = SUB_FILTERS[activeMenu] ?? [];
+  const hasSubFilters = subFilters.length > 0;
+
+  const handleSubFilter = (key: string, value: string | null) => {
+    setActiveSubFilter(key);
+    if (value === null) {
+      // "Tous" → restaure les filtres initiaux (ex: statusReservation in [...])
+      setFilters(defaultNonPermanentFilters, "replace");
     } else {
+      // Sous-filtre spécifique → remplace le filtre non-permanent sur statusReservation
+      // permanent[statusFacture=non_paye] reste intact et en _where[0]
       setFilters(
-        [
-          { field: "statusReservation", operator: "eq", value: status },
-          { field: "statusFacture", operator: "eq", value: "non_paye" },
-        ],
+        [{ field: "statusReservation", operator: "eq", value }],
         "replace"
       );
     }
   };
 
   return (
-    <List
-      title={translate("pages.reservation.reservations")}
-      headerButtons={[
-        <SearchInput
-          filters={searchFilters}
-          setFilters={setFilters}
-          tableQuery={tableQuery}
-        />,
-        <Link to="/reservations">
-          <Button type={activeMenu == "all_e" ? "primary" : "default"}>
-            {translate("tags.all_e")}
-          </Button>
-        </Link>,
-        <Link to="/reservations/en-validation">
-          <Button type={activeMenu == "en_validation" ? "primary" : "default"}>
-            {translate("reservations.fields.en_validation")}
-          </Button>
-        </Link>,
-        <Link to="/reservations/validé">
-          <Button type={activeMenu == "valide" ? "primary" : "default"}>
-            {translate("reservations.fields.valide")}
-          </Button>
-        </Link>,
-        ...STATUS_FILTERS.map((status) => (
-          <Button
-            key={status}
-            type={activeStatus === status ? "primary" : "default"}
-            onClick={() =>
-              activeStatus === status
-                ? handleStatusFilter(null)
-                : handleStatusFilter(status)
-            }
+    <>
+      <style>{`
+        @keyframes subFilterFadeSlide {
+          from { opacity: 0; transform: translateY(-6px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+
+      <List
+        title={translate("pages.reservation.reservations")}
+        headerButtons={[
+          <SearchInput
+            filters={searchFilters}
+            setFilters={setFilters}
+            tableQuery={tableQuery}
+          />,
+          <Link to="/reservations">
+            <Button type={activeMenu === "all_e" ? "primary" : "default"}>
+              {translate("tags.all_e")}
+            </Button>
+          </Link>,
+          <Link to="/reservations/valide-termine">
+            <Button type={activeMenu === "valide_termine" ? "primary" : "default"}>
+              {translate("reservations.fields.valide_termine")}
+            </Button>
+          </Link>,
+          <Link to="/reservations/en-validation">
+            <Button type={activeMenu === "en_validation" ? "primary" : "default"}>
+              {translate("reservations.fields.en_validation")}
+            </Button>
+          </Link>,
+          <Link to="/reservations/echoue-annule">
+            <Button
+              type={activeMenu === "echoue_annule" ? "primary" : "default"}
+              danger={activeMenu === "echoue_annule"}
+            >
+              {translate("reservations.fields.echoue_annule")}
+            </Button>
+          </Link>,
+        ]}
+      >
+        {/* ── barre de sous-filtres (animée à l'apparition) ─────────── */}
+        {hasSubFilters && (
+          <div
+            key={activeMenu}
+            style={{
+              display: "flex",
+              gap: 8,
+              flexWrap: "wrap",
+              marginBottom: 16,
+              paddingBottom: 12,
+              borderBottom: `1px solid ${token.colorBorderSecondary}`,
+              animation: "subFilterFadeSlide 0.2s ease-out",
+            }}
           >
-            {translate(`reservations.status_reservation.${status}`)}
-          </Button>
-        )),
-      ]}
-    >
-      <Table {...tableProps} rowKey="id">
-        <Table.Column
-          dataIndex="clientPhoneNumber"
-          title={translate("fields.client_phone_number")}
-          align="center"
-        />
+            {subFilters.map((f) => {
+              const isActive = activeSubFilter === f.key;
+              const isDanger = activeMenu === "echoue_annule" && f.key !== "tous";
+              return (
+                <Button
+                  key={f.key}
+                  size="small"
+                  type={isActive ? "primary" : "default"}
+                  danger={isDanger && isActive}
+                  onClick={() => handleSubFilter(f.key, f.value)}
+                  style={{
+                    borderRadius: 100,
+                    fontSize: 12,
+                    transition: "all 0.15s ease",
+                  }}
+                >
+                  {f.label}
+                </Button>
+              );
+            })}
+          </div>
+        )}
 
-         <Table.Column
-          dataIndex="codeReservation"
-          title={translate("reservations.fields.code_reservation")}
-          align="center"
-        />
-
-        
-        <Table.Column
-          dataIndex="statusReservation"
-          title={translate("reservations.fields.status_reservation")}
-          render={(value) => (
-            <Tag>{translate(`reservations.fields.${value}`)}</Tag>
-          )}
-          align="center"
-          sorter={true}
-        />
-        <Table.Column
-          dataIndex="statusFacture"
-          title={translate("reservations.fields.status_facture")}
-          render={(value: StatusValidationReservation) => (
-            <StatusValidationReservationTag statusValidation={value} />
-          )}
-          align="center"
-          sorter={true}
-        />
-        <Table.Column
-          dataIndex="montantTotalReservation"
-          title={translate("reservations.fields.montant_total_reservation")}
-          render={(value: number) => <span>{formatAmount(value)}</span>}
-          align="center"
-          sorter={true}
-        />
-        <Table.Column
-          dataIndex="montantCommission"
-          title={translate(
-            "reservations.fields.montant_commission",
-          )}
-          render={(value: string) => <span>{formatAmount(value)}</span>}
-          align="center"
-          sorter={true}
-        />
-        <Table.Column
-          dataIndex={["retraitProEffectue"]}
-          title={translate("reservations.fields.retrait_pro_effectue")}
-          render={(value: any) => <BooleanField value={value} />}
-          align="center"
-          sorter={true}
-        />
-        <Table.Column
-          dataIndex={["createdAt"]}
-          title={translate("fields.created_at")}
-          render={(date: string) => {
-            return (
-              <div>
-                <Tag>{new Date(date).toLocaleDateString()}</Tag>
+        {/* ── liste des cards ───────────────────────────────────────── */}
+        <Spin spinning={!!loading}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {(dataSource ?? []).map((record: any) => (
+              <ReservationCard
+                key={record.id}
+                record={record}
+                onExpire={() => tableQuery.refetch()}
+              />
+            ))}
+            {!loading && (dataSource ?? []).length === 0 && (
+              <div
+                style={{
+                  textAlign: "center",
+                  padding: "48px 0",
+                  color: token.colorTextTertiary,
+                  fontSize: 14,
+                }}
+              >
+                Aucune réservation
               </div>
-            );
-          }}
-          align="center"
-          sorter={true}
-        />
-        <Table.Column
-          title={translate("table.actions")}
-          dataIndex="actions"
-          align="center"
-          render={(_, record: BaseRecord) => (
-            <Space>
-              <Link to={`/reservations/edit/${record.id}`}>
-                <Button size="small" icon={<ArrowRightOutlined />} />
-              </Link>
-              {/*<ShowButton*/}
-              {/*    hideText*/}
-              {/*    size="small"*/}
-              {/*    recordItemId={record.id}*/}
-              {/*/>*/}
-              <DeleteButton hideText size="small" recordItemId={record.id} />
-            </Space>
-          )}
-        />
-      </Table>
-    </List>
+            )}
+          </div>
+        </Spin>
+
+        {/* ── pagination ───────────────────────────────────────────── */}
+        {total > 0 && (
+          <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 16 }}>
+            <Pagination
+              current={current}
+              pageSize={pageSize}
+              total={total}
+              onChange={(page) => setCurrent(page)}
+              showTotal={(t) => `${t} réservations`}
+              showSizeChanger={false}
+            />
+          </div>
+        )}
+      </List>
+    </>
   );
 }

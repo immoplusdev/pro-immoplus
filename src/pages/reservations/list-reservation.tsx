@@ -1,8 +1,18 @@
-import {ListReservationTable} from "@/pages/reservations/components/list-reservation-table";
+import { ReservationMergedTable } from "@/pages/reservations/components/reservation-merged-table";
 
-
+/**
+ * Onglet TOUTES
+ * Appel A : sans filtre → backend retourne les réservations payées (valide, terminee, rejete)
+ * Appel B : statusFacture=non_paye en 1er → override backend, retourne les non-payées
+ */
 export const ListReservations = () => {
-    return (
-        <ListReservationTable activeMenu={"all_e"} />
-    )
+  return (
+    <ReservationMergedTable
+      activeMenu="all_e"
+      filtersA={[]}
+      filtersB={[
+        { field: "statusFacture", operator: "eq", value: "non_paye" },
+      ]}
+    />
+  );
 };
