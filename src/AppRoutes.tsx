@@ -19,7 +19,8 @@ import {EditDemandeVisite, ListDemandeVisites, ShowDemandeVisite} from "@/pages/
 import {ListDemandeVisiteEnValidation} from "@/pages/demandes-visites/list-demande-visite-en-validation";
 import {ListDemandeVisitesValides} from "@/pages/demandes-visites/list-demande-visite-vaildes";
 import {ListReservationsEnValidation} from "@/pages/reservations/List-reservations-en-validation";
-import {ListReservationsValides} from "@/pages/reservations/List-reservations-valides";
+import {ListReservationsValideTermine} from "@/pages/reservations/List-reservations-valide-termine";
+import {ListReservationsEchoueAnnule} from "@/pages/reservations/List-reservations-echoue-annule";
 import {ListBienImmobilierDisponible} from "@/pages/biens-immobiliers/list-bien-immobilier-disponible";
 import {ListBienImmobilierNonDisponible} from "@/pages/biens-immobiliers/list-bien-immobilier-non-disponible";
 import {ListBienImmobilierValide} from "@/pages/biens-immobiliers/list-bien-immobilier-valide";
@@ -94,8 +95,9 @@ export function AppRoutes() {
                     {/*<Route path="create" element={<CreateReservation/>}/>*/}
                     <Route path="edit/:id" element={<EditReservation/>}/>
                     <Route path="show/:id" element={<ShowReservation/>}/>
+                    <Route path="valide-termine" element={<ListReservationsValideTermine/>}/>
                     <Route path="en-validation" element={<ListReservationsEnValidation/>}/>
-                    <Route path="validé" element={<ListReservationsValides/>}/>
+                    <Route path="echoue-annule" element={<ListReservationsEchoueAnnule/>}/>
                 </Route>
                 <Route path={"/furnitures"}>
                     <Route index element={<ListFurnitures/>}/>

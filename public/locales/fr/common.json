@@ -205,7 +205,12 @@
     "deleteError": "Erreur lors de la suppression de {{resource}} (code de statut: {{statusCode}})",
     "editSuccess": "Modification réussie de {{resource}}",
     "editError": "Erreur lors de la modification de {{resource}} (code de statut: {{statusCode}})",
-    "importProgress": "Importation en cours: {{processed}}/{{total}}"
+    "importProgress": "Importation en cours: {{processed}}/{{total}}",
+    "new_reservation_title": "Nouvelle Réservation",
+    "pro_confirmed_title": "Propriétaire a confirmé",
+    "payment_received_title": "Paiement Reçu",
+    "expired_title": "Réservation Expirée",
+    "urgent_timer_title": "Urgence Chrono"
   },
   "loading": "Chargement",
   "residences": {
@@ -265,8 +270,12 @@
       "en_cours_validation_admin": "Admin en cours de validation ",
       "en_cours_validation": "En cours de validation ",
       "en_attente_validation": "En attente de validation ",
-      "en_validation": "En validation ",
-      "terminee": "Terminée"
+      "en_validation": "En validation",
+      "valide_termine": "Validé / Terminé",
+      "echoue_annule": "Échoué / Annulé",
+      "terminee": "Terminée",
+      "echoue_ou_annule": "Échoué ou annulé",
+      "timer": "Temps restant"
     },
     "status_reservation": {
       "rejete": "Rejeté",

@@ -4,6 +4,7 @@ import React from "react";
 import {BaseRecord} from "@refinedev/core";
 import {ReadOnlyFormField} from "@/lib/ts-utilities";
 import {Link} from "react-router-dom";
+import { ReservationCountdown, isRelevantStatus } from "@/pages/reservations/components/reservation-countdown";
 
 
 type TranslateFunction = (key: string, params?: Record<string, any>) => string;
@@ -36,7 +37,13 @@ export const ReservationEditDataFields: React.FC<ReadOnlySectionProps> = ({trans
                     <ReadOnlyFormField label={translate("reservations.fields.montant_total_reservation")} content={reservationData?.montantTotalReservation}/>
                      <ReadOnlyFormField label={translate("reservations.fields.retrait_pro_effectue")} content={reservationData?.retraitProEffectue ? "Oui" : "Non"}/>
                     <ReadOnlyFormField label={translate("fields.client_phone_number")} content={reservationData?.clientPhoneNumber}/>
-                    <ReadOnlyFormField label={translate("fields.created_at")} content={new Date(reservationData?.createdAt).toLocaleDateString()}/>
+                    <ReadOnlyFormField label={translate("fields.created_at")} content={reservationData?.createdAt ? `${new Date(reservationData.createdAt).toLocaleDateString()} à ${new Date(reservationData.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : "-"}/>
+                    {isRelevantStatus(reservationData?.statusReservation) && (
+                        <ReadOnlyFormField 
+                            label={translate("reservations.fields.timer")} 
+                            content={<ReservationCountdown reservation={reservationData} />}
+                        />
+                    )}
                     
                 </Card>
                 <Card style={{border: "none", width: "50%"}}>
@@ -45,7 +52,7 @@ export const ReservationEditDataFields: React.FC<ReadOnlySectionProps> = ({trans
                     <ReadOnlyFormField label={translate("reservations.fields.montant_paye")} content={reservationData?.montantPaye}/>
                     <ReadOnlyFormField label={translate("reservations.fields.pro_reverse")} content={reservationData?.proReverse}/>
                     <ReadOnlyFormField label={translate("fields.notes")} content={reservationData?.notes}/>
-                   <ReadOnlyFormField label={translate("fields.updated_at")} content={new Date(reservationData?.updatedAt).toLocaleDateString()}/>
+                    <ReadOnlyFormField label={translate("fields.updated_at")} content={reservationData?.updatedAt ? `${new Date(reservationData.updatedAt).toLocaleDateString()} à ${new Date(reservationData.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : "-"}/>
                 </Card>
             </Card>
 

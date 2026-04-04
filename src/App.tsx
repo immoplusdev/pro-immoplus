@@ -38,6 +38,8 @@ import {
   getDataProvider,
 } from "@/lib/providers";
 import { AppRoutes } from "@/AppRoutes";
+import { NotificationProvider } from "./contexts/notification-context";
+import { ToastManager } from "./components/notifications/toast-manager";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -213,7 +215,10 @@ function App() {
                 projectId: PROJECT_ID,
               }}
             >
-              <AppRoutes />
+              <NotificationProvider>
+                <AppRoutes />
+                <ToastManager />
+              </NotificationProvider>
               {/*<RefineKbar/>*/}
               {/*<UnsavedChangesNotifier/>*/}
               <DocumentTitleHandler />
