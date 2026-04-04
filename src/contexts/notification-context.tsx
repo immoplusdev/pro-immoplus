@@ -1,8 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, useRef, useCallback } from "react";
-import { useTranslate } from "@refinedev/core";
+import { useTranslate, useList, useIsAuthenticated } from "@refinedev/core";
 import { useQueryClient } from "@tanstack/react-query";
 import { StatusReservation } from "@/lib/ts-utilities/enums/status-reservation";
-import { playNotificationSound, NotificationSoundType } from "@/lib/audio-service";
 import { getTempsRestant, isRelevantStatus } from "@/pages/reservations/components/reservation-countdown";
 
 export interface Notification {
@@ -39,6 +38,9 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const translate = useTranslate();
   const queryClient = useQueryClient();
 
+  const { data: authData } = useIsAuthenticated();
+  const isAuthenticated = authData?.authenticated === true;
+
   const [notifications, setNotifications] = useState<Notification[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -58,7 +60,6 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const warnedTimers = useRef<Set<string>>(new Set());
 
   // Déduplication : évite de répéter la même notif après rechargement
-  // Clé = reservationId:type:title, persistée en localStorage
   const notifiedKeys = useRef<Set<string>>(
     new Set(
       notifications
@@ -88,11 +89,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     setNotifications(prev => [newNotif, ...prev].slice(0, MAX_HISTORY));
     setActiveToasts(prev => [...prev, { ...newNotif, visible: true }]);
 
-    let sound: NotificationSoundType = 'new_reservation';
-    if (n.type === 'urgent') sound = 'urgent';
-    if (n.type === 'success') sound = 'success';
-    playNotificationSound(sound);
-
+    // Toasts urgents restent jusqu'à fermeture manuelle, les autres disparaissent après 10s
     if (n.type !== 'urgent') {
       setTimeout(() => dismissToast(id), 10_000);
     }
@@ -109,8 +106,8 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
       const prevRes = prev[res.id];
       const status: string = res.statusReservation;
 
-      if (!prevRes) {
-        // Réservation vue pour la première fois (premier load ou nouvellement créée)
+      if (!prevRes && !isFirstLoad) {
+        // Réservation genuinement nouvelle (détectée après le premier snapshot)
         if (status === StatusReservation.EnAttenteReponseProprietaire) {
           addNotification({
             type: 'warning',
@@ -126,7 +123,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
             reservationId: res.id,
           });
         }
-      } else if (!isFirstLoad) {
+      } else if (prevRes && !isFirstLoad) {
         // Changements de statut détectés sur les refreshes suivants
         if (
           prevRes.statusReservation === StatusReservation.EnAttenteReponseProprietaire &&
@@ -163,8 +160,8 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
         }
       }
 
-      // Alerte timer < 3 min (tous les refreshes)
-      if (isRelevantStatus(status)) {
+      // Alerte timer < 3 min
+      if (isRelevantStatus(status) && !isFirstLoad) {
         const remaining = getTempsRestant(res);
         if (remaining > 0 && remaining <= 3 * 60 * 1000 && !warnedTimers.current.has(res.id)) {
           addNotification({
@@ -179,26 +176,48 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
       }
     });
 
-    // Mise à jour du snapshot (merge — on ne perd pas les réservations des autres pages)
+    // Mise à jour du snapshot
     reservations.forEach((r: any) => { if (r?.id) prev[r.id] = r; });
   }, [addNotification, translate]);
 
   // ─────────────────────────────────────────────────────────────────────────
-  // Abonnement au cache React Query :
-  // Dès que useTable / useList charge des réservations → on traite les données
-  // Pas de polling — réactif instantanément à chaque fetch de la table
+  // Polling background toutes les 20s — détecte les nouvelles réservations
+  // même quand l'utilisateur n'est pas sur la page /reservations/en-validation.
+  // Désactivé si non authentifié (évite la boucle infinie sur la page login).
+  // ─────────────────────────────────────────────────────────────────────────
+  useList({
+    resource: "reservations",
+    pagination: { pageSize: 50, current: 1 },
+    sorters: [{ field: "createdAt", order: "desc" }],
+    filters: [
+      { field: "statusFacture", operator: "eq", value: "non_paye" },
+      {
+        field: "statusReservation",
+        operator: "in",
+        value: [
+          StatusReservation.EnAttenteReponseProprietaire,
+          StatusReservation.EnAttentePaiementClient,
+        ],
+      },
+    ],
+    queryOptions: {
+      enabled: isAuthenticated,
+      refetchInterval: isAuthenticated ? 20_000 : false,
+      refetchIntervalInBackground: true,
+    },
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Abonnement au cache React Query — réactif à chaque fetch de la table
   // ─────────────────────────────────────────────────────────────────────────
   useEffect(() => {
     const unsubscribe = queryClient.getQueryCache().subscribe((event) => {
-      // On ne traite que les queries qui viennent de se mettre à jour avec succès
       if (event.type !== 'updated') return;
       if (event.query.state.status !== 'success') return;
       if (event.query.state.fetchStatus !== 'idle') return;
 
       const key = event.query.queryKey as unknown[];
 
-      // Refine v4 (useNewQueryKeys: true) → ["reservations", "list", {...}]
-      // Refine v3 legacy                  → [["reservations", "list", {...}]]
       const isReservationList =
         (key[0] === 'reservations' && key[1] === 'list') ||
         (Array.isArray(key[0]) && key[0][0] === 'reservations' && key[0][1] === 'list');
