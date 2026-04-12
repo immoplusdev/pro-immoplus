@@ -42,6 +42,7 @@ import ShowWithdrawalRequest from "./pages/withdrawal-request/show-withdrawal-re
 import {CreateTransfer, EditTransfer, ListTransfers, ShowTransfer} from "./pages/transfers";
 import {EditFurniture, ListFurnitures, ShowFurniture} from "@/pages/furnitures";
 import { ListFeed, ShowFeed } from "@/pages/feed";
+import { Statistics } from "@/pages/statistics";
 import {
     ListDemandeProParticulier,
     ListDemandeProParticulierPending,
@@ -160,6 +161,9 @@ export function AppRoutes() {
                     <Route path="create" element={<CreateTransfer/>}/>
                     <Route path="edit/:id" element={<EditTransfer/>}/>
                     <Route path="show/:id" element={<ShowTransfer/>}/>
+                </Route>
+                <Route path={"/statistics"}>
+                    <Route index element={<Statistics/>}/>
                 </Route>
                 <Route path="*" element={<ErrorComponent/>}/>
             </Route>

@@ -64,6 +64,30 @@ export function ConfigEditActionFields() {
             >
                 <Input/>
             </Form.Item>
+            <Form.Item
+                label={translate("configs.fields.pro_validation_minutes")}
+                style={{width: 300}}
+                name={["proValidationMinutes"]}
+                rules={[
+                    {
+                        required: true,
+                    },
+                ]}
+            >
+                <Input type="number"/>
+            </Form.Item>
+            <Form.Item
+                label={translate("configs.fields.customer_payment_minutes")}
+                style={{width: 300}}
+                name={["customerPaymentMinutes"]}
+                rules={[
+                    {
+                        required: true,
+                    },
+                ]}
+            >
+                <Input type="number"/>
+            </Form.Item>
         </Card>
     );
 };

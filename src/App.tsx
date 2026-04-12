@@ -29,6 +29,7 @@ import {
   AppstoreOutlined,
   SolutionOutlined,
   PlayCircleOutlined,
+  BarChartOutlined,
 } from "@ant-design/icons";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { API_URL, PROJECT_ID } from "@/configs/app.config";
@@ -61,6 +62,14 @@ function App() {
               accessControlProvider={getAccessControlProvider()}
               routerProvider={routerBindings}
               resources={[
+                {
+                  name: "statistics",
+                  list: "/statistics",
+                  meta: {
+                    icon: <BarChartOutlined />,
+                    label: "Statistiques",
+                  },
+                },
                 {
                   name: "feed",
                   list: "/feed",
