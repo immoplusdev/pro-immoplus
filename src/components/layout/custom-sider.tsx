@@ -1,8 +1,10 @@
 import React from "react";
-import { useMenu, useGetIdentity } from "@refinedev/core";
-import { ThemedSiderV2 } from "@refinedev/antd";
-import { Menu } from "antd";
+import { useMenu, useGetIdentity, useLogout } from "@refinedev/core";
+import { useThemedLayoutContext } from "@refinedev/antd";
+import { Layout, Menu, Button } from "antd";
+import { LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { AppIcon } from "@/components/app-icon";
 import { getAllowedResources } from "@/configs/role-permissions.config";
 import { getLocalStorageProvider } from "@/lib/providers/local-storage.provider";
 
@@ -12,58 +14,77 @@ interface CustomSiderProps {
     fixed?: boolean;
 }
 
-export const CustomSider: React.FC<CustomSiderProps> = (props) => {
+export const CustomSider: React.FC<CustomSiderProps> = ({ fixed }) => {
     const { menuItems, selectedKey } = useMenu();
     const { data: identity } = useGetIdentity<{ role?: { id: string } }>();
+    const { siderCollapsed, setSiderCollapsed } = useThemedLayoutContext();
+    const { mutate: logout } = useLogout();
 
-    // Get role from localStorage (more reliable during initial render)
     const authData = localStorageProvider.getAuthData();
     const role = authData?.role || identity?.role?.id;
-
-    // Get allowed resources for this role
     const allowedResources = role ? getAllowedResources(role) : [];
 
-    // Filter menu items based on role permissions
     const filteredMenuItems = menuItems.filter((item) => {
         if (!role) return false;
         return allowedResources.includes(item.name);
     });
 
+    const menuItemsConfig = filteredMenuItems.map((item) => ({
+        key: item.key,
+        icon: item.icon,
+        label: <Link to={item.route ?? "/"}>{item.label}</Link>,
+        style: { fontWeight: item.key === selectedKey ? 700 : 400 },
+    }));
+
     return (
-        <ThemedSiderV2
-            {...props}
-            render={({ items, logout, collapsed }) => {
-                return (
-                    <>
-                        <Menu
-                            selectedKeys={selectedKey ? [selectedKey] : []}
-                            mode="inline"
-                            style={{
-                                marginTop: "8px",
-                                border: "none",
-                            }}
-                        >
-                            {filteredMenuItems.map((item) => {
-                                const isSelected = item.key === selectedKey;
-                                return (
-                                    <Menu.Item
-                                        key={item.key}
-                                        icon={item.icon}
-                                        style={{
-                                            fontWeight: isSelected ? 700 : 400,
-                                        }}
-                                    >
-                                        <Link to={item.route ?? "/"}>
-                                            {item.label}
-                                        </Link>
-                                    </Menu.Item>
-                                );
-                            })}
-                        </Menu>
-                        {logout}
-                    </>
-                );
+        <Layout.Sider
+            collapsible
+            collapsed={siderCollapsed}
+            onCollapse={setSiderCollapsed}
+            trigger={null}
+            width={200}
+            style={{
+                ...(fixed ? { position: "sticky", top: 0, height: "100vh", overflow: "auto" } : {}),
+                display: "flex",
+                flexDirection: "column",
             }}
-        />
+        >
+            <div
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: "12px 8px",
+                    minHeight: 64,
+                }}
+            >
+                <AppIcon />
+            </div>
+
+            <Menu
+                theme="dark"
+                selectedKeys={selectedKey ? [selectedKey] : []}
+                mode="inline"
+                style={{ flex: 1, border: "none" }}
+                items={menuItemsConfig}
+            />
+
+            <div style={{ padding: "8px" }}>
+                <Button
+                    type="text"
+                    icon={siderCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                    onClick={() => setSiderCollapsed(!siderCollapsed)}
+                    style={{ width: "100%", color: "rgba(255,255,255,0.65)" }}
+                />
+                <Button
+                    type="text"
+                    icon={<LogoutOutlined />}
+                    onClick={() => logout()}
+                    style={{ width: "100%", color: "rgba(255,255,255,0.65)" }}
+                >
+                    {!siderCollapsed && "Déconnexion"}
+                </Button>
+            </div>
+        </Layout.Sider>
     );
 };
