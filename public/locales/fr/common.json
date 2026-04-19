@@ -451,7 +451,9 @@
       "sms_sender_name": "Nom de l'expéditeur SMS",
       "standard_shipping_price": "Prix de livraison standard",
       "flash_shipping_price": "Prix de livraison flash",
-      "project_name": "Nom du projet"
+      "project_name": "Nom du projet",
+      "pro_validation_minutes": "Délai de validation pro (min)",
+      "customer_payment_minutes": "Délai de paiement client (min)"
     }
   },
   "users": {
@@ -512,6 +514,17 @@
       "see_user": "Voir l'utilisateur",
       "see_owner": "Voir le propriétaire",
       "see_customer": "Voir le client"
+    }
+  },
+  "statistics": {
+    "title": "Statistiques",
+    "visites": {
+      "title": "Évolution des demandes de visites",
+      "periodes": {
+        "jour": "Jour",
+        "semaine": "Semaine",
+        "mois": "Mois"
+      }
     }
   },
   "dashboard": {

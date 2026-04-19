@@ -8,7 +8,7 @@ export interface RolePermission {
 export const rolePermissions: Record<string, RolePermission> = {
     [UserRole.Admin]: {
         resources: [
-            "feed",
+            "statistics",
             "demandes-pro-particulier",
             "demandes-visites",
             "residences",
@@ -21,6 +21,7 @@ export const rolePermissions: Record<string, RolePermission> = {
             "withdrawal-requests",
             "transfers",
             "payments",
+            "feed",
             "configs",
         ],
         defaultRedirect: "/demandes-visites",
@@ -35,7 +36,7 @@ export const rolePermissions: Record<string, RolePermission> = {
     },
     [UserRole.Commercial]: {
         resources: [
-            "feed",
+            "statistics",
             "demandes-pro-particulier",
             "demandes-visites",
             "residences",
@@ -43,6 +44,7 @@ export const rolePermissions: Record<string, RolePermission> = {
             "biens-immobiliers",
             "furnitures",
             "users",
+            "feed",
         ],
         defaultRedirect: "/demandes-visites",
     },
