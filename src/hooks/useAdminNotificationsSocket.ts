@@ -55,7 +55,7 @@ function buildPayload(
     case "nouvelle_demande_visite":
       return {
         wsType: type,
-        resourceLink: `/demandes-visites/${data.demandeVisiteId}`,
+        resourceLink: `/demandes-visites/edit/${data.demandeVisiteId}`,
         title: "Nouvelle demande de visite",
         description: [
           data.clientName ?? data.clientPhoneNumber ?? `Client #${data.clientId}`,
@@ -67,7 +67,7 @@ function buildPayload(
     case "nouvelle_residence":
       return {
         wsType: type,
-        resourceLink: `/residences/${data.residenceId}`,
+        resourceLink: `/residences/edit/${data.residenceId}`,
         title: "Nouvelle résidence publiée",
         description: [
           data.nomResidence ?? data.nom ?? `Résidence #${data.residenceId}`,
@@ -79,7 +79,7 @@ function buildPayload(
     case "nouveau_bien_immobilier":
       return {
         wsType: type,
-        resourceLink: `/biens-immobiliers/${data.bienImmobilierId}`,
+        resourceLink: `/biens-immobiliers/edit/${data.bienImmobilierId}`,
         title: "Nouveau bien immobilier",
         description: [
           data.titreBien ?? data.titre ?? data.nom ?? `Bien #${data.bienImmobilierId}`,
@@ -91,7 +91,7 @@ function buildPayload(
     case "nouvelle_demande_pro":
       return {
         wsType: type,
-        resourceLink: `/demandes-pro-particulier/${data.demandeId}`,
+        resourceLink: `/demandes-pro-particulier/show/${data.demandeId}`,
         title: "Nouvelle demande pro",
         description: [
           data.userName ?? data.nomComplet ?? data.nom ?? `Utilisateur #${data.userId}`,
