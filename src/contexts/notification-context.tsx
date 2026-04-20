@@ -3,6 +3,26 @@ import { useTranslate, useList, useIsAuthenticated } from "@refinedev/core";
 import { useQueryClient } from "@tanstack/react-query";
 import { StatusReservation } from "@/lib/ts-utilities/enums/status-reservation";
 import { getTempsRestant, isRelevantStatus } from "@/pages/reservations/components/reservation-countdown";
+import {
+  useAdminNotificationsSocket,
+  WsNotificationType,
+} from "@/hooks/useAdminNotificationsSocket";
+import { authService } from "@/lib/services/auth/auth.service";
+
+const formatMontant = (val: unknown): string | null => {
+  const n = Number(val);
+  if (!val || isNaN(n)) return null;
+  return `${n.toLocaleString("fr-FR")} FCFA`;
+};
+
+const formatRemaining = (ms: number): string => {
+  const totalSeconds = Math.floor(ms / 1000);
+  const m = Math.floor(totalSeconds / 60);
+  const s = totalSeconds % 60;
+  if (m > 0 && s > 0) return `${m} min ${s} s`;
+  if (m > 0) return `${m} min`;
+  return `${s} s`;
+};
 
 export interface Notification {
   id: string;
@@ -13,6 +33,10 @@ export interface Notification {
   read: boolean;
   reservationId?: string;
   isTimerWarning?: boolean;
+  /** WebSocket event type — present only for real-time WS notifications */
+  wsType?: WsNotificationType;
+  /** Navigation link for the resource (set by WS events) */
+  resourceLink?: string;
 }
 
 export interface Toast extends Notification {
@@ -23,10 +47,14 @@ interface NotificationContextType {
   notifications: Notification[];
   activeToasts: Toast[];
   unreadCount: number;
-  addNotification: (notification: Omit<Notification, 'id' | 'createdAt' | 'read'>) => void;
+  addNotification: (
+    notification: Omit<Notification, 'id' | 'createdAt' | 'read'> & { dismissAfterMs?: number }
+  ) => void;
   markAsRead: (id: string) => void;
   markAllAsRead: () => void;
   dismissToast: (id: string) => void;
+  wsConnected: boolean;
+  wsError: string | null;
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
@@ -76,24 +104,65 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     setActiveToasts(prev => prev.filter(t => t.id !== id));
   }, []);
 
-  const addNotification = useCallback((n: Omit<Notification, 'id' | 'createdAt' | 'read'>) => {
-    if (n.reservationId && !n.isTimerWarning) {
-      const key = `${n.reservationId}:${n.type}:${n.title}`;
+  const addNotification = useCallback((
+    n: Omit<Notification, 'id' | 'createdAt' | 'read'> & { dismissAfterMs?: number }
+  ) => {
+    const { dismissAfterMs, ...notifFields } = n;
+
+    if (notifFields.reservationId && !notifFields.isTimerWarning) {
+      const key = `${notifFields.reservationId}:${notifFields.type}:${notifFields.title}`;
       if (notifiedKeys.current.has(key)) return;
       notifiedKeys.current.add(key);
     }
 
     const id = Math.random().toString(36).substr(2, 9);
-    const newNotif: Notification = { ...n, id, createdAt: Date.now(), read: false };
+    const newNotif: Notification = { ...notifFields, id, createdAt: Date.now(), read: false };
 
     setNotifications(prev => [newNotif, ...prev].slice(0, MAX_HISTORY));
     setActiveToasts(prev => [...prev, { ...newNotif, visible: true }]);
 
-    // Toasts urgents restent jusqu'à fermeture manuelle, les autres disparaissent après 10s
-    if (n.type !== 'urgent') {
-      setTimeout(() => dismissToast(id), 10_000);
+    const timeout = dismissAfterMs ?? (notifFields.type !== 'urgent' ? 10_000 : undefined);
+    if (timeout !== undefined) {
+      setTimeout(() => dismissToast(id), timeout);
     }
   }, [dismissToast]);
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // WebSocket — real-time admin notifications
+  // ─────────────────────────────────────────────────────────────────────────
+  const handleWsNotification = useCallback(
+    (payload: import("@/hooks/useAdminNotificationsSocket").WsNotificationPayload) => {
+      addNotification({
+        type: "warning",
+        title: payload.title,
+        description: payload.description,
+        wsType: payload.wsType,
+        resourceLink: payload.resourceLink,
+        dismissAfterMs: 5_000,
+      });
+    },
+    [addNotification]
+  );
+
+  const { isConnected: wsConnected, connectionError: wsError, reconnectWithNewToken } =
+    useAdminNotificationsSocket({
+      onNotification: handleWsNotification,
+      enabled: isAuthenticated,
+    });
+
+  // Retry WS connection after a successful token refresh
+  const prevWsError = useRef(wsError);
+  useEffect(() => {
+    if (wsError && !prevWsError.current) {
+      // Error just appeared — try refreshing the token then reconnecting
+      authService.refreshToken().then((result) => {
+        if (result?.access_token) {
+          reconnectWithNewToken();
+        }
+      });
+    }
+    prevWsError.current = wsError;
+  }, [wsError, reconnectWithNewToken]);
 
   const processReservations = useCallback((reservations: any[]) => {
     if (!reservations?.length) return;
@@ -107,41 +176,47 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
       const status: string = res.statusReservation;
 
       if (!prevRes && !isFirstLoad) {
-        // Réservation genuinement nouvelle (détectée après le premier snapshot)
         if (status === StatusReservation.EnAttenteReponseProprietaire) {
+          const parts = [
+            res.codeReservation,
+            res.clientName ?? res.clientPhoneNumber,
+            formatMontant(res.montantTotalReservation),
+          ].filter(Boolean).join(" · ");
           addNotification({
             type: 'warning',
-            title: translate("notifications.new_reservation_title", "Nouvelle Réservation"),
-            description: `${res.codeReservation} — ${res.clientPhoneNumber} — ${res.montantTotalReservation} CFA`,
+            title: translate("notifications.new_reservation_title", "Nouvelle réservation"),
+            description: parts,
             reservationId: res.id,
           });
         } else if (status === StatusReservation.EnAttentePaiementClient) {
+          const montant = formatMontant(res.montantTotalReservation);
           addNotification({
             type: 'warning',
             title: translate("notifications.pro_confirmed_title", "Propriétaire a confirmé"),
-            description: `La réservation ${res.codeReservation} est en attente de paiement.`,
+            description: [res.codeReservation, montant ? `Paiement de ${montant} attendu` : "En attente de paiement"].filter(Boolean).join(" · "),
             reservationId: res.id,
           });
         }
       } else if (prevRes && !isFirstLoad) {
-        // Changements de statut détectés sur les refreshes suivants
         if (
           prevRes.statusReservation === StatusReservation.EnAttenteReponseProprietaire &&
           status === StatusReservation.EnAttentePaiementClient
         ) {
+          const montant = formatMontant(res.montantTotalReservation);
           addNotification({
             type: 'success',
             title: translate("notifications.pro_confirmed_title", "Propriétaire a confirmé"),
-            description: `La réservation ${res.codeReservation} est en attente de paiement.`,
+            description: [res.codeReservation, montant ? `Paiement de ${montant} attendu` : "En attente de paiement"].filter(Boolean).join(" · "),
             reservationId: res.id,
           });
         }
 
         if (prevRes.statusFacture === 'non_paye' && res.statusFacture === 'paye') {
+          const montant = formatMontant(res.montantTotalReservation);
           addNotification({
             type: 'success',
-            title: translate("notifications.payment_received_title", "Paiement Reçu"),
-            description: `Le paiement pour ${res.codeReservation} a été effectué.`,
+            title: translate("notifications.payment_received_title", "Paiement reçu"),
+            description: [res.codeReservation, montant ? `${montant} encaissés` : null].filter(Boolean).join(" · "),
             reservationId: res.id,
           });
         }
@@ -151,23 +226,25 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
           (status === StatusReservation.ProprietaireSansReponse ||
             status === StatusReservation.ClientSansReponse)
         ) {
+          const party = status === StatusReservation.ProprietaireSansReponse
+            ? "Le propriétaire n'a pas répondu"
+            : "Le client n'a pas répondu";
           addNotification({
             type: 'urgent',
-            title: translate("notifications.expired_title", "Réservation Expirée"),
-            description: `Le délai pour ${res.codeReservation} est écoulé.`,
+            title: translate("notifications.expired_title", "Réservation expirée"),
+            description: `${res.codeReservation} · ${party}`,
             reservationId: res.id,
           });
         }
       }
 
-      // Alerte timer < 3 min
       if (isRelevantStatus(status) && !isFirstLoad) {
         const remaining = getTempsRestant(res);
         if (remaining > 0 && remaining <= 3 * 60 * 1000 && !warnedTimers.current.has(res.id)) {
           addNotification({
             type: 'urgent',
-            title: translate("notifications.urgent_timer_title", "Urgence Chrono"),
-            description: `Moins de 3 minutes pour ${res.codeReservation} !`,
+            title: translate("notifications.urgent_timer_title", "Délai critique"),
+            description: `${res.codeReservation} · Il reste ${formatRemaining(remaining)} pour confirmer`,
             reservationId: res.id,
             isTimerWarning: true,
           });
@@ -176,14 +253,11 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
       }
     });
 
-    // Mise à jour du snapshot
     reservations.forEach((r: any) => { if (r?.id) prev[r.id] = r; });
   }, [addNotification, translate]);
 
   // ─────────────────────────────────────────────────────────────────────────
   // Polling background toutes les 20s — détecte les nouvelles réservations
-  // même quand l'utilisateur n'est pas sur la page /reservations/en-validation.
-  // Désactivé si non authentifié (évite la boucle infinie sur la page login).
   // ─────────────────────────────────────────────────────────────────────────
   useList({
     resource: "reservations",
@@ -207,9 +281,6 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     },
   });
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // Abonnement au cache React Query — réactif à chaque fetch de la table
-  // ─────────────────────────────────────────────────────────────────────────
   useEffect(() => {
     const unsubscribe = queryClient.getQueryCache().subscribe((event) => {
       if (event.type !== 'updated') return;
@@ -244,7 +315,17 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
   return (
     <NotificationContext.Provider
-      value={{ notifications, activeToasts, unreadCount, addNotification, markAsRead, markAllAsRead, dismissToast }}
+      value={{
+        notifications,
+        activeToasts,
+        unreadCount,
+        addNotification,
+        markAsRead,
+        markAllAsRead,
+        dismissToast,
+        wsConnected,
+        wsError,
+      }}
     >
       {children}
     </NotificationContext.Provider>
