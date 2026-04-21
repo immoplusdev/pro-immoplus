@@ -7,6 +7,7 @@ import { StatisticsReservationsParStatut } from "./statistics-reservations-par-s
 import { StatisticsBiensImmobiliers } from "./statistics-biens-immobiliers";
 import { StatisticsResidences } from "./statistics-residences";
 import { StatisticsTotaux } from "./statistics-totaux";
+import { StatisticsFinance } from "./statistics-finance";
 
 const { Title } = Typography;
 
@@ -15,6 +16,7 @@ export function Statistics() {
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
             <Title level={3} style={{ margin: 0 }}>Statistiques</Title>
             <StatisticsTotaux />
+            <StatisticsFinance />
             <StatisticsVisites />
             <StatisticsVisitesParType />
             <StatisticsReservations />
