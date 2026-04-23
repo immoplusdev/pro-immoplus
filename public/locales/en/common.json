@@ -332,5 +332,18 @@
       "titleMax": "Maximum 200 characters",
       "descriptionMax": "Maximum 1000 characters"
     }
+  },
+  "user_preferences": {
+    "title": "User Preferences",
+    "fields": {
+      "user_firstname": "User",
+      "user_email": "Email",
+      "user_phone": "Phone",
+      "intent": "Intent",
+      "property_types": "Property Types",
+      "locations": "Locations",
+      "budget_min": "Min Budget",
+      "budget_max": "Max Budget"
+    }
   }
 }

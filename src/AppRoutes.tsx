@@ -86,6 +86,7 @@ import {
   ListDemandeProParticulierRejected,
   ShowDemandeProParticulier,
 } from "@/pages/demandes-pro-particulier";
+import { ListUserPreferences } from "@/pages/user-preferences";
 
 export function AppRoutes() {
   return (
@@ -238,6 +239,9 @@ export function AppRoutes() {
           <Route path="create" element={<CreateTransfer />} />
           <Route path="edit/:id" element={<EditTransfer />} />
           <Route path="show/:id" element={<ShowTransfer />} />
+        </Route>
+        <Route path={"/user-preferences"}>
+          <Route index element={<ListUserPreferences />} />
         </Route>
         <Route path={"/statistics"}>
           <Route index element={<Statistics />} />
