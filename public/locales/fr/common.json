@@ -315,44 +315,6 @@
       "en_attente_validation": "En attente de validation"
     }
   },
-  "feed": {
-    "title": "Feed vidéo",
-    "fields": {
-      "title": "Titre",
-      "description": "Description",
-      "price": "Prix",
-      "location": "Localisation",
-      "author": "Auteur",
-      "entity": "Type d'annonce",
-      "shortCode": "Code court",
-      "source": "Source",
-      "likes": "J'aime",
-      "views": "Vues",
-      "stats": "Statistiques",
-      "relatedLink": "Annonce liée",
-      "videoStatus": "Statut vidéo"
-    },
-    "entities": {
-      "residence": "Résidence",
-      "bien_immobilier": "Bien immobilier",
-      "furniture": "Meuble"
-    },
-    "status": {
-      "processing": "En traitement",
-      "ready": "Prêt",
-      "failed": "Échoué"
-    },
-    "sections": {
-      "video": "Vidéo",
-      "content": "Contenu",
-      "metadata": "Métadonnées",
-      "authorStats": "Auteur & Statistiques"
-    },
-    "actions": {
-      "readMore": "Voir plus",
-      "viewRelated": "Voir l'annonce"
-    }
-  },
   "demandes_pro_particulier": {
     "title": "Demandes Pro Particulier",
     "fields": {
@@ -641,14 +603,6 @@
       "drag_and_drop_image_uploader_description": "Assurez-vous que le fichier est au format PNG, JPG ou SVG et ne dépasse pas 2 Mo.",
       "upload": "Téléverser"
     }
-  },
-  "common": {
-    "yes": "Oui",
-    "no": "Non",
-    "write_something_here": "Écrivez quelque chose ici...",
-    "filter": "Filtrer",
-    "select_a_value": "Sélectionnez une valeur",
-    "notAvailable": "Non disponible"
   },
   "walletTransactions": {
     "title": "Liste des Transactions",
@@ -964,7 +918,8 @@
     "noMore": "Aucune donnée supplémentaire",
     "back": "Retour",
     "deleteSuccess": "Élément supprimé avec succès",
-    "error": "Erreur"
+    "error": "Erreur",
+    "write_something_here": "Écrivez quelque chose ici..."
   },
   "feed": {
     "title": "Fil d'actualité",
@@ -1053,6 +1008,19 @@
       "videoRequired": "La vidéo est obligatoire",
       "titleMax": "Maximum 200 caractères",
       "descriptionMax": "Maximum 1000 caractères"
+    }
+  },
+  "user_preferences": {
+    "title": "Préférences utilisateurs",
+    "fields": {
+      "user_firstname": "Utilisateur",
+      "user_email": "Email",
+      "user_phone": "Téléphone",
+      "intent": "Intention",
+      "property_types": "Types de bien",
+      "locations": "Localisations",
+      "budget_min": "Budget min",
+      "budget_max": "Budget max"
     }
   }
 }
