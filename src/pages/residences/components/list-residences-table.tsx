@@ -33,7 +33,7 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
             syncWithLocation: true,
             sorters: {
                 initial: [{
-                    field: "createdAt",
+                    field: "updatedAt",
                     order: "desc"
                 }]
             },
@@ -116,8 +116,8 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                     sorter={true}
                 />
                 <Table.Column
-                    dataIndex={["createdAt"]}
-                    title={translate("fields.created_at")}
+                    dataIndex={["updatedAt"]}
+                    title={translate("fields.updated_at")}
                     render={(date: string) => {
                         return (
                             <div>
