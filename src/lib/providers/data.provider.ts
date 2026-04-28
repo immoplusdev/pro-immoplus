@@ -41,6 +41,16 @@ export const getDataProvider = (
 
             const queryFilters = generateFilter(filters);
 
+            // For alerts, extract the status filter and pass it as a direct query param
+            let alertsStatus: string | undefined;
+            if (resource === "alerts") {
+                const statusIdx = queryFilters.findIndex((f) => f._field === "status");
+                if (statusIdx !== -1) {
+                    alertsStatus = queryFilters[statusIdx]._val as string;
+                    queryFilters.splice(statusIdx, 1);
+                }
+            }
+
             const search = generateSearch(filters);
 
             const query: {
@@ -50,6 +60,7 @@ export const getDataProvider = (
                 _order_dir?: string;
                 _select?: string[];
                 _search?: string;
+                status?: string;
             } = {};
 
             if (mode === "server") {
@@ -58,6 +69,8 @@ export const getDataProvider = (
             }
 
             if (search) query._search = search;
+
+            if (alertsStatus) query.status = alertsStatus;
 
             const generatedSort = generateSort(sorters);
             if (generatedSort) {

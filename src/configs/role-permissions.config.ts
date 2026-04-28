@@ -9,6 +9,7 @@ export const rolePermissions: Record<string, RolePermission> = {
     [UserRole.Admin]: {
         resources: [
             "statistics",
+            "alerts",
             "demandes-pro-particulier",
             "demandes-visites",
             "residences",
@@ -37,6 +38,7 @@ export const rolePermissions: Record<string, RolePermission> = {
     [UserRole.Commercial]: {
         resources: [
             "statistics",
+            "alerts",
             "demandes-pro-particulier",
             "demandes-visites",
             "residences",

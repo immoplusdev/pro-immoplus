@@ -30,6 +30,7 @@ import {
   SolutionOutlined,
   PlayCircleOutlined,
   BarChartOutlined,
+  BellOutlined,
 } from "@ant-design/icons";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { API_URL, PROJECT_ID } from "@/configs/app.config";
@@ -79,6 +80,15 @@ function App() {
                   meta: {
                     icon: <PlayCircleOutlined />,
                     label: "Feed",
+                  },
+                },
+                {
+                  name: "alerts",
+                  list: "/alerts",
+                  show: "/alerts/show/:id",
+                  meta: {
+                    icon: <BellOutlined />,
+                    label: "Alertes",
                   },
                 },
                 {
