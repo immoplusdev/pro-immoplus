@@ -1010,17 +1010,61 @@
       "descriptionMax": "Maximum 1000 caractères"
     }
   },
-  "user_preferences": {
-    "title": "Préférences utilisateurs",
+  "alerts": {
+    "title": "Alertes",
+    "tabs": {
+      "en_attente": "En attente",
+      "propositions": "Propositions",
+      "cloturees": "Clôturées"
+    },
+    "status": {
+      "active": "Active",
+      "pending": "En attente",
+      "has_proposals": "Propositions",
+      "closed": "Clôturée"
+    },
+    "targetType": {
+      "bien_immobilier": "Bien immobilier",
+      "residence": "Résidence",
+      "furniture": "Meuble"
+    },
+    "entityType": {
+      "bien_immobilier": "Bien immobilier",
+      "residence": "Résidence",
+      "furniture": "Meuble"
+    },
     "fields": {
-      "user_firstname": "Utilisateur",
-      "user_email": "Email",
-      "user_phone": "Téléphone",
-      "intent": "Intention",
-      "property_types": "Types de bien",
-      "locations": "Localisations",
-      "budget_min": "Budget min",
-      "budget_max": "Budget max"
+      "title": "Titre",
+      "targetType": "Type de cible",
+      "status": "Statut",
+      "matchCount": "Propositions",
+      "unreadMatchCount": "Non lues",
+      "noteMessage": "Message",
+      "proposedItemId": "ID du bien proposé",
+      "proposedItemIdPlaceholder": "UUID du bien (optionnel)",
+      "entityType": "Type d'entité",
+      "noteMessagePlaceholder": "Rédigez votre proposition pour le client..."
+    },
+    "sections": {
+      "alertInfo": "Informations de l'alerte",
+      "clientDescription": "Description du client",
+      "criteria": "Critères de recherche",
+      "conciergeNotes": "Notes concierge",
+      "addNote": "Ajouter une proposition"
+    },
+    "actions": {
+      "addNote": "Ajouter la proposition"
+    },
+    "messages": {
+      "noteAdded": "La proposition a été ajoutée avec succès.",
+      "noteUpdated": "La proposition a été mise à jour.",
+      "noteDeleted": "La proposition a été supprimée.",
+      "noteError": "Une erreur s'est produite.",
+      "noNotes": "Aucune proposition pour cette alerte.",
+      "confirmDeleteNote": "Supprimer cette proposition ?"
+    },
+    "validation": {
+      "message": "Le message est obligatoire"
     }
   }
 }

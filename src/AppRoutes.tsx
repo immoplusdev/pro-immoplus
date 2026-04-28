@@ -86,6 +86,13 @@ import {
   ListDemandeProParticulierRejected,
   ShowDemandeProParticulier,
 } from "@/pages/demandes-pro-particulier";
+import {
+  ListAlerts,
+  ListAlertsEnAttente,
+  ListAlertsPropositions,
+  ListAlertsCloturees,
+  ShowAlert,
+} from "@/pages/alerts";
 import { ListUserPreferences } from "@/pages/user-preferences";
 
 export function AppRoutes() {
@@ -195,6 +202,13 @@ export function AppRoutes() {
             element={<FeedVideosUpload />}
           />
           <Route path="show/:id" element={<ShowFeed />} />
+        </Route>
+        <Route path={"/alerts"}>
+          <Route index element={<ListAlerts />} />
+          <Route path="show/:id" element={<ShowAlert />} />
+          <Route path="en-attente" element={<ListAlertsEnAttente />} />
+          <Route path="propositions" element={<ListAlertsPropositions />} />
+          <Route path="clôturées" element={<ListAlertsCloturees />} />
         </Route>
         <Route path={"/demandes-pro-particulier"}>
           <Route index element={<ListDemandeProParticulier />} />
