@@ -31,6 +31,7 @@ import {
   PlayCircleOutlined,
   BarChartOutlined,
   BellOutlined,
+  HeartOutlined,
 } from "@ant-design/icons";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { API_URL, PROJECT_ID } from "@/configs/app.config";
@@ -216,6 +217,14 @@ function App() {
                   meta: {
                     icon: <DollarOutlined />,
                     label: "Paiements",
+                  },
+                },
+                {
+                  name: "user-preferences",
+                  list: "/user-preferences",
+                  meta: {
+                    icon: <HeartOutlined />,
+                    label: "Préférences utilisateurs",
                   },
                 },
                 {
