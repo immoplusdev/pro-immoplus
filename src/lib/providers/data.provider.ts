@@ -33,6 +33,10 @@ export const getDataProvider = (
                 url = `${apiUrl}/transfers/all`;
             }
 
+            if (resource === "feed-legacy") {
+                url = `${apiUrl}/feed/legacy`;
+            }
+
             const {current = 1, pageSize = 10, mode = "server"} = pagination ?? {};
 
             const {headers: headersFromMeta, method} = meta ?? {};
@@ -41,12 +45,12 @@ export const getDataProvider = (
 
             const queryFilters = generateFilter(filters);
 
-            // For alerts, extract the status filter and pass it as a direct query param
-            let alertsStatus: string | undefined;
-            if (resource === "alerts") {
+            // Pour alerts et feed-legacy : extraire le filtre status et le passer en query param direct
+            let directStatus: string | undefined;
+            if (resource === "alerts" || resource === "feed-legacy") {
                 const statusIdx = queryFilters.findIndex((f) => f._field === "status");
                 if (statusIdx !== -1) {
-                    alertsStatus = queryFilters[statusIdx]._val as string;
+                    directStatus = queryFilters[statusIdx]._val as string;
                     queryFilters.splice(statusIdx, 1);
                 }
             }
@@ -56,6 +60,8 @@ export const getDataProvider = (
             const query: {
                 _page?: number;
                 _pageSize?: number;
+                page?: number;
+                limit?: number;
                 _order_by?: string;
                 _order_dir?: string;
                 _select?: string[];
@@ -64,13 +70,18 @@ export const getDataProvider = (
             } = {};
 
             if (mode === "server") {
-                query._page = current;
-                query._pageSize = pageSize;
+                if (resource === "feed-legacy") {
+                    query.page = current;
+                    query.limit = pageSize;
+                } else {
+                    query._page = current;
+                    query._pageSize = pageSize;
+                }
             }
 
             if (search) query._search = search;
 
-            if (alertsStatus) query.status = alertsStatus;
+            if (directStatus) query.status = directStatus;
 
             const generatedSort = generateSort(sorters);
             if (generatedSort) {
@@ -87,8 +98,11 @@ export const getDataProvider = (
                 headers: headersFromMeta,
             });
 
-            // feed uses cursor-based pagination with a different response shape
-            const total = resource === "feed" ? data.count : data.totalCount;
+            const total = resource === "feed"
+                ? data.count
+                : resource === "feed-legacy"
+                ? data.total
+                : data.totalCount;
 
             let items = data.data;
             if (resource === "withdrawal-requests") {
