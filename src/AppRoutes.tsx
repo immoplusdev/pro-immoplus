@@ -86,6 +86,14 @@ import {
   ListDemandeProParticulierRejected,
   ShowDemandeProParticulier,
 } from "@/pages/demandes-pro-particulier";
+import {
+  ListAlerts,
+  ListAlertsEnAttente,
+  ListAlertsPropositions,
+  ListAlertsCloturees,
+  ShowAlert,
+} from "@/pages/alerts";
+import { ListUserPreferences } from "@/pages/user-preferences";
 
 export function AppRoutes() {
   return (
@@ -195,6 +203,13 @@ export function AppRoutes() {
           />
           <Route path="show/:id" element={<ShowFeed />} />
         </Route>
+        <Route path={"/alerts"}>
+          <Route index element={<ListAlerts />} />
+          <Route path="show/:id" element={<ShowAlert />} />
+          <Route path="en-attente" element={<ListAlertsEnAttente />} />
+          <Route path="propositions" element={<ListAlertsPropositions />} />
+          <Route path="clôturées" element={<ListAlertsCloturees />} />
+        </Route>
         <Route path={"/demandes-pro-particulier"}>
           <Route index element={<ListDemandeProParticulier />} />
           <Route path="show/:id" element={<ShowDemandeProParticulier />} />
@@ -238,6 +253,9 @@ export function AppRoutes() {
           <Route path="create" element={<CreateTransfer />} />
           <Route path="edit/:id" element={<EditTransfer />} />
           <Route path="show/:id" element={<ShowTransfer />} />
+        </Route>
+        <Route path={"/user-preferences"}>
+          <Route index element={<ListUserPreferences />} />
         </Route>
         <Route path={"/statistics"}>
           <Route index element={<Statistics />} />

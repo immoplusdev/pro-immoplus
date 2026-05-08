@@ -315,44 +315,6 @@
       "en_attente_validation": "En attente de validation"
     }
   },
-  "feed": {
-    "title": "Feed vidéo",
-    "fields": {
-      "title": "Titre",
-      "description": "Description",
-      "price": "Prix",
-      "location": "Localisation",
-      "author": "Auteur",
-      "entity": "Type d'annonce",
-      "shortCode": "Code court",
-      "source": "Source",
-      "likes": "J'aime",
-      "views": "Vues",
-      "stats": "Statistiques",
-      "relatedLink": "Annonce liée",
-      "videoStatus": "Statut vidéo"
-    },
-    "entities": {
-      "residence": "Résidence",
-      "bien_immobilier": "Bien immobilier",
-      "furniture": "Meuble"
-    },
-    "status": {
-      "processing": "En traitement",
-      "ready": "Prêt",
-      "failed": "Échoué"
-    },
-    "sections": {
-      "video": "Vidéo",
-      "content": "Contenu",
-      "metadata": "Métadonnées",
-      "authorStats": "Auteur & Statistiques"
-    },
-    "actions": {
-      "readMore": "Voir plus",
-      "viewRelated": "Voir l'annonce"
-    }
-  },
   "demandes_pro_particulier": {
     "title": "Demandes Pro Particulier",
     "fields": {
@@ -641,14 +603,6 @@
       "drag_and_drop_image_uploader_description": "Assurez-vous que le fichier est au format PNG, JPG ou SVG et ne dépasse pas 2 Mo.",
       "upload": "Téléverser"
     }
-  },
-  "common": {
-    "yes": "Oui",
-    "no": "Non",
-    "write_something_here": "Écrivez quelque chose ici...",
-    "filter": "Filtrer",
-    "select_a_value": "Sélectionnez une valeur",
-    "notAvailable": "Non disponible"
   },
   "walletTransactions": {
     "title": "Liste des Transactions",
@@ -964,7 +918,8 @@
     "noMore": "Aucune donnée supplémentaire",
     "back": "Retour",
     "deleteSuccess": "Élément supprimé avec succès",
-    "error": "Erreur"
+    "error": "Erreur",
+    "write_something_here": "Écrivez quelque chose ici..."
   },
   "feed": {
     "title": "Fil d'actualité",
@@ -1028,7 +983,12 @@
       "migrateTitle": "Migrer cette vidéo ?",
       "migrateDescription": "Cette vidéo sera convertie au format HLS haute performance et apparaîtra dans le flux actif.",
       "migrateButton": "🔄 Migrer vers le Flux",
-      "migrateSuccess": "Vidéo migrée avec succès vers le flux actif ! Elle sera traitée en HLS d'ici quelques minutes."
+      "migrateSuccess": "Vidéo migrée avec succès vers le flux actif ! Elle sera traitée en HLS d'ici quelques minutes.",
+      "migrateWarning": "Migration lancée mais un post-traitement a échoué. La vidéo apparaîtra dans le flux d'ici quelques instants.",
+      "alreadyMigrated": "Déjà migré",
+      "migratedLabel": "Migré",
+      "migratedYes": "Oui",
+      "migratedNo": "Non"
     },
     "upload": {
       "promoTitle": "Nouvelle Vidéo Promo",
@@ -1053,6 +1013,63 @@
       "videoRequired": "La vidéo est obligatoire",
       "titleMax": "Maximum 200 caractères",
       "descriptionMax": "Maximum 1000 caractères"
+    }
+  },
+  "alerts": {
+    "title": "Alertes",
+    "tabs": {
+      "en_attente": "En attente",
+      "propositions": "Propositions",
+      "cloturees": "Clôturées"
+    },
+    "status": {
+      "active": "Active",
+      "pending": "En attente",
+      "has_proposals": "Propositions",
+      "closed": "Clôturée"
+    },
+    "targetType": {
+      "bien_immobilier": "Bien immobilier",
+      "residence": "Résidence",
+      "furniture": "Meuble"
+    },
+    "entityType": {
+      "bien_immobilier": "Bien immobilier",
+      "residence": "Résidence",
+      "furniture": "Meuble"
+    },
+    "fields": {
+      "title": "Titre",
+      "targetType": "Type de cible",
+      "status": "Statut",
+      "matchCount": "Propositions",
+      "unreadMatchCount": "Non lues",
+      "noteMessage": "Message",
+      "proposedItemId": "ID du bien proposé",
+      "proposedItemIdPlaceholder": "UUID du bien (optionnel)",
+      "entityType": "Type d'entité",
+      "noteMessagePlaceholder": "Rédigez votre proposition pour le client..."
+    },
+    "sections": {
+      "alertInfo": "Informations de l'alerte",
+      "clientDescription": "Description du client",
+      "criteria": "Critères de recherche",
+      "conciergeNotes": "Notes concierge",
+      "addNote": "Ajouter une proposition"
+    },
+    "actions": {
+      "addNote": "Ajouter la proposition"
+    },
+    "messages": {
+      "noteAdded": "La proposition a été ajoutée avec succès.",
+      "noteUpdated": "La proposition a été mise à jour.",
+      "noteDeleted": "La proposition a été supprimée.",
+      "noteError": "Une erreur s'est produite.",
+      "noNotes": "Aucune proposition pour cette alerte.",
+      "confirmDeleteNote": "Supprimer cette proposition ?"
+    },
+    "validation": {
+      "message": "Le message est obligatoire"
     }
   }
 }

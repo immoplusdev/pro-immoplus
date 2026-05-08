@@ -9,6 +9,7 @@ export const rolePermissions: Record<string, RolePermission> = {
     [UserRole.Admin]: {
         resources: [
             "statistics",
+            "alerts",
             "demandes-pro-particulier",
             "demandes-visites",
             "residences",
@@ -16,6 +17,7 @@ export const rolePermissions: Record<string, RolePermission> = {
             "biens-immobiliers",
             "furnitures",
             "users",
+            "user-preferences",
             "wallet-transactions",
             "wallets",
             "withdrawal-requests",
@@ -37,6 +39,7 @@ export const rolePermissions: Record<string, RolePermission> = {
     [UserRole.Commercial]: {
         resources: [
             "statistics",
+            "alerts",
             "demandes-pro-particulier",
             "demandes-visites",
             "residences",
@@ -44,6 +47,7 @@ export const rolePermissions: Record<string, RolePermission> = {
             "biens-immobiliers",
             "furnitures",
             "users",
+            "user-preferences",
             "feed",
         ],
         defaultRedirect: "/demandes-visites",

@@ -33,6 +33,10 @@ export const getDataProvider = (
                 url = `${apiUrl}/transfers/all`;
             }
 
+            if (resource === "feed-legacy") {
+                url = `${apiUrl}/feed/legacy`;
+            }
+
             const {current = 1, pageSize = 10, mode = "server"} = pagination ?? {};
 
             const {headers: headersFromMeta, method} = meta ?? {};
@@ -41,23 +45,43 @@ export const getDataProvider = (
 
             const queryFilters = generateFilter(filters);
 
+            // Pour alerts et feed-legacy : extraire le filtre status et le passer en query param direct
+            let directStatus: string | undefined;
+            if (resource === "alerts" || resource === "feed-legacy") {
+                const statusIdx = queryFilters.findIndex((f) => f._field === "status");
+                if (statusIdx !== -1) {
+                    directStatus = queryFilters[statusIdx]._val as string;
+                    queryFilters.splice(statusIdx, 1);
+                }
+            }
+
             const search = generateSearch(filters);
 
             const query: {
                 _page?: number;
                 _pageSize?: number;
+                page?: number;
+                limit?: number;
                 _order_by?: string;
                 _order_dir?: string;
                 _select?: string[];
                 _search?: string;
+                status?: string;
             } = {};
 
             if (mode === "server") {
-                query._page = current;
-                query._pageSize = pageSize;
+                if (resource === "feed-legacy") {
+                    query.page = current;
+                    query.limit = pageSize;
+                } else {
+                    query._page = current;
+                    query._pageSize = pageSize;
+                }
             }
 
             if (search) query._search = search;
+
+            if (directStatus) query.status = directStatus;
 
             const generatedSort = generateSort(sorters);
             if (generatedSort) {
@@ -74,8 +98,11 @@ export const getDataProvider = (
                 headers: headersFromMeta,
             });
 
-            // feed uses cursor-based pagination with a different response shape
-            const total = resource === "feed" ? data.count : data.totalCount;
+            const total = resource === "feed"
+                ? data.count
+                : resource === "feed-legacy"
+                ? data.total
+                : data.totalCount;
 
             let items = data.data;
             if (resource === "withdrawal-requests") {
