@@ -38,36 +38,42 @@ export const ShowFeedLegacy = () => {
     const [migrating, setMigrating] = useState(false);
     const [data, setData] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [videoBlobUrl, setVideoBlobUrl] = useState<string | null>(null);
 
-    // Récupérer les détails avec le query param ?id=
-    useEffect(() => {
-        const fetchDetail = async () => {
-            try {
-                setIsLoading(true);
-                console.log(`🔵 Fetch détail: GET ${API_URL}/feed/legacy?id=${id}`);
-
-                const response = await fetch(`${API_URL}/feed/legacy?id=${id}`);
-                console.log("📊 Status:", response.status, response.statusText);
-
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status} ${response.statusText}`);
-                }
-
-                const json = await response.json();
-                console.log("✅ Données reçues:", json);
-                setData(Array.isArray(json.data) ? json.data[0] : json.data);
-            } catch (error) {
-                console.error("❌ Erreur fetch détail:", error);
-                message.error(`Erreur: ${error instanceof Error ? error.message : "Erreur inconnue"}`);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        if (id) {
-            fetchDetail();
+    const fetchDetail = async () => {
+        try {
+            setIsLoading(true);
+            const response = await axiosInstance.get(
+                `${API_URL}/feed/legacy?id=${id}`
+            );
+            const json = response.data;
+            setData(Array.isArray(json.data) ? json.data[0] : json.data);
+        } catch (error: any) {
+            console.error("❌ Erreur fetch détail:", error);
+            message.error(error?.message || "Erreur inconnue");
+        } finally {
+            setIsLoading(false);
         }
+    };
+
+    useEffect(() => {
+        if (id) fetchDetail();
     }, [id]);
+
+    useEffect(() => {
+        if (!data?.videoUrl) return;
+        let objectUrl: string;
+        axiosInstance
+            .get(data.videoUrl, { responseType: "blob" })
+            .then((res) => {
+                objectUrl = URL.createObjectURL(res.data);
+                setVideoBlobUrl(objectUrl);
+            })
+            .catch(() => setVideoBlobUrl(null));
+        return () => {
+            if (objectUrl) URL.revokeObjectURL(objectUrl);
+        };
+    }, [data?.videoUrl]);
 
     if (isLoading) return <SpinLoader />;
 
@@ -91,8 +97,8 @@ export const ShowFeedLegacy = () => {
 
     const refetchData = async () => {
         try {
-            const response = await fetch(`${API_URL}/feed/legacy?id=${id}`);
-            const json = await response.json();
+            const response = await axiosInstance.get(`${API_URL}/feed/legacy?id=${id}`);
+            const json = response.data;
             setData(Array.isArray(json.data) ? json.data[0] : json.data);
         } catch {
             // échec silencieux du rechargement
@@ -142,12 +148,14 @@ export const ShowFeedLegacy = () => {
                 {/* Vidéo */}
                 <Col xs={24} md={12}>
                     <Card title={translate("feed.sections.video")} size="small">
-                        {data?.videoUrl ? (
+                        {videoBlobUrl ? (
                             <video
-                                src={data.videoUrl}
+                                src={videoBlobUrl}
                                 controls
                                 style={{ width: "100%", borderRadius: 8, maxHeight: 400 }}
                             />
+                        ) : data?.videoUrl ? (
+                            <SpinLoader />
                         ) : (
                             <Text type="secondary">{translate("common.notAvailable")}</Text>
                         )}
