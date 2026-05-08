@@ -23,7 +23,7 @@ import {
     ArrowLeftOutlined,
     CheckCircleOutlined,
 } from "@ant-design/icons";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 import { DateDisplayField } from "@/components/table";
 import { SpinLoader } from "@/components/loading";
 import { FeedEntityTag, FeedParentType } from "./components/feed-entity-tag";
@@ -35,30 +35,10 @@ const { Text, Paragraph, Title } = Typography;
 export const ShowFeedLegacy = () => {
     const translate = useTranslate();
     const { id } = useParams<{ id: string }>();
+    const { state } = useLocation();
     const [migrating, setMigrating] = useState(false);
-    const [data, setData] = useState<any>(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [data, setData] = useState<any>(state?.record ?? null);
     const [videoBlobUrl, setVideoBlobUrl] = useState<string | null>(null);
-
-    const fetchDetail = async () => {
-        try {
-            setIsLoading(true);
-            const response = await axiosInstance.get(
-                `${API_URL}/feed/legacy/${id}`
-            );
-            const json = response.data;
-            setData(json.data ?? json);
-        } catch (error: any) {
-            console.error("❌ Erreur fetch détail:", error);
-            message.error(error?.message || "Erreur inconnue");
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        if (id) fetchDetail();
-    }, [id]);
 
     useEffect(() => {
         if (!data?.videoUrl) return;
@@ -74,8 +54,6 @@ export const ShowFeedLegacy = () => {
             if (objectUrl) URL.revokeObjectURL(objectUrl);
         };
     }, [data?.videoUrl]);
-
-    if (isLoading) return <SpinLoader />;
 
     if (!data) {
         return (
@@ -95,42 +73,24 @@ export const ShowFeedLegacy = () => {
     const entityPath = entityPathMap[data?.relatedTo?.entity] ?? "residences";
     const isMigrated = Boolean(data?.migratedAt);
 
-    const refetchData = async () => {
-        try {
-            const response = await axiosInstance.get(`${API_URL}/feed/legacy/${id}`);
-            const json = response.data;
-            setData(json.data ?? json);
-        } catch {
-            // échec silencieux du rechargement
-        }
-    };
-
     const handleMigrate = async () => {
         setMigrating(true);
-        let success = false;
         try {
             await axiosInstance.post(
                 `${API_URL}/feed/admin/legacy/${id}/migrate`
             );
-            success = true;
+            message.success(translate("feed.legacy.migrateSuccess"));
+            setData((prev: any) => ({ ...prev, migratedAt: new Date().toISOString() }));
         } catch (error: any) {
             console.error("❌ Erreur migration:", error);
             message.error(error?.response?.data?.message || translate("common.error"));
+        } finally {
             setMigrating(false);
-            return;
         }
-
-        if (success) {
-            message.success(translate("feed.legacy.migrateSuccess"));
-        }
-
-        await refetchData();
-        setMigrating(false);
     };
 
     return (
         <Show
-            isLoading={isLoading}
             headerButtons={[
                 <Link key="back" to="/feed/legacy">
                     <Button icon={<ArrowLeftOutlined />}>

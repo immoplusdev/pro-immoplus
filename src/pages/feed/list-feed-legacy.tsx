@@ -180,7 +180,7 @@ export const ListFeedLegacy = () => {
                     align="center"
                     render={(_, record: BaseRecord) => (
                         <Space>
-                            <Link to={`/feed/legacy/show/${record.id}`}>
+                            <Link to={`/feed/legacy/show/${record.id}`} state={{ record }}>
                                 <Button size="small" icon={<ArrowRightOutlined />} />
                             </Link>
                             <Popconfirm
