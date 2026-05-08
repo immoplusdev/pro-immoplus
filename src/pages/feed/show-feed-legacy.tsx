@@ -44,10 +44,10 @@ export const ShowFeedLegacy = () => {
         try {
             setIsLoading(true);
             const response = await axiosInstance.get(
-                `${API_URL}/feed/legacy?id=${id}`
+                `${API_URL}/feed/legacy/${id}`
             );
             const json = response.data;
-            setData(Array.isArray(json.data) ? json.data[0] : json.data);
+            setData(json.data ?? json);
         } catch (error: any) {
             console.error("❌ Erreur fetch détail:", error);
             message.error(error?.message || "Erreur inconnue");
@@ -97,9 +97,9 @@ export const ShowFeedLegacy = () => {
 
     const refetchData = async () => {
         try {
-            const response = await axiosInstance.get(`${API_URL}/feed/legacy?id=${id}`);
+            const response = await axiosInstance.get(`${API_URL}/feed/legacy/${id}`);
             const json = response.data;
-            setData(Array.isArray(json.data) ? json.data[0] : json.data);
+            setData(json.data ?? json);
         } catch {
             // échec silencieux du rechargement
         }
