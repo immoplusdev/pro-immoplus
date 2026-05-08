@@ -1,7 +1,7 @@
 import React from "react";
 import { BaseRecord, useTranslate, useDelete, useInvalidate } from "@refinedev/core";
 import { List, useTable } from "@refinedev/antd";
-import { Table, Space, Button, Typography, Popconfirm, message } from "antd";
+import { Table, Space, Button, Typography, Popconfirm, message, Tag } from "antd";
 import { Link } from "react-router-dom";
 import { ArrowRightOutlined, EyeOutlined, LikeOutlined, HomeOutlined, DeleteOutlined } from "@ant-design/icons";
 import { DateDisplayField } from "@/components/table";
@@ -154,6 +154,18 @@ export const ListFeedLegacy = () => {
                             </Space>
                         </Space>
                     )}
+                />
+                <Table.Column
+                    dataIndex="migratedAt"
+                    title={translate("feed.legacy.migratedLabel")}
+                    align="center"
+                    render={(value: string | null) =>
+                        value ? (
+                            <Tag color="success">{translate("feed.legacy.migratedYes")}</Tag>
+                        ) : (
+                            <Tag>{translate("feed.legacy.migratedNo")}</Tag>
+                        )
+                    }
                 />
                 <Table.Column
                     dataIndex="createdAt"

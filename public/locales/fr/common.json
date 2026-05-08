@@ -983,7 +983,12 @@
       "migrateTitle": "Migrer cette vidéo ?",
       "migrateDescription": "Cette vidéo sera convertie au format HLS haute performance et apparaîtra dans le flux actif.",
       "migrateButton": "🔄 Migrer vers le Flux",
-      "migrateSuccess": "Vidéo migrée avec succès vers le flux actif ! Elle sera traitée en HLS d'ici quelques minutes."
+      "migrateSuccess": "Vidéo migrée avec succès vers le flux actif ! Elle sera traitée en HLS d'ici quelques minutes.",
+      "migrateWarning": "Migration lancée mais un post-traitement a échoué. La vidéo apparaîtra dans le flux d'ici quelques instants.",
+      "alreadyMigrated": "Déjà migré",
+      "migratedLabel": "Migré",
+      "migratedYes": "Oui",
+      "migratedNo": "Non"
     },
     "upload": {
       "promoTitle": "Nouvelle Vidéo Promo",

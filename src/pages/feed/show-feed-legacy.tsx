@@ -21,6 +21,7 @@ import {
     UserOutlined,
     SwapOutlined,
     ArrowLeftOutlined,
+    CheckCircleOutlined,
 } from "@ant-design/icons";
 import { useParams, Link } from "react-router-dom";
 import { DateDisplayField } from "@/components/table";
@@ -54,7 +55,7 @@ export const ShowFeedLegacy = () => {
 
                 const json = await response.json();
                 console.log("✅ Données reçues:", json);
-                setData(json.data);
+                setData(Array.isArray(json.data) ? json.data[0] : json.data);
             } catch (error) {
                 console.error("❌ Erreur fetch détail:", error);
                 message.error(`Erreur: ${error instanceof Error ? error.message : "Erreur inconnue"}`);
@@ -86,30 +87,39 @@ export const ShowFeedLegacy = () => {
         [FeedParentType.Furniture]: "furnitures",
     };
     const entityPath = entityPathMap[data?.relatedTo?.entity] ?? "residences";
+    const isMigrated = Boolean(data?.migratedAt);
+
+    const refetchData = async () => {
+        try {
+            const response = await fetch(`${API_URL}/feed/legacy?id=${id}`);
+            const json = await response.json();
+            setData(Array.isArray(json.data) ? json.data[0] : json.data);
+        } catch {
+            // échec silencieux du rechargement
+        }
+    };
 
     const handleMigrate = async () => {
         setMigrating(true);
+        let success = false;
         try {
-            const result = await axiosInstance.post(
-                `${API_URL}/feed/admin/legacy/${id}/migrate`,
-                {
-                    titre: data?.content?.title,
-                    description: data?.content?.description,
-                }
+            await axiosInstance.post(
+                `${API_URL}/feed/admin/legacy/${id}/migrate`
             );
-
-            message.success(translate("feed.legacy.migrateSuccess"));
-            console.log("✅ Migration réussie:", result.data);
-
-            setTimeout(() => {
-                window.location.href = "/feed/list";
-            }, 1500);
+            success = true;
         } catch (error: any) {
-            setMigrating(false);
             console.error("❌ Erreur migration:", error);
-            const msg = error?.response?.data?.message || translate("common.error");
-            message.error(msg);
+            message.error(error?.response?.data?.message || translate("common.error"));
+            setMigrating(false);
+            return;
         }
+
+        if (success) {
+            message.success(translate("feed.legacy.migrateSuccess"));
+        }
+
+        await refetchData();
+        setMigrating(false);
     };
 
     return (
@@ -249,24 +259,39 @@ export const ShowFeedLegacy = () => {
 
             {/* Bouton Migration */}
             <Row justify="center" style={{ marginTop: 24 }}>
-                <Col>
-                    <Popconfirm
-                        title={translate("feed.legacy.migrateTitle")}
-                        description={translate("feed.legacy.migrateDescription")}
-                        onConfirm={handleMigrate}
-                        okText={translate("common.yes")}
-                        cancelText={translate("common.no")}
-                    >
-                        <Button
-                            type="primary"
-                            size="large"
-                            icon={<SwapOutlined />}
-                            loading={migrating}
-                            disabled={migrating}
+                <Col style={{ textAlign: "center" }}>
+                    {isMigrated ? (
+                        <Space direction="vertical" size={4}>
+                            <Tag
+                                icon={<CheckCircleOutlined />}
+                                color="success"
+                                style={{ fontSize: 15, padding: "6px 16px" }}
+                            >
+                                {translate("feed.legacy.alreadyMigrated")}
+                            </Tag>
+                            <Text type="secondary" style={{ fontSize: 12 }}>
+                                <DateDisplayField value={data.migratedAt} />
+                            </Text>
+                        </Space>
+                    ) : (
+                        <Popconfirm
+                            title={translate("feed.legacy.migrateTitle")}
+                            description={translate("feed.legacy.migrateDescription")}
+                            onConfirm={handleMigrate}
+                            okText={translate("common.yes")}
+                            cancelText={translate("common.no")}
                         >
-                            {translate("feed.legacy.migrateButton")}
-                        </Button>
-                    </Popconfirm>
+                            <Button
+                                type="primary"
+                                size="large"
+                                icon={<SwapOutlined />}
+                                loading={migrating}
+                                disabled={migrating}
+                            >
+                                {translate("feed.legacy.migrateButton")}
+                            </Button>
+                        </Popconfirm>
+                    )}
                 </Col>
             </Row>
         </Show>
