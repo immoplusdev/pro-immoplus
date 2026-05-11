@@ -846,7 +846,9 @@
       "note": "Note de transaction",
       "refundDate": "Date de reversement",
       "debitAmount": "Montant à debiter",
-      "releaseAmount": "Montant à reverser"
+      "releaseAmount": "Montant à reverser",
+      "transferAmount": "Montant à transférer",
+      "toOwnerId": "ID du pro destinataire"
     },
     "validation": {
       "creditAmount": {
@@ -872,6 +874,13 @@
       "releaseAmount": {
         "required": "Le montant de liberation est obligatoire",
         "min": "Le montant de liberation doit être supérieur ou égal à 100"
+      },
+      "transferAmount": {
+        "required": "Le montant du transfert est obligatoire",
+        "min": "Le montant du transfert doit être supérieur ou égal à 1"
+      },
+      "toOwnerId": {
+        "required": "L'ID du pro destinataire est obligatoire"
       }
     },
     "placeholders": {
@@ -883,7 +892,9 @@
       "refundDate": "Saisir la date de reversement",
       "sourceId": "Saisir l'ID de la source",
       "debitAmount": "Montant à debiter",
-      "releaseAmount": "Montant à reverser"
+      "releaseAmount": "Montant à reverser",
+      "transferAmount": "Montant à transférer",
+      "toOwnerId": "ID du pro destinataire"
     },
     "tags": {
       "active": "Actif",
@@ -894,17 +905,21 @@
       "walletCreditFailed": "Une erreur s'est produite lors de l'ajout du crédit au portefeuille.",
       "tokenNotFound": "Le token n'a pas été trouvé.",
       "walletDebitSuccess": "Le débit a bien été ajouté au portefeuille.",
-      "walletDebitFailed": "Une erreur s'est produite lors de l'ajout du débit au portefeuille."
+      "walletDebitFailed": "Une erreur s'est produite lors de l'ajout du débit au portefeuille.",
+      "walletTransferSuccess": "Le transfert a été effectué avec succès.",
+      "walletTransferFailed": "Une erreur s'est produite lors du transfert. Veuillez contacter l'administrateur."
     },
     "sections": {
       "walletCredit": "Crediter le portefeuille",
       "walletDebit": "Débiter le portefeuille",
-      "walletReleaseFunds": "Reverser des fonds"
+      "walletReleaseFunds": "Reverser des fonds",
+      "walletTransfer": "Transférer vers un autre pro"
     },
     "actions": {
       "creditWallet": "Crediter le portefeuille",
       "debitWallet": "Débiter le portefeuille",
-      "releaseFunds": "Reverser des fonds"
+      "releaseFunds": "Reverser des fonds",
+      "transfer": "Effectuer le transfert"
     }
   },
   "common": {

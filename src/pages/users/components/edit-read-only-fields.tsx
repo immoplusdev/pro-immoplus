@@ -8,6 +8,7 @@ import { ListUserTransactionsTable } from "./list-transactions-table";
 import { WalletCreditForm } from "./wallet-credit-form";
 import { WalletDebitForm } from "./wallet-debit-form";
 import { WalletReleaseFundsForm } from "./wallet-release-funds-form";
+import { WalletTransferForm } from "./wallet-transfer-form";
 import { FilePreviewModal } from "./file-preview";
 
 export const UsersEditDataFields: React.FC<{
@@ -293,6 +294,19 @@ export const UsersEditDataFields: React.FC<{
           translate={translate}
           onSuccess={onWalletUpdate}
         />
+      </div>
+
+      <div
+        style={{
+          display:
+            data?.role?.name === "pro_entreprise" ||
+            data?.role?.name === "pro_particulier"
+              ? ""
+              : "None",
+          marginTop: "2rem",
+        }}
+      >
+        <WalletTransferForm translate={translate} onSuccess={onWalletUpdate} />
       </div>
 
       <Card
