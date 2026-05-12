@@ -24,6 +24,7 @@ export const rolePermissions: Record<string, RolePermission> = {
             "transfers",
             "payments",
             "feed",
+            "banners",
             "configs",
         ],
         defaultRedirect: "/demandes-visites",

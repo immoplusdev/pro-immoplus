@@ -1086,5 +1086,58 @@
     "validation": {
       "message": "Le message est obligatoire"
     }
+  },
+  "banners": {
+    "title": "Bannières",
+    "subtitle": "Gérez les bannières affichées dans les apps client et pro.",
+    "empty": "Aucune bannière. Créez-en une.",
+    "audience": {
+      "buyer": "👤 App Client",
+      "seller": "🏢 App Pro",
+      "all": "🌐 Les deux"
+    },
+    "type": {
+      "promo": "Promotionnel",
+      "notification": "Notification"
+    },
+    "filters": {
+      "all": "Toutes",
+      "audience": "Audience",
+      "type": "Type",
+      "status": "Statut"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "fields": {
+      "title": "Bannière",
+      "subtitle": "Sous-titre",
+      "ctaLabel": "Label du bouton",
+      "ctaUrl": "URL de destination",
+      "cta2Label": "Label bouton secondaire",
+      "cta2Url": "URL secondaire",
+      "icon": "Icône",
+      "bgColor": "Couleur de fond",
+      "type": "Type",
+      "audience": "Audience",
+      "order": "Ordre",
+      "dismissible": "Peut être fermée",
+      "active": "Statut"
+    },
+    "actions": {
+      "create": "Créer une bannière",
+      "publish": "Publier",
+      "preview": "Prévisualiser"
+    },
+    "messages": {
+      "loadError": "Erreur de chargement des bannières",
+      "toggleSuccess": "Statut mis à jour",
+      "toggleError": "Erreur lors de la mise à jour",
+      "reorderError": "Erreur lors du réordonnancement",
+      "deleteSuccess": "Bannière supprimée",
+      "saveSuccess": "Bannière enregistrée",
+      "publishSuccess": "Bannière publiée"
+    }
   }
 }
