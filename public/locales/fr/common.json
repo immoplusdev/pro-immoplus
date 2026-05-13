@@ -275,7 +275,9 @@
       "echoue_annule": "Échoué / Annulé",
       "terminee": "Terminée",
       "echoue_ou_annule": "Échoué ou annulé",
-      "timer": "Temps restant"
+      "timer": "Temps restant",
+      "rapport": "Rapport",
+      "rapport_placeholder": "Saisir le rapport de la réservation..."
     },
     "status_reservation": {
       "rejete": "Rejeté",

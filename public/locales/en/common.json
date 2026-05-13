@@ -195,7 +195,9 @@
       "pro_reverse": "Reversal to main account",
       "code_reservation": "Reservation code",
       "date_debut": "Start date",
-      "date_fin": "End date"
+      "date_fin": "End date",
+      "rapport": "Report",
+      "rapport_placeholder": "Enter the reservation report..."
     },
     "status_reservation": {
       "rejete": "Rejected",
