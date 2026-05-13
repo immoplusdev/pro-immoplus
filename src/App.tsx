@@ -32,6 +32,7 @@ import {
   BarChartOutlined,
   BellOutlined,
   HeartOutlined,
+  TagOutlined,
 } from "@ant-design/icons";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { API_URL, PROJECT_ID } from "@/configs/app.config";
@@ -225,6 +226,16 @@ function App() {
                   meta: {
                     icon: <HeartOutlined />,
                     label: "Préférences utilisateurs",
+                  },
+                },
+                {
+                  name: "banners",
+                  list: "/banners",
+                  create: "/banners/new",
+                  edit: "/banners/:id/edit",
+                  meta: {
+                    icon: <TagOutlined />,
+                    label: "Bannières",
                   },
                 },
                 {

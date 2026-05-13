@@ -79,6 +79,7 @@ import {
   ShowFeed,
 } from "@/pages/feed";
 import { Statistics } from "@/pages/statistics";
+import { ListBanners, CreateBanner, EditBanner } from "@/pages/banners";
 import {
   ListDemandeProParticulier,
   ListDemandeProParticulierPending,
@@ -202,6 +203,11 @@ export function AppRoutes() {
             element={<FeedVideosUpload />}
           />
           <Route path="show/:id" element={<ShowFeed />} />
+        </Route>
+        <Route path={"/banners"}>
+          <Route index element={<ListBanners />} />
+          <Route path="new" element={<CreateBanner />} />
+          <Route path=":id/edit" element={<EditBanner />} />
         </Route>
         <Route path={"/alerts"}>
           <Route index element={<ListAlerts />} />
