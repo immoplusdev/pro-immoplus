@@ -1,4 +1,4 @@
-import {Card, Form, Select, Space} from "antd";
+import {Card, Form, Input, Select, Space, theme} from "antd";
 import {EditOutlined} from "@ant-design/icons";
 import {enumToList} from "@/lib/ts-utilities";
 import {StatusReservation} from "@/lib/ts-utilities/enums/status-reservation";
@@ -12,6 +12,9 @@ interface ReadOnlySectionProps {
     residencesData?: BaseRecord;
 }
 export const ReservationEditActionFields: React.FC<ReadOnlySectionProps> = ({translate}) => {
+    const { token } = theme.useToken();
+    const borderStyle = `0.5px solid ${token.colorBorder}`;
+
     return (
         <Card
             title={
@@ -20,8 +23,8 @@ export const ReservationEditActionFields: React.FC<ReadOnlySectionProps> = ({tra
                     <p>{translate("reservations.fields.actions", )}</p>
                 </Space>
             }
-            headStyle={{ padding: "1rem", border:"0.5px solid black" }}
-            bodyStyle={{ padding: "2rem", border:"0.5px solid black" }}
+            headStyle={{ padding: "1rem", border: borderStyle }}
+            bodyStyle={{ padding: "2rem", border: borderStyle }}
         >
             <Form.Item
                 label={translate("reservations.fields.status_facture")}
@@ -29,7 +32,7 @@ export const ReservationEditActionFields: React.FC<ReadOnlySectionProps> = ({tra
                 rules={[{required: true}]}
             >
                 <Select
-                    style={{border:"0.5px solid black", borderRadius:"7px"}}
+                    style={{border: borderStyle, borderRadius:"7px"}}
                     options={enumToList(StatusFacture).map((item) =>({
                         value: item,
                         label:(<span>{translate(`reservations.fields.${item}`)}</span>)
@@ -42,13 +45,23 @@ export const ReservationEditActionFields: React.FC<ReadOnlySectionProps> = ({tra
                 rules={[{required: true}]}
             >
                 <Select
-                    style={{border:"0.5px solid black", borderRadius:"7px"}}
+                    style={{border: borderStyle, borderRadius:"7px"}}
                     options={enumToList(StatusReservation).map((item) => ({
                         value: item,
                         label: (
                             <span>{translate(`reservations.status_reservation.${item}`)}</span>
                         ),
                     }))}
+                />
+            </Form.Item>
+            <Form.Item
+                label={translate("reservations.fields.rapport")}
+                name={["rapport"]}
+            >
+                <Input.TextArea
+                    rows={6}
+                    style={{border: borderStyle, borderRadius:"7px"}}
+                    placeholder={translate("reservations.fields.rapport_placeholder")}
                 />
             </Form.Item>
         </Card>
