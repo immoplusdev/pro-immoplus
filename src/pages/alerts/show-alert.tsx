@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useTranslate, useApiUrl, useInvalidate, useShow } from "@refinedev/core";
+import { useTranslate, useApiUrl, useInvalidate, useShow, useOne } from "@refinedev/core";
 import { Show, ListButton } from "@refinedev/antd";
 import {
     Card,
@@ -24,8 +24,10 @@ import {
     DeleteOutlined,
     SaveOutlined,
     CloseOutlined,
+    UserOutlined,
+    ArrowRightOutlined,
 } from "@ant-design/icons";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { AlertStatusTag } from "./components/alert-status-tag";
 import { DateDisplayField } from "@/components/table";
 import { SpinLoader } from "@/components/loading";
@@ -85,6 +87,12 @@ export const ShowAlert = () => {
 
     const data = query?.data?.data as AlertData | undefined;
     const isLoading = query?.isLoading;
+
+    const { data: userData, isLoading: userLoading } = useOne<any>({
+        resource: "users",
+        id: data?.userId ?? "",
+        queryOptions: { enabled: !!data?.userId },
+    });
 
     const refreshAlert = () => {
         invalidate({ resource: "alerts", invalidates: ["all"] });
@@ -261,6 +269,57 @@ export const ShowAlert = () => {
                         </Text>
                     </Card>
                 </Col>
+
+                {/* Client */}
+                {data?.userId && (
+                    <Col xs={24} md={12}>
+                        <Card
+                            size="small"
+                            title={
+                                <Space>
+                                    <UserOutlined />
+                                    <span>Client</span>
+                                </Space>
+                            }
+                            extra={
+                                <Link to={`/users/edit/${data.userId}`}>
+                                    <Button size="small" icon={<ArrowRightOutlined />}>
+                                        Détails
+                                    </Button>
+                                </Link>
+                            }
+                            loading={userLoading}
+                        >
+                            <Space direction="vertical" size={4} style={{ width: "100%" }}>
+                                <div>
+                                    <Text type="secondary" style={{ fontSize: 12 }}>Nom complet</Text>
+                                    <br />
+                                    <Text strong>
+                                        {userData?.data?.fullName
+                                            || userData?.data?.name
+                                            || [userData?.data?.firstName, userData?.data?.lastName].filter(Boolean).join(" ")
+                                            || "-"}
+                                    </Text>
+                                </div>
+                                <div>
+                                    <Text type="secondary" style={{ fontSize: 12 }}>E-mail</Text>
+                                    <br />
+                                    <Text>{userData?.data?.email || "-"}</Text>
+                                </div>
+                                <div>
+                                    <Text type="secondary" style={{ fontSize: 12 }}>Numéro de téléphone</Text>
+                                    <br />
+                                    <Text>{userData?.data?.phone || userData?.data?.phoneNumber || "-"}</Text>
+                                </div>
+                                <div>
+                                    <Text type="secondary" style={{ fontSize: 12 }}>Adresse</Text>
+                                    <br />
+                                    <Text>{userData?.data?.address || "-"}</Text>
+                                </div>
+                            </Space>
+                        </Card>
+                    </Col>
+                )}
             </Row>
 
             {/* Critères */}
