@@ -6,12 +6,13 @@ import {
     DeleteButton,
     BooleanField,
 } from "@refinedev/antd";
-import {Table, Space, Button, Tag} from "antd";
+import {Table, Space, Button, Tag, Divider} from "antd";
 import {Link} from "react-router-dom";
 import type {CrudFilter} from "@refinedev/core/src/contexts/data/types";
 import {ArrowRightOutlined} from "@ant-design/icons";
 import {SearchInput} from "@/components/filters";
 import {DateDisplayField} from "@/components/table";
+import {ExportUsersButton} from "./export-users-button";
 
 type Props = {
     filters?: {
@@ -35,6 +36,13 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
         filters,
     });
 
+    // Merge permanent + initial filters to pass to the export button
+    const allFilters = [
+        ...(filters?.permanent ?? []),
+        ...(filters?.initial ?? []),
+        ...(searchFilters ?? []),
+    ];
+
     return (
         <List title={translate("users.title")}
               headerButtons={[
@@ -42,6 +50,11 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
                       setFilters={setFilters}
                       tableQuery={tableQuery}
                   />,
+                  <ExportUsersButton
+                      filters={allFilters}
+                      filenamePrefix={activeMenu ? `utilisateurs_${activeMenu}` : "utilisateurs"}
+                  />,
+                  <Divider type="vertical" style={{height: 24, margin: "0 4px"}} />,
                   <Link to="/users">
                       <Button
                           type={activeMenu == "all_e" ? "primary" : "default"}
