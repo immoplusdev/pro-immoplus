@@ -28,7 +28,7 @@ export const EditReservation: React.FC = () => {
                 <Space>
                     <Button
                         icon={<OrderedListOutlined/>}
-                        onClick={() => navigate("/reservations")}
+                        onClick={() => navigate(-1)}
                     >
                         Reservations
                     </Button>
@@ -40,7 +40,7 @@ export const EditReservation: React.FC = () => {
                     </Button>
                     <DeleteButton
                         recordItemId={reservationData?.id}
-                        onSuccess={() =>navigate('/reservations')}
+                        onSuccess={() => navigate(-1)}
                     />
                     <Button
                         type="primary"

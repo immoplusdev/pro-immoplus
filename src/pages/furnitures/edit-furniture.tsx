@@ -45,7 +45,7 @@ export const EditFurniture: React.FC = () => {
                 <Space>
                     <Button
                         icon={<OrderedListOutlined/>}
-                        onClick={() => navigate("/furnitures")}
+                        onClick={() => navigate(-1)}
                     >
                         {translate("furnitures.title")}
                     </Button>
@@ -57,7 +57,7 @@ export const EditFurniture: React.FC = () => {
                     </Button>
                     <DeleteButton
                         recordItemId={furnitureData?.id}
-                        onSuccess={() => navigate("/furnitures")}
+                        onSuccess={() => navigate(-1)}
                     />
                     <Button
                         type="primary"

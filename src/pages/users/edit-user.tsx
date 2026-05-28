@@ -39,7 +39,7 @@ export const EditUser: React.FC = () => {
         <Space>
           <Button
             icon={<OrderedListOutlined />}
-            onClick={() => navigate("/users")}
+            onClick={() => navigate(-1)}
           >
             Users
           </Button>
@@ -48,7 +48,7 @@ export const EditUser: React.FC = () => {
           </Button>
           <DeleteButton
             recordItemId={usersData?.id}
-            onSuccess={() => navigate("/users")}
+            onSuccess={() => navigate(-1)}
           />
           <Button type="primary" icon={<SaveOutlined />} {...saveButtonProps}>
             {translate("buttons.save")}

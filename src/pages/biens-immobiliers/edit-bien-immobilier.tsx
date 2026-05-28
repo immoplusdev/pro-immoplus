@@ -32,7 +32,7 @@ export const EditBienImmobilier: React.FC = () => {
                 <Space>
                     <Button
                         icon={<OrderedListOutlined/>}
-                        onClick={() => navigate("/biens-immobiliers")}
+                        onClick={() => navigate(-1)}
                     >
                         Biens immobiliers
                     </Button>
@@ -44,7 +44,7 @@ export const EditBienImmobilier: React.FC = () => {
                     </Button>
                     <DeleteButton
                         recordItemId={biensImmobiliersData?.id}
-                        onSuccess={() =>navigate('/demandes-visites')}
+                        onSuccess={() => navigate(-1)}
                     />
                     <Button
                         type="primary"
