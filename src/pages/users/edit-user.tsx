@@ -16,7 +16,10 @@ export const EditUser: React.FC = () => {
   const translate = useTranslate();
   const navigate = useNavigate();
   const { id: userId } = useParams<{ id: string }>();
-  const { formProps, saveButtonProps, queryResult, form } = useForm();
+  const { formProps, saveButtonProps, queryResult, form } = useForm({
+    redirect: false,
+    onMutationSuccess: () => navigate(-1),
+  });
   const usersData = queryResult?.data?.data;
 
   const { data: walletQuery, isLoading: walletIsLoading, refetch: refetchWallet } = useCustom({

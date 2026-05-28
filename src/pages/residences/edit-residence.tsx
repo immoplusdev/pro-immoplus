@@ -12,7 +12,10 @@ import {Button, Col, Form, Row, Space} from "antd";
 
 export const EditResidence: React.FC = () => {
     const translate = useTranslate();
-    const { formProps, saveButtonProps, queryResult, form } = useForm();
+    const { formProps, saveButtonProps, queryResult, form } = useForm({
+        redirect: false,
+        onMutationSuccess: () => navigate(-1),
+    });
     const residencesData = queryResult?.data?.data;
     const navigate = useNavigate()
 

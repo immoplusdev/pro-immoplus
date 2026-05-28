@@ -11,7 +11,10 @@ import {useNavigate} from "react-router-dom";
 export const EditReservation: React.FC = () => {
     const translate = useTranslate();
     const navigate = useNavigate()
-    const { formProps, saveButtonProps, queryResult, form } = useForm();
+    const { formProps, saveButtonProps, queryResult, form } = useForm({
+        redirect: false,
+        onMutationSuccess: () => navigate(-1),
+    });
     const reservationData = queryResult?.data?.data;
     const { selectProps: residenceSelectProps } = useSelect({
         resource: "residences",

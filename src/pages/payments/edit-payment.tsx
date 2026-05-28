@@ -10,7 +10,10 @@ import {Amount} from "@/components/payments";
 export function EditPayment() {
     const translate = useTranslate();
     const navigate = useNavigate()
-    const {formProps, saveButtonProps, queryResult, form} = useForm();
+    const {formProps, saveButtonProps, queryResult, form} = useForm({
+        redirect: false,
+        onMutationSuccess: () => navigate(-1),
+    });
     const data = queryResult?.data?.data as Payment;
     console.log(queryResult)
     return (

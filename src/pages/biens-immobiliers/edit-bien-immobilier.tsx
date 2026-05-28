@@ -12,7 +12,10 @@ import {useNavigate} from "react-router-dom";
 export const EditBienImmobilier: React.FC = () => {
     const translate = useTranslate();
     const navigate = useNavigate()
-    const { formProps, saveButtonProps, queryResult, form } = useForm();
+    const { formProps, saveButtonProps, queryResult, form } = useForm({
+        redirect: false,
+        onMutationSuccess: () => navigate(-1),
+    });
     const biensImmobiliersData = queryResult?.data?.data;
 
     const { data: ownerData, isLoading: ownerLoading } = useOne({

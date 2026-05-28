@@ -11,7 +11,10 @@ import {ShowUserButton} from "@/pages/users/components";
 export const EditFurniture: React.FC = () => {
     const translate = useTranslate();
     const navigate = useNavigate();
-    const {formProps, saveButtonProps, queryResult, form} = useForm();
+    const {formProps, saveButtonProps, queryResult, form} = useForm({
+        redirect: false,
+        onMutationSuccess: () => navigate(-1),
+    });
     const furnitureData = queryResult?.data?.data;
 
     const ownerId = furnitureData?.owner?.id || furnitureData?.owner;
