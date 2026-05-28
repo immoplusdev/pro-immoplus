@@ -1,5 +1,5 @@
 import React from "react";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 import {OrderedListOutlined, ReloadOutlined, SaveOutlined} from "@ant-design/icons"
 import {DeleteButton, Edit, useForm} from "@refinedev/antd";
 import {ResidenceEditActionFields} from "@/pages/residences/components/edit-actions-fields";
@@ -12,12 +12,14 @@ import {Button, Col, Form, Row, Space} from "antd";
 
 export const EditResidence: React.FC = () => {
     const translate = useTranslate();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const goBack = () => navigate((location.state as any)?.from || -1);
     const { formProps, saveButtonProps, queryResult, form } = useForm({
         redirect: false,
-        onMutationSuccess: () => navigate(-1),
+        onMutationSuccess: goBack,
     });
     const residencesData = queryResult?.data?.data;
-    const navigate = useNavigate()
 
     const { data: ownerData, isLoading: ownerLoading } = useOne({
         resource: "users",
@@ -37,7 +39,7 @@ export const EditResidence: React.FC = () => {
                 <Space>
                     <Button
                         icon={<OrderedListOutlined/>}
-                        onClick={() => navigate(-1)}
+                        onClick={goBack}
                     >
                         Residences
                     </Button>
@@ -49,7 +51,7 @@ export const EditResidence: React.FC = () => {
                     </Button>
                     <DeleteButton
                         recordItemId={residencesData?.id}
-                        onSuccess={() => navigate(-1)}
+                        onSuccess={goBack}
                     />
                     <Button
                         type="primary"

@@ -3,7 +3,7 @@ import {DeleteButton, Edit, useForm, ImageField} from "@refinedev/antd";
 import {Button, Card, Col, Descriptions, Form, Input, InputNumber, Row, Select, Space, Spin} from "antd";
 import {useOne, useTranslate} from "@refinedev/core";
 import {DatabaseOutlined, EditOutlined, OrderedListOutlined, ReloadOutlined, SaveOutlined, UserOutlined} from "@ant-design/icons";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 import {ReadOnlyFormField} from "@/lib/ts-utilities";
 import {formatAmount, getApiFileUrl} from "@/lib/helpers";
 import {ShowUserButton} from "@/pages/users/components";
@@ -11,9 +11,11 @@ import {ShowUserButton} from "@/pages/users/components";
 export const EditFurniture: React.FC = () => {
     const translate = useTranslate();
     const navigate = useNavigate();
+    const location = useLocation();
+    const goBack = () => navigate((location.state as any)?.from || -1);
     const {formProps, saveButtonProps, queryResult, form} = useForm({
         redirect: false,
-        onMutationSuccess: () => navigate(-1),
+        onMutationSuccess: goBack,
     });
     const furnitureData = queryResult?.data?.data;
 
@@ -48,7 +50,7 @@ export const EditFurniture: React.FC = () => {
                 <Space>
                     <Button
                         icon={<OrderedListOutlined/>}
-                        onClick={() => navigate(-1)}
+                        onClick={goBack}
                     >
                         {translate("furnitures.title")}
                     </Button>
@@ -60,7 +62,7 @@ export const EditFurniture: React.FC = () => {
                     </Button>
                     <DeleteButton
                         recordItemId={furnitureData?.id}
-                        onSuccess={() => navigate(-1)}
+                        onSuccess={goBack}
                     />
                     <Button
                         type="primary"
