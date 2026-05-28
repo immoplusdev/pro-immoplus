@@ -9,14 +9,19 @@ import {
   ReloadOutlined,
   SaveOutlined,
 } from "@ant-design/icons";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { API_URL } from "@/configs/app.config";
 
 export const EditUser: React.FC = () => {
   const translate = useTranslate();
   const navigate = useNavigate();
+  const location = useLocation();
+  const goBack = () => navigate((location.state as any)?.from || -1);
   const { id: userId } = useParams<{ id: string }>();
-  const { formProps, saveButtonProps, queryResult, form } = useForm();
+  const { formProps, saveButtonProps, queryResult, form } = useForm({
+    redirect: false,
+    onMutationSuccess: goBack,
+  });
   const usersData = queryResult?.data?.data;
 
   const { data: walletQuery, isLoading: walletIsLoading, refetch: refetchWallet } = useCustom({
@@ -39,7 +44,7 @@ export const EditUser: React.FC = () => {
         <Space>
           <Button
             icon={<OrderedListOutlined />}
-            onClick={() => navigate("/users")}
+            onClick={goBack}
           >
             Users
           </Button>
@@ -48,7 +53,7 @@ export const EditUser: React.FC = () => {
           </Button>
           <DeleteButton
             recordItemId={usersData?.id}
-            onSuccess={() => navigate("/users")}
+            onSuccess={goBack}
           />
           <Button type="primary" icon={<SaveOutlined />} {...saveButtonProps}>
             {translate("buttons.save")}

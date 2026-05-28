@@ -8,7 +8,7 @@ import {BaseRecord, useTranslate} from "@refinedev/core";
 import React from "react";
 import {type CrudFilter} from "@refinedev/core/src/contexts/data/types";
 import {TypeResidenceTag} from "@/pages/residences/components/type-residence-tag";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {ArrowRightOutlined, EditOutlined, EyeOutlined} from "@ant-design/icons";
 import {
     StatusValidationBiensImmobilersTag
@@ -27,6 +27,7 @@ type Props = {
 
 export function ListResidenceTable({filters, activeMenu}: Props) {
     const translate = useTranslate();
+    const location = useLocation();
     const {tableProps, setFilters, filters: searchFilters, tableQuery} = useTable(
         {
             resource: "residences",
@@ -134,7 +135,7 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                     align="center"
                     render={(_, record: BaseRecord) => (
                         <Space>
-                            <Link to={`/residences/edit/${record.id}`}>
+                            <Link to={`/residences/edit/${record.id}`} state={{ from: location.pathname + location.search }}>
                                 <Button
                                     size="small"
                                     icon={<ArrowRightOutlined/>}

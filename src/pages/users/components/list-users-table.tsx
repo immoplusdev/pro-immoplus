@@ -7,7 +7,7 @@ import {
     BooleanField,
 } from "@refinedev/antd";
 import {Table, Space, Button, Tag, Divider} from "antd";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import type {CrudFilter} from "@refinedev/core/src/contexts/data/types";
 import {ArrowRightOutlined} from "@ant-design/icons";
 import {SearchInput} from "@/components/filters";
@@ -23,6 +23,7 @@ type Props = {
     activeMenu?: "all_e" | "admin" | "pro_entreprise" | "pro_particulier" | "utilisateurs_valides" | "utilisateurs_non_valides" | "customer" | "financier" | "commercial"
 }
 export const ListUsersTable = ({filters, activeMenu}: Props) => {
+    const location = useLocation();
     const translate = useTranslate();
     const {tableProps, filters: searchFilters, setFilters, tableQuery} = useTable({
         syncWithLocation: true,
@@ -177,7 +178,7 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
                     align="center"
                     render={(_, record: BaseRecord) => (
                         <Space>
-                            <Link to={`/users/edit/${record.id}`}>
+                            <Link to={`/users/edit/${record.id}`} state={{ from: location.pathname + location.search }}>
                                 <Button
                                     size="small"
                                     icon={<ArrowRightOutlined/>}

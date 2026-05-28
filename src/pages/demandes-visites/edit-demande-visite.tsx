@@ -1,16 +1,21 @@
 import React from "react";
 import {DeleteButton, Edit, useForm} from "@refinedev/antd";
 import {Form, Col, Row, Space, Button} from "antd";
-import {useNavigation, useTranslate} from "@refinedev/core";
+import {useTranslate} from "@refinedev/core";
 import { DemandeVisiteEditActionFields } from "@/pages/demandes-visites/components/edit-actions-fields";
 import { DemandeVisiteEditDataFields } from "@/pages/demandes-visites/components/edit-read-only-fields";
 import {OrderedListOutlined, ReloadOutlined, SaveOutlined} from "@ant-design/icons";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 
 export const EditDemandeVisite: React.FC = () => {
   const translate = useTranslate();
-  const navigate = useNavigate()
-  const { formProps, saveButtonProps, queryResult, form } = useForm();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const goBack = () => navigate((location.state as any)?.from || -1);
+  const { formProps, saveButtonProps, queryResult, form } = useForm({
+      redirect: false,
+      onMutationSuccess: goBack,
+  });
   const demandesVisitesData = queryResult?.data?.data;
 
   return (
@@ -25,7 +30,7 @@ export const EditDemandeVisite: React.FC = () => {
             <Space>
               <Button
                   icon={<OrderedListOutlined/>}
-                  onClick={() => navigate("/demandes-visites")}
+                  onClick={goBack}
               >
                 Demandes visites
               </Button>
@@ -37,7 +42,7 @@ export const EditDemandeVisite: React.FC = () => {
               </Button>
               <DeleteButton
                   recordItemId={demandesVisitesData?.id}
-                  onSuccess={() => navigate('/demandes-visites')}
+                  onSuccess={goBack}
               />
               <Button
                   type="primary"
