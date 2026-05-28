@@ -3,7 +3,7 @@ import { useTranslate } from "@refinedev/core";
 import { useForm } from "@refinedev/antd";
 import { Form, Button, Space, message } from "antd";
 import { ArrowLeftOutlined, SaveOutlined, SendOutlined } from "@ant-design/icons";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { BannerFormFields } from "./components/banner-form-fields";
 
 export const EditBanner = () => {
@@ -22,7 +22,7 @@ export const EditBanner = () => {
                     ? translate("banners.messages.publishSuccess") || "Bannière publiée"
                     : translate("banners.messages.saveSuccess") || "Bannière enregistrée"
             );
-            navigate("/banners");
+            navigate(-1);
         },
     });
 
@@ -47,11 +47,9 @@ export const EditBanner = () => {
                     marginBottom: 24,
                 }}
             >
-                <Link to="/banners">
-                    <Button icon={<ArrowLeftOutlined />}>
-                        {translate("common.back") || "Retour"}
-                    </Button>
-                </Link>
+                <Button icon={<ArrowLeftOutlined />} onClick={() => navigate(-1)}>
+                    {translate("common.back") || "Retour"}
+                </Button>
                 <Space>
                     <Button icon={<SaveOutlined />} onClick={handleSave}>
                         {translate("buttons.save") || "Enregistrer"}

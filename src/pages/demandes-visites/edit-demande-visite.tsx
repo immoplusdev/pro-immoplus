@@ -25,7 +25,7 @@ export const EditDemandeVisite: React.FC = () => {
             <Space>
               <Button
                   icon={<OrderedListOutlined/>}
-                  onClick={() => navigate("/demandes-visites")}
+                  onClick={() => navigate(-1)}
               >
                 Demandes visites
               </Button>
@@ -37,7 +37,7 @@ export const EditDemandeVisite: React.FC = () => {
               </Button>
               <DeleteButton
                   recordItemId={demandesVisitesData?.id}
-                  onSuccess={() => navigate('/demandes-visites')}
+                  onSuccess={() => navigate(-1)}
               />
               <Button
                   type="primary"

@@ -19,7 +19,7 @@ export function EditPayment() {
             saveButtonProps={saveButtonProps}
             headerButtons={
                 <Space>
-                    <Button icon={<OrderedListOutlined/>} onClick={() => navigate("/payments")}>Paiements</Button>
+                    <Button icon={<OrderedListOutlined/>} onClick={() => navigate(-1)}>Paiements</Button>
                     <Button
                         icon={<ReloadOutlined/>}
                         onClick={() => form?.resetFields()}

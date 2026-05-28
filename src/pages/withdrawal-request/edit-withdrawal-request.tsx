@@ -6,19 +6,21 @@ import {
     DeleteButton,
 } from "@refinedev/antd";
 import {Form, Input, Select, InputNumber, Row, Col, Card} from "antd";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 const {Option} = Select;
 
 export const EditWithdrawalRequest = () => {
     const translate = useTranslate();
+    const navigate = useNavigate();
     const {id} = useParams<{id: string}>();
-    
+
     const {formProps, saveButtonProps} = useForm<BaseRecord>({
         resource: "withdrawal-requests",
         action: "edit",
         id,
-        redirect: "list"
+        redirect: false,
+        onMutationSuccess: () => navigate(-1),
     });
 
 
