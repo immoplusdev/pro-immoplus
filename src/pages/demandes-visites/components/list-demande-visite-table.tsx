@@ -4,7 +4,7 @@ import {Button, Space, Table, Tag} from "antd";
 import {
     StatusValidationDemandeVisiteTag
 } from "@/pages/demandes-visites/components/status-validation-demande-visite-tag";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {ArrowRightOutlined} from "@ant-design/icons";
 import React from "react";
 import type {CrudFilter} from "@refinedev/core/src/contexts/data/types";
@@ -22,6 +22,7 @@ type Props = {
 }
 
 export function ListDemandeVisiteTable({filters, activeMenu}: Props) {
+    const location = useLocation();
     const translate = useTranslate();
     const {tableProps, setFilters, tableQuery} = useTable({
         resource: "demandes-visites",
@@ -123,7 +124,7 @@ export function ListDemandeVisiteTable({filters, activeMenu}: Props) {
                     align="center"
                     render={(_, record: BaseRecord) => (
                         <Space>
-                            <Link to={`/demandes-visites/edit/${record.id}`}>
+                            <Link to={`/demandes-visites/edit/${record.id}`} state={{ from: location.pathname + location.search }}>
                                 <Button
                                     size="small"
                                     icon={<ArrowRightOutlined/>}

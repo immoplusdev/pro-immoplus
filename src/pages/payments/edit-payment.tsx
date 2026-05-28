@@ -2,15 +2,20 @@ import React from "react";
 import {useTranslate} from "@refinedev/core";
 import {Edit, useForm} from "@refinedev/antd";
 import {Button, Card, Col, Form, Row, Select, Space, Tag} from "antd";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 import {DatabaseOutlined, EditOutlined, OrderedListOutlined, ReloadOutlined, SaveOutlined} from "@ant-design/icons";
 import {enumToList, ReadOnlyFormField} from "@/lib/ts-utilities";
 import {Payment, PaymentStatus} from "@/core/domain/payments";
 import {Amount} from "@/components/payments";
 export function EditPayment() {
     const translate = useTranslate();
-    const navigate = useNavigate()
-    const {formProps, saveButtonProps, queryResult, form} = useForm();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const goBack = () => navigate((location.state as any)?.from || -1);
+    const {formProps, saveButtonProps, queryResult, form} = useForm({
+        redirect: false,
+        onMutationSuccess: goBack,
+    });
     const data = queryResult?.data?.data as Payment;
     console.log(queryResult)
     return (
@@ -19,7 +24,7 @@ export function EditPayment() {
             saveButtonProps={saveButtonProps}
             headerButtons={
                 <Space>
-                    <Button icon={<OrderedListOutlined/>} onClick={() => navigate(-1)}>Paiements</Button>
+                    <Button icon={<OrderedListOutlined/>} onClick={goBack}>Paiements</Button>
                     <Button
                         icon={<ReloadOutlined/>}
                         onClick={() => form?.resetFields()}

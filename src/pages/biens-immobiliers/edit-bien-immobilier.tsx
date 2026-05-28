@@ -5,14 +5,19 @@ import { useOne, useTranslate } from "@refinedev/core";
 import {BienImmobilierDataFields} from "@/pages/biens-immobiliers/components/edit-read-only-fields";
 import {BienImmobilierEditActionFields} from "@/pages/biens-immobiliers/components/edit-actions-fields";
 import {OrderedListOutlined, ReloadOutlined, SaveOutlined} from "@ant-design/icons";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 
 
 // Main Edit Component
 export const EditBienImmobilier: React.FC = () => {
     const translate = useTranslate();
-    const navigate = useNavigate()
-    const { formProps, saveButtonProps, queryResult, form } = useForm();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const goBack = () => navigate((location.state as any)?.from || -1);
+    const { formProps, saveButtonProps, queryResult, form } = useForm({
+        redirect: false,
+        onMutationSuccess: goBack,
+    });
     const biensImmobiliersData = queryResult?.data?.data;
 
     const { data: ownerData, isLoading: ownerLoading } = useOne({
@@ -32,7 +37,7 @@ export const EditBienImmobilier: React.FC = () => {
                 <Space>
                     <Button
                         icon={<OrderedListOutlined/>}
-                        onClick={() => navigate(-1)}
+                        onClick={goBack}
                     >
                         Biens immobiliers
                     </Button>
@@ -44,7 +49,7 @@ export const EditBienImmobilier: React.FC = () => {
                     </Button>
                     <DeleteButton
                         recordItemId={biensImmobiliersData?.id}
-                        onSuccess={() => navigate(-1)}
+                        onSuccess={goBack}
                     />
                     <Button
                         type="primary"

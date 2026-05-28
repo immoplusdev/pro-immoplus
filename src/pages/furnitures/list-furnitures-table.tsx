@@ -3,7 +3,7 @@ import {DeleteButton, List, useTable} from "@refinedev/antd";
 import {Button, Space, Table, Tag} from "antd";
 import {Thumbnail} from "@/components";
 import {formatAmount, getApiFileUrl} from "@/lib/helpers";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {ArrowRightOutlined} from "@ant-design/icons";
 import React from "react";
 import {SearchInput} from "@/components/filters";
@@ -11,6 +11,7 @@ import {DateDisplayField} from "@/components/table";
 
 export function ListFurnituresTable() {
     const translate = useTranslate();
+    const location = useLocation();
     const {tableProps, setFilters, tableQuery} = useTable({
         resource: "furnitures",
         syncWithLocation: true,
@@ -128,7 +129,7 @@ export function ListFurnituresTable() {
                     align="center"
                     render={(_, record: BaseRecord) => (
                         <Space>
-                            <Link to={`/furnitures/edit/${record.id}`}>
+                            <Link to={`/furnitures/edit/${record.id}`} state={{ from: location.pathname + location.search }}>
                                 <Button
                                     size="small"
                                     icon={<ArrowRightOutlined/>}

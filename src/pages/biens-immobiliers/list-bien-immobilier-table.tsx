@@ -7,7 +7,7 @@ import {StatusValidationBiensImmobilers} from "@/lib/ts-utilities/enums/status-b
 import {
     StatusValidationBiensImmobilersTag
 } from "@/pages/biens-immobiliers/components/status-validation-biens-immobilers-tag";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {ArrowRightOutlined} from "@ant-design/icons";
 import React, {useEffect} from "react";
 import {CrudFilter} from "@refinedev/core/src/contexts/data/types";
@@ -26,6 +26,7 @@ type Props = {
 }
 
 export function ListBienImmobilierTable({filters, activeMenu}: Props) {
+    const location = useLocation();
     const translate = useTranslate();
     const {tableProps, filters: currentFilters, setFilters, tableQuery} = useTable({
         resource: "biens-immobiliers",
@@ -154,7 +155,7 @@ export function ListBienImmobilierTable({filters, activeMenu}: Props) {
                     align="center"
                     render={(_, record: BaseRecord) => (
                         <Space>
-                            <Link to={`/biens-immobiliers/edit/${record.id}`}>
+                            <Link to={`/biens-immobiliers/edit/${record.id}`} state={{ from: location.pathname + location.search }}>
                                 <Button
                                     size="small"
                                     icon={<ArrowRightOutlined/>}

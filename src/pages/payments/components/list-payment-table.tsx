@@ -2,7 +2,7 @@ import {CrudFilter} from "@refinedev/core/src/contexts/data/types";
 import {BaseRecord, useTranslate} from "@refinedev/core";
 import {DateField, FilterDropdown, List, useTable} from "@refinedev/antd";
 import {Button, Select, Space, Table, Tag} from "antd";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {ArrowRightOutlined} from "@ant-design/icons";
 import React from "react";
 import {Amount} from "@/components/payments";
@@ -25,6 +25,7 @@ type Props = {
 
 export function ListPaymentTable({activeMenu, filters}: Props) {
     const translate = useTranslate();
+    const location = useLocation();
 
     const {tableProps, setFilters, tableQuery} = useTable<Payment>({
         resource: "payments",
@@ -139,7 +140,7 @@ export function ListPaymentTable({activeMenu, filters}: Props) {
                     align="center"
                     render={(_, record: BaseRecord) => (
                         <Space>
-                            <Link to={`/payments/edit/${record.id}`}>
+                            <Link to={`/payments/edit/${record.id}`} state={{ from: location.pathname + location.search }}>
                                 <Button
                                     size="small"
                                     icon={<ArrowRightOutlined/>}

@@ -5,13 +5,18 @@ import { useTranslate } from "@refinedev/core";
 import {ReservationEditDataFields} from "@/pages/reservations/components/edit-read-only-fields";
 import {ReservationEditActionFields} from "@/pages/reservations/components/edit-actions-fields";
 import {OrderedListOutlined, ReloadOutlined, SaveOutlined} from "@ant-design/icons";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 
 
 export const EditReservation: React.FC = () => {
     const translate = useTranslate();
-    const navigate = useNavigate()
-    const { formProps, saveButtonProps, queryResult, form } = useForm();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const goBack = () => navigate((location.state as any)?.from || -1);
+    const { formProps, saveButtonProps, queryResult, form } = useForm({
+        redirect: false,
+        onMutationSuccess: goBack,
+    });
     const reservationData = queryResult?.data?.data;
     const { selectProps: residenceSelectProps } = useSelect({
         resource: "residences",
@@ -28,7 +33,7 @@ export const EditReservation: React.FC = () => {
                 <Space>
                     <Button
                         icon={<OrderedListOutlined/>}
-                        onClick={() => navigate(-1)}
+                        onClick={goBack}
                     >
                         Reservations
                     </Button>
@@ -40,7 +45,7 @@ export const EditReservation: React.FC = () => {
                     </Button>
                     <DeleteButton
                         recordItemId={reservationData?.id}
-                        onSuccess={() => navigate(-1)}
+                        onSuccess={goBack}
                     />
                     <Button
                         type="primary"

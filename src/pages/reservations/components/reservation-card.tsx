@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Space, theme } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { useTranslate } from "@refinedev/core";
 import { DeleteButton } from "@refinedev/antd";
@@ -43,6 +43,7 @@ type Props = {
 
 export function ReservationCard({ record, onExpire }: Props) {
   const translate = useTranslate();
+  const location = useLocation();
   const { token } = theme.useToken();
   const borderColor = getBorderColor(record);
   const date = new Date(record.createdAt);
@@ -141,7 +142,7 @@ export function ReservationCard({ record, onExpire }: Props) {
             </div>
           </div>
           <Space>
-            <Link to={`/reservations/edit/${record.id}`}>
+            <Link to={`/reservations/edit/${record.id}`} state={{ from: location.pathname + location.search }}>
               <Button size="small" icon={<ArrowRightOutlined />}>
                 Détails
               </Button>
