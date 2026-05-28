@@ -1,121 +1,188 @@
-# Immoplus Admin
+# Immoplus Admin — Back-office
 
-This Project is the main admin for immoplus app
+Administration dashboard for the [Immoplus](https://api.immoplus.ci) real estate platform (Côte d'Ivoire). Built with **React 18**, **Refine.dev v4**, and **Ant Design v5**.
+
+> Full technical reference: [`docs/TECHNICAL_DOCUMENTATION.md`](docs/TECHNICAL_DOCUMENTATION.md)
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| UI Framework | React 18 + TypeScript |
+| Admin Framework | Refine.dev v4 |
+| Component Library | Ant Design v5 |
+| Routing | React Router v6 |
+| HTTP Client | Axios (with auto token-refresh interceptor) |
+| Real-time | Socket.io Client v4 |
+| Charts | Recharts |
+| Maps | Mapbox GL / MapLibre GL + react-map-gl |
+| Internationalization | i18next (French primary, English fallback) |
+| Exports | XLSX + jsPDF |
+| CSS | TailwindCSS |
+| Build Tool | Vite |
+
+---
 
 ## Getting Started
 
-Make sure that you have `node 20` or ealier installed on your local machine. Once all requirements are met, follow the following procedure to run the project locally:
+### Prerequisites
 
-- Make sure create create a `.env` file in the root directory of the project. Put the content in the `.env.example` in your new file.
+- Node.js **≥ 20** (Node 23 is used in production on Netlify)
+- A `.env` file in the project root (copy from `.env.example`)
 
-- Run
+### Environment Variables
+
+| Variable | Default | Description |
+|---|---|---|
+| `VITE_API_URL` | `https://api.immoplus.ci` | Backend API base URL |
+| `VITE_PROJECT_ID` | `xntn5Z-AEaHwy-gkPtSa` | Refine devtools project ID |
+
+### Install & Run
 
 ```bash
-    npm install --force
+# Install dependencies
+npm install
+
+# Start the development server
+npm run dev
+
+# Start with Refine DevTools panel
+npm run debug
 ```
 
-in the root directory in order to install the project dependencies
-
-- Run
-
-```bash
-    npm run dev
-```
-
-to start the development server.
+---
 
 ## Available Scripts
 
-### Running the development server.
+| Script | Description |
+|---|---|
+| `npm run dev` | Development server (Vite) |
+| `npm run debug` | Dev server + Refine DevTools |
+| `npm run build` | Production build → `dist/` |
+| `npm run start` | Preview the production build |
 
-```bash
-    npm run dev
-```
+---
 
-### Building for production.
+## User Roles
 
-```bash
-    npm run build
-```
+Three roles can access the back-office (all others are rejected at login):
 
-### Running the production server.
+| Role | Access | Default page |
+|---|---|---|
+| `admin` | Full access — all 18 resources | `/demandes-visites` |
+| `financier` | Finance only: payments, transfers, withdrawal requests | `/withdrawal-requests` |
+| `commercial` | All except finance, banners, and configs | `/demandes-visites` |
 
-```bash
-    npm run start
-```
+---
 
-## Learn More About Refine
+## Modules (Resources)
 
-To learn more about **Refine**, please check out the [Documentation](https://refine.dev/docs)
+| Module | Path | Description |
+|---|---|---|
+| Statistics | `/statistics` | Dashboard charts |
+| Feed | `/feed` | Video feed (active + legacy) + upload |
+| Alerts | `/alerts` | User property search alerts |
+| Demandes Pro Particulier | `/demandes-pro-particulier` | Pro individual account requests |
+| Demandes de Visites | `/demandes-visites` | Property visit requests |
+| Résidences | `/residences` | Residential properties |
+| Réservations | `/reservations` | Booking management with live countdown |
+| Biens Immobiliers | `/biens-immobiliers` | Real estate listings |
+| Meubles | `/furnitures` | Furniture items |
+| Utilisateurs | `/users` | User management + wallet operations + export |
+| Demandes de Retraits | `/withdrawal-requests` | Withdrawal requests |
+| Transferts | `/transfers` | Financial transfers |
+| Paiements | `/payments` | Payment management |
+| Préférences Utilisateurs | `/user-preferences` | User preference records |
+| Bannières | `/banners` | In-app banners with drag-and-drop ordering |
+| Configurations | `/configs` | Application configuration |
 
-- **REST Data Provider** [Docs](https://refine.dev/docs/core/providers/data-provider/#overview)
-- **Ant Design** [Docs](https://refine.dev/docs/ui-frameworks/antd/tutorial/)
-- **Inferencer** [Docs](https://refine.dev/docs/packages/documentation/inferencer)
-- **Custom Auth Provider** [Docs](https://refine.dev/docs/core/providers/auth-provider/)
-- **i18n** [Docs](https://refine.dev/docs/core/providers/i18n-provider/)
-- **React Router** [Docs](https://refine.dev/docs/core/providers/router-provider/)
+---
 
 ## Folder Structure
-- The `components` directory contains all the components shared between the different pages of our app. 
-- The ``configs`` directory contains all the app configurations
-- The ``core`` directory contains our business logic
-    - The ``core/domain`` directory contains all the domain logic according to the DDD approach
-    - The ``core/application`` directory contains a layer that connects the domain logic to the UI
-- The ``lib`` directory contains all the utility functions. This includes helpers and implementation of different services defined in the domain layer.
-    - ``lib/helpers`` contains all the utility functions used in the pap
-    - ``lib/providers`` contains all the providers used by refined (authProvider, dataProvider...)
-    - ``lib/services`` contains all the services used in the app
 
-## Work on a functionality
+```
+src/
+├── App.tsx                  # Refine provider tree + resource registry
+├── AppRoutes.tsx            # All route definitions
+├── components/              # Shared components (filters, forms, layout, notifications)
+├── configs/                 # App config, map config, role-permission mapping
+├── contexts/                # Theme (color-mode) + notification context (WS + polling)
+├── core/domain/             # Pure TypeScript models and enums (DDD)
+├── hooks/                   # Custom hooks (WebSocket notifications, filters)
+├── lib/
+│   ├── helpers/             # Stateless utility functions (auth, currency, string, URL…)
+│   ├── providers/           # Refine adapter implementations (auth, data, access control)
+│   ├── services/            # Service implementations (authService)
+│   └── ts-utilities/        # Generic TS utilities (arrays, dates, enums, currency…)
+├── pages/                   # Feature pages — one folder per resource
+└── styles/                  # Global CSS
+```
 
-- First, checkout the **dev** branch and pull the latest changes by running:
-  ```bash 
-    git checkout dev
-  ```   
+---
 
-  ```bash 
-    git pull
-  ```   
-- Create a **new branch** with the name of the functionality you are working on
-    - The branch name should be prefixed according to the type of the functionality you are working on
-        - ``feat`` for new features
-        - ``fix`` for bug fixes
-        - ``refactor`` for refactoring
-        - ``chore`` for chores
-        - ``docs`` for documentation
-        - ``test`` for tests
-    - You can get more information about how to write you commit names according to the **conventional commits** standard [here](https://www.conventionalcommits.org/en/v1.0.0/) 
-    - If I'm creating the reservations functionality, I will create a branch with the name ``feat-reservations``
-- Checkout the your new branch
-    ```bash
-    git checkout -b your-branch-name
-    ```
-- To create a new page, you can use the plop generators. 
-    - Run  ````npx plop page:all name-of-the-resource-group name-of-the-resource```` to create a new page using  the plop package.
-        - Where ``name-of-the-resource-group`` is the name of the resource group (e.g. ``residences``) and ``name-of-the-resource`` is the name of the resource (e.g. ``residences``)
-        - You can keep the name in plural, the generators will automatically singularize it
-        - This will create the corresponding files in the ``pages`` directory
-        - It uses the refine guessers to guess the format of the api response and generate pages accordingly
-        - You can use the ``Show the auto-generated code`` button on the refine dev tools widget the get a sample of the code you need to write to generate the page to ease the process of creating the page.
-- When you are done, you need to create a new merge request to the **dev** branch
-    - The merge request should be named according to the functionality you are working on
-    - The merge request will be reviewed by the team and merged to the **dev** branch
-    - Don't forget to notify the team to review your merge request if it takes longer than expected
+## Working on a Feature
+
+1. **Checkout `dev` and pull the latest changes:**
+   ```bash
+   git checkout dev && git pull
+   ```
+
+2. **Create a new branch** following the conventional commits prefix:
+   - `feat/` — new feature
+   - `fix/` — bug fix
+   - `refactor/` — refactoring
+   - `chore/` — maintenance
+   - `docs/` — documentation
+
+   ```bash
+   git checkout -b feat/your-feature-name
+   ```
+
+3. **Scaffold a new resource page** with Plop:
+   ```bash
+   npx plop page:all <resource-group> <resource-name>
+   ```
+   Example: `npx plop page:all residences residence`  
+   The generators singularize names automatically and create all CRUD pages under `src/pages/`.
+
+4. **Register the resource** in `src/App.tsx` (add to the `resources` array) and add routes in `src/AppRoutes.tsx`.
+
+5. **Open a Pull Request** to `dev`. Notify the team for review.
+
+See the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) spec for commit message format.
+
+---
 
 ## Deployment
-- The app can be deployed with docker compose
-- Make sure that you've set the environment variables in the `.env` file following the `.env.example` file
-- Run the following command to deploy the app
-    ```bash
-    docker-compose up --build
-    ```
+
+### Netlify (primary)
+
+Configured via `netlify.toml`. Any push triggers `npm run build` and deploys `dist/`.
+
+### Docker / Nginx
+
+```bash
+# Build and start the container
+docker-compose up --build
+```
+
+The Dockerfile builds a static Nginx container serving the pre-built `dist/` on port **3000**. Set `VITE_API_URL` in your `.env` before building.
+
+---
 
 ## Useful Resources
 
-- [API Url](https://api-v2.immoplus.ci/)
-- [Swagger Doc](https://api-v2.immoplus.ci/swagger)  
-- [Swagger Json](https://api-v2.immoplus.ci/swagger/json)  
-- [App Preview Url](https://pro-immoplus.netlify.app)
+| Resource | URL |
+|---|---|
+| API Base URL | https://api.immoplus.ci |
+| Swagger Docs | https://api-v2.immoplus.ci/swagger |
+| Swagger JSON | https://api-v2.immoplus.ci/swagger/json |
+| App Preview | https://pro-immoplus.netlify.app |
+| Refine.dev Docs | https://refine.dev/docs |
+
+---
 
 ## License
 
