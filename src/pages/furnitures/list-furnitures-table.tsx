@@ -1,6 +1,6 @@
 import {BaseRecord, useTranslate} from "@refinedev/core";
 import {DeleteButton, List, useTable} from "@refinedev/antd";
-import {Button, Space, Table, Tag} from "antd";
+import {Button, Divider, Space, Table, Tag} from "antd";
 import {Thumbnail} from "@/components";
 import {formatAmount, getApiFileUrl} from "@/lib/helpers";
 import {Link, useLocation} from "react-router-dom";
@@ -8,11 +8,27 @@ import {ArrowRightOutlined} from "@ant-design/icons";
 import React from "react";
 import {SearchInput} from "@/components/filters";
 import {DateDisplayField} from "@/components/table";
+import {ExportTableButton} from "@/components/export/export-table-button";
+
+function mapFurnitureToRow(r: any, i: number): Record<string, string> {
+    return {
+        "#": String(i + 1),
+        "Titre": r.titre ?? "-",
+        "Type": r.type ?? "-",
+        "Catégorie": r.category ?? "-",
+        "État": r.etat ?? "-",
+        "Prix": r.prix != null ? new Intl.NumberFormat("fr-FR", { style: "currency", currency: "XOF", maximumFractionDigits: 0 }).format(Number(r.prix)) : "-",
+        "Statut": r.status ?? "-",
+        "Score": r.score != null ? String(r.score) : "-",
+        "Adresse": r.adresse ?? "-",
+        "Date de création": r.createdAt ? new Intl.DateTimeFormat("fr-FR").format(new Date(r.createdAt)) : "-",
+    };
+}
 
 export function ListFurnituresTable() {
     const translate = useTranslate();
     const location = useLocation();
-    const {tableProps, setFilters, tableQuery} = useTable({
+    const {tableProps, filters: currentFilters, setFilters, tableQuery} = useTable({
         resource: "furnitures",
         syncWithLocation: true,
         sorters: {
@@ -50,6 +66,14 @@ export function ListFurnituresTable() {
                     key="search"
                     setFilters={setFilters}
                     tableQuery={tableQuery}
+                />,
+                <ExportTableButton
+                    key="export"
+                    resource="furnitures"
+                    mapToRow={mapFurnitureToRow}
+                    pdfTitle="Liste des Meubles"
+                    filters={currentFilters ?? []}
+                    filenamePrefix="meubles"
                 />,
             ]}
         >

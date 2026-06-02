@@ -1,9 +1,10 @@
 import { CrudFilter, useList, useTranslate } from "@refinedev/core";
 import { List } from "@refinedev/antd";
-import { Button, Pagination, Spin } from "antd";
+import { Button, Divider, Pagination, Spin } from "antd";
 import { Link } from "react-router-dom";
 import React, { useCallback, useState } from "react";
 import { ReservationCard } from "@/pages/reservations/components/reservation-card";
+import { ExportReservationsButton } from "@/pages/reservations/components/export-reservations-button";
 
 const PAGE_SIZE = 20;
 
@@ -64,6 +65,12 @@ export function ReservationMergedTable({
     <List
       title={translate("pages.reservation.reservations")}
       headerButtons={[
+        <ExportReservationsButton
+          filters={filtersA}
+          filtersB={filtersB}
+          filenamePrefix="reservations_toutes"
+        />,
+        <Divider type="vertical" style={{ height: 24, margin: "0 4px" }} />,
         <Link to="/reservations">
           <Button type={activeMenu === "all_e" ? "primary" : "default"}>
             {translate("tags.all_e")}
