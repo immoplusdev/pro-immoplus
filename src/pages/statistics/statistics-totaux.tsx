@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useCustom, useApiUrl } from "@refinedev/core";
 import { Card, Col, Row, Spin, Typography, DatePicker, Statistic, theme } from "antd";
-import { HomeOutlined, CalendarOutlined, AppstoreOutlined, CheckCircleOutlined } from "@ant-design/icons";
+import { HomeOutlined, CalendarOutlined, AppstoreOutlined, CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import dayjs, { Dayjs } from "dayjs";
 
 const { Title } = Typography;
@@ -15,6 +15,7 @@ interface TotauxData {
     };
     biensImmobiliers: number;
     reservationsEffectuees: number;
+    reservationsEchouees: number;
 }
 
 export function StatisticsTotaux() {
@@ -62,6 +63,13 @@ export function StatisticsTotaux() {
             bgCard: token.colorWarningBg,
             bgIcon: token.colorWarningBgHover,
         },
+        {
+            title: "Réservations échouées",
+            value: totaux?.reservationsEchouees ?? 0,
+            icon: <CloseCircleOutlined style={{ fontSize: 24, color: token.colorError }} />,
+            bgCard: token.colorErrorBg,
+            bgIcon: token.colorErrorBgHover,
+        },
     ];
 
     return (
@@ -83,7 +91,7 @@ export function StatisticsTotaux() {
             ) : (
                 <Row gutter={[16, 16]}>
                     {stats.map((stat) => (
-                        <Col key={stat.title} xs={24} sm={12} lg={6}>
+                        <Col key={stat.title} xs={24} sm={12} lg={8}>
                             <Card
                                 style={{ background: stat.bgCard, border: "none" }}
                                 styles={{ body: { display: "flex", alignItems: "center", gap: 16 } }}
