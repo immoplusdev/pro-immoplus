@@ -16,9 +16,13 @@ import {
 } from "@/pages/biens-immobiliers/components/status-validation-biens-immobilers-tag";
 import {StatusValidationBiensImmobilers} from "@/lib/ts-utilities/enums/status-biens-immobiliers";
 import {ListBienImmobilierTable} from "@/pages/biens-immobiliers/list-bien-immobilier-table";
+import {BiensImmobiliersParStatutValidation} from "@/pages/biens-immobiliers/components/biens-immobiliers-par-statut-validation";
 
 export const ListBienImmobiliers = () => {
   return (
-      <ListBienImmobilierTable activeMenu={"all_e"}/>
+      <>
+          <BiensImmobiliersParStatutValidation />
+          <ListBienImmobilierTable activeMenu={"all_e"}/>
+      </>
   )
 };

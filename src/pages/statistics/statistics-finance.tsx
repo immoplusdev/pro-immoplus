@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { useCustom, useApiUrl } from "@refinedev/core";
 import { Card, Col, Row, Spin, Typography, DatePicker, Statistic, theme } from "antd";
-import { DollarOutlined, FileTextOutlined } from "@ant-design/icons";
+import { DollarOutlined, FileTextOutlined, WarningOutlined } from "@ant-design/icons";
 import dayjs, { Dayjs } from "dayjs";
 
 const { Title } = Typography;
 
 interface FinanceData {
     montantTotalReservations: number;
+    montantTotalReservationImpayees: number;
     montantTotalDemandesVisites: number;
 }
 
@@ -37,6 +38,13 @@ export function StatisticsFinance() {
             bgIcon: token.colorSuccessBgHover,
         },
         {
+            title: "Montant total réservations impayées",
+            value: finance?.montantTotalReservationImpayees ?? 0,
+            icon: <WarningOutlined style={{ fontSize: 24, color: token.colorWarning }} />,
+            bgCard: token.colorWarningBg,
+            bgIcon: token.colorWarningBgHover,
+        },
+        {
             title: "Montant total demandes de visites",
             value: finance?.montantTotalDemandesVisites ?? 0,
             icon: <FileTextOutlined style={{ fontSize: 24, color: token.colorPrimary }} />,
@@ -64,7 +72,7 @@ export function StatisticsFinance() {
             ) : (
                 <Row gutter={[16, 16]}>
                     {stats.map((stat) => (
-                        <Col key={stat.title} xs={24} sm={12}>
+                        <Col key={stat.title} xs={24} sm={12} lg={8}>
                             <Card
                                 style={{ background: stat.bgCard, border: "none" }}
                                 styles={{ body: { display: "flex", alignItems: "center", gap: 16 } }}
