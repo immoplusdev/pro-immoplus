@@ -38,11 +38,11 @@ export function StatisticsFinance() {
             bgIcon: token.colorSuccessBgHover,
         },
         {
-            title: "Montant total réservations impayées",
+            title: "Montant total des réservations initiées",
             value: finance?.montantTotalReservationImpayees ?? 0,
-            icon: <WarningOutlined style={{ fontSize: 24, color: token.colorWarning }} />,
-            bgCard: token.colorWarningBg,
-            bgIcon: token.colorWarningBgHover,
+            icon: <WarningOutlined style={{ fontSize: 24, color: token.colorInfo }} />,
+            bgCard: token.colorInfoBg,
+            bgIcon: token.colorInfoBgHover,
         },
         {
             title: "Montant total demandes de visites",
