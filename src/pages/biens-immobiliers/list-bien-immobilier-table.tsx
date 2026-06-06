@@ -1,6 +1,6 @@
 import {BaseRecord, useTranslate} from "@refinedev/core";
 import {BooleanField, DateField, DeleteButton, List, useTable} from "@refinedev/antd";
-import {Button, Space, Table, Tag} from "antd";
+import {Button, Divider, Space, Table, Tag} from "antd";
 import {Thumbnail} from "@/components";
 import {formatAmount, getApiFileUrl} from "@/lib/helpers";
 import {StatusValidationBiensImmobilers} from "@/lib/ts-utilities/enums/status-biens-immobiliers";
@@ -14,6 +14,7 @@ import {CrudFilter} from "@refinedev/core/src/contexts/data/types";
 import {StatusReservation} from "@/lib/ts-utilities/enums/status-reservation";
 import {SearchInput} from "@/components/filters";
 import {DateDisplayField} from "@/components/table";
+import {ExportTableButton} from "@/components/export/export-table-button";
 
 
 type Props = {
@@ -23,6 +24,25 @@ type Props = {
         mode?: "server" | "off";
     };
     activeMenu?: "all_e" | "en_validation" | "valide" | "disponible" | "non_disponible";
+}
+
+const STATUS_BIEN_LABELS: Record<string, string> = {
+    valide: "Validé",
+    en_attente_validation: "En attente de validation",
+    rejete: "Rejeté",
+};
+
+function mapBienToRow(r: any, i: number): Record<string, string> {
+    return {
+        "#": String(i + 1),
+        "Nom": r.nom ?? "-",
+        "Type": r.typeBienImmobilier ?? "-",
+        "Statut validation": STATUS_BIEN_LABELS[r.statusValidation] ?? r.statusValidation ?? "-",
+        "Prix": r.prix != null ? new Intl.NumberFormat("fr-FR", { style: "currency", currency: "XOF", maximumFractionDigits: 0 }).format(Number(r.prix)) : "-",
+        "Disponible": r.bienImmobilierDisponible ? "Oui" : "Non",
+        "Score": r.score != null ? String(r.score) : "-",
+        "Date de création": r.createdAt ? new Intl.DateTimeFormat("fr-FR").format(new Date(r.createdAt)) : "-",
+    };
 }
 
 export function ListBienImmobilierTable({filters, activeMenu}: Props) {
@@ -40,6 +60,11 @@ export function ListBienImmobilierTable({filters, activeMenu}: Props) {
         filters
     });
 
+    const exportFilters = [
+        ...(filters?.permanent ?? []),
+        ...(currentFilters ?? []),
+    ];
+
     return (
         <List
             headerButtons={[
@@ -47,6 +72,14 @@ export function ListBienImmobilierTable({filters, activeMenu}: Props) {
                     setFilters={setFilters}
                     tableQuery={tableQuery}
                 />,
+                <ExportTableButton
+                    resource="biens-immobiliers"
+                    mapToRow={mapBienToRow}
+                    pdfTitle="Liste des Biens Immobiliers"
+                    filters={exportFilters}
+                    filenamePrefix={`biens_immobiliers_${activeMenu ?? "tous"}`}
+                />,
+                <Divider type="vertical" style={{ height: 24, margin: "0 4px" }} />,
                 <Link to="/biens-immobiliers">
 
                     <Button
