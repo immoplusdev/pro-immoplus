@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useCustom, useApiUrl } from "@refinedev/core";
 import { Card, Col, Row, Spin, Typography, DatePicker, Statistic, theme } from "antd";
-import { HomeOutlined, CalendarOutlined, AppstoreOutlined, CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import { HomeOutlined, CalendarOutlined, AppstoreOutlined, CheckCircleOutlined, CloseCircleOutlined, FileDoneOutlined } from "@ant-design/icons";
 import dayjs, { Dayjs } from "dayjs";
 
 const { Title } = Typography;
@@ -16,6 +16,7 @@ interface TotauxData {
     biensImmobiliers: number;
     reservationsEffectuees: number;
     reservationsEchouees: number;
+    reservationsTotal: number;
 }
 
 export function StatisticsTotaux() {
@@ -57,7 +58,7 @@ export function StatisticsTotaux() {
             bgIcon: token.colorInfoBgHover,
         },
         {
-            title: "Réservations effectuées",
+            title: "Réservations finalisées",
             value: totaux?.reservationsEffectuees ?? 0,
             icon: <CheckCircleOutlined style={{ fontSize: 24, color: token.colorWarning }} />,
             bgCard: token.colorWarningBg,
@@ -69,6 +70,13 @@ export function StatisticsTotaux() {
             icon: <CloseCircleOutlined style={{ fontSize: 24, color: token.colorError }} />,
             bgCard: token.colorErrorBg,
             bgIcon: token.colorErrorBgHover,
+        },
+        {
+            title: "Réservations Total effectuées",
+            value: totaux?.reservationsTotal ?? 0,
+            icon: <FileDoneOutlined style={{ fontSize: 24, color: "#08979c" }} />,
+            bgCard: "#e6fffb",
+            bgIcon: "#b5f5ec",
         },
     ];
 
