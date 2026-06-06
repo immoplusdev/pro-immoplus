@@ -31,7 +31,7 @@ export function StatisticsFinance() {
 
     const stats = [
         {
-            title: "Montant total réservations",
+            title: "Montant total réservation finalisé",
             value: finance?.montantTotalReservations ?? 0,
             icon: <DollarOutlined style={{ fontSize: 24, color: token.colorSuccess }} />,
             bgCard: token.colorSuccessBg,
