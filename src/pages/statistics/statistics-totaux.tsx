@@ -66,7 +66,7 @@ export function StatisticsTotaux() {
 
     return (
         <Card
-            title={<Title level={5} style={{ margin: 0 }}>Totaux du jour</Title>}
+            title={<Title level={5} style={{ margin: 0 }}>Totaux du jours</Title>}
             extra={
                 <DatePicker
                     value={date}
