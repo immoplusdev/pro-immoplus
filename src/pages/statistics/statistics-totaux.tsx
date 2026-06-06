@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useCustom, useApiUrl } from "@refinedev/core";
 import { Card, Col, Row, Spin, Typography, DatePicker, Statistic, theme } from "antd";
-import { HomeOutlined, CalendarOutlined, AppstoreOutlined, CheckCircleOutlined, CloseCircleOutlined, FileDoneOutlined } from "@ant-design/icons";
+import { HomeOutlined, CalendarOutlined, AppstoreOutlined, CheckCircleOutlined, FileDoneOutlined } from "@ant-design/icons";
 import dayjs, { Dayjs } from "dayjs";
 
 const { Title } = Typography;
@@ -64,13 +64,13 @@ export function StatisticsTotaux() {
             bgCard: token.colorWarningBg,
             bgIcon: token.colorWarningBgHover,
         },
-        {
-            title: "Réservations échouées",
-            value: totaux?.reservationsEchouees ?? 0,
-            icon: <CloseCircleOutlined style={{ fontSize: 24, color: token.colorError }} />,
-            bgCard: token.colorErrorBg,
-            bgIcon: token.colorErrorBgHover,
-        },
+        // {
+        //     title: "Réservations échouées",
+        //     value: totaux?.reservationsEchouees ?? 0,
+        //     icon: <CloseCircleOutlined style={{ fontSize: 24, color: token.colorError }} />,
+        //     bgCard: token.colorErrorBg,
+        //     bgIcon: token.colorErrorBgHover,
+        // },
         {
             title: "Réservations Total effectuées",
             value: totaux?.reservationsTotal ?? 0,
