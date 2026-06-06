@@ -72,7 +72,7 @@ export function StatisticsTotaux() {
         //     bgIcon: token.colorErrorBgHover,
         // },
         {
-            title: "Réservations Total effectuées",
+            title: "Réservations Total initiées",
             value: totaux?.reservationsTotal ?? 0,
             icon: <FileDoneOutlined style={{ fontSize: 24, color: "#08979c" }} />,
             bgCard: "#e6fffb",
