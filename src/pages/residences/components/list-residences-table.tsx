@@ -1,4 +1,4 @@
-import {Button, Space, Table, Tag} from "antd";
+import {Button, Divider, Space, Table, Tag} from "antd";
 import {Thumbnail} from "@/components";
 import {formatAmount, getApiFileUrl} from "@/lib/helpers";
 import {StatusValidationResidence} from "@/core/domain/residences";
@@ -15,6 +15,28 @@ import {
 } from "@/pages/biens-immobiliers/components/status-validation-biens-immobilers-tag";
 import {StatusValidationBiensImmobilers} from "@/lib/ts-utilities/enums/status-biens-immobiliers";
 import {SearchInput} from "@/components/filters";
+import {ExportTableButton} from "@/components/export/export-table-button";
+
+const STATUS_RESIDENCE_LABELS: Record<string, string> = {
+    valide: "Validée",
+    en_attente_validation: "En attente de validation",
+    rejete: "Rejetée",
+};
+
+function mapResidenceToRow(r: any, i: number): Record<string, string> {
+    return {
+        "#": String(i + 1),
+        "Nom": r.nom ?? "-",
+        "Type": r.typeResidence ?? "-",
+        "Prix réservation": r.prixReservation != null
+            ? new Intl.NumberFormat("fr-FR", { style: "currency", currency: "XOF", maximumFractionDigits: 0 }).format(Number(r.prixReservation))
+            : "-",
+        "Score": r.score != null ? String(r.score) : "-",
+        "Statut validation": STATUS_RESIDENCE_LABELS[r.statusValidation] ?? r.statusValidation ?? "-",
+        "Date de création": r.createdAt ? new Intl.DateTimeFormat("fr-FR").format(new Date(r.createdAt)) : "-",
+        "Dernière mise à jour": r.updatedAt ? new Intl.DateTimeFormat("fr-FR").format(new Date(r.updatedAt)) : "-",
+    };
+}
 
 type Props = {
     filters?: {
@@ -41,16 +63,27 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
             filters
         });
 
+    const exportFilters = [
+        ...(filters?.permanent ?? []),
+        ...(searchFilters ?? []),
+    ];
 
     return (
         <List
             title={translate("pages.residence.residences")}
             headerButtons={[
                 <SearchInput
-                    filters={searchFilters}
                     setFilters={setFilters}
                     tableQuery={tableQuery}
                 />,
+                <ExportTableButton
+                    resource="residences"
+                    mapToRow={mapResidenceToRow}
+                    pdfTitle="Liste des Résidences"
+                    filters={exportFilters}
+                    filenamePrefix={`residences_${activeMenu ?? "tous"}`}
+                />,
+                <Divider type="vertical" style={{ height: 24, margin: "0 4px" }} />,
                 <Link to="/residences">
                     <Button
                         type={activeMenu == "all_e" ? "primary" : "default"}
@@ -113,6 +146,19 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                     title={translate("fields.status_validation")}
                     render={(value: StatusValidationBiensImmobilers) => <StatusValidationBiensImmobilersTag
                         statusValidation={value}/>}
+                    align="center"
+                    sorter={true}
+                />
+                <Table.Column
+                    dataIndex={["createdAt"]}
+                    title={translate("fields.created_at")}
+                    render={(date: string) => {
+                        return (
+                            <div>
+                                <Tag>{new Date(date).toLocaleDateString()}</Tag>
+                            </div>
+                        );
+                    }}
                     align="center"
                     sorter={true}
                 />

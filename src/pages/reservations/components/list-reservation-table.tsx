@@ -1,12 +1,13 @@
 import { CrudFilter } from "@refinedev/core/src/contexts/data/types";
 import { useTranslate } from "@refinedev/core";
 import { List, useTable } from "@refinedev/antd";
-import { Button, Pagination, Spin, theme } from "antd";
+import { Button, Divider, Pagination, Spin, theme } from "antd";
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import { SearchInput } from "@/components/filters";
 import { ReservationCard } from "@/pages/reservations/components/reservation-card";
 import { StatusReservation } from "@/lib/ts-utilities/enums/status-reservation";
+import { ExportReservationsButton } from "@/pages/reservations/components/export-reservations-button";
 
 // ─── config sous-filtres par onglet ───────────────────────────────────────
 const SUB_FILTERS: Record<string, Array<{ key: string; label: string; value: string | null }>> = {
@@ -95,6 +96,12 @@ export function ListReservationTable({
   const { dataSource, loading } = tableProps;
   const total = tableQuery.data?.total ?? 0;
 
+  // Combine permanent + active (search/sub-filter) filters for export
+  const exportFilters = [
+    ...(filters?.permanent ?? []),
+    ...(searchFilters ?? []),
+  ];
+
   const subFilters = SUB_FILTERS[activeMenu] ?? [];
   const hasSubFilters = subFilters.length > 0;
 
@@ -126,10 +133,14 @@ export function ListReservationTable({
         title={translate("pages.reservation.reservations")}
         headerButtons={[
           <SearchInput
-            filters={searchFilters}
             setFilters={setFilters}
             tableQuery={tableQuery}
           />,
+          <ExportReservationsButton
+            filters={exportFilters}
+            filenamePrefix={`reservations_${activeMenu}`}
+          />,
+          <Divider type="vertical" style={{ height: 24, margin: "0 4px" }} />,
           <Link to="/reservations">
             <Button type={activeMenu === "all_e" ? "primary" : "default"}>
               {translate("tags.all_e")}
