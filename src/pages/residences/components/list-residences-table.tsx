@@ -16,6 +16,7 @@ import {
 import {StatusValidationBiensImmobilers} from "@/lib/ts-utilities/enums/status-biens-immobiliers";
 import {SearchInput} from "@/components/filters";
 import {ExportTableButton} from "@/components/export/export-table-button";
+import {ResidenceTabKey, ResidenceTabsNav} from "@/pages/residences/components/residence-tabs-nav";
 
 const STATUS_RESIDENCE_LABELS: Record<string, string> = {
     valide: "Validée",
@@ -31,6 +32,7 @@ function mapResidenceToRow(r: any, i: number): Record<string, string> {
         "Prix réservation": r.prixReservation != null
             ? new Intl.NumberFormat("fr-FR", { style: "currency", currency: "XOF", maximumFractionDigits: 0 }).format(Number(r.prixReservation))
             : "-",
+        "Réduction": r.reduction ? `${r.reduction}%` : "-",
         "Score": r.score != null ? String(r.score) : "-",
         "Statut validation": STATUS_RESIDENCE_LABELS[r.statusValidation] ?? r.statusValidation ?? "-",
         "Date de création": r.createdAt ? new Intl.DateTimeFormat("fr-FR").format(new Date(r.createdAt)) : "-",
@@ -44,7 +46,7 @@ type Props = {
         permanent?: CrudFilter[];
         mode?: "server" | "off";
     };
-    activeMenu?: "all_e" | "en_validation" | "valide"
+    activeMenu?: ResidenceTabKey
 }
 
 export function ListResidenceTable({filters, activeMenu}: Props) {
@@ -84,27 +86,7 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                     filenamePrefix={`residences_${activeMenu ?? "tous"}`}
                 />,
                 <Divider type="vertical" style={{ height: 24, margin: "0 4px" }} />,
-                <Link to="/residences">
-                    <Button
-                        type={activeMenu == "all_e" ? "primary" : "default"}
-                    >
-                        {translate("tags.all_e")}
-                    </Button>
-                </Link>,
-                <Link to="/residences/en-validation">
-                    <Button
-                        type={activeMenu == "en_validation" ? "primary" : "default"}
-                    >
-                        {translate("tags.en_validation")}
-                    </Button>
-                </Link>,
-                <Link to="/residences/validé">
-                    <Button
-                        type={activeMenu == "valide" ? "primary" : "default"}
-                    >
-                        {translate("residences.status_validation.valide")}
-                    </Button>
-                </Link>
+                <ResidenceTabsNav activeMenu={activeMenu} />
             ]}
         >
             <Table {...tableProps} rowKey="id">
@@ -131,6 +113,13 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                     dataIndex="prixReservation"
                     title={translate("fields.prix_reservation")}
                     render={(value: number) => <span>{formatAmount(value)}</span>}
+                    align="center"
+                    sorter={true}
+                />
+                <Table.Column
+                    dataIndex="reduction"
+                    title={translate("tags.reduction")}
+                    render={(value: number) => value ? <Tag color="gold">{value}%</Tag> : "-"}
                     align="center"
                     sorter={true}
                 />

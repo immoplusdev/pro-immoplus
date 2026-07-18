@@ -15,6 +15,7 @@ import {
   ShowReservation,
 } from "@/pages/reservations";
 import { ListResidencesEnValidation } from "./pages/residences/list-residences-en-validation";
+import { ListResidencesReduction } from "./pages/residences/list-residences-reduction";
 import {
   EditBienImmobilier,
   ListBienImmobiliers,
@@ -135,6 +136,7 @@ export function AppRoutes() {
             element={<ListResidencesEnValidation />}
           />
           <Route path="validé" element={<ListResidencesValides />} />
+          <Route path="reduction" element={<ListResidencesReduction />} />
         </Route>
         <Route path={"/reservations"}>
           <Route index element={<ListReservations />} />

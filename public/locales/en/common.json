@@ -104,7 +104,8 @@
   },
   "loading": "Loading",
   "tags": {
-    "clone": "Clone"
+    "clone": "Clone",
+    "reduction": "Discount"
   },
   "dashboard": {
     "title": "Dashboard"
