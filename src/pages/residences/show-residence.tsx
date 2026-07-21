@@ -69,8 +69,35 @@ export const ShowResidence = () => {
                     <ReadOnlyFormField label={translate("fields.prix_reservation")} content={record?.prixReservation}
                                        isLoading={isLoading}/>
 
+                    <ReadOnlyFormField label={translate("tags.reduction")} content={record?.reduction ? `${record.reduction}%` : '-'}
+                                       isLoading={isLoading}/>
+
+                    <ReadOnlyFormField label={translate("residences.fields.tarif_horaire")} content={record?.tarifHoraire}
+                                       isLoading={isLoading}/>
+
+                    <ReadOnlyFormField label={translate("fields.ville")} content={record?.ville}
+                                       isLoading={isLoading}/>
+
+                    <ReadOnlyFormField label={translate("fields.commune")} content={record?.commune}
+                                       isLoading={isLoading}/>
+
                     <ReadOnlyFormField label={translate("residences.fields.nombre_max_occupants")}
                                        content={record?.nombreMaxOccupants} isLoading={isLoading}/>
+
+                    <ReadOnlyFormField label={translate("residences.fields.heure_entree")} content={record?.heureEntree}
+                                       isLoading={isLoading}/>
+
+                    <ReadOnlyFormField label={translate("residences.fields.heure_depart")} content={record?.heureDepart}
+                                       isLoading={isLoading}/>
+
+                    <ReadOnlyFormField label={translate("residences.fields.duree_min_sejour")} content={record?.dureeMinSejour}
+                                       isLoading={isLoading}/>
+
+                    <ReadOnlyFormField label={translate("residences.fields.duree_max_sejour")} content={record?.dureeMaxSejour}
+                                       isLoading={isLoading}/>
+
+                    <ReadOnlyFormField label={translate("fields.regles_supplementaires")} content={record?.reglesSupplementaires}
+                                       isLoading={isLoading}/>
 
                     <>
                         <Title level={5}>{translate("residences.fields.animaux_autorises")}</Title>
@@ -81,11 +108,26 @@ export const ShowResidence = () => {
                         <BooleanField value={record?.fetesAutorises}/>
                     </>
                     <>
+                        <Title level={5}>{translate("residences.fields.has_jacuzzi")}</Title>
+                        <BooleanField value={record?.hasJacuzzi}/>
+                    </>
+                    <>
+                        <Title level={5}>{translate("residences.fields.has_piscine")}</Title>
+                        <BooleanField value={record?.hasPiscine}/>
+                    </>
+
+                    <ReadOnlyFormField label={translate("residences.fields.views_count")} content={record?.viewsCount}
+                                       isLoading={isLoading}/>
+
+                    <ReadOnlyFormField label={translate("residences.fields.likes_count")} content={record?.likesCount}
+                                       isLoading={isLoading}/>
+
+                    <>
                         <Title level={5}>{translate("fields.created_at")}</Title>
-                        <DateField value={record?.createAt}/></>
+                        <DateField value={record?.createdAt}/></>
                     <>
                         <Title level={5}>{translate("fields.updated_at")}</Title>
-                        <DateField value={record?.updateAt}/>
+                        <DateField value={record?.updatedAt}/>
                     </>
 
                 </ColList>

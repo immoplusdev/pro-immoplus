@@ -229,7 +229,12 @@
       "heure_depart": "Heure de départ",
       "images": "Images",
       "oui": "Oui",
-      "non": "Non"
+      "non": "Non",
+      "has_jacuzzi": "Jacuzzi",
+      "has_piscine": "Piscine",
+      "tarif_horaire": "Tarif horaire",
+      "views_count": "Nombre de vues",
+      "likes_count": "Nombre de likes"
     },
     "status_validation": {
       "valide": "Validé",
@@ -571,7 +576,9 @@
     "client_phone_number": "Numéro client",
     "notes": "Note",
     "images": "Images",
-    "regles_supplementaires": "Règles supplémentaires"
+    "regles_supplementaires": "Règles supplémentaires",
+    "ville": "Ville",
+    "commune": "Commune"
   },
   "tags": {
     "valided": "Validé",

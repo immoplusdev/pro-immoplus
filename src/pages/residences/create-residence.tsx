@@ -178,6 +178,68 @@ export const CreateResidence = ({createFormProps}: Props) => {
                 >
                     <Checkbox>{translate("residences.fields.fetes_autorises")}</Checkbox>
                 </Form.Item>
+                <Form.Item
+                    label={translate("residences.fields.heure_entree")}
+                    name={["heureEntree"]}
+                >
+                    <Input/>
+                </Form.Item>
+                <Form.Item
+                    label={translate("residences.fields.heure_depart")}
+                    name={["heureDepart"]}
+                >
+                    <Input/>
+                </Form.Item>
+                <Form.Item
+                    label={translate("residences.fields.duree_min_sejour")}
+                    name={["dureeMinSejour"]}
+                >
+                    <InputNumber min={1} style={{width: '100%'}}/>
+                </Form.Item>
+                <Form.Item
+                    label={translate("residences.fields.duree_max_sejour")}
+                    name={["dureeMaxSejour"]}
+                >
+                    <InputNumber min={1} style={{width: '100%'}}/>
+                </Form.Item>
+                <Form.Item
+                    label={translate("fields.ville")}
+                    name={["ville"]}
+                >
+                    <Input/>
+                </Form.Item>
+                <Form.Item
+                    label={translate("fields.commune")}
+                    name={["commune"]}
+                >
+                    <Input/>
+                </Form.Item>
+                <Form.Item
+                    label={translate("residences.fields.tarif_horaire")}
+                    name={["tarifHoraire"]}
+                >
+                    <InputNumber suffix={getCurrencySymbol(0)} style={{width: '100%'}}/>
+                </Form.Item>
+                <Form.Item
+                    valuePropName="checked"
+                    label={translate("residences.fields.has_jacuzzi")}
+                    name={["hasJacuzzi"]}
+                >
+                    <Checkbox>{translate("residences.fields.has_jacuzzi")}</Checkbox>
+                </Form.Item>
+                <Form.Item
+                    valuePropName="checked"
+                    label={translate("residences.fields.has_piscine")}
+                    name={["hasPiscine"]}
+                >
+                    <Checkbox>{translate("residences.fields.has_piscine")}</Checkbox>
+                </Form.Item>
+                <Form.Item
+                    label={translate("fields.regles_supplementaires")}
+                    name={["reglesSupplementaires"]}
+                >
+                    <TextArea rows={3}/>
+                </Form.Item>
             </ColList>
         </Form>
     )
