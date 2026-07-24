@@ -42,6 +42,8 @@ interface Banner {
     cta2_label: string | null;
     icon: string;
     bg_color: string;
+    icon_color: string | null;
+    text_color: string | null;
     type: string;
     audience: string;
     order: number;
@@ -367,6 +369,8 @@ export const ListBanners = () => {
                             cta2_label={previewBanner.cta2_label ?? undefined}
                             icon={previewBanner.icon}
                             bg_color={previewBanner.bg_color}
+                            icon_color={previewBanner.icon_color ?? undefined}
+                            text_color={previewBanner.text_color ?? undefined}
                             dismissible={previewBanner.dismissible}
                         />
                         <Space style={{ marginTop: 16 }} wrap>

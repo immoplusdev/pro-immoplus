@@ -73,6 +73,8 @@ export const CreateBanner = () => {
                     type: "promo",
                     order: 1,
                     bg_color: "#5B3FE4",
+                    icon_color: "#FFFFFF",
+                    text_color: "#FFFFFF",
                     icon: "plus-circle",
                 }}
             >

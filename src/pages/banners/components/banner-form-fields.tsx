@@ -29,6 +29,7 @@ const ICON_OPTIONS = [
 ];
 
 const PRESET_COLORS = ["#5B3FE4", "#1A5CFF", "#00B37E", "#FF4E4E", "#FF8C00"];
+const TEXT_ICON_PRESET_COLORS = ["#FFFFFF", "#000000", ...PRESET_COLORS];
 
 export const BannerFormFields = ({ form }: { form: any }) => {
     const [previewAudience, setPreviewAudience] = useState<string>("buyer");
@@ -39,6 +40,8 @@ export const BannerFormFields = ({ form }: { form: any }) => {
     const cta2Label = Form.useWatch("cta2_label", form);
     const icon = Form.useWatch("icon", form);
     const bgColor = Form.useWatch("bg_color", form);
+    const iconColor = Form.useWatch("icon_color", form);
+    const textColor = Form.useWatch("text_color", form);
     const dismissible = Form.useWatch("dismissible", form);
 
     return (
@@ -142,6 +145,56 @@ export const BannerFormFields = ({ form }: { form: any }) => {
                             </Form.Item>
                         </Col>
                     </Row>
+                    <Row gutter={12}>
+                        <Col span={12}>
+                            <Form.Item
+                                name="icon_color"
+                                label="Couleur de l'icône"
+                                rules={[
+                                    {
+                                        pattern: /^#[0-9A-Fa-f]{6}$/,
+                                        message: "Hex invalide (#RRGGBB)",
+                                    },
+                                ]}
+                                getValueFromEvent={(color) =>
+                                    typeof color === "string" ? color : color?.toHexString?.() ?? color
+                                }
+                                getValueProps={(value) => ({
+                                    value: typeof value === "string" ? value : value,
+                                })}
+                            >
+                                <ColorPicker
+                                    format="hex"
+                                    showText
+                                    presets={[{ label: "ImmoPlus", colors: TEXT_ICON_PRESET_COLORS }]}
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item
+                                name="text_color"
+                                label="Couleur du texte"
+                                rules={[
+                                    {
+                                        pattern: /^#[0-9A-Fa-f]{6}$/,
+                                        message: "Hex invalide (#RRGGBB)",
+                                    },
+                                ]}
+                                getValueFromEvent={(color) =>
+                                    typeof color === "string" ? color : color?.toHexString?.() ?? color
+                                }
+                                getValueProps={(value) => ({
+                                    value: typeof value === "string" ? value : value,
+                                })}
+                            >
+                                <ColorPicker
+                                    format="hex"
+                                    showText
+                                    presets={[{ label: "ImmoPlus", colors: TEXT_ICON_PRESET_COLORS }]}
+                                />
+                            </Form.Item>
+                        </Col>
+                    </Row>
                 </Card>
 
                 {/* Ciblage */}
@@ -222,6 +275,8 @@ export const BannerFormFields = ({ form }: { form: any }) => {
                             cta2_label={cta2Label}
                             icon={icon}
                             bg_color={typeof bgColor === "string" ? bgColor : bgColor?.toHexString?.() ?? "#5B3FE4"}
+                            icon_color={typeof iconColor === "string" ? iconColor : iconColor?.toHexString?.() ?? "#FFFFFF"}
+                            text_color={typeof textColor === "string" ? textColor : textColor?.toHexString?.() ?? "#FFFFFF"}
                             dismissible={dismissible}
                         />
                         <Divider style={{ margin: "16px 0 8px" }} />
