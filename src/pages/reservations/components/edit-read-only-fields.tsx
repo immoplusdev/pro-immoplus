@@ -5,6 +5,7 @@ import {BaseRecord} from "@refinedev/core";
 import {ReadOnlyFormField} from "@/lib/ts-utilities";
 import {Link} from "react-router-dom";
 import { ReservationCountdown, isRelevantStatus } from "@/pages/reservations/components/reservation-countdown";
+import { RatingStatusTag } from "@/pages/reservations/components/rating-status-tag";
 
 
 type TranslateFunction = (key: string, params?: Record<string, any>) => string;
@@ -53,6 +54,7 @@ export const ReservationEditDataFields: React.FC<ReadOnlySectionProps> = ({trans
                     <ReadOnlyFormField label={translate("reservations.fields.pro_reverse")} content={reservationData?.proReverse}/>
                     <ReadOnlyFormField label={translate("fields.notes")} content={reservationData?.notes}/>
                     <ReadOnlyFormField label={translate("fields.updated_at")} content={reservationData?.updatedAt ? `${new Date(reservationData.updatedAt).toLocaleDateString()} à ${new Date(reservationData.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : "-"}/>
+                    <ReadOnlyFormField label={translate("reservations.fields.rating_status")} content={<RatingStatusTag status={reservationData?.ratingStatus}/>}/>
                 </Card>
             </Card>
 

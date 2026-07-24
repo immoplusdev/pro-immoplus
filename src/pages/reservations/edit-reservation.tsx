@@ -63,7 +63,7 @@ export const EditReservation: React.FC = () => {
                         <ReservationEditDataFields translate={translate} reservationData={reservationData}/>
                     </Col>
                     <Col xs={24} lg={8}>
-                        <ReservationEditActionFields translate={translate}/>
+                        <ReservationEditActionFields translate={translate} reservationData={reservationData}/>
                     </Col>
                 </Row>
             </Form>

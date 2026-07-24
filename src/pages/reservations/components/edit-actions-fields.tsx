@@ -5,13 +5,14 @@ import {StatusReservation} from "@/lib/ts-utilities/enums/status-reservation";
 import React from "react";
 import {BaseRecord} from "@refinedev/core";
 import {StatusFacture} from "@/lib/ts-utilities/enums/status-facture";
+import {RatingStatusAction} from "@/pages/reservations/components/rating-status-action";
 
 type TranslateFunction = (key: string, params?: Record<string, any>) => string;
 interface ReadOnlySectionProps {
     translate: TranslateFunction;
-    residencesData?: BaseRecord;
+    reservationData?: BaseRecord;
 }
-export const ReservationEditActionFields: React.FC<ReadOnlySectionProps> = ({translate}) => {
+export const ReservationEditActionFields: React.FC<ReadOnlySectionProps> = ({translate, reservationData}) => {
     const { token } = theme.useToken();
     const borderStyle = `0.5px solid ${token.colorBorder}`;
 
@@ -62,6 +63,12 @@ export const ReservationEditActionFields: React.FC<ReadOnlySectionProps> = ({tra
                     rows={6}
                     style={{border: borderStyle, borderRadius:"7px"}}
                     placeholder={translate("reservations.fields.rapport_placeholder")}
+                />
+            </Form.Item>
+            <Form.Item label={translate("reservations.fields.rating_status")}>
+                <RatingStatusAction
+                    id={reservationData?.id as string}
+                    value={reservationData?.ratingStatus ?? null}
                 />
             </Form.Item>
         </Card>

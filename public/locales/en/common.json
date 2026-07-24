@@ -87,6 +87,7 @@
     "undo": "Undo",
     "import": "Import",
     "clone": "Clone",
+    "apply": "Apply",
     "notAccessTitle": "You don't have permission to access"
   },
   "warnWhenUnsavedChanges": "Are you sure you want to leave? You have unsaved changes.",
@@ -214,7 +215,8 @@
       "date_debut": "Start date",
       "date_fin": "End date",
       "rapport": "Report",
-      "rapport_placeholder": "Enter the reservation report..."
+      "rapport_placeholder": "Enter the reservation report...",
+      "rating_status": "Rating status"
     },
     "status_reservation": {
       "rejete": "Rejected",
@@ -227,6 +229,16 @@
       "proprietaire_sans_reponse": "Owner did not respond",
       "client_annule_reservation": "Client cancelled reservation",
       "client_sans_reponse": "Client did not respond"
+    },
+    "rating_status": {
+      "not_applicable": "Not applicable",
+      "pending": "Pending",
+      "rated": "Rated",
+      "expired": "Expired",
+      "automatic": "Automatic (auto-calculated)"
+    },
+    "messages": {
+      "rating_status_updated": "Rating status updated"
     }
   },
   "users": {
