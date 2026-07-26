@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState, useRef, useCallb
 import { useTranslate, useList, useIsAuthenticated } from "@refinedev/core";
 import { useQueryClient } from "@tanstack/react-query";
 import { StatusReservation } from "@/lib/ts-utilities/enums/status-reservation";
-import { getTempsRestant, isRelevantStatus } from "@/pages/reservations/components/reservation-countdown";
+import { getTempsRestant, isRelevantStatus, useReservationDelays } from "@/pages/reservations/components/reservation-countdown";
 import {
   useAdminNotificationsSocket,
   WsNotificationType,
@@ -68,6 +68,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
   const { data: authData } = useIsAuthenticated();
   const isAuthenticated = authData?.authenticated === true;
+  const reservationDelays = useReservationDelays();
 
   const [notifications, setNotifications] = useState<Notification[]>(() => {
     try {
@@ -239,7 +240,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
       }
 
       if (isRelevantStatus(status) && !isFirstLoad) {
-        const remaining = getTempsRestant(res);
+        const remaining = getTempsRestant(res, reservationDelays);
         if (remaining > 0 && remaining <= 3 * 60 * 1000 && !warnedTimers.current.has(res.id)) {
           addNotification({
             type: 'urgent',
@@ -254,7 +255,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     });
 
     reservations.forEach((r: any) => { if (r?.id) prev[r.id] = r; });
-  }, [addNotification, translate]);
+  }, [addNotification, translate, reservationDelays]);
 
   // ─────────────────────────────────────────────────────────────────────────
   // Polling background toutes les 20s — détecte les nouvelles réservations

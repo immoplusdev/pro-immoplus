@@ -1,13 +1,40 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Tag } from "antd";
+import { useCustom } from "@refinedev/core";
 import { StatusReservation } from "@/lib/ts-utilities/enums/status-reservation";
+import { API_URL } from "@/configs";
 
 interface Props {
   reservation: any;
   onExpire?: () => void;
 }
 
-const DELAI_MINUTES = 10;
+export interface ReservationDelays {
+  proValidationMinutes: number;
+  customerPaymentMinutes: number;
+}
+
+const DEFAULT_DELAYS: ReservationDelays = {
+  proValidationMinutes: 10,
+  customerPaymentMinutes: 10,
+};
+
+// Config chargée une seule fois (mise en cache par react-query) et partagée
+// par tous les composants qui affichent un compte à rebours de réservation.
+export function useReservationDelays(): ReservationDelays {
+  const { data } = useCustom({
+    method: "get",
+    url: `${API_URL}/configs`,
+    queryOptions: { staleTime: 5 * 60 * 1000 },
+  });
+
+  const config = data?.data;
+
+  return {
+    proValidationMinutes: Number(config?.proValidationMinutes) || DEFAULT_DELAYS.proValidationMinutes,
+    customerPaymentMinutes: Number(config?.customerPaymentMinutes) || DEFAULT_DELAYS.customerPaymentMinutes,
+  };
+}
 
 function playUrgentSound() {
   try {
@@ -44,14 +71,14 @@ function playExpiredSound() {
   } catch (e) { }
 }
 
-export function getTempsRestant(reservation: any) {
-  const delaiMs = DELAI_MINUTES * 60 * 1000;
-
+export function getTempsRestant(reservation: any, delays: ReservationDelays = DEFAULT_DELAYS) {
   if (reservation.statusReservation === StatusReservation.EnAttenteReponseProprietaire) {
+    const delaiMs = delays.proValidationMinutes * 60 * 1000;
     return new Date(reservation.createdAt).getTime() + delaiMs - Date.now();
   }
 
   if (reservation.statusReservation === StatusReservation.EnAttentePaiementClient) {
+    const delaiMs = delays.customerPaymentMinutes * 60 * 1000;
     return new Date(reservation.updatedAt).getTime() + delaiMs - Date.now();
   }
 
@@ -59,12 +86,26 @@ export function getTempsRestant(reservation: any) {
 }
 
 export function isRelevantStatus(status: string) {
-  return status === StatusReservation.EnAttenteReponseProprietaire || 
+  return status === StatusReservation.EnAttenteReponseProprietaire ||
          status === StatusReservation.EnAttentePaiementClient;
 }
 
+// Formate un temps restant (ms) en "X min" sous 1h, ou "Xh Ymin" au-delà.
+export function formatTempsRestant(ms: number): string {
+  const totalMinutes = Math.ceil(ms / 60000);
+
+  if (totalMinutes <= 1) return "< 1 min";
+  if (totalMinutes < 60) return `${totalMinutes} min`;
+
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  return minutes > 0 ? `${hours}h ${minutes}min` : `${hours}h`;
+}
+
 export function ReservationCountdown({ reservation, onExpire }: Props) {
-  const [tempsRestant, setTempsRestant] = useState<number>(getTempsRestant(reservation));
+  const delays = useReservationDelays();
+  const [tempsRestant, setTempsRestant] = useState<number>(getTempsRestant(reservation, delays));
   const hasPlayedWarningSound = useRef(false);
   const hasPlayedExpireSound = useRef(false);
   const isRelevant = isRelevantStatus(reservation.statusReservation);
@@ -72,7 +113,7 @@ export function ReservationCountdown({ reservation, onExpire }: Props) {
   useEffect(() => {
     if (!isRelevant) return;
 
-    const initial = getTempsRestant(reservation);
+    const initial = getTempsRestant(reservation, delays);
     setTempsRestant(initial);
 
     if (initial <= 0) {
@@ -82,7 +123,7 @@ export function ReservationCountdown({ reservation, onExpire }: Props) {
 
     // Tick toutes les 15s pour détecter l'expiry et les changements de minute
     const interval = setInterval(() => {
-      const remaining = getTempsRestant(reservation);
+      const remaining = getTempsRestant(reservation, delays);
       setTempsRestant(remaining);
 
       if (remaining <= 3 * 60 * 1000 && remaining > 0) {
@@ -103,7 +144,7 @@ export function ReservationCountdown({ reservation, onExpire }: Props) {
     }, 15000); // 15s — assez précis sans afficher les secondes
 
     return () => clearInterval(interval);
-  }, [reservation, isRelevant, onExpire]);
+  }, [reservation, isRelevant, onExpire, delays.proValidationMinutes, delays.customerPaymentMinutes]);
 
   if (!isRelevant) return null;
 
@@ -111,11 +152,8 @@ export function ReservationCountdown({ reservation, onExpire }: Props) {
     return <Tag color="error">Expiré</Tag>;
   }
 
-  const minutes = Math.ceil(tempsRestant / 60000);
   const isUrgent = tempsRestant <= 3 * 60 * 1000;
-
-  // Affichage minutes uniquement — moins stressant
-  const displayTime = minutes <= 1 ? "< 1 min" : `${minutes} min`;
+  const displayTime = formatTempsRestant(tempsRestant);
 
   return (
     <>
