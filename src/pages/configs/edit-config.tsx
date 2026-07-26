@@ -19,16 +19,14 @@ export const EditConfig: React.FC<IResourceComponentsProps> = () => {
     // const configs = useMemo(() => data?.data, [data?.data, isFetching]);
 
     const {formProps, saveButtonProps} = useForm({
-        defaultFormValues: data?.data,
         action: "edit"
-        // onsubmit: (values) => {{}
     });
 
 
     return isInitialLoading || isLoading || isFetching ? <SpinLoader/> :
         (
             <Edit saveButtonProps={saveButtonProps}>
-                <Form {...formProps} layout="vertical">
+                <Form {...formProps} initialValues={data?.data} layout="vertical">
                     <Row gutter={[32, 32]} style={{marginTop: 32,}}>
                         <Col xs={24} md={24} lg={24} xl={16}>
                             <ConfigDataFields data={data?.data}/>
