@@ -10,16 +10,18 @@ import {
   ReservationCountdown,
   isRelevantStatus,
   getTempsRestant,
+  useReservationDelays,
+  ReservationDelays,
 } from "./reservation-countdown";
 import { formatAmount } from "@/lib/helpers";
 import { StatusReservation } from "@/lib/ts-utilities/enums/status-reservation";
 
 // ─── couleur bordure gauche ────────────────────────────────────────────────
-function getBorderColor(record: any): string {
+function getBorderColor(record: any, delays: ReservationDelays): string {
   const status: string = record.statusReservation;
 
   if (isRelevantStatus(status)) {
-    const remaining = getTempsRestant(record);
+    const remaining = getTempsRestant(record, delays);
     if (remaining <= 3 * 60 * 1000) return "#E24B4A"; // urgent (< 3 min ou expiré)
     return "#EF9F27"; // en attente (> 3 min)
   }
@@ -45,7 +47,8 @@ export function ReservationCard({ record, onExpire }: Props) {
   const translate = useTranslate();
   const location = useLocation();
   const { token } = theme.useToken();
-  const borderColor = getBorderColor(record);
+  const delays = useReservationDelays();
+  const borderColor = getBorderColor(record, delays);
   const date = new Date(record.createdAt);
 
   return (
