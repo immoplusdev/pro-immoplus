@@ -32,6 +32,8 @@ interface BannerPreviewProps {
     cta2_label?: string;
     icon?: string;
     bg_color?: string;
+    icon_color?: string;
+    text_color?: string;
     dismissible?: boolean;
 }
 
@@ -42,6 +44,8 @@ export const BannerPreview = ({
     cta2_label,
     icon,
     bg_color = "#5B3FE4",
+    icon_color = "#FFFFFF",
+    text_color = "#FFFFFF",
     dismissible,
 }: BannerPreviewProps) => {
     const iconNode = icon ? ICON_MAP[icon] : null;
@@ -72,13 +76,13 @@ export const BannerPreview = ({
             <Space direction="vertical" size={8} style={{ width: "100%" }}>
                 <Space size={10} align="center">
                     {iconNode && (
-                        <span style={{ fontSize: 20, color: "#fff", lineHeight: 1 }}>
+                        <span style={{ fontSize: 20, color: icon_color, lineHeight: 1 }}>
                             {iconNode}
                         </span>
                     )}
                     <Text
                         style={{
-                            color: "#fff",
+                            color: text_color,
                             fontWeight: 700,
                             fontSize: 15,
                             lineHeight: "1.3",
@@ -91,7 +95,8 @@ export const BannerPreview = ({
                 {subtitle && (
                     <Text
                         style={{
-                            color: "rgba(255,255,255,0.82)",
+                            color: text_color,
+                            opacity: 0.82,
                             fontSize: 13,
                             lineHeight: "1.45",
                         }}

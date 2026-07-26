@@ -87,6 +87,7 @@
     "undo": "Undo",
     "import": "Import",
     "clone": "Clone",
+    "apply": "Apply",
     "notAccessTitle": "You don't have permission to access"
   },
   "warnWhenUnsavedChanges": "Are you sure you want to leave? You have unsaved changes.",
@@ -104,7 +105,8 @@
   },
   "loading": "Loading",
   "tags": {
-    "clone": "Clone"
+    "clone": "Clone",
+    "reduction": "Discount"
   },
   "dashboard": {
     "title": "Dashboard"
@@ -174,13 +176,29 @@
     "client_phone_number": "Customer phone number",
     "created_at": "Created at",
     "updated_at": "Updated at",
-    "prix_reservation": "Reservation price"
+    "prix_reservation": "Reservation price",
+    "ville": "City",
+    "commune": "District",
+    "regles_supplementaires": "Additional rules"
   },
   "residences": {
     "residence": "Residence",
     "fields": {
       "type_residence": "Residence type",
-      "nombre_max_occupants": "Max occupants"
+      "residence_disponible": "Residence available",
+      "nombre_max_occupants": "Max occupants",
+      "animaux_autorises": "Pets allowed",
+      "fetes_autorises": "Parties allowed",
+      "duree_min_sejour": "Minimum stay duration",
+      "duree_max_sejour": "Maximum stay duration",
+      "heure_entree": "Check-in time",
+      "heure_depart": "Check-out time",
+      "images": "Images",
+      "has_jacuzzi": "Jacuzzi",
+      "has_piscine": "Swimming pool",
+      "tarif_horaire": "Hourly rate",
+      "views_count": "Views count",
+      "likes_count": "Likes count"
     }
   },
   "reservations": {
@@ -197,7 +215,8 @@
       "date_debut": "Start date",
       "date_fin": "End date",
       "rapport": "Report",
-      "rapport_placeholder": "Enter the reservation report..."
+      "rapport_placeholder": "Enter the reservation report...",
+      "rating_status": "Rating status"
     },
     "status_reservation": {
       "rejete": "Rejected",
@@ -210,6 +229,16 @@
       "proprietaire_sans_reponse": "Owner did not respond",
       "client_annule_reservation": "Client cancelled reservation",
       "client_sans_reponse": "Client did not respond"
+    },
+    "rating_status": {
+      "not_applicable": "Not applicable",
+      "pending": "Pending",
+      "rated": "Rated",
+      "expired": "Expired",
+      "automatic": "Automatic (auto-calculated)"
+    },
+    "messages": {
+      "rating_status_updated": "Rating status updated"
     }
   },
   "users": {

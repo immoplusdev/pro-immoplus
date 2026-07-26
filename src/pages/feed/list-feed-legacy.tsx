@@ -1,12 +1,12 @@
-import React from "react";
-import { BaseRecord, useTranslate, useDelete, useInvalidate } from "@refinedev/core";
+import React, { useState } from "react";
+import { useTranslate, useDelete, useInvalidate } from "@refinedev/core";
 import { List, useTable } from "@refinedev/antd";
-import { Table, Space, Button, Typography, Popconfirm, message, Tag } from "antd";
+import { Space, Button, Typography, message, Pagination } from "antd";
 import { Link } from "react-router-dom";
-import { ArrowRightOutlined, EyeOutlined, LikeOutlined, HomeOutlined, DeleteOutlined } from "@ant-design/icons";
-import { DateDisplayField } from "@/components/table";
-import { FeedEntityTag } from "./components/feed-entity-tag";
-import { FeedVideoStatusTag } from "./components/feed-video-status-tag";
+import { HomeOutlined } from "@ant-design/icons";
+import { axiosInstance } from "@/lib/providers/utils/axios";
+import { API_URL } from "@/configs/app.config";
+import { FeedLegacyBentoGrid } from "./components/feed-legacy-bento-grid";
 import type { CrudFilter } from "@refinedev/core/src/contexts/data/types";
 
 const { Text } = Typography;
@@ -23,7 +23,18 @@ export const ListFeedLegacy = () => {
     const invalidate = useInvalidate();
     const { mutate: deleteVideo } = useDelete();
 
-    const { tableProps, filters, setFilters } = useTable({
+    const [migratingId, setMigratingId] = useState<string | null>(null);
+
+    const {
+        tableProps,
+        filters,
+        setFilters,
+        current,
+        setCurrent,
+        pageSize,
+        setPageSize,
+        tableQueryResult,
+    } = useTable({
         resource: "feed-legacy",
         syncWithLocation: true,
         sorters: { initial: [{ field: "createdAt", order: "desc" }] },
@@ -56,6 +67,19 @@ export const ListFeedLegacy = () => {
                 },
             }
         );
+    };
+
+    const handleMigrate = async (recordId: string) => {
+        setMigratingId(recordId);
+        try {
+            await axiosInstance.post(`${API_URL}/feed/admin/legacy/${recordId}/migrate`);
+            message.success(translate("feed.legacy.migrateSuccess"));
+            invalidate({ resource: "feed-legacy", invalidates: ["list"] });
+        } catch (error: any) {
+            message.error(error?.response?.data?.message || translate("common.error"));
+        } finally {
+            setMigratingId(null);
+        }
     };
 
     return (
@@ -91,111 +115,26 @@ export const ListFeedLegacy = () => {
                 </Space>
             </div>
 
-            <Table {...tableProps} rowKey="id">
-                <Table.Column
-                    dataIndex={["content", "title"]}
-                    title={translate("feed.fields.title")}
-                    render={(value, record: BaseRecord) => (
-                        <Space direction="vertical" size={0}>
-                            <Text strong>{value}</Text>
-                            <Text type="secondary" style={{ fontSize: 12 }}>
-                                {record.shortCode}
-                            </Text>
-                        </Space>
-                    )}
+            <FeedLegacyBentoGrid
+                dataSource={tableProps.dataSource}
+                loading={!!tableProps.loading}
+                onDelete={handleDelete}
+                onMigrate={handleMigrate}
+                migratingId={migratingId}
+            />
+
+            <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 16 }}>
+                <Pagination
+                    current={current}
+                    pageSize={pageSize}
+                    total={tableQueryResult?.data?.total ?? 0}
+                    showSizeChanger
+                    onChange={(page, newPageSize) => {
+                        setCurrent(page);
+                        setPageSize(newPageSize);
+                    }}
                 />
-                <Table.Column
-                    dataIndex={["author", "name"]}
-                    title={translate("feed.fields.author")}
-                />
-                <Table.Column
-                    dataIndex={["relatedTo", "entity"]}
-                    title={translate("feed.fields.entity")}
-                    align="center"
-                    render={(value) =>
-                        value ? (
-                            <FeedEntityTag entity={value} />
-                        ) : (
-                            <Text type="secondary">-</Text>
-                        )
-                    }
-                />
-                <Table.Column
-                    dataIndex={["content", "price"]}
-                    title={translate("feed.fields.price")}
-                    align="center"
-                />
-                <Table.Column
-                    dataIndex={["content", "location"]}
-                    title={translate("feed.fields.location")}
-                    ellipsis
-                />
-                <Table.Column
-                    dataIndex="status"
-                    title={translate("feed.fields.status")}
-                    align="center"
-                    render={(value) =>
-                        value ? <FeedVideoStatusTag status={value} /> : null
-                    }
-                />
-                <Table.Column
-                    dataIndex="stats"
-                    title={translate("feed.fields.stats")}
-                    align="center"
-                    render={(stats) => (
-                        <Space size={12}>
-                            <Space size={4}>
-                                <LikeOutlined />
-                                <Text>{stats?.likes ?? 0}</Text>
-                            </Space>
-                            <Space size={4}>
-                                <EyeOutlined />
-                                <Text>{stats?.views ?? 0}</Text>
-                            </Space>
-                        </Space>
-                    )}
-                />
-                <Table.Column
-                    dataIndex="migratedAt"
-                    title={translate("feed.legacy.migratedLabel")}
-                    align="center"
-                    render={(value: string | null) =>
-                        value ? (
-                            <Tag color="success">{translate("feed.legacy.migratedYes")}</Tag>
-                        ) : (
-                            <Tag>{translate("feed.legacy.migratedNo")}</Tag>
-                        )
-                    }
-                />
-                <Table.Column
-                    dataIndex="createdAt"
-                    title={translate("fields.created_at")}
-                    align="center"
-                    sorter={true}
-                    render={(date: string) => <DateDisplayField value={date} />}
-                />
-                <Table.Column
-                    title={translate("table.actions")}
-                    dataIndex="actions"
-                    align="center"
-                    render={(_, record: BaseRecord) => (
-                        <Space>
-                            <Link to={`/feed/legacy/show/${record.id}`} state={{ record }}>
-                                <Button size="small" icon={<ArrowRightOutlined />} />
-                            </Link>
-                            <Popconfirm
-                                title={translate("common.deleteTitle")}
-                                description={translate("common.deleteConfirm")}
-                                onConfirm={() => handleDelete(record.id as string)}
-                                okText={translate("common.yes")}
-                                cancelText={translate("common.no")}
-                            >
-                                <Button size="small" danger icon={<DeleteOutlined />} />
-                            </Popconfirm>
-                        </Space>
-                    )}
-                />
-            </Table>
+            </div>
         </List>
     );
 };

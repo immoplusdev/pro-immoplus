@@ -192,6 +192,7 @@
     "undo": "Annuler",
     "import": "Importer",
     "clone": "Cloner",
+    "apply": "Appliquer",
     "notAccessTitle": "Vous n'avez pas la permission d'accéder"
   },
   "warnWhenUnsavedChanges": "Êtes-vous sûr de vouloir partir? Vous avez des modifications non enregistrées.",
@@ -229,7 +230,12 @@
       "heure_depart": "Heure de départ",
       "images": "Images",
       "oui": "Oui",
-      "non": "Non"
+      "non": "Non",
+      "has_jacuzzi": "Jacuzzi",
+      "has_piscine": "Piscine",
+      "tarif_horaire": "Tarif horaire",
+      "views_count": "Nombre de vues",
+      "likes_count": "Nombre de likes"
     },
     "status_validation": {
       "valide": "Validé",
@@ -277,7 +283,8 @@
       "echoue_ou_annule": "Échoué ou annulé",
       "timer": "Temps restant",
       "rapport": "Rapport",
-      "rapport_placeholder": "Saisir le rapport de la réservation..."
+      "rapport_placeholder": "Saisir le rapport de la réservation...",
+      "rating_status": "Statut de notation"
     },
     "status_reservation": {
       "rejete": "Rejeté",
@@ -290,6 +297,16 @@
       "proprietaire_sans_reponse": "Propriétaire sans réponse",
       "client_annule_reservation": "Client a annulé la réservation",
       "client_sans_reponse": "Client sans réponse"
+    },
+    "rating_status": {
+      "not_applicable": "Non applicable",
+      "pending": "En attente",
+      "rated": "Noté",
+      "expired": "Expiré",
+      "automatic": "Automatique (calcul auto)"
+    },
+    "messages": {
+      "rating_status_updated": "Statut de notation mis à jour"
     }
   },
   "biens_immobiliers": {
@@ -571,7 +588,9 @@
     "client_phone_number": "Numéro client",
     "notes": "Note",
     "images": "Images",
-    "regles_supplementaires": "Règles supplémentaires"
+    "regles_supplementaires": "Règles supplémentaires",
+    "ville": "Ville",
+    "commune": "Commune"
   },
   "tags": {
     "valided": "Validé",
@@ -581,6 +600,7 @@
     "clone": "Cloner",
     "non_paye": "Non paye",
     "en_validation": "En validation",
+    "reduction": "Réduction",
     "all_e": "Toutes",
     "all": "Tous",
     "maison": "maison",

@@ -62,6 +62,10 @@ export const ResidenceDataFields: React.FC<ReadOnlySectionProps> = ({ translate,
 
             <Card style={{width: "50%", border: "none"}}>
                 <ReadOnlyFormField
+                    label={translate("residences.fields.heure_entree")}
+                    content={residencesData?.heureEntree}
+                />
+                <ReadOnlyFormField
                     label={translate("residences.fields.heure_depart")}
                     content={residencesData?.heureDepart}
                 />
@@ -78,6 +82,14 @@ export const ResidenceDataFields: React.FC<ReadOnlySectionProps> = ({ translate,
                     content={residencesData?.fetesAutorises ? "Oui" : "Non"}
                 />
                 <ReadOnlyFormField
+                    label={translate("residences.fields.has_jacuzzi")}
+                    content={residencesData?.hasJacuzzi ? "Oui" : "Non"}
+                />
+                <ReadOnlyFormField
+                    label={translate("residences.fields.has_piscine")}
+                    content={residencesData?.hasPiscine ? "Oui" : "Non"}
+                />
+                <ReadOnlyFormField
                     label={translate("fields.regles_supplementaires")}
                     content={residencesData?.reglesSupplementaires}
                 />
@@ -89,14 +101,26 @@ export const ResidenceDataFields: React.FC<ReadOnlySectionProps> = ({ translate,
                     label={translate("residences.fields.duree_max_sejour")}
                     content={residencesData?.dureeMaxSejour}
                 />
-                {/*<ReadOnlyFormField*/}
-                {/*    label={translate("fields.created_at")}*/}
-                {/*    content={new Date(residencesData?.createdAt).toLocaleDateString()}*/}
-                {/*/>*/}
-                {/*<ReadOnlyFormField*/}
-                {/*    label={translate("fields.updated_at")}*/}
-                {/*    content={new Date(residencesData?.updatedAt).toLocaleDateString()}*/}
-                {/*/>*/}
+                <ReadOnlyFormField
+                    label={translate("fields.ville")}
+                    content={residencesData?.ville}
+                />
+                <ReadOnlyFormField
+                    label={translate("fields.commune")}
+                    content={residencesData?.commune}
+                />
+                <ReadOnlyFormField
+                    label={translate("residences.fields.tarif_horaire")}
+                    content={residencesData?.tarifHoraire}
+                />
+                <ReadOnlyFormField
+                    label={translate("residences.fields.views_count")}
+                    content={residencesData?.viewsCount}
+                />
+                <ReadOnlyFormField
+                    label={translate("residences.fields.likes_count")}
+                    content={residencesData?.likesCount}
+                />
             </Card>
         </Card>
     );

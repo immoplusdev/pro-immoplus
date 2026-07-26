@@ -103,7 +103,8 @@
   },
   "loading": "Wird geladen",
   "tags": {
-    "clone": "Klon"
+    "clone": "Klon",
+    "reduction": "Rabatt"
   },
   "dashboard": {
     "title": "Dashboard"
