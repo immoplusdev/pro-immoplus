@@ -96,6 +96,12 @@ import {
   ShowAlert,
 } from "@/pages/alerts";
 import { ListUserPreferences } from "@/pages/user-preferences";
+import {
+  AdCampaignList,
+  AdCampaignCreate,
+  AdCampaignEdit,
+  AdCampaignShow,
+} from "@/pages/diffusion";
 
 export function AppRoutes() {
   return (
@@ -264,6 +270,12 @@ export function AppRoutes() {
         </Route>
         <Route path={"/user-preferences"}>
           <Route index element={<ListUserPreferences />} />
+        </Route>
+        <Route path={"/ads/campaigns"}>
+          <Route index element={<AdCampaignList />} />
+          <Route path="create" element={<AdCampaignCreate />} />
+          <Route path="edit/:id" element={<AdCampaignEdit />} />
+          <Route path="show/:id" element={<AdCampaignShow />} />
         </Route>
         <Route path={"/statistics"}>
           <Route index element={<Statistics />} />

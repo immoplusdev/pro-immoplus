@@ -33,6 +33,7 @@ import {
   BellOutlined,
   HeartOutlined,
   TagOutlined,
+  FundOutlined,
 } from "@ant-design/icons";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { API_URL, PROJECT_ID } from "@/configs/app.config";
@@ -236,6 +237,18 @@ function App() {
                   meta: {
                     icon: <TagOutlined />,
                     label: "Bannières",
+                  },
+                },
+                {
+                  name: "ads/campaigns",
+                  list: "/ads/campaigns",
+                  create: "/ads/campaigns/create",
+                  edit: "/ads/campaigns/edit/:id",
+                  show: "/ads/campaigns/show/:id",
+                  meta: {
+                    canDelete: true,
+                    icon: <FundOutlined />,
+                    label: "Campagnes pub",
                   },
                 },
                 {
