@@ -5,6 +5,7 @@ import {useTranslate} from "@refinedev/core";
 import type {CrudFilter, GetListResponse} from "@refinedev/core/dist/contexts/data/types";
 import debounce from 'lodash.debounce';
 import type {QueryObserverResult} from "@tanstack/react-query";
+import {useLocation} from "react-router-dom";
 
 type Props = {
     setFilters: ((filters: CrudFilter[], behavior?: any) => void) & ((setter: (prevFilters: CrudFilter[]) => CrudFilter[]) => void);
@@ -13,7 +14,11 @@ type Props = {
 
 export function SearchInput({setFilters, tableQuery}: Props) {
     const translate = useTranslate();
-    const [value, setValue] = useState<string | undefined>(undefined);
+    const location = useLocation();
+    const storageKey = `search_${location.pathname}`;
+    const [value, setValue] = useState<string | undefined>(
+        () => sessionStorage.getItem(storageKey) || undefined
+    );
 
     const handleSearch = useCallback(
         debounce((value: string | undefined) => {
@@ -41,7 +46,13 @@ export function SearchInput({setFilters, tableQuery}: Props) {
     }, [value, handleSearch]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(e.target.value === "" ? undefined : e.target.value);
+        const newValue = e.target.value === "" ? undefined : e.target.value;
+        if (newValue) {
+            sessionStorage.setItem(storageKey, newValue);
+        } else {
+            sessionStorage.removeItem(storageKey);
+        }
+        setValue(newValue);
     };
 
 
@@ -49,6 +60,7 @@ export function SearchInput({setFilters, tableQuery}: Props) {
         <Input
             placeholder={translate("common.write_something_here")}
             prefix={<SearchOutlined/>}
+            value={value ?? ""}
             onChange={handleChange}
         />
     )
