@@ -143,11 +143,27 @@ export const AdCampaignShow = () => {
             <Text strong style={{ display: "block", marginBottom: 8 }}>
               Vidéos
             </Text>
-            <Space direction="vertical" style={{ width: "100%" }}>
-              {campaign.media.videos.map((url) => (
-                <Text key={url} copyable>
-                  {url}
-                </Text>
+            <Space direction="vertical" style={{ width: "100%" }} size={12}>
+              {campaign.media.videos.map((url, i) => (
+                <div
+                  key={url}
+                  style={{
+                    border: "1px solid #e8e8e8",
+                    borderRadius: 8,
+                    overflow: "hidden",
+                    background: "#000",
+                  }}
+                >
+                  <video
+                    src={url}
+                    controls
+                    style={{ display: "block", width: "100%", maxHeight: 360 }}
+                  >
+                    <a href={url} target="_blank" rel="noreferrer">
+                      Vidéo {i + 1}
+                    </a>
+                  </video>
+                </div>
               ))}
             </Space>
           </div>
