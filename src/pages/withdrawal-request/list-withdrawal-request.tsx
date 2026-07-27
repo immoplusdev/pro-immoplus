@@ -3,6 +3,7 @@ import {
     useTable,
     List,
     DeleteButton,
+    BooleanField,
 } from "@refinedev/antd";
 import {Table, Space, Button, Tag} from "antd";
 import {Link} from "react-router-dom";
@@ -131,6 +132,18 @@ export const ListWithdrawalRequestTable = ({filters, activeMenu}: Props) => {
                     )}
                     align="center"
                     sorter={true}
+                />
+                <Table.Column
+                    dataIndex="retraitQr"
+                    title={translate("withdrawalRequests.fields.retraitQr")}
+                    render={(value: boolean) => <BooleanField value={value}/>}
+                    align="center"
+                />
+                <Table.Column
+                    dataIndex="qrAutoApproved"
+                    title={translate("withdrawalRequests.fields.qrAutoApproved")}
+                    render={(value: boolean) => <BooleanField value={value}/>}
+                    align="center"
                 />
                 <Table.Column
                     dataIndex="createdAt"
