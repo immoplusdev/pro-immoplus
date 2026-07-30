@@ -5,7 +5,7 @@ import {
   useApiUrl,
   HttpError,
 } from "@refinedev/core";
-import { Show, EditButton, DeleteButton, ListButton } from "@refinedev/antd";
+import { Show, EditButton, DeleteButton, ListButton, BooleanField } from "@refinedev/antd";
 import {
   Card,
   Row,
@@ -200,6 +200,20 @@ export const ShowWithdrawalRequest = () => {
                 ) : (
                   <Text>{translate("common.notAvailable")}</Text>
                 )}
+              </div>
+
+              <div>
+                <Text strong>
+                  {translate("withdrawalRequests.fields.retraitQr")}:{" "}
+                </Text>
+                <BooleanField value={withdrawalData?.retraitQr} />
+              </div>
+
+              <div>
+                <Text strong>
+                  {translate("withdrawalRequests.fields.qrAutoApproved")}:{" "}
+                </Text>
+                <BooleanField value={withdrawalData?.qrAutoApproved} />
               </div>
             </Space>
           </Card>

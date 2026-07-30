@@ -671,7 +671,9 @@
       "wallet": "Portefeuille",
       "note": "Note",
       "currency": "Devise",
-      "transferDescription": "Description de transfert"
+      "transferDescription": "Description de transfert",
+      "retraitQr": "Retrait QR",
+      "qrAutoApproved": "Auto-approuvé QR"
     },
     "validation": {
       "amount": {
