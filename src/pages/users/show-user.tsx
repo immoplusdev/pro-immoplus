@@ -82,6 +82,14 @@ export const ShowUser = () => {
 
                 <ReadOnlyFormField label={translate("users.fields.role")} content={record?.role?.name}
                                    isLoading={isLoading}/>
+
+                <ReadOnlyFormField label={translate("users.fields.certification_score")}
+                                   content={record?.certificationScore ?? ""}
+                                   isLoading={isLoading}/>
+
+                <ReadOnlyFormField label={translate("users.fields.certification_status")}
+                                   content={record?.certificationStatus ?? ""}
+                                   isLoading={isLoading}/>
             </ColList>
         </Show>
     );

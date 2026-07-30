@@ -102,6 +102,8 @@ import {
   AdCampaignEdit,
   AdCampaignShow,
 } from "@/pages/diffusion";
+import { ProCertificationList } from "@/pages/admin/pro-certification";
+import { ProCertificationDetail } from "@/pages/admin/pro-certification/detail";
 
 export function AppRoutes() {
   return (
@@ -276,6 +278,10 @@ export function AppRoutes() {
           <Route path="create" element={<AdCampaignCreate />} />
           <Route path="edit/:id" element={<AdCampaignEdit />} />
           <Route path="show/:id" element={<AdCampaignShow />} />
+        </Route>
+        <Route path={"/admin/pro-certification"}>
+          <Route index element={<ProCertificationList />} />
+          <Route path=":userId" element={<ProCertificationDetail />} />
         </Route>
         <Route path={"/statistics"}>
           <Route index element={<Statistics />} />
