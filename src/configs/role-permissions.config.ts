@@ -26,6 +26,7 @@ export const rolePermissions: Record<string, RolePermission> = {
             "feed",
             "banners",
             "ads/campaigns",
+            "admin/pro-certification",
             "configs",
         ],
         defaultRedirect: "/demandes-visites",

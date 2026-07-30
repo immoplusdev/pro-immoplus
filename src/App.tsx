@@ -34,6 +34,7 @@ import {
   HeartOutlined,
   TagOutlined,
   FundOutlined,
+  SafetyCertificateOutlined,
 } from "@ant-design/icons";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { API_URL, PROJECT_ID } from "@/configs/app.config";
@@ -249,6 +250,15 @@ function App() {
                     canDelete: true,
                     icon: <FundOutlined />,
                     label: "Campagnes pub",
+                  },
+                },
+                {
+                  name: "admin/pro-certification",
+                  list: "/admin/pro-certification",
+                  show: "/admin/pro-certification/:id",
+                  meta: {
+                    icon: <SafetyCertificateOutlined />,
+                    label: "Certification Pro",
                   },
                 },
                 {
