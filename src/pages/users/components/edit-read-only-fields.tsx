@@ -10,6 +10,8 @@ import { WalletDebitForm } from "./wallet-debit-form";
 import { WalletReleaseFundsForm } from "./wallet-release-funds-form";
 import { WalletTransferForm } from "./wallet-transfer-form";
 import { FilePreviewModal } from "./file-preview";
+import { UserProStatistics } from "./user-pro-statistics";
+import { ProCertificationCard } from "./pro-certification/pro-certification-card";
 
 export const UsersEditDataFields: React.FC<{
   translate: any;
@@ -21,16 +23,16 @@ export const UsersEditDataFields: React.FC<{
   return (
     <>
       <Card
+        style={{ border: "1px solid #E8E9EE", borderRadius: 10 }}
         title={
           <Space>
             <EditOutlined />
             <p>{translate("users.fields.data")}</p>
           </Space>
         }
-        headStyle={{ padding: "1rem", border: "0.5px solid black" }}
+        headStyle={{ padding: "1rem" }}
         bodyStyle={{
           padding: "2rem",
-          border: "0.5px solid black",
           display: "flex",
           flexDirection: "row",
         }}
@@ -94,6 +96,8 @@ export const UsersEditDataFields: React.FC<{
         style={{
           display: data?.role?.name === "pro_entreprise" ? "" : "None",
           marginTop: "2rem",
+          border: "1px solid #E8E9EE",
+          borderRadius: 10,
         }}
         title={
           <Space>
@@ -101,10 +105,9 @@ export const UsersEditDataFields: React.FC<{
             <p>Informations Entreprise</p>
           </Space>
         }
-        headStyle={{ padding: "1rem", border: "0.5px solid black" }}
+        headStyle={{ padding: "1rem" }}
         bodyStyle={{
           padding: "2rem",
-          border: "0.5px solid black",
           display: "flex",
           flexDirection: "row",
         }}
@@ -163,6 +166,8 @@ export const UsersEditDataFields: React.FC<{
         style={{
           display: data?.role?.name === "pro_particulier" ? "" : "None",
           marginTop: "2rem",
+          border: "1px solid #E8E9EE",
+          borderRadius: 10,
         }}
         title={
           <Space>
@@ -170,10 +175,9 @@ export const UsersEditDataFields: React.FC<{
             <p>Informations Professionnel Particulier</p>
           </Space>
         }
-        headStyle={{ padding: "1rem", border: "0.5px solid black" }}
+        headStyle={{ padding: "1rem" }}
         bodyStyle={{
           padding: "2rem",
-          border: "0.5px solid black",
           display: "flex",
           flexDirection: "row",
         }}
@@ -216,44 +220,6 @@ export const UsersEditDataFields: React.FC<{
         </Card>
       </Card>
 
-      {/* Certification */}
-      <Card
-        style={{
-          display:
-            data?.role?.name === "pro_entreprise" ||
-            data?.role?.name === "pro_particulier"
-              ? ""
-              : "None",
-          marginTop: "2rem",
-        }}
-        title={
-          <Space>
-            <EditOutlined />
-            <p>Certification</p>
-          </Space>
-        }
-        headStyle={{ padding: "1rem", border: "0.5px solid black" }}
-        bodyStyle={{
-          padding: "2rem",
-          border: "0.5px solid black",
-          display: "flex",
-          flexDirection: "row",
-        }}
-      >
-        <Card style={{ border: "none", width: "50%" }}>
-          <ReadOnlyFormField
-            label={translate("users.fields.certification_score")}
-            content={data?.certificationScore ?? "—"}
-          />
-        </Card>
-        <Card style={{ width: "50%", border: "none" }}>
-          <ReadOnlyFormField
-            label={translate("users.fields.certification_status")}
-            content={data?.certificationStatus ?? "—"}
-          />
-        </Card>
-      </Card>
-
       {/* Detail de Portefeuille */}
       <Card
         style={{
@@ -263,6 +229,8 @@ export const UsersEditDataFields: React.FC<{
               ? ""
               : "None",
           marginTop: "2rem",
+          border: "1px solid #E8E9EE",
+          borderRadius: 10,
         }}
         title={
           <Space>
@@ -270,10 +238,9 @@ export const UsersEditDataFields: React.FC<{
             <p>{translate("users.fields.wallet")}</p>
           </Space>
         }
-        headStyle={{ padding: "1rem", border: "0.5px solid black" }}
+        headStyle={{ padding: "1rem" }}
         bodyStyle={{
           padding: "2rem",
-          border: "0.5px solid black",
           display: "flex",
           flexDirection: "row",
         }}
@@ -347,10 +314,20 @@ export const UsersEditDataFields: React.FC<{
         <WalletTransferForm translate={translate} onSuccess={onWalletUpdate} />
       </div>
 
+      {(data?.role?.name === "pro_entreprise" ||
+        data?.role?.name === "pro_particulier") && (
+        <>
+          <UserProStatistics proId={data?.id ? String(data.id) : undefined} />
+          <ProCertificationCard proId={data?.id ? String(data.id) : undefined} />
+        </>
+      )}
+
       <Card
         style={{
           display: "None",
           marginTop: "2rem",
+          border: "1px solid #E8E9EE",
+          borderRadius: 10,
         }}
         title={
           <Space>
@@ -358,10 +335,9 @@ export const UsersEditDataFields: React.FC<{
             <p>{translate("users.fields.user_transactions")}</p>
           </Space>
         }
-        headStyle={{ padding: "1rem", border: "0.5px solid black" }}
+        headStyle={{ padding: "1rem" }}
         bodyStyle={{
           padding: "2rem",
-          border: "0.5px solid black",
           display: "flex",
           flexDirection: "row",
         }}

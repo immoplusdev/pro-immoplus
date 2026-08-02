@@ -1,6 +1,6 @@
-import { Tag } from "antd";
 import { useTranslate } from "@refinedev/core";
 import { StatusDemandeProParticulier } from "@/core/domain/demandes-pro-particulier";
+import { OutlineTag } from "@/components/table";
 
 type Props = {
     status: StatusDemandeProParticulier | string;
@@ -9,17 +9,17 @@ type Props = {
 export function StatusDemandeProParticulierTag({ status }: Props) {
     const translate = useTranslate();
     const { color, labelKey } = getStatusData(status);
-    return <Tag color={color}>{translate(labelKey)}</Tag>;
+    return <OutlineTag color={color}>{translate(labelKey)}</OutlineTag>;
 }
 
 function getStatusData(status: string) {
     switch (status) {
         case StatusDemandeProParticulier.Approved:
-            return { color: "success", labelKey: "demandes_pro_particulier.status.approved" };
+            return { color: "#1F8A5B", labelKey: "demandes_pro_particulier.status.approved" };
         case StatusDemandeProParticulier.Rejected:
-            return { color: "error", labelKey: "demandes_pro_particulier.status.rejected" };
+            return { color: "#C13838", labelKey: "demandes_pro_particulier.status.rejected" };
         case StatusDemandeProParticulier.Pending:
         default:
-            return { color: "warning", labelKey: "demandes_pro_particulier.status.pending" };
+            return { color: "#B86B0A", labelKey: "demandes_pro_particulier.status.pending" };
     }
 }

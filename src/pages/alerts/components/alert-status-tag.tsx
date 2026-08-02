@@ -1,5 +1,5 @@
-import { Tag } from "antd";
 import { useTranslate } from "@refinedev/core";
+import { OutlineTag } from "@/components/table";
 
 type Props = {
     status: string;
@@ -8,20 +8,20 @@ type Props = {
 export function AlertStatusTag({ status }: Props) {
     const translate = useTranslate();
     const { color, labelKey } = getStatusData(status);
-    return <Tag color={color}>{translate(labelKey)}</Tag>;
+    return <OutlineTag color={color}>{translate(labelKey)}</OutlineTag>;
 }
 
 function getStatusData(status: string) {
     switch (status) {
         case "active":
-            return { color: "blue", labelKey: "alerts.status.active" };
+            return { color: "#185FA5", labelKey: "alerts.status.active" };
         case "pending":
-            return { color: "warning", labelKey: "alerts.status.pending" };
+            return { color: "#B86B0A", labelKey: "alerts.status.pending" };
         case "has_proposals":
-            return { color: "purple", labelKey: "alerts.status.has_proposals" };
+            return { color: "#534AB7", labelKey: "alerts.status.has_proposals" };
         case "closed":
-            return { color: "default", labelKey: "alerts.status.closed" };
+            return { color: "#5F5E5A", labelKey: "alerts.status.closed" };
         default:
-            return { color: "default", labelKey: "alerts.status.pending" };
+            return { color: "#5F5E5A", labelKey: "alerts.status.pending" };
     }
 }

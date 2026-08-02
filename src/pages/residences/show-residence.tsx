@@ -3,15 +3,15 @@ import {useShow, useTranslate} from "@refinedev/core";
 import {
     Show,
     TextField,
-    BooleanField,
     NumberField,
     DateField,
 } from "@refinedev/antd";
 
-import {Form, Tag, Upload, Image, UploadFile, UploadProps, Typography} from "antd";
+import {Form, Upload, Image, UploadFile, UploadProps, Typography} from "antd";
 import {ColList} from "@/components/layout";
 import {defaultFormColListColProps, defaultFormColListRowProps} from "@/configs";
 import {ReadOnlyFormField} from "@/lib/ts-utilities";
+import {VerificationBadge, OutlineTag} from "@/components/table";
 import {ImageCarousel} from "@/components/images/image-carousel";
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -54,18 +54,13 @@ export const ShowResidence = () => {
 
                     <>
                         <Title level={5}>{translate("residences.fields.residence_disponible")}</Title>
-                        <BooleanField value={record?.residenceDisponible}/>
+                        <VerificationBadge verified={!!record?.residenceDisponible}/>
                     </>
 
                     <Form.Item label={translate("fields.status_validation")}>
-                        <Tag color="warning" style={{
-                            width: "17vw",
-                            height: 30,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center"
-                        }}>{record?.statusValidation}</Tag>
+                        <OutlineTag color="#B86B0A">{record?.statusValidation}</OutlineTag>
                     </Form.Item>
+
                     <ReadOnlyFormField label={translate("fields.prix_reservation")} content={record?.prixReservation}
                                        isLoading={isLoading}/>
 
@@ -101,19 +96,19 @@ export const ShowResidence = () => {
 
                     <>
                         <Title level={5}>{translate("residences.fields.animaux_autorises")}</Title>
-                        <BooleanField value={record?.animauxAutorises}/>
+                        <VerificationBadge verified={!!record?.animauxAutorises}/>
                     </>
                     <>
                         <Title level={5}>{translate("residences.fields.fetes_autorises")}</Title>
-                        <BooleanField value={record?.fetesAutorises}/>
+                        <VerificationBadge verified={!!record?.fetesAutorises}/>
                     </>
                     <>
                         <Title level={5}>{translate("residences.fields.has_jacuzzi")}</Title>
-                        <BooleanField value={record?.hasJacuzzi}/>
+                        <VerificationBadge verified={!!record?.hasJacuzzi}/>
                     </>
                     <>
                         <Title level={5}>{translate("residences.fields.has_piscine")}</Title>
-                        <BooleanField value={record?.hasPiscine}/>
+                        <VerificationBadge verified={!!record?.hasPiscine}/>
                     </>
 
                     <ReadOnlyFormField label={translate("residences.fields.views_count")} content={record?.viewsCount}

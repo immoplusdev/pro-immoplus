@@ -1,8 +1,8 @@
 import {CrudFilter} from "@refinedev/core/src/contexts/data/types";
 import {BaseRecord, useTranslate} from "@refinedev/core";
 import {DateField, FilterDropdown, List, useTable} from "@refinedev/antd";
-import {Button, Select, Space, Table, Tag} from "antd";
-import {Link, useLocation} from "react-router-dom";
+import {Select, Space, Table, Button} from "antd";
+import {useLocation, Link} from "react-router-dom";
 import {ArrowRightOutlined} from "@ant-design/icons";
 import React from "react";
 import {Amount} from "@/components/payments";
@@ -11,7 +11,10 @@ import {PaymentStatus} from "@/core/domain/payments";
 import {StatusPaymentTag} from "./status-payment-tag";
 import {enumToList} from "@/lib/ts-utilities";
 import {SearchInput} from "@/components/filters";
-import {DateDisplayField} from "@/components/table";
+import {DateDisplayField, OutlineTag} from "@/components/table";
+
+const BORDER_COLOR = "#E5E3DC";
+const TEXT_SECONDARY = "#5F5E5A";
 
 
 type Props = {
@@ -48,34 +51,13 @@ export function ListPaymentTable({activeMenu, filters}: Props) {
                     setFilters={setFilters}
                     tableQuery={tableQuery}
                 />,
-                <Link to="/payments">
-                    <Button
-                        type={activeMenu == "all_e" ? "primary" : "default"}
-                    >
-                        {translate("tags.all")}
-                    </Button>
-                </Link>,
-                <Link to="/payments/factures">
-                    <Button
-                        type={activeMenu == "factures" ? "primary" : "default"}
-                    >
-                        {translate("pages.payment.common.factures")}
-                    </Button>
-                </Link>,
-                <Link to="/payments/retraits">
-                    <Button
-                        type={activeMenu == "retraits" ? "primary" : "default"}
-                    >
-                        {translate("pages.payment.common.retraits")}
-                    </Button>
-                </Link>
             ]}
         >
             <Table {...tableProps} rowKey="id">
                 <Table.Column
                     dataIndex="collection"
                     title={translate("pages.payment.fields.collection")}
-                    render={(value) => <Tag>{translate(`pages.payment.tags.${value}`)}</Tag>}
+                    render={(value) => <OutlineTag color={TEXT_SECONDARY}>{translate(`pages.payment.tags.${value}`)}</OutlineTag>}
                     align="center"
                     sorter
                     filterDropdown={(props) => (
@@ -95,7 +77,7 @@ export function ListPaymentTable({activeMenu, filters}: Props) {
                 <Table.Column
                     dataIndex="paymentType"
                     title={translate("pages.payment.fields.payment_type")}
-                    render={(value) => <Tag>{translate(`pages.payment.tags.${value}`)}</Tag>}
+                    render={(value) => <OutlineTag color={TEXT_SECONDARY}>{translate(`pages.payment.tags.${value}`)}</OutlineTag>}
                     align="center"
                     sorter
                 />
@@ -116,7 +98,7 @@ export function ListPaymentTable({activeMenu, filters}: Props) {
                 <Table.Column
                     dataIndex="paymentMethod"
                     title={translate("pages.payment.fields.payment_method")}
-                    render={(value) => <Tag>{translate(`pages.payment.tags.${value}`)}</Tag>}
+                    render={(value) => <OutlineTag color={TEXT_SECONDARY}>{translate(`pages.payment.tags.${value}`)}</OutlineTag>}
                     align="center"
                     sorter
                 />
@@ -144,7 +126,7 @@ export function ListPaymentTable({activeMenu, filters}: Props) {
                                 <Button
                                     size="small"
                                     icon={<ArrowRightOutlined/>}
-
+                                    style={{background: "#FFFFFF", border: `1px solid ${BORDER_COLOR}`, color: TEXT_SECONDARY}}
                                 />
                             </Link>
                         </Space>

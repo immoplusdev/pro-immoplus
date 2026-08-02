@@ -22,14 +22,15 @@ export const DemandeVisiteEditActionFields: React.FC<VisiteActionsFieldProps> = 
 
     return (
         <Card
+            style={{ border: "1px solid #E8E9EE", borderRadius: 10 }}
             title={
                 <Space>
                     <EditOutlined />
                     <p>{translate("demandes_visites.fields.actions")}</p>
                 </Space>
             }
-            headStyle={{ padding: "1rem", border:"0.5px solid black"}}
-            bodyStyle={{ padding: "2rem", border:"0.5px solid black", display:"flex", flexDirection: "column" }}
+            headStyle={{ padding: "1rem"}}
+            bodyStyle={{ padding: "2rem", display:"flex", flexDirection: "column" }}
         >
             <Form.Item
                 label={translate("demandes_visites.fields.status_demande_visite")}
@@ -37,7 +38,7 @@ export const DemandeVisiteEditActionFields: React.FC<VisiteActionsFieldProps> = 
                 rules={[{ required: true }]}
             >
                 <Select
-                    style={{border:"0.5px solid black", borderRadius:"7px"}}
+                    style={{border: "1px solid #E8E9EE", borderRadius: 6}}
                     options={statusValidationDemandeVisite.map(item => ({
                     value: item,
                     label: <span>{translate(`demandes_visites.fields.${item}`)}</span>
@@ -49,7 +50,7 @@ export const DemandeVisiteEditActionFields: React.FC<VisiteActionsFieldProps> = 
                 rules={[{ required: true }]}
             >
                 <Select
-                    style={{border:"0.5px solid black", borderRadius:"7px"}}
+                    style={{border: "1px solid #E8E9EE", borderRadius: 6}}
                     options={typeDemandeVisiteList.map(item => ({
                     value: item,
                     label: <span>{translate(`demandes_visites.fields.${item}`)}</span>
@@ -61,7 +62,7 @@ export const DemandeVisiteEditActionFields: React.FC<VisiteActionsFieldProps> = 
                 rules={[{ required: true }]}
             >
                 <Select
-                    style={{border:"0.5px solid black", borderRadius:"7px"}}
+                    style={{border: "1px solid #E8E9EE", borderRadius: 6}}
                     options={enumToList(StatusFacture).map(item => ({
                     value: item,
                     label: <span>{translate(`demandes_visites.fields.${item}`)}</span>

@@ -1,7 +1,11 @@
-import {ListFurnituresTable} from "@/pages/furnitures/list-furnitures-table";
+import { ListFurnituresTable } from "@/pages/furnitures/list-furnitures-table";
+import { FurnituresTabs } from "@/pages/furnitures/furnitures-tabs";
 
 export const ListFurnitures = () => {
     return (
-        <ListFurnituresTable/>
+        <>
+            <FurnituresTabs activeMenu="all" />
+            <ListFurnituresTable />
+        </>
     );
 };

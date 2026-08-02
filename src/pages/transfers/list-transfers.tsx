@@ -7,15 +7,29 @@ import {
   DeleteButton,
   DateField,
 } from "@refinedev/antd";
-import { Table, Tag, Space } from "antd";
+import { Table, Space } from "antd";
 import { useTranslate } from "@refinedev/core";
+import type { CrudFilter } from "@refinedev/core/src/contexts/data/types";
 import { formatAmount } from "@/lib/helpers";
+import { TransferTabs } from "./transfer-tabs";
+import { OutlineTag } from "@/components/table";
 
-export const ListTransfers: React.FC = () => {
+const BORDER_COLOR = "#E5E3DC";
+const TEXT_SECONDARY = "#5F5E5A";
+
+type Props = {
+  activeMenu?: "all" | "successful" | "pending" | "failed";
+  filters?: {
+    permanent?: CrudFilter[];
+  };
+};
+
+export const ListTransfers: React.FC<Props> = ({ activeMenu = "all", filters }) => {
   const translate = useTranslate();
 
   const { tableProps } = useTable({
     resource: "transfers",
+    filters: { permanent: filters?.permanent },
     sorters: {
       initial: [
         {
@@ -29,40 +43,27 @@ export const ListTransfers: React.FC = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "created":
-        return "blue";
+        return "#185FA5";
       case "pending":
-        return "blue";
+        return "#B86B0A";
       case "successful":
-        return "green";
+        return "#1F8A5B";
       case "failed":
-        return "red";
+        return "#C13838";
       case "cancelled":
-        return "default";
+        return TEXT_SECONDARY;
       default:
-        return "default";
+        return TEXT_SECONDARY;
     }
   };
 
-  const getTransferTypeColor = (type: string) => {
-    switch (type) {
-      case "BANK_TRANSFER":
-        return "blue";
-      case "MOBILE_MONEY":
-        return "green";
-      case "CASH":
-        return "gold";
-      case "WIRE_TRANSFER":
-        return "purple";
-      case "DIGITAL_WALLET":
-        return "cyan";
-      default:
-        return "default";
-    }
-  };
+  const getTransferTypeColor = () => TEXT_SECONDARY;
 
   return (
-    <List>
-      <Table {...tableProps} rowKey="id">
+    <>
+      <TransferTabs activeMenu={activeMenu} />
+      <List>
+        <Table {...tableProps} rowKey="id">
         <Table.Column
           dataIndex="id"
           title="ID"
@@ -84,18 +85,18 @@ export const ListTransfers: React.FC = () => {
           dataIndex="transfetStatus"
           title={translate("transfers.fields.status")}
           render={(value) => (
-            <Tag color={getStatusColor(value)}>
+            <OutlineTag color={getStatusColor(value)}>
               {translate(`transfers.status.${value?.toLowerCase()}`)}
-            </Tag>
+            </OutlineTag>
           )}
         />
         <Table.Column
           dataIndex="transferType"
           title={translate("transfers.fields.transferType")}
           render={(value) => (
-            <Tag color={getTransferTypeColor(value)}>
+            <OutlineTag color={getTransferTypeColor()}>
               {translate(`transfers.transferType.${value?.toLowerCase()}`)}
-            </Tag>
+            </OutlineTag>
           )}
         />
         <Table.Column
@@ -117,14 +118,30 @@ export const ListTransfers: React.FC = () => {
           dataIndex="actions"
           render={(_, record) => (
             <Space>
-              <EditButton hideText size="small" recordItemId={record.id} />
-              <ShowButton hideText size="small" recordItemId={record.id} />
-              <DeleteButton hideText size="small" recordItemId={record.id} />
+              <EditButton
+                hideText
+                size="small"
+                recordItemId={record.id}
+                style={{background: "#FFFFFF", border: `1px solid ${BORDER_COLOR}`, color: TEXT_SECONDARY}}
+              />
+              <ShowButton
+                hideText
+                size="small"
+                recordItemId={record.id}
+                style={{background: "#FFFFFF", border: `1px solid ${BORDER_COLOR}`, color: TEXT_SECONDARY}}
+              />
+              <DeleteButton
+                hideText
+                size="small"
+                recordItemId={record.id}
+                style={{background: "#FFFFFF", border: "1px solid #C13838", color: "#C13838"}}
+              />
             </Space>
           )}
         />
       </Table>
-    </List>
+      </List>
+    </>
   );
 };
 

@@ -1,11 +1,13 @@
 import React from "react";
 import { useTranslate } from "@refinedev/core";
 import { useTable, List } from "@refinedev/antd";
-import { Table, Tag } from "antd";
-import { DateDisplayField } from "@/components/table";
+import { Table } from "antd";
+import { DateDisplayField, OutlineTag } from "@/components/table";
 import { SearchInput } from "@/components/filters";
 import type { UserPreference } from "@/core/domain/user-preferences";
 import { formatAmount } from "@/lib/helpers";
+
+const TEXT_SECONDARY = "#5F5E5A";
 
 export const ListUserPreferencesTable = () => {
   const translate = useTranslate();
@@ -55,7 +57,7 @@ export const ListUserPreferencesTable = () => {
           dataIndex={["intent", "name"]}
           title={translate("user_preferences.fields.intent")}
           align="center"
-          render={(value: string) => value ? <Tag color="blue">{value}</Tag> : "-"}
+          render={(value: string) => value ? <OutlineTag color="#185FA5">{value}</OutlineTag> : "-"}
         />
         <Table.Column
           dataIndex="propertyTypes"
@@ -64,7 +66,7 @@ export const ListUserPreferencesTable = () => {
           render={(propertyTypes: UserPreference["propertyTypes"]) =>
             propertyTypes?.length
               ? propertyTypes.map((pt) => (
-                  <Tag key={pt.id} color="green">{pt.name}</Tag>
+                  <OutlineTag key={pt.id} color={TEXT_SECONDARY}>{pt.name}</OutlineTag>
                 ))
               : "-"
           }
@@ -76,7 +78,7 @@ export const ListUserPreferencesTable = () => {
           render={(locations: UserPreference["locations"]) =>
             locations?.length
               ? locations.map((loc) => (
-                  <Tag key={loc.id}>{loc.name}</Tag>
+                  <OutlineTag key={loc.id} color={TEXT_SECONDARY}>{loc.name}</OutlineTag>
                 ))
               : "-"
           }

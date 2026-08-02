@@ -5,12 +5,12 @@ import {
   useApiUrl,
   HttpError,
 } from "@refinedev/core";
-import { Show, EditButton, DeleteButton, ListButton, BooleanField } from "@refinedev/antd";
+import { Show, EditButton, DeleteButton, ListButton } from "@refinedev/antd";
+import { VerificationBadge, OutlineTag, DateDisplayField } from "@/components/table";
 import {
   Card,
   Row,
   Col,
-  Tag,
   Typography,
   Divider,
   Space,
@@ -22,7 +22,6 @@ import {
 import { getLocalStorageProvider } from "@/lib/providers/local-storage.provider";
 import { Link, useParams } from "react-router-dom";
 import { formatAmount } from "@/lib/helpers";
-import { DateDisplayField } from "@/components/table";
 import { SpinLoader } from "@/components/loading";
 import { useState } from "react";
 import axios from "axios";
@@ -93,32 +92,19 @@ export const ShowWithdrawalRequest = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "PENDING":
-        return "orange";
+        return "#B86B0A";
       case "APPROVED":
-        return "green";
+        return "#1F8A5B";
       case "REJECTED":
-        return "red";
+        return "#C13838";
       case "PROCESSING":
-        return "blue";
+        return "#185FA5";
       default:
-        return "default";
+        return "#5F5E5A";
     }
   };
 
-  const getOperatorColor = (operator: string) => {
-    switch (operator) {
-      case "ORANGE_MONEY":
-        return "orange";
-      case "MTN_MONEY":
-        return "yellow";
-      case "MOOV_MONEY":
-        return "blue";
-      case "WAVE":
-        return "purple";
-      default:
-        return "default";
-    }
-  };
+  const getOperatorColor = () => "#5F5E5A";
 
   if (isLoading) {
     return <SpinLoader />;
@@ -179,9 +165,9 @@ export const ShowWithdrawalRequest = () => {
                   {translate("withdrawalRequests.fields.operator")}:{" "}
                 </Text>
                 {withdrawalData?.operator ? (
-                  <Tag color={getOperatorColor(withdrawalData.operator)}>
+                  <OutlineTag color={getOperatorColor()}>
                     {withdrawalData.operator}
-                  </Tag>
+                  </OutlineTag>
                 ) : (
                   <Text>{translate("common.notAvailable")}</Text>
                 )}
@@ -192,11 +178,11 @@ export const ShowWithdrawalRequest = () => {
                   {translate("withdrawalRequests.fields.status")}:{" "}
                 </Text>
                 {withdrawalData?.status ? (
-                  <Tag color={getStatusColor(withdrawalData.status)}>
+                  <OutlineTag color={getStatusColor(withdrawalData.status)}>
                     {translate(
                       `withdrawalRequests.status.${withdrawalData.status.toLowerCase()}`
                     )}
-                  </Tag>
+                  </OutlineTag>
                 ) : (
                   <Text>{translate("common.notAvailable")}</Text>
                 )}
@@ -206,14 +192,14 @@ export const ShowWithdrawalRequest = () => {
                 <Text strong>
                   {translate("withdrawalRequests.fields.retraitQr")}:{" "}
                 </Text>
-                <BooleanField value={withdrawalData?.retraitQr} />
+                <VerificationBadge verified={!!withdrawalData?.retraitQr} />
               </div>
 
               <div>
                 <Text strong>
                   {translate("withdrawalRequests.fields.qrAutoApproved")}:{" "}
                 </Text>
-                <BooleanField value={withdrawalData?.qrAutoApproved} />
+                <VerificationBadge verified={!!withdrawalData?.qrAutoApproved} />
               </div>
             </Space>
           </Card>
@@ -296,9 +282,9 @@ export const ShowWithdrawalRequest = () => {
                 <div>
                   <Text strong>{translate("users.fields.role")}: </Text>
                   {userData.role ? (
-                    <Tag>
+                    <OutlineTag color="#5F5E5A">
                       {translate(`users.tags.roles.${userData.role.name}`)}
-                    </Tag>
+                    </OutlineTag>
                   ) : (
                     <Text>{translate("common.notAvailable")}</Text>
                   )}
@@ -308,11 +294,11 @@ export const ShowWithdrawalRequest = () => {
                 <div>
                   <Text strong>{translate("users.fields.status")}: </Text>
                   {userData.status ? (
-                    <Tag color={userData.status === "active" ? "green" : "red"}>
+                    <OutlineTag color={userData.status === "active" ? "#1F8A5B" : "#C13838"}>
                       {translate(
                         `users.fields.${userData.status.toLowerCase()}`
                       )}
-                    </Tag>
+                    </OutlineTag>
                   ) : (
                     <Text>{translate("common.notAvailable")}</Text>
                   )}

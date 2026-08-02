@@ -35,11 +35,11 @@ const LABELS: Record<string, string> = {
 };
 
 const COLORS: Record<string, string> = {
-    effectuees: "#52c41a",
-    clientSansReponse: "#fa8c16",
-    clientAnnuleReservation: "#ff4d4f",
-    proSansReponse: "#1677ff",
-    proAnnuleReservation: "#722ed1",
+    effectuees: "#1F8A5B",
+    clientSansReponse: "#B86B0A",
+    clientAnnuleReservation: "#C13838",
+    proSansReponse: "#7B8DFF",
+    proAnnuleReservation: "#6240E0",
 };
 
 const BARS = [
@@ -95,7 +95,11 @@ export function StatisticsReservationsParStatut() {
                         <YAxis allowDecimals={false} tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
                         <Tooltip
                             formatter={(value, name) => [value, LABELS[name as string] ?? name]}
-                            contentStyle={{ borderRadius: 8 }}
+                            contentStyle={{
+                                borderRadius: 8,
+                                backgroundColor: "#FFFFFF",
+                                border: "1px solid #E8E8E8",
+                            }}
                         />
                         <Legend formatter={(value) => LABELS[value] ?? value} />
                         {BARS.map((key, index) => (

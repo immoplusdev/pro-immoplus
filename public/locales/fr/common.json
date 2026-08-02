@@ -259,6 +259,7 @@
       "code_reservation": "Code réservation",
       "date_debut": "Date de début",
       "date_fin": "Date de fin",
+      "sejour": "Séjour",
       "montant_total_reservation": "Montant total de reservation",
       "retrait_pro_effectue": "Retrait Pro Effectué",
       "status_facture": "Status facture",
@@ -310,6 +311,7 @@
     }
   },
   "biens_immobiliers": {
+    "title": "Biens immobiliers",
     "fields": {
       "type_bien_immobilier": "Type de bien immobilier",
       "tags": "Tag",
@@ -451,6 +453,8 @@
       "email_verified": "E-mail verifié",
       "phone_number_verified": "Numéro de téléphone verifié ",
       "compte_pro_valide": "Compte pro valide",
+      "certification_score": "Score certification",
+      "certification_status": "Certification",
       "auth_login_attempts": "Tentatives d'authentification",
       "status": "Status",
       "role": "Role",

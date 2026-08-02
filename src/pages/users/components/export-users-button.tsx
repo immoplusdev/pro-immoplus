@@ -274,13 +274,11 @@ export const ExportUsersButton: React.FC<Props> = ({
             trigger={["click"]}
         >
             <Button
-                type="primary"
                 icon={loading ? <LoadingOutlined spin /> : <DownloadOutlined />}
                 style={{
-                    background: "linear-gradient(135deg, #1e50a0 0%, #2e86de 100%)",
-                    border: "none",
-                    fontWeight: 600,
-                    boxShadow: "0 2px 8px rgba(30,80,160,0.3)",
+                    background: "#FFFFFF",
+                    border: "1px solid #E5E3DC",
+                    color: "#5F5E5A",
                 }}
             >
                 {loading ? "Export en cours…" : "Télécharger"}

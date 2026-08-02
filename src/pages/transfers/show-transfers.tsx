@@ -6,11 +6,11 @@ import {
   DeleteButton,
   ListButton,
 } from "@refinedev/antd";
-import { Button, Card, Row, Col, Tag, Typography, Divider, Space } from "antd";
+import { Button, Card, Row, Col, Typography, Divider, Space } from "antd";
 import { UserOutlined, EyeOutlined } from "@ant-design/icons";
 import { useParams, Link } from "react-router-dom";
 import { formatAmount } from "@/lib/helpers";
-import { DateDisplayField } from "@/components/table";
+import { DateDisplayField, OutlineTag } from "@/components/table";
 import { SpinLoader } from "@/components/loading";
 
 const { Text } = Typography;
@@ -30,34 +30,34 @@ export const ShowTransfer = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "PENDING":
-        return "orange";
+        return "#B86B0A";
       case "PROCESSING":
-        return "blue";
+        return "#185FA5";
       case "COMPLETED":
-        return "green";
+        return "#1F8A5B";
       case "FAILED":
-        return "red";
+        return "#C13838";
       case "CANCELLED":
-        return "default";
+        return "#5F5E5A";
       default:
-        return "default";
+        return "#5F5E5A";
     }
   };
 
   const getTransferTypeColor = (type: string) => {
     switch (type) {
       case "BANK_TRANSFER":
-        return "blue";
+        return "#185FA5";
       case "MOBILE_MONEY":
-        return "green";
+        return "#1F8A5B";
       case "CASH":
-        return "gold";
+        return "#B86B0A";
       case "WIRE_TRANSFER":
-        return "purple";
+        return "#534AB7";
       case "DIGITAL_WALLET":
-        return "cyan";
+        return "#185FA5";
       default:
-        return "default";
+        return "#5F5E5A";
     }
   };
 
@@ -115,9 +115,9 @@ export const ShowTransfer = () => {
               <div>
                 <Text strong>{translate("transfers.fields.status")}: </Text>
                 {transferData?.transfetStatus ? (
-                  <Tag color={getStatusColor(transferData.transfetStatus)}>
+                  <OutlineTag color={getStatusColor(transferData.transfetStatus)}>
                     {translate(`transfers.status.${transferData.transfetStatus.toLowerCase()}`)}
-                  </Tag>
+                  </OutlineTag>
                 ) : (
                   <Text>{translate("common.notAvailable")}</Text>
                 )}
@@ -126,9 +126,9 @@ export const ShowTransfer = () => {
               <div>
                 <Text strong>{translate("transfers.fields.transferType")}: </Text>
                 {transferData?.transferType ? (
-                  <Tag color={getTransferTypeColor(transferData.transferType)}>
+                  <OutlineTag color={getTransferTypeColor(transferData.transferType)}>
                     {translate(`transfers.transferType.${transferData.transferType.toLowerCase()}`)}
-                  </Tag>
+                  </OutlineTag>
                 ) : (
                   <Text>{translate("common.notAvailable")}</Text>
                 )}
@@ -161,9 +161,9 @@ export const ShowTransfer = () => {
               <div>
                 <Text strong>{translate("transfers.fields.transferProvider")}: </Text>
                 {transferData?.transferProvider ? (
-                  <Tag>
+                  <OutlineTag color="#5F5E5A">
                     {translate(`transfers.paymentMethod.${transferData.transferProvider.toUpperCase()}`)}
-                  </Tag>
+                  </OutlineTag>
                 ) : (
                   <Text>{translate("common.notAvailable")}</Text>
                 )}
@@ -202,7 +202,7 @@ export const ShowTransfer = () => {
               <Col span={8}>
                 <div>
                   <Text strong>{translate("transfers.fields.itemType")}: </Text>
-                  <Tag>{translate(`transfers.itemType.${transferData.itemType.toLowerCase()}`)}</Tag>
+                  <OutlineTag color="#5F5E5A">{translate(`transfers.itemType.${transferData.itemType.toLowerCase()}`)}</OutlineTag>
                 </div>
               </Col>
               <Col span={8}>

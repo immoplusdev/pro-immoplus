@@ -23,6 +23,7 @@ import {
 } from "@/pages/biens-immobiliers";
 import { CreateUser, EditUser, ListUsers, ShowUser } from "@/pages/users";
 import { ListResidencesValides } from "@/pages/residences/list-residences-valides";
+import { ListResidencesRejetees } from "@/pages/residences/list-residences-rejetees";
 import { EditConfig } from "@/pages/configs";
 import {
   EditDemandeVisite,
@@ -58,10 +59,17 @@ import ListWithdrawalRequest from "./pages/withdrawal-request/list-withdrawal-re
 import EditWithdrawalRequest from "./pages/withdrawal-request/edit-withdrawal-request";
 import CreateWithdrawalRequest from "./pages/withdrawal-request/create-withdrawal-request";
 import ShowWithdrawalRequest from "./pages/withdrawal-request/show-withdrawal-request";
+import ListWithdrawalRequestPending from "./pages/withdrawal-request/list-withdrawal-request-pending";
+import ListWithdrawalRequestApproved from "./pages/withdrawal-request/list-withdrawal-request-approved";
+import ListWithdrawalRequestProcessing from "./pages/withdrawal-request/list-withdrawal-request-processing";
+import ListWithdrawalRequestRejected from "./pages/withdrawal-request/list-withdrawal-request-rejected";
 import {
   CreateTransfer,
   EditTransfer,
   ListTransfers,
+  ListTransfersSuccessful,
+  ListTransfersPending,
+  ListTransfersFailed,
   ShowTransfer,
 } from "./pages/transfers";
 import {
@@ -144,6 +152,7 @@ export function AppRoutes() {
             element={<ListResidencesEnValidation />}
           />
           <Route path="validé" element={<ListResidencesValides />} />
+          <Route path="rejetées" element={<ListResidencesRejetees />} />
           <Route path="reduction" element={<ListResidencesReduction />} />
         </Route>
         <Route path={"/reservations"}>
@@ -260,12 +269,19 @@ export function AppRoutes() {
         </Route>
         <Route path={"withdrawal-requests"}>
           <Route index element={<ListWithdrawalRequest />} />
+          <Route path="pending" element={<ListWithdrawalRequestPending />} />
+          <Route path="approved" element={<ListWithdrawalRequestApproved />} />
+          <Route path="processing" element={<ListWithdrawalRequestProcessing />} />
+          <Route path="rejected" element={<ListWithdrawalRequestRejected />} />
           <Route path="create" element={<CreateWithdrawalRequest />} />
           <Route path="edit/:id" element={<EditWithdrawalRequest />} />
           <Route path="show/:id" element={<ShowWithdrawalRequest />} />
         </Route>
         <Route path={"transfers"}>
           <Route index element={<ListTransfers />} />
+          <Route path="successful" element={<ListTransfersSuccessful />} />
+          <Route path="pending" element={<ListTransfersPending />} />
+          <Route path="failed" element={<ListTransfersFailed />} />
           <Route path="create" element={<CreateTransfer />} />
           <Route path="edit/:id" element={<EditTransfer />} />
           <Route path="show/:id" element={<ShowTransfer />} />

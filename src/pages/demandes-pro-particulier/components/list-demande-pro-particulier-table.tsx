@@ -2,11 +2,11 @@ import React from "react";
 import { BaseRecord, useTranslate } from "@refinedev/core";
 import { List, useTable } from "@refinedev/antd";
 import { Table, Space, Button } from "antd";
-import { Link } from "react-router-dom";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { StatusDemandeProParticulierTag } from "./status-demande-pro-particulier-tag";
 import { DateDisplayField } from "@/components/table";
 import type { CrudFilter } from "@refinedev/core/src/contexts/data/types";
+import { Link } from "react-router-dom";
 
 type Props = {
     filters?: {
@@ -34,28 +34,6 @@ export function ListDemandeProParticulierTable({ filters, activeMenu }: Props) {
     return (
         <List
             title={translate("demandes_pro_particulier.title")}
-            headerButtons={[
-                <Link key="all" to="/demandes-pro-particulier">
-                    <Button type={activeMenu === "all" ? "primary" : "default"}>
-                        {translate("tags.all_e")}
-                    </Button>
-                </Link>,
-                <Link key="pending" to="/demandes-pro-particulier/en-attente">
-                    <Button type={activeMenu === "pending" ? "primary" : "default"}>
-                        {translate("demandes_pro_particulier.status.pending")}
-                    </Button>
-                </Link>,
-                <Link key="approved" to="/demandes-pro-particulier/approuvées">
-                    <Button type={activeMenu === "approved" ? "primary" : "default"}>
-                        {translate("demandes_pro_particulier.status.approved")}
-                    </Button>
-                </Link>,
-                <Link key="rejected" to="/demandes-pro-particulier/rejetées">
-                    <Button type={activeMenu === "rejected" ? "primary" : "default"}>
-                        {translate("demandes_pro_particulier.status.rejected")}
-                    </Button>
-                </Link>,
-            ]}
         >
             <Table {...tableProps} rowKey="id">
                 <Table.Column

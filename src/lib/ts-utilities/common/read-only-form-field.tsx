@@ -1,5 +1,5 @@
-import {Button, Form} from "antd";
-import {BaseRecord, useTranslate} from "@refinedev/core";
+import {Form} from "antd";
+import {useTranslate} from "@refinedev/core";
 import {ReactNode} from "react";
 
 
@@ -14,9 +14,23 @@ export const ReadOnlyFormField = ({label, content, isLoading}: propsType) => {
     return(
     <Form.Item
         label={translate(label)}>
-        <Button style={{width: "17vw", border:"0.5px solid black", display: "flex", justifyContent: "flex-start", textOverflow: "ellipsis", overflow:"hidden"}}>
-            {isLoading ? <>Loading...</> : content}
-        </Button>
+        <div
+            style={{
+                minHeight: 32,
+                padding: "4px 11px",
+                border: "1px solid #E8E9EE",
+                borderRadius: 6,
+                background: "#FFFFFF",
+                color: "#12131A",
+                display: "flex",
+                alignItems: "center",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+            }}
+        >
+            {isLoading ? "Chargement..." : (content ?? "—")}
+        </div>
     </Form.Item>
     )
 }
