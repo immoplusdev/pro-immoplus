@@ -452,6 +452,8 @@
       "email_verified": "E-mail verifié",
       "phone_number_verified": "Numéro de téléphone verifié ",
       "compte_pro_valide": "Compte pro valide",
+      "certification_score": "Score certification",
+      "certification_status": "Certification",
       "auth_login_attempts": "Tentatives d'authentification",
       "status": "Status",
       "role": "Role",

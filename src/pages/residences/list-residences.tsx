@@ -1,11 +1,11 @@
 import React from "react";
-import { ListResidenceTable, ResidencesParStatutValidation } from "@/pages/residences/components";
+import { ListResidenceTable, ResidenceTabs } from "@/pages/residences/components";
 
 
 export const ListResidences = () => {
     return (
         <>
-            <ResidencesParStatutValidation />
+            <ResidenceTabs activeMenu={"all_e"} />
             <ListResidenceTable activeMenu={"all_e"}/>
         </>
     );

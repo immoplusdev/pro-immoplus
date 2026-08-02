@@ -1,6 +1,6 @@
 import {StatusDemandeVisite} from "@/core/domain/demande-visite/demande-visite.model";
-import {Tag} from "antd";
 import {useTranslate} from "@refinedev/core";
+import {OutlineTag} from "./outline-tag";
 
 
 type Props = {
@@ -12,24 +12,24 @@ export function StatusValidationDemandeVisiteTag ({statusValidation}: Props){
     const translate = useTranslate()
     const {name, color} = StatusDemandeVisiteData({statusValidation})
 
-    return <Tag color={color}>{translate(`tags.${name}`)}</Tag>
+    return <OutlineTag color={color}>{translate(`tags.${name}`)}</OutlineTag>
 
 }
 
 function StatusDemandeVisiteData ({statusValidation}: Props){
     switch (statusValidation) {
         case StatusDemandeVisite.Valide:
-            return {name: "valide", color: "success"}
+            return {name: "valide", color: "#1F8A5B"}
         case StatusDemandeVisite.EnCours:
-            return {name: "en_cours", color: "warning"}
+            return {name: "en_cours", color: "#B86B0A"}
         case StatusDemandeVisite.Rejete:
-            return {name: "rejected", color: "error"}
+            return {name: "rejected", color: "#C13838"}
         case StatusDemandeVisite.EnCoursValidationUser:
-            return {name: "en_cours_validation_user", color: "warning"}
+            return {name: "en_cours_validation_user", color: "#B86B0A"}
         case StatusDemandeVisite.EnCoursValidationAdmin:
-            return {name: "en_cours_validation_admin", color: "warning"}
+            return {name: "en_cours_validation_admin", color: "#B86B0A"}
         default:
-            return{name: `${statusValidation}`, color: "warning"}
+            return{name: `${statusValidation}`, color: "#B86B0A"}
 
     }
 }

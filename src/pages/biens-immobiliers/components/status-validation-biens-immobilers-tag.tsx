@@ -1,6 +1,6 @@
 import {useTranslate} from "@refinedev/core";
-import {Tag} from "antd";
 import {StatusValidationBiensImmobilers} from "@/lib/ts-utilities/enums/status-biens-immobiliers";
+import {OutlineTag} from "./outline-tag";
 
 
 type Props = {
@@ -11,18 +11,18 @@ export function StatusValidationBiensImmobilersTag({statusValidation}: Props) {
     const translate = useTranslate();
     const {name, color} = StatusValidationToTagData({statusValidation});
 
-    return <Tag color={color}>{translate(`tags.${name}`)}</Tag>;
+    return <OutlineTag color={color}>{translate(`tags.${name}`)}</OutlineTag>;
 }
 
 function StatusValidationToTagData({statusValidation}: Props) {
     switch (statusValidation) {
         case StatusValidationBiensImmobilers.Valide:
-            return {name: "valide", color: "success"};
+            return {name: "valide", color: "#1F8A5B"};
         case StatusValidationBiensImmobilers.EnAttenteValidation:
-            return {name: "en_attente_validation", color: "warning"};
+            return {name: "en_attente_validation", color: "#B86B0A"};
         case StatusValidationBiensImmobilers.Rejete:
-            return {name: "rejected", color: "error"};
+            return {name: "rejected", color: "#C13838"};
         default:
-            return {name: `${statusValidation}`, color: "warning"}
+            return {name: `${statusValidation}`, color: "#B86B0A"}
     }
 }

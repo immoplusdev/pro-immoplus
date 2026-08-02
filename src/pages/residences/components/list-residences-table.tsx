@@ -1,22 +1,24 @@
-import {Button, Divider, Space, Table, Tag} from "antd";
+import {Button, Table, Space, Tag} from "antd";
 import {Thumbnail} from "@/components";
 import {formatAmount, getApiFileUrl} from "@/lib/helpers";
 import {StatusValidationResidence} from "@/core/domain/residences";
-import {StatusValidationResidenceTag} from "@/pages/residences/components";
+import {StatusValidationResidenceTag, ResidenceTabs} from "@/pages/residences/components";
 import {DeleteButton, EditButton, List, ShowButton, useTable} from "@refinedev/antd";
 import {BaseRecord, useTranslate} from "@refinedev/core";
 import React from "react";
 import {type CrudFilter} from "@refinedev/core/src/contexts/data/types";
 import {TypeResidenceTag} from "@/pages/residences/components/type-residence-tag";
 import {Link, useLocation} from "react-router-dom";
-import {ArrowRightOutlined, EditOutlined, EyeOutlined} from "@ant-design/icons";
+import {ArrowRightOutlined} from "@ant-design/icons";
+import {SearchInput} from "@/components/filters";
+import {ExportTableButton} from "@/components/export/export-table-button";
 import {
     StatusValidationBiensImmobilersTag
 } from "@/pages/biens-immobiliers/components/status-validation-biens-immobilers-tag";
 import {StatusValidationBiensImmobilers} from "@/lib/ts-utilities/enums/status-biens-immobiliers";
-import {SearchInput} from "@/components/filters";
-import {ExportTableButton} from "@/components/export/export-table-button";
-import {ResidenceTabKey, ResidenceTabsNav} from "@/pages/residences/components/residence-tabs-nav";
+
+const BORDER_COLOR = "#E5E3DC";
+const TEXT_SECONDARY = "#5F5E5A";
 
 const STATUS_RESIDENCE_LABELS: Record<string, string> = {
     valide: "Validée",
@@ -40,13 +42,15 @@ function mapResidenceToRow(r: any, i: number): Record<string, string> {
     };
 }
 
+type ActiveMenu = "all_e" | "valide" | "en_validation" | "rejete" | "reduction";
+
 type Props = {
     filters?: {
         initial?: CrudFilter[];
         permanent?: CrudFilter[];
         mode?: "server" | "off";
     };
-    activeMenu?: ResidenceTabKey
+    activeMenu?: ActiveMenu
 }
 
 export function ListResidenceTable({filters, activeMenu}: Props) {
@@ -71,24 +75,24 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
     ];
 
     return (
-        <List
-            title={translate("pages.residence.residences")}
-            headerButtons={[
-                <SearchInput
-                    setFilters={setFilters}
-                    tableQuery={tableQuery}
-                />,
-                <ExportTableButton
-                    resource="residences"
-                    mapToRow={mapResidenceToRow}
-                    pdfTitle="Liste des Résidences"
-                    filters={exportFilters}
-                    filenamePrefix={`residences_${activeMenu ?? "tous"}`}
-                />,
-                <Divider type="vertical" style={{ height: 24, margin: "0 4px" }} />,
-                <ResidenceTabsNav activeMenu={activeMenu} />
-            ]}
-        >
+        <>
+            <ResidenceTabs activeMenu={activeMenu} />
+            <List
+                title={translate("pages.residence.residences")}
+                headerButtons={[
+                    <SearchInput
+                        setFilters={setFilters}
+                        tableQuery={tableQuery}
+                    />,
+                    <ExportTableButton
+                        resource="residences"
+                        mapToRow={mapResidenceToRow}
+                        pdfTitle="Liste des Résidences"
+                        filters={exportFilters}
+                        filenamePrefix={`residences_${activeMenu ?? "tous"}`}
+                    />,
+                ]}
+            >
             <Table {...tableProps} rowKey="id">
                 <Table.Column
                     dataIndex="miniatureId"
@@ -191,6 +195,7 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                     )}
                 />
             </Table>
-        </List>
+            </List>
+        </>
     )
 }

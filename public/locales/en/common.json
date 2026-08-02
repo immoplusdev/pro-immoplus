@@ -246,7 +246,9 @@
     "fields": {
       "role": "Role",
       "status": "Status",
-      "compte_pro_valide": "Pro account validated"
+      "compte_pro_valide": "Pro account validated",
+      "certification_score": "Certification score",
+      "certification_status": "Certification"
     },
     "tags": {
       "status": {
