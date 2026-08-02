@@ -214,6 +214,7 @@
       "code_reservation": "Reservation code",
       "date_debut": "Start date",
       "date_fin": "End date",
+      "sejour": "Stay",
       "rapport": "Report",
       "rapport_placeholder": "Enter the reservation report...",
       "rating_status": "Rating status"

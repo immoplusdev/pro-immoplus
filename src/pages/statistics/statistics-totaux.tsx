@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useCustom, useApiUrl } from "@refinedev/core";
 import { Card, Col, Row, Spin, Typography, DatePicker, Statistic, theme } from "antd";
-import { HomeOutlined, CalendarOutlined, AppstoreOutlined, CheckCircleOutlined, FileDoneOutlined } from "@ant-design/icons";
+import { HomeOutlined, CalendarOutlined, ShoppingOutlined, CheckCircleOutlined, RiseOutlined } from "@ant-design/icons";
 import dayjs, { Dayjs } from "dayjs";
 
 const { Title } = Typography;
@@ -37,15 +37,15 @@ export function StatisticsTotaux() {
             title: "Résidences",
             value: totaux?.residences ?? 0,
             icon: <HomeOutlined style={{ fontSize: 24, color: token.colorPrimary }} />,
-            bgCard: token.colorPrimaryBg,
-            bgIcon: token.colorPrimaryBgHover,
+            bgCard: "#FFFFFF",
+            bgIcon: "#EEF1FE",
         },
         {
             title: "Visites totales",
             value: totaux?.visites?.total ?? 0,
-            icon: <CalendarOutlined style={{ fontSize: 24, color: token.colorSuccess }} />,
-            bgCard: token.colorSuccessBg,
-            bgIcon: token.colorSuccessBgHover,
+            icon: <CalendarOutlined style={{ fontSize: 24, color: "#7B8DFF" }} />,
+            bgCard: "#FFFFFF",
+            bgIcon: "#E8EBFF",
             extra: totaux
                 ? `${totaux.visites.normal} normale${totaux.visites.normal !== 1 ? "s" : ""} · ${totaux.visites.express} express`
                 : undefined,
@@ -53,30 +53,23 @@ export function StatisticsTotaux() {
         {
             title: "Biens immobiliers",
             value: totaux?.biensImmobiliers ?? 0,
-            icon: <AppstoreOutlined style={{ fontSize: 24, color: token.colorInfoActive }} />,
-            bgCard: token.colorInfoBg,
-            bgIcon: token.colorInfoBgHover,
+            icon: <ShoppingOutlined style={{ fontSize: 24, color: "#FA9F42" }} />,
+            bgCard: "#FFFFFF",
+            bgIcon: "#FDE8D3",
         },
         {
             title: "Réservations finalisées",
             value: totaux?.reservationsEffectuees ?? 0,
-            icon: <CheckCircleOutlined style={{ fontSize: 24, color: token.colorWarning }} />,
-            bgCard: token.colorWarningBg,
-            bgIcon: token.colorWarningBgHover,
+            icon: <CheckCircleOutlined style={{ fontSize: 24, color: "#1F8A5B" }} />,
+            bgCard: "#FFFFFF",
+            bgIcon: "#E8F4EE",
         },
-        // {
-        //     title: "Réservations échouées",
-        //     value: totaux?.reservationsEchouees ?? 0,
-        //     icon: <CloseCircleOutlined style={{ fontSize: 24, color: token.colorError }} />,
-        //     bgCard: token.colorErrorBg,
-        //     bgIcon: token.colorErrorBgHover,
-        // },
         {
             title: "Réservations Total initiées",
             value: totaux?.reservationsTotal ?? 0,
-            icon: <FileDoneOutlined style={{ fontSize: 24, color: "#08979c" }} />,
-            bgCard: "#e6fffb",
-            bgIcon: "#b5f5ec",
+            icon: <RiseOutlined style={{ fontSize: 24, color: token.colorPrimary }} />,
+            bgCard: "#FFFFFF",
+            bgIcon: "#DDE2FD",
         },
     ];
 
@@ -101,7 +94,11 @@ export function StatisticsTotaux() {
                     {stats.map((stat) => (
                         <Col key={stat.title} xs={24} sm={12} lg={8}>
                             <Card
-                                style={{ background: stat.bgCard, border: "none" }}
+                                style={{
+                                    background: stat.bgCard,
+                                    border: "1px solid #E8E8E8",
+                                    boxShadow: "none",
+                                }}
                                 styles={{ body: { display: "flex", alignItems: "center", gap: 16 } }}
                             >
                                 <div

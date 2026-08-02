@@ -10,6 +10,7 @@ import { WalletDebitForm } from "./wallet-debit-form";
 import { WalletReleaseFundsForm } from "./wallet-release-funds-form";
 import { WalletTransferForm } from "./wallet-transfer-form";
 import { FilePreviewModal } from "./file-preview";
+import { UserProStatistics } from "./user-pro-statistics";
 
 export const UsersEditDataFields: React.FC<{
   translate: any;
@@ -308,6 +309,11 @@ export const UsersEditDataFields: React.FC<{
       >
         <WalletTransferForm translate={translate} onSuccess={onWalletUpdate} />
       </div>
+
+      {(data?.role?.name === "pro_entreprise" ||
+        data?.role?.name === "pro_particulier") && (
+        <UserProStatistics proId={data?.id ? String(data.id) : undefined} />
+      )}
 
       <Card
         style={{

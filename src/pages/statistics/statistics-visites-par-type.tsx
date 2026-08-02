@@ -64,13 +64,17 @@ export function StatisticsVisitesParType() {
                         <YAxis allowDecimals={false} tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
                         <Tooltip
                             formatter={(value, name) => [value, name === "normal" ? "Normal" : "Express"]}
-                            contentStyle={{ borderRadius: 8 }}
+                            contentStyle={{
+                                borderRadius: 8,
+                                backgroundColor: "#FFFFFF",
+                                border: "1px solid #E8E8E8",
+                            }}
                         />
                         <Legend
                             formatter={(value) => value === "normal" ? "Normal" : "Express"}
                         />
                         <Bar dataKey="normal" stackId="a" fill="#1677ff" name="normal" radius={[0, 0, 0, 0]} />
-                        <Bar dataKey="express" stackId="a" fill="#fa8c16" name="express" radius={[4, 4, 0, 0]} />
+                        <Bar dataKey="express" stackId="a" fill="#FA9F42" name="express" radius={[4, 4, 0, 0]} />
                     </BarChart>
                 </ResponsiveContainer>
             )}

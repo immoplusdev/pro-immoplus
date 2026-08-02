@@ -259,6 +259,7 @@
       "code_reservation": "Code réservation",
       "date_debut": "Date de début",
       "date_fin": "Date de fin",
+      "sejour": "Séjour",
       "montant_total_reservation": "Montant total de reservation",
       "retrait_pro_effectue": "Retrait Pro Effectué",
       "status_facture": "Status facture",

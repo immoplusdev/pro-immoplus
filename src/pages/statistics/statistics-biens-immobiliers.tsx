@@ -45,8 +45,22 @@ export function StatisticsBiensImmobiliers() {
                         <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                         <XAxis dataKey="label" tick={{ fontSize: 12 }} tickLine={false} />
                         <YAxis allowDecimals={false} tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
-                        <Tooltip formatter={(value) => [value, "Biens immobiliers"]} contentStyle={{ borderRadius: 8 }} />
-                        <Line type="monotone" dataKey="total" stroke="#fa8c16" strokeWidth={2} dot={{ r: 4, fill: "#fa8c16" }} activeDot={{ r: 6 }} />
+                        <Tooltip
+                            formatter={(value) => [value, "Biens immobiliers"]}
+                            contentStyle={{
+                                borderRadius: 8,
+                                backgroundColor: "#FFFFFF",
+                                border: "1px solid #E8E8E8",
+                            }}
+                        />
+                        <Line
+                            type="monotone"
+                            dataKey="total"
+                            stroke="#FA9F42"
+                            strokeWidth={2}
+                            dot={{ r: 4, fill: "#FA9F42" }}
+                            activeDot={{ r: 6 }}
+                        />
                     </LineChart>
                 </ResponsiveContainer>
             )}

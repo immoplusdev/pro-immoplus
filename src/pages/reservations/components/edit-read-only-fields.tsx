@@ -16,7 +16,7 @@ interface ReadOnlySectionProps {
 
 export const ReservationEditDataFields: React.FC<ReadOnlySectionProps> = ({translate, reservationData}) => {
     const residence = reservationData?.residence;
-    const proprietaire = reservationData?.proprietaire;
+    const proprietaire = reservationData?.residence?.proprietaire;
     const client = reservationData?.client;
 
     return (

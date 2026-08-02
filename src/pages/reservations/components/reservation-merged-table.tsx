@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import React, { useCallback, useState } from "react";
 import { ReservationCard } from "@/pages/reservations/components/reservation-card";
 import { ExportReservationsButton } from "@/pages/reservations/components/export-reservations-button";
+import { useReservationSocket } from "@/hooks/useReservationSocket";
 
 const PAGE_SIZE = 20;
 
@@ -60,6 +61,17 @@ export function ReservationMergedTable({
     refetchA();
     refetchB();
   }, [refetchA, refetchB]);
+
+  // Rafraîchit la liste dès qu'une réservation change de statut côté serveur
+  // (paiement, réponse propriétaire, annulation...). Le payload de l'event
+  // socket est minimaliste (reservationId/newStatus/updatedAt), donc on
+  // refetch plutôt que de patcher localement — cf. docs/reservation-websocket-frontend.md
+  useReservationSocket({
+    enabled: true,
+    onStatusUpdated: useCallback(() => {
+      refetchAll();
+    }, [refetchAll]),
+  });
 
   return (
     <List

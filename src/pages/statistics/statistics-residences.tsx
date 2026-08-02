@@ -95,8 +95,22 @@ export function StatisticsResidences() {
                         <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                         <XAxis dataKey="label" tick={{ fontSize: 12 }} tickLine={false} />
                         <YAxis allowDecimals={false} tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
-                        <Tooltip formatter={(value) => [value, "Résidences"]} contentStyle={{ borderRadius: 8 }} />
-                        <Line type="monotone" dataKey="total" stroke="#722ed1" strokeWidth={2} dot={{ r: 4, fill: "#722ed1" }} activeDot={{ r: 6 }} />
+                        <Tooltip
+                            formatter={(value) => [value, "Résidences"]}
+                            contentStyle={{
+                                borderRadius: 8,
+                                backgroundColor: "#FFFFFF",
+                                border: "1px solid #E8E8E8",
+                            }}
+                        />
+                        <Line
+                            type="monotone"
+                            dataKey="total"
+                            stroke="#6240E0"
+                            strokeWidth={2}
+                            dot={{ r: 4, fill: "#6240E0" }}
+                            activeDot={{ r: 6 }}
+                        />
                     </LineChart>
                 </ResponsiveContainer>
             )}
