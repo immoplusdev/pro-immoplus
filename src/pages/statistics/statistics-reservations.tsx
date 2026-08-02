@@ -45,8 +45,22 @@ export function StatisticsReservations() {
                         <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                         <XAxis dataKey="label" tick={{ fontSize: 12 }} tickLine={false} />
                         <YAxis allowDecimals={false} tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
-                        <Tooltip formatter={(value) => [value, "Réservations"]} contentStyle={{ borderRadius: 8 }} />
-                        <Line type="monotone" dataKey="total" stroke="#52c41a" strokeWidth={2} dot={{ r: 4, fill: "#52c41a" }} activeDot={{ r: 6 }} />
+                        <Tooltip
+                            formatter={(value) => [value, "Réservations"]}
+                            contentStyle={{
+                                borderRadius: 8,
+                                backgroundColor: "#FFFFFF",
+                                border: "1px solid #E8E8E8",
+                            }}
+                        />
+                        <Line
+                            type="monotone"
+                            dataKey="total"
+                            stroke="#1F8A5B"
+                            strokeWidth={2}
+                            dot={{ r: 4, fill: "#1F8A5B" }}
+                            activeDot={{ r: 6 }}
+                        />
                     </LineChart>
                 </ResponsiveContainer>
             )}

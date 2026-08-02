@@ -1,13 +1,17 @@
 import React from "react";
 import { ListDemandeProParticulierTable } from "./components/list-demande-pro-particulier-table";
+import { DemandeProParticulierTabs } from "./components/demande-pro-particulier-tabs";
 
 export const ListDemandeProParticulierRejected = () => {
     return (
-        <ListDemandeProParticulierTable
-            activeMenu="rejected"
-            filters={{
-                permanent: [{ field: "status", operator: "eq", value: "rejected" }],
-            }}
-        />
+        <>
+            <DemandeProParticulierTabs activeMenu="rejected" />
+            <ListDemandeProParticulierTable
+                activeMenu="rejected"
+                filters={{
+                    permanent: [{ field: "status", operator: "eq", value: "rejected" }],
+                }}
+            />
+        </>
     );
 };

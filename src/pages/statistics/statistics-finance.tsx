@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useCustom, useApiUrl } from "@refinedev/core";
 import { Card, Col, Row, Spin, Typography, DatePicker, Statistic, theme } from "antd";
-import { DollarOutlined, FileTextOutlined, WarningOutlined } from "@ant-design/icons";
+import { DollarOutlined, FileTextOutlined, WalletOutlined } from "@ant-design/icons";
 import dayjs, { Dayjs } from "dayjs";
 
 const { Title } = Typography;
@@ -33,23 +33,23 @@ export function StatisticsFinance() {
         {
             title: "Montant total réservation finalisé",
             value: finance?.montantTotalReservations ?? 0,
-            icon: <DollarOutlined style={{ fontSize: 24, color: token.colorSuccess }} />,
-            bgCard: token.colorSuccessBg,
-            bgIcon: token.colorSuccessBgHover,
+            icon: <DollarOutlined style={{ fontSize: 24, color: "#1F8A5B" }} />,
+            bgCard: "#FFFFFF",
+            bgIcon: "#E8F4EE",
         },
         {
             title: "Montant total des réservations initiées",
             value: finance?.montantTotalReservationImpayees ?? 0,
-            icon: <WarningOutlined style={{ fontSize: 24, color: token.colorInfo }} />,
-            bgCard: token.colorInfoBg,
-            bgIcon: token.colorInfoBgHover,
+            icon: <WalletOutlined style={{ fontSize: 24, color: token.colorPrimary }} />,
+            bgCard: "#FFFFFF",
+            bgIcon: "#EEF1FE",
         },
         {
             title: "Montant total demandes de visites",
             value: finance?.montantTotalDemandesVisites ?? 0,
-            icon: <FileTextOutlined style={{ fontSize: 24, color: token.colorPrimary }} />,
-            bgCard: token.colorPrimaryBg,
-            bgIcon: token.colorPrimaryBgHover,
+            icon: <FileTextOutlined style={{ fontSize: 24, color: "#9B8FC4" }} />,
+            bgCard: "#FFFFFF",
+            bgIcon: "#E8E6F5",
         },
     ];
 
@@ -74,7 +74,11 @@ export function StatisticsFinance() {
                     {stats.map((stat) => (
                         <Col key={stat.title} xs={24} sm={12} lg={8}>
                             <Card
-                                style={{ background: stat.bgCard, border: "none" }}
+                                style={{
+                                    background: stat.bgCard,
+                                    border: "1px solid #E8E8E8",
+                                    boxShadow: "none",
+                                }}
                                 styles={{ body: { display: "flex", alignItems: "center", gap: 16 } }}
                             >
                                 <div

@@ -13,9 +13,17 @@ export const periodeOptions = [
 
 export const formatPeriode = (periode: string | number, type: PeriodeType): string => {
     if (type === "jour") {
-        const date = new Date(String(periode));
+        const periodeStr = String(periode);
+        const date = new Date(periodeStr);
+
         if (isNaN(date.getTime())) return String(periode);
-        return date.toLocaleDateString("fr-FR", { day: "2-digit", month: "short" });
+
+        // Formater en UTC pour éviter le décalage de timezone
+        const day = String(date.getUTCDate()).padStart(2, "0");
+        const months = ["jan", "fév", "mar", "avr", "mai", "jun", "juil", "aoû", "sep", "oct", "nov", "déc"];
+        const month = months[date.getUTCMonth()];
+
+        return `${day} ${month}`;
     }
     if (type === "semaine") {
         const str = String(periode);

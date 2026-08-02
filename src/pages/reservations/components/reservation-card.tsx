@@ -37,6 +37,18 @@ function getBorderColor(record: any, delays: ReservationDelays): string {
   }
 }
 
+// ─── helpers format ────────────────────────────────────────────────────────
+function formatSejour(dateDebut?: string, dateFin?: string): string {
+  if (!dateDebut || !dateFin) return "—";
+  const debut = new Date(dateDebut).toLocaleDateString("fr-FR");
+  const fin = new Date(dateFin).toLocaleDateString("fr-FR");
+  return `${debut} → ${fin}`;
+}
+
+function formatPhoneNumber(person?: { phoneNumber?: string }): string {
+  return person?.phoneNumber ?? "—";
+}
+
 // ─── composant card ───────────────────────────────────────────────────────
 type Props = {
   record: any;
@@ -188,6 +200,21 @@ export function ReservationCard({ record, onExpire }: Props) {
         <MetaItem
           label={translate("reservations.fields.montant_paye")}
           value={formatAmount(record.montantTotalReservation)}
+          token={token}
+        />
+        <MetaItem
+          label={translate("residences.residence")}
+          value={record.residence?.nom ?? "—"}
+          token={token}
+        />
+        <MetaItem
+          label={translate("reservations.fields.sejour")}
+          value={formatSejour(record.dateDebut, record.dateFin)}
+          token={token}
+        />
+        <MetaItem
+          label={translate("reservations.fields.proprietaire")}
+          value={formatPhoneNumber(record.residence?.proprietaire)}
           token={token}
         />
       </div>

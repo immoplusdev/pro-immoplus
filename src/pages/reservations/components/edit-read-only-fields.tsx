@@ -16,21 +16,22 @@ interface ReadOnlySectionProps {
 
 export const ReservationEditDataFields: React.FC<ReadOnlySectionProps> = ({translate, reservationData}) => {
     const residence = reservationData?.residence;
-    const proprietaire = reservationData?.proprietaire;
+    const proprietaire = reservationData?.residence?.proprietaire;
     const client = reservationData?.client;
 
     return (
         <Space direction="vertical" style={{width: "100%"}} size="large">
             {/* Données de la réservation */}
             <Card
+                style={{ border: "1px solid #E8E9EE", borderRadius: 10 }}
                 title={
                     <Space>
                         <DatabaseOutlined/>
                         <p>{translate("reservations.fields.data")}</p>
                     </Space>
                 }
-                headStyle={{ padding: "1rem", border:"0.5px solid black"}}
-                bodyStyle={{ padding: "2rem", border:"0.5px solid black", display:"flex", flexDirection: "row" }}
+                headStyle={{ padding: "1rem"}}
+                bodyStyle={{ padding: "2rem", display:"flex", flexDirection: "row" }}
             >
                 <Card style={{border: "none", width: "50%"}}>
                     <ReadOnlyFormField label={translate("reservations.fields.code_reservation")} content={reservationData?.codeReservation}/>
@@ -75,8 +76,9 @@ export const ReservationEditDataFields: React.FC<ReadOnlySectionProps> = ({trans
                         </Link>
                     )
                 }
-                headStyle={{ padding: "1rem", border:"0.5px solid black"}}
-                bodyStyle={{ padding: "2rem", border:"0.5px solid black", display:"flex", flexDirection: "row" }}
+                style={{ border: "1px solid #E8E9EE", borderRadius: 10 }}
+                headStyle={{ padding: "1rem"}}
+                bodyStyle={{ padding: "2rem", display:"flex", flexDirection: "row" }}
             >
                 <Card style={{border: "none", width: "50%"}}>
                     <ReadOnlyFormField label={translate("fields.nom")} content={residence?.nom}/>
@@ -107,8 +109,9 @@ export const ReservationEditDataFields: React.FC<ReadOnlySectionProps> = ({trans
                         </Link>
                     )
                 }
-                headStyle={{ padding: "1rem", border:"0.5px solid black"}}
-                bodyStyle={{ padding: "2rem", border:"0.5px solid black", display:"flex", flexDirection: "row" }}
+                style={{ border: "1px solid #E8E9EE", borderRadius: 10 }}
+                headStyle={{ padding: "1rem"}}
+                bodyStyle={{ padding: "2rem", display:"flex", flexDirection: "row" }}
             >
                 <Card style={{border: "none", width: "50%"}}>
                     <ReadOnlyFormField label={translate("fields.full_name")} content={`${proprietaire?.firstName || ''} ${proprietaire?.lastName || ''}`}/>
@@ -137,8 +140,9 @@ export const ReservationEditDataFields: React.FC<ReadOnlySectionProps> = ({trans
                         </Link>
                     )
                 }
-                headStyle={{ padding: "1rem", border:"0.5px solid black"}}
-                bodyStyle={{ padding: "2rem", border:"0.5px solid black", display:"flex", flexDirection: "row" }}
+                style={{ border: "1px solid #E8E9EE", borderRadius: 10 }}
+                headStyle={{ padding: "1rem"}}
+                bodyStyle={{ padding: "2rem", display:"flex", flexDirection: "row" }}
             >
                 <Card style={{border: "none", width: "50%"}}>
                     <ReadOnlyFormField label={translate("fields.full_name")} content={`${client?.firstName || ''} ${client?.lastName || ''}`}/>

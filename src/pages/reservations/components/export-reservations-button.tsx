@@ -201,11 +201,11 @@ function mapToRow(r: any, index: number): Record<string, string> {
   const status: string = r.statusReservation ?? "";
   const isProprietaire = PROPRIETAIRE_STATUSES.has(status);
 
-  const personne = isProprietaire ? r.proprietaire : r.client;
+  const personne = isProprietaire ? r.residence?.proprietaire : r.client;
   const role = isProprietaire ? "Propriétaire" : "Client";
   const nom = [personne?.firstName, personne?.lastName].filter(Boolean).join(" ") || "-";
   const telephone = isProprietaire
-    ? (r.proprietaire?.phoneNumber ?? "-")
+    ? (r.residence?.proprietaire?.phoneNumber ?? "-")
     : (r.clientPhoneNumber ?? r.client?.phoneNumber ?? "-");
 
   return {

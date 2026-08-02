@@ -7,7 +7,6 @@ import {
     Col,
     Typography,
     Space,
-    Tag,
     Divider,
 } from "antd";
 import {
@@ -17,7 +16,7 @@ import {
     UserOutlined,
 } from "@ant-design/icons";
 import { useParams, Link } from "react-router-dom";
-import { DateDisplayField } from "@/components/table";
+import { DateDisplayField, OutlineTag } from "@/components/table";
 import { SpinLoader } from "@/components/loading";
 import { FeedEntityTag, FeedParentType } from "./components/feed-entity-tag";
 import { FeedVideoStatusTag } from "./components/feed-video-status-tag";
@@ -74,7 +73,7 @@ export const ShowFeed = () => {
                             </div>
                             <div>
                                 <Text strong>{translate("feed.fields.price")}: </Text>
-                                <Tag color="green">{data?.content?.price || translate("common.notAvailable")}</Tag>
+                                <OutlineTag color="#1F8A5B">{data?.content?.price || translate("common.notAvailable")}</OutlineTag>
                             </div>
                             <div>
                                 <Text strong>{translate("feed.fields.location")}: </Text>
@@ -111,11 +110,11 @@ export const ShowFeed = () => {
                             </div>
                             <div>
                                 <Text strong>{translate("feed.fields.shortCode")}: </Text>
-                                <Tag>{data?.shortCode}</Tag>
+                                <OutlineTag color="#5F5E5A">{data?.shortCode}</OutlineTag>
                             </div>
                             <div>
                                 <Text strong>{translate("feed.fields.source")}: </Text>
-                                <Tag>{data?.source}</Tag>
+                                <OutlineTag color="#5F5E5A">{data?.source}</OutlineTag>
                             </div>
                             <div>
                                 <Text strong>{translate("feed.fields.entity")}: </Text>

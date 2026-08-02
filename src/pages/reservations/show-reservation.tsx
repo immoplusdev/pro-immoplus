@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import { useShow, useTranslate, useOne } from "@refinedev/core";
 import {
-    BooleanField,
     Show,
     useTable,
 } from "@refinedev/antd";
@@ -9,6 +8,7 @@ import {Button, Form, Input, Typography} from "antd";
 import {defaultFormColListColProps, defaultFormColListRowProps} from "@/configs";
 import {ColList} from "@/components/layout";
 import {ReadOnlyFormField} from "@/lib/ts-utilities";
+import {VerificationBadge} from "@/components/table";
 
 const { Title } = Typography;
 
@@ -51,7 +51,7 @@ export const ShowReservation = () => {
 
                   <>
                       <Title level={5}>{translate("reservations.fields.retrait_pro_effectue")}</Title>
-                      <BooleanField value={record?.retraitProEffectue}/>
+                      <VerificationBadge verified={!!record?.retraitProEffectue}/>
                   </>
 
                   <ReadOnlyFormField label={translate("reservations.fields.montant_total_reservation")} content={record?.montantTotalReservation} isLoading={isLoading} />

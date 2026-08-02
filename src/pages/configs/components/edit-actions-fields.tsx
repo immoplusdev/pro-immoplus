@@ -7,14 +7,15 @@ export function ConfigEditActionFields() {
     const translate = useTranslate();
     return (
         <Card
+            style={{border: "1px solid #E8E9EE", borderRadius: 10}}
             title={
                 <Space>
                     <EditOutlined/>
                     <p>{translate("Actions")}</p>
                 </Space>
             }
-            headStyle={{padding: "1rem", border: "0.5px solid black"}}
-            bodyStyle={{padding: "2rem", border: "0.5px solid black"}}
+            headStyle={{padding: "1rem"}}
+            bodyStyle={{padding: "2rem"}}
         >
             <Form.Item
                 label={translate("configs.fields.normal_visit_price")}

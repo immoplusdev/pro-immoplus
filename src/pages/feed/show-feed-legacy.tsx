@@ -8,7 +8,6 @@ import {
     Col,
     Typography,
     Space,
-    Tag,
     Divider,
     Button,
     Popconfirm,
@@ -24,7 +23,7 @@ import {
     CheckCircleOutlined,
 } from "@ant-design/icons";
 import { useParams, Link, useLocation } from "react-router-dom";
-import { DateDisplayField } from "@/components/table";
+import { DateDisplayField, OutlineTag } from "@/components/table";
 import { SpinLoader } from "@/components/loading";
 import { FeedEntityTag, FeedParentType } from "./components/feed-entity-tag";
 import { FeedVideoStatusTag } from "./components/feed-video-status-tag";
@@ -131,7 +130,7 @@ export const ShowFeedLegacy = () => {
                             </div>
                             <div>
                                 <Text strong>{translate("feed.fields.price")}: </Text>
-                                <Tag color="green">{data?.content?.price || translate("common.notAvailable")}</Tag>
+                                <OutlineTag color="#1F8A5B">{data?.content?.price || translate("common.notAvailable")}</OutlineTag>
                             </div>
                             <div>
                                 <Text strong>{translate("feed.fields.location")}: </Text>
@@ -168,11 +167,11 @@ export const ShowFeedLegacy = () => {
                             </div>
                             <div>
                                 <Text strong>{translate("feed.fields.shortCode")}: </Text>
-                                <Tag>{data?.shortCode}</Tag>
+                                <OutlineTag color="#5F5E5A">{data?.shortCode}</OutlineTag>
                             </div>
                             <div>
                                 <Text strong>{translate("feed.fields.source")}: </Text>
-                                <Tag>{data?.source}</Tag>
+                                <OutlineTag color="#5F5E5A">{data?.source}</OutlineTag>
                             </div>
                             <div>
                                 <Text strong>{translate("feed.fields.entity")}: </Text>
@@ -230,13 +229,9 @@ export const ShowFeedLegacy = () => {
                 <Col style={{ textAlign: "center" }}>
                     {isMigrated ? (
                         <Space direction="vertical" size={4}>
-                            <Tag
-                                icon={<CheckCircleOutlined />}
-                                color="success"
-                                style={{ fontSize: 15, padding: "6px 16px" }}
-                            >
-                                {translate("feed.legacy.alreadyMigrated")}
-                            </Tag>
+                            <OutlineTag color="#1F8A5B">
+                                <CheckCircleOutlined /> {translate("feed.legacy.alreadyMigrated")}
+                            </OutlineTag>
                             <Text type="secondary" style={{ fontSize: 12 }}>
                                 <DateDisplayField value={data.migratedAt} />
                             </Text>

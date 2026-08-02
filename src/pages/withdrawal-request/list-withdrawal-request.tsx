@@ -3,15 +3,18 @@ import {
     useTable,
     List,
     DeleteButton,
-    BooleanField,
 } from "@refinedev/antd";
-import {Table, Space, Button, Tag} from "antd";
+import {Table, Space, Button} from "antd";
 import {Link} from "react-router-dom";
 import type {CrudFilter} from "@refinedev/core/src/contexts/data/types";
 import {ArrowRightOutlined, EyeOutlined} from "@ant-design/icons";
 import {SearchInput} from "@/components/filters";
-import {DateDisplayField} from "@/components/table";
+import {DateDisplayField, OutlineTag, VerificationBadge} from "@/components/table";
 import {formatAmount} from "@/lib/helpers";
+import {WithdrawalRequestTabs} from "./withdrawal-request-tabs";
+
+const BORDER_COLOR = "#E5E3DC";
+const TEXT_SECONDARY = "#5F5E5A";
 
 type Props = {
     filters?: {
@@ -39,49 +42,31 @@ export const ListWithdrawalRequestTable = ({filters, activeMenu}: Props) => {
     const getStatusColor = (status: string) => {
         switch (status) {
             case "PENDING":
-                return "orange";
+                return "#B86B0A";
             case "APPROVED":
-                return "green";
+                return "#1F8A5B";
             case "REJECTED":
-                return "red";
+                return "#C13838";
             case "PROCESSING":
-                return "blue";
+                return "#185FA5";
             default:
-                return "default";
+                return TEXT_SECONDARY;
         }
     };
 
-    const getOperatorColor = (operator: string) => {
-        switch (operator) {
-            case "ORANGE_MONEY":
-                return "orange";
-            case "MTN_MONEY":
-                return "yellow";
-            case "MOOV_MONEY":
-                return "blue";
-            case "WAVE":
-                return "purple";
-            default:
-                return "default";
-        }
-    };
+    const getOperatorColor = () => TEXT_SECONDARY;
 
     return (
-        <List title={translate("withdrawalRequests.title")}
-              headerButtons={[
-                  <SearchInput
-                      setFilters={setFilters}
-                      tableQuery={tableQuery}
-                  />,
-                  <Link to="/withdrawal-requests">
-                      <Button
-                          type={activeMenu == "all" ? "primary" : "default"}
-                      >
-                          {translate("tags.all_e")}
-                      </Button>
-                  </Link>
-              ]}
-        >
+        <>
+            <WithdrawalRequestTabs activeMenu={activeMenu ?? "all"} />
+            <List title={translate("withdrawalRequests.title")}
+                  headerButtons={[
+                      <SearchInput
+                          setFilters={setFilters}
+                          tableQuery={tableQuery}
+                      />,
+                  ]}
+            >
             <Table {...tableProps} rowKey="id">
                 <Table.Column
                     dataIndex={["owner", "firstName"]}
@@ -115,9 +100,9 @@ export const ListWithdrawalRequestTable = ({filters, activeMenu}: Props) => {
                     dataIndex="operator"
                     title={translate("withdrawalRequests.fields.operator")}
                     render={(value: string) => (
-                        <Tag color={getOperatorColor(value)}>
+                        <OutlineTag color={getOperatorColor()}>
                            {value}
-                        </Tag>
+                        </OutlineTag>
                     )}
                     align="center"
                     sorter={true}
@@ -126,9 +111,9 @@ export const ListWithdrawalRequestTable = ({filters, activeMenu}: Props) => {
                     dataIndex="status"
                     title={translate("withdrawalRequests.fields.status")}
                     render={(value: string) => (
-                        <Tag color={getStatusColor(value)}>
+                        <OutlineTag color={getStatusColor(value)}>
                             {translate(`withdrawalRequests.status.${value.toLowerCase()}`)}
-                        </Tag>
+                        </OutlineTag>
                     )}
                     align="center"
                     sorter={true}
@@ -136,13 +121,13 @@ export const ListWithdrawalRequestTable = ({filters, activeMenu}: Props) => {
                 <Table.Column
                     dataIndex="retraitQr"
                     title={translate("withdrawalRequests.fields.retraitQr")}
-                    render={(value: boolean) => <BooleanField value={value}/>}
+                    render={(value: boolean) => <VerificationBadge verified={!!value}/>}
                     align="center"
                 />
                 <Table.Column
                     dataIndex="qrAutoApproved"
                     title={translate("withdrawalRequests.fields.qrAutoApproved")}
-                    render={(value: boolean) => <BooleanField value={value}/>}
+                    render={(value: boolean) => <VerificationBadge verified={!!value}/>}
                     align="center"
                 />
                 <Table.Column
@@ -162,24 +147,28 @@ export const ListWithdrawalRequestTable = ({filters, activeMenu}: Props) => {
                                 <Button
                                     size="small"
                                     icon={<ArrowRightOutlined/>}
+                                    style={{background: "#FFFFFF", border: `1px solid ${BORDER_COLOR}`, color: TEXT_SECONDARY}}
                                 />
                             </Link>
                             <Link to={`/withdrawal-requests/show/${record.id}`}>
                                 <Button
                                     size="small"
                                     icon={<EyeOutlined/>}
+                                    style={{background: "#FFFFFF", border: `1px solid ${BORDER_COLOR}`, color: TEXT_SECONDARY}}
                                 />
                             </Link>
                             <DeleteButton
                                 hideText
                                 size="small"
                                 recordItemId={record.id}
+                                style={{background: "#FFFFFF", border: "1px solid #C13838", color: "#C13838"}}
                             />
                         </Space>
                     )}
                 />
             </Table>
-        </List>
+            </List>
+        </>
     );
 };
 

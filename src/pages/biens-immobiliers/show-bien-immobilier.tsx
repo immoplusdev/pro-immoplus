@@ -2,12 +2,13 @@ import React, {useState} from "react";
 import {useShow, useTranslate} from "@refinedev/core";
 import {
     Show,
-    BooleanField, ImageField, TextField, NumberField, DateField,
+    ImageField, TextField, NumberField, DateField,
 } from "@refinedev/antd";
-import {Form, Image, Tag, Typography, Upload, UploadFile, UploadProps} from "antd";
+import {Form, Image, Typography, Upload, UploadFile, UploadProps} from "antd";
 import {defaultFormColListColProps, defaultFormColListRowProps} from "@/configs";
 import {ColList} from "@/components/layout";
 import {ReadOnlyFormField} from "@/lib/ts-utilities";
+import {VerificationBadge} from "@/components/table";
 import {getImageUrl} from "@/lib/helpers";
 import {
     defaultFileUploadProps,
@@ -78,15 +79,15 @@ export const ShowBienImmobilier = () => {
                                        isLoading={isLoading}/>
                     <>
                         <Title level={5}>{translate("biens_immobiliers.fields.featured")}</Title>
-                        <BooleanField value={record?.featured}/>
+                        <VerificationBadge verified={!!record?.featured}/>
                     </>
                     <>
                         <Title level={5}>{translate("biens_immobiliers.fields.a_louer")}</Title>
-                        <BooleanField value={record?.aLouer}/>
+                        <VerificationBadge verified={!!record?.aLouer}/>
                     </>
                     <>
                         <Title level={5}>{translate("biens_immobiliers.fields.disponible")}</Title>
-                        <BooleanField value={record?.bienImmobilierDisponible}/>
+                        <VerificationBadge verified={!!record?.bienImmobilierDisponible}/>
                     </>
                     <>
                         <Title level={5}>{translate("residences.fields.nombre_max_occupants")}</Title>
@@ -94,11 +95,11 @@ export const ShowBienImmobilier = () => {
                     </>
                     <>
                         <Title level={5}>{translate("residences.fields.animaux_autorises")}</Title>
-                        <BooleanField value={record?.animauxAutorises}/>
+                        <VerificationBadge verified={!!record?.animauxAutorises}/>
                     </>
                     <>
                         <Title level={5}>{translate("residences.fields.fetes_autorises")}</Title>
-                        <BooleanField value={record?.fetesAutorises}/>
+                        <VerificationBadge verified={!!record?.fetesAutorises}/>
                     </>
                     <ReadOnlyFormField label={translate("fields.regles_supplementaires")}
                                        content={record?.reglesSupplementaire} isLoading={isLoading}/>

@@ -15,14 +15,15 @@ interface ReadOnlySectionProps {
 export const ResidenceDataFields: React.FC<ReadOnlySectionProps> = ({ translate, residencesData }) => {
     return (
         <Card
+            style={{ border: "1px solid #E8E9EE", borderRadius: 10 }}
             title={
                 <Space>
                     <DatabaseOutlined />
                     <p>{translate("Données")}</p>
                 </Space>
             }
-            headStyle={{ padding: "1rem", border:"0.5px solid black"}}
-            bodyStyle={{ padding: "2rem", border:"0.5px solid black", display:"flex", flexDirection: "row" }}
+            headStyle={{ padding: "1rem"}}
+            bodyStyle={{ padding: "2rem", display:"flex", flexDirection: "row" }}
         >
             <Card style={{border: "none", width: "50%"}}>
                 <Form.Item
@@ -46,7 +47,7 @@ export const ResidenceDataFields: React.FC<ReadOnlySectionProps> = ({ translate,
                 <Form.Item label={translate("fields.description")} name={["description"]}>
                     <Input.TextArea
                         autoSize={{ minRows: 3, maxRows: 8 }}
-                        style={{ width: "17vw", border: "0.5px solid black" }}
+                        style={{ width: "17vw", border: "1px solid #E8E9EE", borderRadius: 6 }}
                     />
                 </Form.Item>
                 <ReadOnlyFormField
