@@ -479,7 +479,9 @@
       "created_at": "Date de création",
       "updated_at": "Date de mise à jour",
       "user_transactions": "Transactions utilisateur",
-      "list_transactions": "Liste des Transactions"
+      "list_transactions": "Liste des Transactions",
+      "certification_score": "Score de certification",
+      "certification_status": "Statut de certification"
     },
     "tags": {
       "status": {
