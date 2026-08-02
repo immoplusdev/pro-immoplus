@@ -46,7 +46,7 @@ export function ResidenceTabs({ activeMenu }: Props) {
         },
         {
             key: "valide" as const,
-            to: "/residences/valides",
+            to: "/residences/validé",
             label: "Validées",
             value: stats?.valide ?? 0,
             icon: CheckCircleOutlined,
@@ -62,7 +62,7 @@ export function ResidenceTabs({ activeMenu }: Props) {
         },
         {
             key: "rejete" as const,
-            to: "/residences/reduction",
+            to: "/residences/rejetées",
             label: "Rejetées",
             value: stats?.rejete ?? 0,
             icon: CloseCircleOutlined,

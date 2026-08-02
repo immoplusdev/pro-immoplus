@@ -1,9 +1,9 @@
-import {Button, Table, Space, Tag} from "antd";
+import {Button, Table} from "antd";
 import {Thumbnail} from "@/components";
 import {formatAmount, getApiFileUrl} from "@/lib/helpers";
 import {StatusValidationResidence} from "@/core/domain/residences";
-import {StatusValidationResidenceTag, ResidenceTabs} from "@/pages/residences/components";
-import {DeleteButton, EditButton, List, ShowButton, useTable} from "@refinedev/antd";
+import {StatusValidationResidenceTag, ResidenceTabs, OutlineTag} from "@/pages/residences/components";
+import {DeleteButton, List, useTable} from "@refinedev/antd";
 import {BaseRecord, useTranslate} from "@refinedev/core";
 import React from "react";
 import {type CrudFilter} from "@refinedev/core/src/contexts/data/types";
@@ -12,10 +12,6 @@ import {Link, useLocation} from "react-router-dom";
 import {ArrowRightOutlined} from "@ant-design/icons";
 import {SearchInput} from "@/components/filters";
 import {ExportTableButton} from "@/components/export/export-table-button";
-import {
-    StatusValidationBiensImmobilersTag
-} from "@/pages/biens-immobiliers/components/status-validation-biens-immobilers-tag";
-import {StatusValidationBiensImmobilers} from "@/lib/ts-utilities/enums/status-biens-immobiliers";
 
 const BORDER_COLOR = "#E5E3DC";
 const TEXT_SECONDARY = "#5F5E5A";
@@ -123,21 +119,21 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                 <Table.Column
                     dataIndex="reduction"
                     title={translate("tags.reduction")}
-                    render={(value: number) => value ? <Tag color="gold">{value}%</Tag> : "-"}
+                    render={(value: number) => value ? <OutlineTag color="#B86B0A">{value}%</OutlineTag> : "-"}
                     align="center"
                     sorter={true}
                 />
                 <Table.Column
                     dataIndex="score"
                     title="Score"
-                    render={(value: number) => <Tag color="blue">{value ?? 0}</Tag>}
+                    render={(value: number) => <OutlineTag color="#2744DE">{value ?? 0}</OutlineTag>}
                     align="center"
                     sorter={true}
                 />
                 <Table.Column
                     dataIndex="statusValidation"
                     title={translate("fields.status_validation")}
-                    render={(value: StatusValidationBiensImmobilers) => <StatusValidationBiensImmobilersTag
+                    render={(value: StatusValidationResidence) => <StatusValidationResidenceTag
                         statusValidation={value}/>}
                     align="center"
                     sorter={true}
@@ -145,26 +141,14 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                 <Table.Column
                     dataIndex={["createdAt"]}
                     title={translate("fields.created_at")}
-                    render={(date: string) => {
-                        return (
-                            <div>
-                                <Tag>{new Date(date).toLocaleDateString()}</Tag>
-                            </div>
-                        );
-                    }}
+                    render={(date: string) => <OutlineTag color="#494C57">{new Date(date).toLocaleDateString()}</OutlineTag>}
                     align="center"
                     sorter={true}
                 />
                 <Table.Column
                     dataIndex={["updatedAt"]}
                     title={translate("fields.updated_at")}
-                    render={(date: string) => {
-                        return (
-                            <div>
-                                <Tag>{new Date(date).toLocaleDateString()}</Tag>
-                            </div>
-                        );
-                    }}
+                    render={(date: string) => <OutlineTag color="#494C57">{new Date(date).toLocaleDateString()}</OutlineTag>}
                     align="center"
                     sorter={true}
                 />
@@ -173,25 +157,21 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                     dataIndex="actions"
                     align="center"
                     render={(_, record: BaseRecord) => (
-                        <Space>
+                        <>
                             <Link to={`/residences/edit/${record.id}`} state={{ from: location.pathname + location.search }}>
                                 <Button
                                     size="small"
                                     icon={<ArrowRightOutlined/>}
-
+                                    style={{background: "#FFFFFF", border: `1px solid ${BORDER_COLOR}`, color: TEXT_SECONDARY}}
                                 />
                             </Link>
-                            {/*<Link to={`/residences/show/${record.id}`}>*/}
-                            {/*    <Button*/}
-                            {/*        size="small"*/}
-                            {/*        icon={<EyeOutlined/>}/>*/}
-                            {/*</Link>*/}
                             <DeleteButton
                                 hideText
                                 size="small"
                                 recordItemId={record.id}
+                                style={{background: "#FFFFFF", border: "1px solid #C13838", color: "#C13838"}}
                             />
-                        </Space>
+                        </>
                     )}
                 />
             </Table>

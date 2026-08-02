@@ -12,12 +12,11 @@ import {
     Divider,
     message,
     Form,
-    Tag,
 } from "antd";
 import { CheckOutlined, CloseOutlined, UserOutlined } from "@ant-design/icons";
 import { useParams, Link } from "react-router-dom";
 import { StatusDemandeProParticulierTag } from "./components/status-demande-pro-particulier-tag";
-import { DateDisplayField } from "@/components/table";
+import { DateDisplayField, OutlineTag } from "@/components/table";
 import { SpinLoader } from "@/components/loading";
 import { getLocalStorageProvider } from "@/lib/providers/local-storage.provider";
 import { FilePreviewModal } from "@/pages/users/components/file-preview";
@@ -164,9 +163,9 @@ export const ShowDemandeProParticulier = () => {
                             <div>
                                 <Text strong>{translate("users.fields.status")}: </Text>
                                 {user?.status ? (
-                                    <Tag color={user.status === "Active" ? "green" : "red"}>
+                                    <OutlineTag color={user.status === "Active" ? "#1F8A5B" : "#C13838"}>
                                         {translate(`users.fields.${user.status.toLowerCase()}`)}
-                                    </Tag>
+                                    </OutlineTag>
                                 ) : (
                                     <Text>{translate("common.notAvailable")}</Text>
                                 )}

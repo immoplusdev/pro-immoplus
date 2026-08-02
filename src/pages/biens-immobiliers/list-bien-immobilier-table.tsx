@@ -74,7 +74,7 @@ export function ListBienImmobilierTable({filters, activeMenu}: Props) {
         <>
             <BiensImmobiliersTabs activeMenu={activeMenu} />
             <List
-                title={translate("biens_immobiliers.fields.biens_immobiliers")}
+                title={translate("biens_immobiliers.title")}
                 headerButtons={[
                     <SearchInput
                         setFilters={setFilters}

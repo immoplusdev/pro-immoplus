@@ -5,7 +5,7 @@ import {StatusValidationBiensImmobilers} from "@/lib/ts-utilities/enums/status-b
 export function ListBienImmobilierEnValidation(){
     return(
         <ListBienImmobilierTable
-            activeMenu={"en_validation"}
+            activeMenu={"en_attente_validation"}
             filters={{
                 permanent: [
                     {

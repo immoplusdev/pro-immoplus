@@ -1,6 +1,12 @@
 import React from "react";
 import { ListAlertsTable } from "./components/list-alerts-table";
+import { AlertTabs } from "./components/alert-tabs";
 
 export const ListAlertsCloturees = () => {
-    return <ListAlertsTable activeTab="cloturees" />;
+    return (
+        <>
+            <AlertTabs activeMenu="cloturees" />
+            <ListAlertsTable activeTab="cloturees" />
+        </>
+    );
 };

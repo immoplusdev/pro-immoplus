@@ -1,14 +1,17 @@
 import {BaseRecord, useTranslate} from "@refinedev/core";
 import {DeleteButton, List, useTable} from "@refinedev/antd";
-import {Button, Divider, Space, Table, Tag} from "antd";
+import {Button, Space, Table} from "antd";
 import {Thumbnail} from "@/components";
 import {formatAmount, getApiFileUrl} from "@/lib/helpers";
 import {Link, useLocation} from "react-router-dom";
 import {ArrowRightOutlined} from "@ant-design/icons";
 import React from "react";
 import {SearchInput} from "@/components/filters";
-import {DateDisplayField} from "@/components/table";
+import {DateDisplayField, OutlineTag} from "@/components/table";
 import {ExportTableButton} from "@/components/export/export-table-button";
+
+const BORDER_COLOR = "#E5E3DC";
+const TEXT_SECONDARY = "#5F5E5A";
 
 function mapFurnitureToRow(r: any, i: number): Record<string, string> {
     return {
@@ -42,20 +45,20 @@ export function ListFurnituresTable() {
     const getEtatColor = (etat: string) => {
         switch (etat?.toLowerCase()) {
             case "neuf":
-                return "green";
+                return "#1F8A5B";
             case "occasion":
-                return "orange";
+                return "#B86B0A";
             default:
-                return "default";
+                return TEXT_SECONDARY;
         }
     };
 
     const getStatusColor = (status: string) => {
         switch (status?.toLowerCase()) {
             case "active":
-                return "green";
+                return "#1F8A5B";
             default:
-                return "default";
+                return TEXT_SECONDARY;
         }
     };
 
@@ -97,21 +100,21 @@ export function ListFurnituresTable() {
                     dataIndex="type"
                     title={translate("furnitures.fields.type")}
                     align="center"
-                    render={(value: string) => <Tag>{value}</Tag>}
+                    render={(value: string) => <OutlineTag color={TEXT_SECONDARY}>{value}</OutlineTag>}
                     sorter={true}
                 />
                 <Table.Column
                     dataIndex="category"
                     title={translate("furnitures.fields.category")}
                     align="center"
-                    render={(value: string) => <Tag>{value}</Tag>}
+                    render={(value: string) => <OutlineTag color={TEXT_SECONDARY}>{value}</OutlineTag>}
                     sorter={true}
                 />
                 <Table.Column
                     dataIndex="etat"
                     title={translate("furnitures.fields.etat")}
                     align="center"
-                    render={(value: string) => <Tag color={getEtatColor(value)}>{value}</Tag>}
+                    render={(value: string) => <OutlineTag color={getEtatColor(value)}>{value}</OutlineTag>}
                     sorter={true}
                 />
                 <Table.Column
@@ -125,13 +128,13 @@ export function ListFurnituresTable() {
                     dataIndex="status"
                     title={translate("furnitures.fields.status")}
                     align="center"
-                    render={(value: string) => <Tag color={getStatusColor(value)}>{value}</Tag>}
+                    render={(value: string) => <OutlineTag color={getStatusColor(value)}>{value}</OutlineTag>}
                     sorter={true}
                 />
                 <Table.Column
                     dataIndex="score"
                     title="Score"
-                    render={(value: number) => <Tag color="blue">{value ?? 0}</Tag>}
+                    render={(value: number) => <OutlineTag color="#2744DE">{value ?? 0}</OutlineTag>}
                     align="center"
                     sorter={true}
                 />
@@ -157,12 +160,14 @@ export function ListFurnituresTable() {
                                 <Button
                                     size="small"
                                     icon={<ArrowRightOutlined/>}
+                                    style={{background: "#FFFFFF", border: `1px solid ${BORDER_COLOR}`, color: TEXT_SECONDARY}}
                                 />
                             </Link>
                             <DeleteButton
                                 hideText
                                 size="small"
                                 recordItemId={record.id}
+                                style={{background: "#FFFFFF", border: "1px solid #C13838", color: "#C13838"}}
                             />
                         </Space>
                     )}

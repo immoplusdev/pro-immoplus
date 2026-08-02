@@ -1,11 +1,12 @@
 import React from "react";
 import {DeleteButton, Edit, useForm} from "@refinedev/antd";
 import {Button, Col, Form, Row, Space} from "antd";
-import { useOne, useTranslate } from "@refinedev/core";
+import { useTranslate } from "@refinedev/core";
 import {BienImmobilierDataFields} from "@/pages/biens-immobiliers/components/edit-read-only-fields";
 import {BienImmobilierEditActionFields} from "@/pages/biens-immobiliers/components/edit-actions-fields";
 import {OrderedListOutlined, ReloadOutlined, SaveOutlined} from "@ant-design/icons";
 import {useNavigate, useLocation} from "react-router-dom";
+import {extractRelationId} from "@/lib/helpers";
 
 
 // Main Edit Component
@@ -19,14 +20,6 @@ export const EditBienImmobilier: React.FC = () => {
         onMutationSuccess: goBack,
     });
     const biensImmobiliersData = queryResult?.data?.data;
-
-    const { data: ownerData, isLoading: ownerLoading } = useOne({
-        resource: "users",
-        id: biensImmobiliersData?.proprietaire || "",
-        queryOptions: {
-            enabled: !!biensImmobiliersData?.proprietaire,
-        },
-    });
 
     return (
         <Edit
@@ -67,7 +60,7 @@ export const EditBienImmobilier: React.FC = () => {
                         <BienImmobilierDataFields translate={translate} data={biensImmobiliersData}/>
                     </Col>
                     <Col xs={24} md={24} lg={8}>
-                        <BienImmobilierEditActionFields translate={translate} ownerData={ownerData?.data} ownerLoading={ownerLoading}/>
+                        <BienImmobilierEditActionFields translate={translate} ownerId={extractRelationId(biensImmobiliersData?.proprietaire)}/>
                     </Col>
                 </Row>
             </Form>

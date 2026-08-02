@@ -9,6 +9,28 @@ import { useReservationSocket } from "@/hooks/useReservationSocket";
 
 const PAGE_SIZE = 20;
 
+function ConnectionStatusBadge({ isConnected }: { isConnected: boolean }) {
+  const color = isConnected ? "#1F8A5B" : "#C13838";
+  return (
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 6,
+        fontSize: 12,
+        color,
+        border: `1px solid ${color}`,
+        borderRadius: 999,
+        padding: "3px 10px",
+        background: "#FFFFFF",
+      }}
+    >
+      <span style={{ width: 8, height: 8, borderRadius: "50%", background: color }} />
+      {isConnected ? "Temps réel actif" : "Hors ligne"}
+    </span>
+  );
+}
+
 type Props = {
   activeMenu: "all_e" | "valide_termine" | "en_validation" | "echoue_annule";
   filtersA?: CrudFilter[];
@@ -66,7 +88,7 @@ export function ReservationMergedTable({
   // (paiement, réponse propriétaire, annulation...). Le payload de l'event
   // socket est minimaliste (reservationId/newStatus/updatedAt), donc on
   // refetch plutôt que de patcher localement — cf. docs/reservation-websocket-frontend.md
-  useReservationSocket({
+  const { isConnected } = useReservationSocket({
     enabled: true,
     onStatusUpdated: useCallback(() => {
       refetchAll();
@@ -75,7 +97,12 @@ export function ReservationMergedTable({
 
   return (
     <List
-      title={translate("pages.reservation.reservations")}
+      title={
+        <span style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          {translate("pages.reservation.reservations")}
+          <ConnectionStatusBadge isConnected={isConnected} />
+        </span>
+      }
       headerButtons={[
         <ExportReservationsButton
           filters={filtersA}

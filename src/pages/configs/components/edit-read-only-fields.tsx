@@ -9,14 +9,15 @@ export const ConfigDataFields: React.FC<{ data?: BaseRecord }> = ({data}) => {
     const translate = useTranslate();
     return (
         <Card
+            style={{border: "1px solid #E8E9EE", borderRadius: 10}}
             title={
                 <Space>
                     <DatabaseOutlined/>
                     <p>{translate("biens_immobiliers.fields.data")}</p>
                 </Space>
             }
-            headStyle={{padding: "1rem", border: "0.5px solid black"}}
-            bodyStyle={{padding: "2rem", border: "0.5px solid black", display: "flex", flexDirection: "row"}}
+            headStyle={{padding: "1rem"}}
+            bodyStyle={{padding: "2rem", display: "flex", flexDirection: "row"}}
         >
             <Card style={{border: "none", width: "50%"}}>
                 <ReadOnlyFormField label={translate("configs.fields.project_name")} content={data?.projectName}/>

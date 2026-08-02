@@ -14,7 +14,6 @@ import {
     Divider,
     message,
     Popconfirm,
-    Tag,
     Empty,
     Descriptions,
 } from "antd";
@@ -29,7 +28,7 @@ import {
 } from "@ant-design/icons";
 import { useParams, Link } from "react-router-dom";
 import { AlertStatusTag } from "./components/alert-status-tag";
-import { DateDisplayField } from "@/components/table";
+import { DateDisplayField, OutlineTag } from "@/components/table";
 import { SpinLoader } from "@/components/loading";
 import { getLocalStorageProvider } from "@/lib/providers/local-storage.provider";
 import axios from "axios";
@@ -235,15 +234,15 @@ export const ShowAlert = () => {
                             </div>
                             <div>
                                 <Text strong>{translate("alerts.fields.matchCount")}: </Text>
-                                <Tag color="blue">{data?.matchCount ?? 0}</Tag>
+                                <OutlineTag color="#185FA5">{data?.matchCount ?? 0}</OutlineTag>
                             </div>
                             <div>
                                 <Text strong>
                                     {translate("alerts.fields.unreadMatchCount")}:{" "}
                                 </Text>
-                                <Tag color={data?.unreadMatchCount ? "red" : "default"}>
+                                <OutlineTag color={data?.unreadMatchCount ? "#C13838" : "#5F5E5A"}>
                                     {data?.unreadMatchCount ?? 0}
-                                </Tag>
+                                </OutlineTag>
                             </div>
                             <div>
                                 <Text strong>{translate("fields.created_at")}: </Text>
@@ -345,7 +344,7 @@ export const ShowAlert = () => {
                         <Title level={5} style={{ margin: 0 }}>
                             {translate("alerts.sections.conciergeNotes")}
                         </Title>
-                        <Tag color="blue">{notes.length}</Tag>
+                        <OutlineTag color="#185FA5">{notes.length}</OutlineTag>
                     </Space>
                 }
                 size="small"
@@ -445,9 +444,9 @@ export const ShowAlert = () => {
                                             </div>
                                         )}
                                         {note.entityType && (
-                                            <Tag>
+                                            <OutlineTag color="#5F5E5A">
                                                 {translate(`alerts.entityType.${note.entityType}`)}
-                                            </Tag>
+                                            </OutlineTag>
                                         )}
                                         <Text type="secondary" style={{ fontSize: 11 }}>
                                             <DateDisplayField value={note.createdAt} />

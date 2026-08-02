@@ -1,12 +1,12 @@
 import React from "react";
 import { BaseRecord, useTranslate } from "@refinedev/core";
 import { List, useTable } from "@refinedev/antd";
-import { Table, Space, Button, Badge } from "antd";
-import { Link } from "react-router-dom";
+import { Table, Space, Badge, Button } from "antd";
 import { ArrowRightOutlined, BellOutlined } from "@ant-design/icons";
 import { AlertStatusTag } from "./alert-status-tag";
 import { DateDisplayField } from "@/components/table";
 import type { CrudFilter } from "@refinedev/core/src/contexts/data/types";
+import { Link } from "react-router-dom";
 
 export type AlertStatusTab = "toutes" | "en_attente" | "propositions" | "cloturees";
 
@@ -37,28 +37,6 @@ export function ListAlertsTable({ activeTab }: Props) {
                     {translate("alerts.title")}
                 </Space>
             }
-            headerButtons={[
-                <Link key="toutes" to="/alerts">
-                    <Button type={activeTab === "toutes" ? "primary" : "default"}>
-                        {translate("tags.all_e")}
-                    </Button>
-                </Link>,
-                <Link key="en_attente" to="/alerts/en-attente">
-                    <Button type={activeTab === "en_attente" ? "primary" : "default"}>
-                        {translate("alerts.tabs.en_attente")}
-                    </Button>
-                </Link>,
-                <Link key="propositions" to="/alerts/propositions">
-                    <Button type={activeTab === "propositions" ? "primary" : "default"}>
-                        {translate("alerts.tabs.propositions")}
-                    </Button>
-                </Link>,
-                <Link key="cloturees" to="/alerts/clôturées">
-                    <Button type={activeTab === "cloturees" ? "primary" : "default"}>
-                        {translate("alerts.tabs.cloturees")}
-                    </Button>
-                </Link>,
-            ]}
         >
             <Table {...tableProps} rowKey="id">
                 <Table.Column

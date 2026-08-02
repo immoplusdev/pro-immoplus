@@ -311,6 +311,7 @@
     }
   },
   "biens_immobiliers": {
+    "title": "Biens immobiliers",
     "fields": {
       "type_bien_immobilier": "Type de bien immobilier",
       "tags": "Tag",

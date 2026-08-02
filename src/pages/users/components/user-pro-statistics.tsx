@@ -24,7 +24,7 @@ export function UserProStatistics({ proId }: Props) {
 
     return (
         <Card
-            style={{ marginTop: "2rem" }}
+            style={{ marginTop: "2rem", border: "1px solid #E8E9EE", borderRadius: 10 }}
             title={
                 <Space>
                     <BarChartOutlined />
@@ -40,8 +40,8 @@ export function UserProStatistics({ proId }: Props) {
                     style={{ width: 130 }}
                 />
             }
-            headStyle={{ padding: "1rem", border: "0.5px solid black" }}
-            bodyStyle={{ padding: "2rem", border: "0.5px solid black" }}
+            headStyle={{ padding: "1rem" }}
+            bodyStyle={{ padding: "2rem" }}
         >
             {isFetching ? (
                 <div style={{ display: "flex", justifyContent: "center", padding: 48 }}>

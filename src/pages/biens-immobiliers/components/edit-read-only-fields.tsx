@@ -5,19 +5,19 @@ import {DatabaseOutlined, UsergroupAddOutlined} from "@ant-design/icons";
 import {ReadOnlyFormField} from "@/lib/ts-utilities";
 import {ImageCarousel} from "@/components/images/image-carousel";
 import {getCarouselUrls} from "@/lib/helpers";
-import {ShowUserButton} from "@/pages/users/components";
 
 export const BienImmobilierDataFields: React.FC<{ translate: any; data?: BaseRecord }> = ({translate, data}) => {
     return (
         <Card
+            style={{border: "1px solid #E8E9EE", borderRadius: 10}}
             title={
                 <Space>
                     <DatabaseOutlined/>
                     <p>{translate("biens_immobiliers.fields.data")}</p>
                 </Space>
             }
-            headStyle={{padding: "1rem", border: "0.5px solid black"}}
-            bodyStyle={{padding: "2rem", border: "0.5px solid black", display: "flex", flexDirection: "row"}}
+            headStyle={{padding: "1rem"}}
+            bodyStyle={{padding: "2rem", display: "flex", flexDirection: "row"}}
         >
             <Card style={{border: "none", width: "50%"}}>
                 <Form.Item
@@ -37,12 +37,11 @@ export const BienImmobilierDataFields: React.FC<{ translate: any; data?: BaseRec
                 <Form.Item label={translate("fields.description")} name={["description"]}>
                     <Input.TextArea
                         autoSize={{ minRows: 3, maxRows: 8 }}
-                        style={{ width: "17vw", border: "0.5px solid black" }}
+                        style={{ width: "17vw", border: "1px solid #E8E9EE", borderRadius: 6 }}
                     />
                 </Form.Item>
                 <ReadOnlyFormField label={translate("fields.adresse")} content={data?.adresse}/>
                 <ReadOnlyFormField label={translate("biens_immobiliers.fields.prix")} content={data?.prix}/>
-                <ShowUserButton id={data?.proprietaire} title={translate("users.common.see_owner")}/>
             </Card>
             <Card style={{width: "50%", border: "none"}}>
                 <ReadOnlyFormField label={translate("biens_immobiliers.fields.nombre_max_occupants")}

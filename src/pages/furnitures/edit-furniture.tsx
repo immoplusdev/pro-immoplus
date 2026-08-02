@@ -78,14 +78,15 @@ export const EditFurniture: React.FC = () => {
                 <Row gutter={[32, 32]} style={{marginTop: 32}}>
                     <Col xs={24} md={24} lg={16}>
                         <Card
+                            style={{border: "1px solid #E8E9EE", borderRadius: 10}}
                             title={
                                 <Space>
                                     <DatabaseOutlined/>
                                     <p>{translate("furnitures.title")}</p>
                                 </Space>
                             }
-                            headStyle={{padding: "1rem", border: "0.5px solid black"}}
-                            bodyStyle={{padding: "2rem", border: "0.5px solid black", display: "flex", flexDirection: "row"}}
+                            headStyle={{padding: "1rem"}}
+                            bodyStyle={{padding: "2rem", display: "flex", flexDirection: "row"}}
                         >
                             <Card style={{border: "none", width: "50%"}}>
                                 <ReadOnlyFormField label={translate("furnitures.fields.titre")}
@@ -105,22 +106,22 @@ export const EditFurniture: React.FC = () => {
                             </Card>
                         </Card>
                         <Card
-                            style={{marginTop: 16}}
-                            headStyle={{padding: "1rem", border: "0.5px solid black"}}
-                            bodyStyle={{padding: "2rem", border: "0.5px solid black"}}
+                            style={{marginTop: 16, border: "1px solid #E8E9EE", borderRadius: 10}}
+                            headStyle={{padding: "1rem"}}
+                            bodyStyle={{padding: "2rem"}}
                         >
                             <Form.Item label={translate("fields.description")} name={["description"]}>
                                 <Input.TextArea
                                     autoSize={{minRows: 3, maxRows: 8}}
-                                    style={{border: "0.5px solid black"}}
+                                    style={{border: "1px solid #E8E9EE", borderRadius: 6}}
                                 />
                             </Form.Item>
                         </Card>
                         {images.length > 0 && (
                             <Card
-                                style={{marginTop: 16}}
-                                headStyle={{padding: "1rem", border: "0.5px solid black"}}
-                                bodyStyle={{padding: "2rem", border: "0.5px solid black"}}
+                                style={{marginTop: 16, border: "1px solid #E8E9EE", borderRadius: 10}}
+                                headStyle={{padding: "1rem"}}
+                                bodyStyle={{padding: "2rem"}}
                             >
                                 <Form.Item label={translate("fields.images")}>
                                     <div style={{display: "flex", gap: 8, flexWrap: "wrap"}}>
@@ -138,14 +139,15 @@ export const EditFurniture: React.FC = () => {
                     </Col>
                     <Col xs={24} md={24} lg={8}>
                         <Card
+                            style={{border: "1px solid #E8E9EE", borderRadius: 10}}
                             title={
                                 <Space>
                                     <EditOutlined/>
                                     <p>Actions</p>
                                 </Space>
                             }
-                            headStyle={{padding: "1rem", border: "0.5px solid black"}}
-                            bodyStyle={{padding: "2rem", border: "0.5px solid black"}}
+                            headStyle={{padding: "1rem"}}
+                            bodyStyle={{padding: "2rem"}}
                         >
                             <Form.Item
                                 label={translate("furnitures.fields.status")}
@@ -154,7 +156,7 @@ export const EditFurniture: React.FC = () => {
                                 rules={[{required: true}]}
                             >
                                 <Select
-                                    style={{border: "0.5px solid black", borderRadius: "7px"}}
+                                    style={{border: "1px solid #E8E9EE", borderRadius: 6}}
                                     options={statusOptions}
                                 />
                             </Form.Item>
@@ -165,21 +167,21 @@ export const EditFurniture: React.FC = () => {
                             >
                                 <InputNumber
                                     min={0}
-                                    style={{width: "100%", border: "0.5px solid black", borderRadius: "7px"}}
+                                    style={{width: "100%", border: "1px solid #E8E9EE", borderRadius: 6}}
                                 />
                             </Form.Item>
                         </Card>
 
                         <Card
-                            style={{marginTop: 16}}
+                            style={{marginTop: 16, border: "1px solid #E8E9EE", borderRadius: 10}}
                             title={
                                 <Space>
                                     <UserOutlined/>
                                     <p>{translate("furnitures.sections.owner")}</p>
                                 </Space>
                             }
-                            headStyle={{padding: "1rem", border: "0.5px solid black"}}
-                            bodyStyle={{padding: "2rem", border: "0.5px solid black"}}
+                            headStyle={{padding: "1rem"}}
+                            bodyStyle={{padding: "2rem"}}
                         >
                             {ownerLoading && typeof ownerId === "string" ? (
                                 <Spin/>

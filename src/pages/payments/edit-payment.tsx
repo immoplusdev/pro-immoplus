@@ -1,12 +1,13 @@
 import React from "react";
 import {useTranslate} from "@refinedev/core";
 import {Edit, useForm} from "@refinedev/antd";
-import {Button, Card, Col, Form, Row, Select, Space, Tag} from "antd";
+import {Button, Card, Col, Form, Row, Select, Space} from "antd";
 import {useNavigate, useLocation} from "react-router-dom";
 import {DatabaseOutlined, EditOutlined, OrderedListOutlined, ReloadOutlined, SaveOutlined} from "@ant-design/icons";
 import {enumToList, ReadOnlyFormField} from "@/lib/ts-utilities";
 import {Payment, PaymentStatus} from "@/core/domain/payments";
 import {Amount} from "@/components/payments";
+import {OutlineTag} from "@/components/table";
 export function EditPayment() {
     const translate = useTranslate();
     const navigate = useNavigate();
@@ -45,16 +46,16 @@ export function EditPayment() {
                 <Row gutter={[32, 32]} style={{marginTop: 32}}>
                     <Col xs={24} md={24} lg={16}>
                         <Card
+                            style={{border: "1px solid #E8E9EE", borderRadius: 10}}
                             title={
                                 <Space>
                                     <DatabaseOutlined/>
                                     <p>{translate("pages.payment.title")}</p>
                                 </Space>
                             }
-                            headStyle={{padding: "1rem", border: "0.5px solid black"}}
+                            headStyle={{padding: "1rem"}}
                             bodyStyle={{
                                 padding: "2rem",
-                                border: "0.5px solid black",
                                 display: "flex",
                                 flexDirection: "row"
                             }}
@@ -66,11 +67,11 @@ export function EditPayment() {
                                 />
                                 <ReadOnlyFormField
                                     label={translate("pages.payment.fields.payment_type")}
-                                    content={<Tag>{data?.paymentType}</Tag>}
+                                    content={<OutlineTag color="#5F5E5A">{data?.paymentType}</OutlineTag>}
                                 />
                                 <ReadOnlyFormField
                                     label={translate("pages.payment.fields.payment_method")}
-                                    content={<Tag>{data?.paymentMethod}</Tag>}
+                                    content={<OutlineTag color="#5F5E5A">{data?.paymentMethod}</OutlineTag>}
                                 />
                             </Card>
                             <Card style={{border: "none", width: "50%"}}>
@@ -80,27 +81,27 @@ export function EditPayment() {
                                 />
                                 <ReadOnlyFormField
                                     label={translate("pages.payment.fields.collection")}
-                                    content={<Tag>{data?.collection}</Tag>}
+                                    content={<OutlineTag color="#5F5E5A">{data?.collection}</OutlineTag>}
                                 />
                                 <ReadOnlyFormField
                                     label={translate("pages.payment.fields.payment_status")}
-                                    content={<Tag>{data?.paymentStatus}</Tag>}
+                                    content={<OutlineTag color="#5F5E5A">{data?.paymentStatus}</OutlineTag>}
                                 />
                             </Card>
                         </Card>
                     </Col>
                     <Col xs={24} md={24} lg={8}>
                         <Card
+                            style={{border: "1px solid #E8E9EE", borderRadius: 10}}
                             title={
                                 <Space>
                                     <EditOutlined/>
                                     <p>{translate("pages.payment.fields.actions")}</p>
                                 </Space>
                             }
-                            headStyle={{padding: "1rem", border: "0.5px solid black"}}
+                            headStyle={{padding: "1rem"}}
                             bodyStyle={{
                                 padding: "2rem",
-                                border: "0.5px solid black",
                                 display: "flex",
                                 flexDirection: "column"
                             }}
@@ -111,7 +112,7 @@ export function EditPayment() {
                                 rules={[{required: true}]}
                             >
                                 <Select
-                                    style={{border: "0.5px solid black", borderRadius: "7px"}}
+                                    style={{border: "1px solid #E8E9EE", borderRadius: 6}}
                                     options={enumToList(PaymentStatus).map(item => ({
                                         value: item,
                                         label: <span>{translate(`pages.payment.tags.${item}`)}</span>
