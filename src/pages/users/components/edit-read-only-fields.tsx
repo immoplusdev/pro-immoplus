@@ -220,44 +220,6 @@ export const UsersEditDataFields: React.FC<{
         </Card>
       </Card>
 
-      {/* Certification */}
-      <Card
-        style={{
-          display:
-            data?.role?.name === "pro_entreprise" ||
-            data?.role?.name === "pro_particulier"
-              ? ""
-              : "None",
-          marginTop: "2rem",
-        }}
-        title={
-          <Space>
-            <EditOutlined />
-            <p>Certification</p>
-          </Space>
-        }
-        headStyle={{ padding: "1rem", border: "0.5px solid black" }}
-        bodyStyle={{
-          padding: "2rem",
-          border: "0.5px solid black",
-          display: "flex",
-          flexDirection: "row",
-        }}
-      >
-        <Card style={{ border: "none", width: "50%" }}>
-          <ReadOnlyFormField
-            label={translate("users.fields.certification_score")}
-            content={data?.certificationScore ?? "—"}
-          />
-        </Card>
-        <Card style={{ width: "50%", border: "none" }}>
-          <ReadOnlyFormField
-            label={translate("users.fields.certification_status")}
-            content={data?.certificationStatus ?? "—"}
-          />
-        </Card>
-      </Card>
-
       {/* Detail de Portefeuille */}
       <Card
         style={{
