@@ -12,6 +12,7 @@ import { WalletTransferForm } from "./wallet-transfer-form";
 import { FilePreviewModal } from "./file-preview";
 import { UserProStatistics } from "./user-pro-statistics";
 import { ProCertificationCard } from "./pro-certification/pro-certification-card";
+import { UserNotificationsTable } from "./user-notifications";
 
 export const UsersEditDataFields: React.FC<{
   translate: any;
@@ -340,6 +341,8 @@ export const UsersEditDataFields: React.FC<{
           <ProCertificationCard proId={data?.id ? String(data.id) : undefined} />
         </>
       )}
+
+      <UserNotificationsTable userId={data?.id ? String(data.id) : undefined} />
 
       <Card
         style={{
