@@ -184,6 +184,12 @@ export const UsersEditDataFields: React.FC<{
       >
         <Card style={{ border: "none", width: "50%" }}>
           <Form.Item
+            label="Lieu de Naissance"
+            name={["additionalData", "lieuNaissance"]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
             label="Activité"
             name={["additionalData", "activite"]}
           >
@@ -205,11 +211,24 @@ export const UsersEditDataFields: React.FC<{
         </Card>
         <Card style={{ width: "50%", border: "none" }}>
           <ReadOnlyFormField
-            label="Pièce d'Identité"
+            label="Pièce d'Identité (Recto)"
             content={
               data?.additionalData?.pieceIdentiteId ? (
                 <FilePreviewModal
                   fileUrl={getApiFileUrl(data.additionalData.pieceIdentiteId)}
+                  label="Voir le document"
+                />
+              ) : (
+                "Non fourni"
+              )
+            }
+          />
+          <ReadOnlyFormField
+            label="Pièce d'Identité (Verso)"
+            content={
+              data?.additionalData?.pieceIdentiteVersoId ? (
+                <FilePreviewModal
+                  fileUrl={getApiFileUrl(data.additionalData.pieceIdentiteVersoId)}
                   label="Voir le document"
                 />
               ) : (
