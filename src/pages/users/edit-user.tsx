@@ -11,6 +11,10 @@ import {
 } from "@ant-design/icons";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { API_URL } from "@/configs/app.config";
+import { canAccessResource } from "@/configs/role-permissions.config";
+import { getLocalStorageProvider } from "@/lib/providers/local-storage.provider";
+
+const localStorageProvider = getLocalStorageProvider();
 
 export const EditUser: React.FC = () => {
   const translate = useTranslate();
@@ -24,12 +28,20 @@ export const EditUser: React.FC = () => {
   });
   const usersData = queryResult?.data?.data;
 
+  const viewerRole = localStorageProvider.getAuthData()?.role;
+  // Ces sections tapent des endpoints admin-only (wallet, certification, stats pro) :
+  // un viewer sans le droit "wallets" reçoit des 401/403 en boucle sur ces appels.
+  const canViewFinancialData = viewerRole ? canAccessResource(viewerRole, "wallets") : false;
+
   const { data: walletQuery, isLoading: walletIsLoading, refetch: refetchWallet } = useCustom({
     url: `${API_URL}/wallet/admin/user-wallet/${userId}`,
     method: "get",
     meta: {
       resource: "wallets",
       action: "getOne",
+    },
+    queryOptions: {
+      enabled: canViewFinancialData && !!userId,
     },
   });
   const walletData = walletQuery?.data;
@@ -69,6 +81,7 @@ export const EditUser: React.FC = () => {
               data={usersData}
               walletData={walletData}
               onWalletUpdate={() => refetchWallet()}
+              canViewFinancialData={canViewFinancialData}
             />
           </Col>
           <Col xs={24} md={24} lg={8}>

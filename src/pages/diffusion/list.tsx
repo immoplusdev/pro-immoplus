@@ -4,7 +4,6 @@ import {
   Table,
   Button,
   Space,
-  Tag,
   Select,
   Popconfirm,
   message,
@@ -23,10 +22,10 @@ import {
   AdCampaign,
   AdStatus,
   AdPlacement,
-  STATUS_COLORS,
   AD_STATUSES,
   AD_PLACEMENTS,
 } from "./types";
+import { StatusBadge } from "./status-badge";
 
 const { Text } = Typography;
 
@@ -81,9 +80,7 @@ export const AdCampaignList = () => {
     {
       dataIndex: "status",
       title: "Statut",
-      render: (status: AdStatus) => (
-        <Tag color={STATUS_COLORS[status]}>{status}</Tag>
-      ),
+      render: (status: AdStatus) => <StatusBadge status={status} size="small" />,
     },
     {
       dataIndex: "priority",

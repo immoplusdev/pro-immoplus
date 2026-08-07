@@ -56,12 +56,15 @@ export const AdCampaignCreate = () => {
           initialValues: {
             status: "DRAFT",
             priority: 0,
+            position_index: 0,
+            type: "IMAGE",
             action: "NONE",
             media: { images: [], videos: [] },
             scope: { entity_id: null, entity_ids: [], filters: {} },
           },
         }}
         form={form}
+        submitLabel="Créer la campagne"
       />
     </div>
   );

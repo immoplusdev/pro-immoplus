@@ -1,9 +1,10 @@
 import React from "react";
-import { Outlet, Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes, useLocation } from "react-router-dom";
 import { Authenticated } from "@refinedev/core";
 import { CatchAllNavigate } from "@refinedev/react-router-v6";
 import { ErrorComponent, ThemedLayoutV2, ThemedTitleV2 } from "@refinedev/antd";
 import { AppIcon, Header, CustomSider, RoleBasedRedirect } from "@/components";
+import { AppErrorBoundary } from "@/components/error-boundary";
 import {
   EditResidence,
   ListResidences,
@@ -113,6 +114,15 @@ import {
 import { ProCertificationList } from "@/pages/admin/pro-certification";
 import { ProCertificationDetail } from "@/pages/admin/pro-certification/detail";
 
+function RouteErrorBoundary() {
+  const location = useLocation();
+  return (
+    <AppErrorBoundary key={location.pathname}>
+      <Outlet />
+    </AppErrorBoundary>
+  );
+}
+
 export function AppRoutes() {
   return (
     <Routes>
@@ -134,7 +144,7 @@ export function AppRoutes() {
                 />
               )}
             >
-              <Outlet />
+              <RouteErrorBoundary />
             </ThemedLayoutV2>
           </Authenticated>
         }

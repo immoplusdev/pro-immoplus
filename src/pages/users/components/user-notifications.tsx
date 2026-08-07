@@ -67,14 +67,14 @@ export function UserNotificationsTable({ userId }: Props) {
             <Table.Column<Notification>
               title="Sujet"
               dataIndex="subject"
-              render={(subject: string, record) => (
+              render={(subject: string | null, record) => (
                 <Space direction="vertical" size={2}>
-                  <span style={{ fontWeight: 500 }}>{subject}</span>
+                  <span style={{ fontWeight: 500 }}>{subject ?? "—"}</span>
                   <Tag
-                    color={pushTypeColor[record.pushType] ?? "default"}
+                    color={pushTypeColor[record.pushType ?? ""] ?? "default"}
                     style={{ fontSize: 11 }}
                   >
-                    {record.pushType}
+                    {record.pushType ?? "—"}
                   </Tag>
                 </Space>
               )}
@@ -82,10 +82,10 @@ export function UserNotificationsTable({ userId }: Props) {
             <Table.Column<Notification>
               title="Message"
               dataIndex="message"
-              render={(msg: string) => (
-                <Tooltip title={msg}>
+              render={(msg: string | null) => (
+                <Tooltip title={msg ?? ""}>
                   <span style={{ fontSize: 12, color: "#494C57" }}>
-                    {msg.length > 100 ? `${msg.slice(0, 100)}…` : msg}
+                    {msg ? (msg.length > 100 ? `${msg.slice(0, 100)}…` : msg) : "—"}
                   </span>
                 </Tooltip>
               )}
@@ -102,9 +102,9 @@ export function UserNotificationsTable({ userId }: Props) {
               title="Date"
               dataIndex="createdAt"
               align="center"
-              render={(date: string) => (
+              render={(date: string | null) => (
                 <span style={{ fontSize: 12, whiteSpace: "nowrap" }}>
-                  {dayjs(date).format("DD/MM/YYYY HH:mm")}
+                  {date ? dayjs(date).format("DD/MM/YYYY HH:mm") : "—"}
                 </span>
               )}
             />
