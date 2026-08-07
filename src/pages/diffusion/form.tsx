@@ -3,17 +3,15 @@ import {
   Form,
   Input,
   Select,
-  Radio,
+  Segmented,
   InputNumber,
   DatePicker,
-  Card,
   Row,
   Col,
   Space,
   Typography,
   Upload,
   Button,
-  Progress,
   Alert,
   message,
   FormProps,
@@ -21,126 +19,28 @@ import {
 } from "antd";
 import type { UploadFile } from "antd";
 import {
-  PlusOutlined,
-  CloudUploadOutlined,
-  DeleteOutlined,
-  PlayCircleOutlined,
-  LoadingOutlined,
-  CheckCircleOutlined,
-  ExclamationCircleOutlined,
+  PictureOutlined,
+  VideoCameraOutlined,
+  AppstoreOutlined,
 } from "@ant-design/icons";
 import dayjs, { Dayjs } from "dayjs";
 import {
   AD_PLACEMENTS,
   AD_ACTIONS,
   AD_CATEGORIES,
-  AD_STATUSES,
-  AD_TYPES,
   ENTITY_ID_ACTIONS,
   FILTERS_ACTIONS,
   AdAction,
+  AdType,
 } from "./types";
 import { axiosInstance } from "@/lib/providers/utils/axios";
 import { API_URL } from "@/configs/app.config";
+import { T, cardStyle, focusRingStyle } from "./tokens";
+import { StatusBadgeSelect } from "./status-badge-select";
+import { MediaDropzone } from "./media-dropzone";
+import { AdCampaignPreview } from "./ad-campaign-preview";
 
-const { Text } = Typography;
-
-// ─── VideoPreviewItem ──────────────────────────────────────────────────────────
-
-interface VideoItemProps {
-  file: UploadFile;
-  progress: number | undefined;
-  onRemove: () => void;
-}
-
-const VideoPreviewItem = ({ file, progress, onRemove }: VideoItemProps) => {
-  const [src, setSrc] = React.useState<string | undefined>(file.url);
-
-  React.useEffect(() => {
-    if (!file.url && file.originFileObj) {
-      const url = URL.createObjectURL(file.originFileObj as Blob);
-      setSrc(url);
-      return () => URL.revokeObjectURL(url);
-    }
-  }, [file.originFileObj, file.url]);
-
-  const isUploading = progress !== undefined && progress < 100;
-  const isDone = progress === 100;
-  const isError = file.status === "error";
-
-  return (
-    <div
-      style={{
-        display: "flex",
-        gap: 12,
-        padding: 12,
-        border: "1px solid #e8e8e8",
-        borderRadius: 8,
-        marginBottom: 8,
-        background: "#fafafa",
-        alignItems: "flex-start",
-      }}
-    >
-      {/* Player */}
-      <div style={{ flexShrink: 0, borderRadius: 6, overflow: "hidden", background: "#000", width: 192, height: 108, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        {src ? (
-          <video src={src} width={192} height={108} controls style={{ display: "block", objectFit: "cover" }} />
-        ) : (
-          <PlayCircleOutlined style={{ fontSize: 36, color: "#555" }} />
-        )}
-      </div>
-
-      {/* Info + progress */}
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <Text
-          style={{ display: "block", fontWeight: 500, fontSize: 13, marginBottom: 6, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
-          title={file.name}
-        >
-          {file.name}
-        </Text>
-
-        {isUploading && (
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
-              <LoadingOutlined style={{ color: "#1677ff", fontSize: 12 }} />
-              <Text type="secondary" style={{ fontSize: 12 }}>Envoi en cours…</Text>
-            </div>
-            <Progress percent={progress} size="small" status="active" />
-          </div>
-        )}
-
-        {isDone && (
-          <Space size={4}>
-            <CheckCircleOutlined style={{ color: "#52c41a", fontSize: 12 }} />
-            <Text type="secondary" style={{ fontSize: 12 }}>Enregistré</Text>
-          </Space>
-        )}
-
-        {isError && (
-          <Space size={4}>
-            <ExclamationCircleOutlined style={{ color: "#ff4d4f", fontSize: 12 }} />
-            <Text type="danger" style={{ fontSize: 12 }}>Erreur lors de l'upload</Text>
-          </Space>
-        )}
-
-        {progress === undefined && !isError && (
-          <Text type="secondary" style={{ fontSize: 12 }}>En attente d'envoi</Text>
-        )}
-      </div>
-
-      {/* Remove */}
-      <Button
-        type="text"
-        danger
-        icon={<DeleteOutlined />}
-        size="small"
-        onClick={onRemove}
-        disabled={isUploading}
-        style={{ flexShrink: 0, marginTop: 2 }}
-      />
-    </div>
-  );
-};
+const { Text, Title } = Typography;
 
 // ─── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -172,15 +72,64 @@ const normalizeFileList = (value: unknown): UploadFile[] => {
   );
 };
 
+const TYPE_OPTIONS: { label: React.ReactNode; value: AdType }[] = [
+  { value: "IMAGE", label: <Space size={6}><PictureOutlined /> Image</Space> },
+  { value: "VIDEO", label: <Space size={6}><VideoCameraOutlined /> Vidéo</Space> },
+  { value: "CAROUSEL", label: <Space size={6}><AppstoreOutlined /> Carrousel</Space> },
+];
+
+function SectionCard({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) {
+  return (
+    <div style={{ ...cardStyle, padding: 24, marginBottom: 24 }}>
+      <Title level={5} style={{ margin: 0, fontSize: 18, fontWeight: 600, color: T.ink }}>{title}</Title>
+      {description && (
+        <Text style={{ display: "block", fontSize: 12, color: T.ink60, marginTop: 2, marginBottom: 16 }}>
+          {description}
+        </Text>
+      )}
+      {!description && <div style={{ marginTop: 16 }} />}
+      {children}
+    </div>
+  );
+}
+
+function OptionalLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <span>
+      {children} <span style={{ color: T.ink60, fontWeight: 400 }}>(optionnel)</span>
+    </span>
+  );
+}
+
+function FieldHint({ children }: { children: React.ReactNode }) {
+  return <Text style={{ display: "block", fontSize: 12, color: T.ink60, marginTop: 4 }}>{children}</Text>;
+}
+
 // ─── Form ──────────────────────────────────────────────────────────────────────
 
 interface AdCampaignFormProps {
   formProps: FormProps;
   form: FormInstance;
+  submitLabel?: string;
 }
 
-export const AdCampaignForm = ({ formProps, form }: AdCampaignFormProps) => {
+export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }: AdCampaignFormProps) => {
   const action: AdAction | undefined = Form.useWatch("action", form);
+  const type: AdType = Form.useWatch("type", form) ?? "IMAGE";
+  const status = Form.useWatch("status", form) ?? "DRAFT";
+  const placement = Form.useWatch("placement", form);
+  const category = Form.useWatch("campaign_category", form);
+  const priority = Form.useWatch("priority", form);
+  const positionIndex = Form.useWatch("position_index", form);
+  const startDate: Dayjs | undefined = Form.useWatch("start_date", form);
+  const endDate: Dayjs | undefined = Form.useWatch("end_date", form);
+  const title = Form.useWatch(["content", "title"], form);
+  const subtitle = Form.useWatch(["content", "subtitle"], form);
+  const badge = Form.useWatch(["content", "badge"], form);
+  const ctaLabel = Form.useWatch(["content", "cta_label"], form);
+  const imagesRaw = Form.useWatch(["media", "images"], form);
+  const videosRaw = Form.useWatch(["media", "videos"], form);
+
   const [uploading, setUploading] = useState(false);
   const [fileProgress, setFileProgress] = useState<Record<string, number>>({});
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -190,6 +139,14 @@ export const AdCampaignForm = ({ formProps, form }: AdCampaignFormProps) => {
   const showEntityId = ENTITY_ID_ACTIONS.includes(action as AdAction);
   const showEntityIds = action === "OPEN_CATEGORY";
   const showFilters = FILTERS_ACTIONS.includes(action as AdAction);
+
+  const imageFiles = normalizeFileList(imagesRaw);
+  const videoFiles = normalizeFileList(videosRaw);
+  const titleLength = (title ?? "").length;
+  const titleCounterColor = titleLength > 255 ? T.error : titleLength >= 230 ? T.warningDark : T.ink60;
+
+  const startDay = startDate ? (dayjs.isDayjs(startDate) ? startDate : dayjs(startDate)) : undefined;
+  const endDay = endDate ? (dayjs.isDayjs(endDate) ? endDate : dayjs(endDate)) : undefined;
 
   // Uploade un fichier vers /files avec suivi de progression
   const uploadToFiles = async (file: File, uid: string): Promise<string | null> => {
@@ -247,13 +204,13 @@ export const AdCampaignForm = ({ formProps, form }: AdCampaignFormProps) => {
       }
 
       const mediaRaw = (values.media ?? {}) as { images?: unknown; videos?: unknown };
-      const imageFiles = normalizeFileList(mediaRaw.images);
-      const videoFiles = normalizeFileList(mediaRaw.videos);
+      const imgFiles = normalizeFileList(mediaRaw.images);
+      const vidFiles = normalizeFileList(mediaRaw.videos);
 
       // Upload images puis vidéos
       const [images, videos] = await Promise.all([
-        resolveMedia(imageFiles),
-        resolveMedia(videoFiles),
+        resolveMedia(imgFiles),
+        resolveMedia(vidFiles),
       ]);
 
       const payload = {
@@ -286,341 +243,372 @@ export const AdCampaignForm = ({ formProps, form }: AdCampaignFormProps) => {
     }
   };
 
-  // Vidéos actuelles depuis le form
-  const videos: UploadFile[] = normalizeFileList(form.getFieldValue(["media", "videos"]));
+  const showImages = type === "IMAGE" || type === "CAROUSEL";
+  const showVideos = type === "VIDEO";
 
   return (
-    <Form
-      {...formProps}
-      onFinish={handleFinish}
-      layout="vertical"
-      scrollToFirstError
-    >
-      {/* Section 1 — Paramètres généraux */}
-      <Card title="Paramètres généraux" style={{ marginBottom: 24 }}>
-        <Row gutter={16}>
-          <Col xs={24} md={12}>
-            <Form.Item
-              name="placement"
-              label="Placement"
-              rules={[{ required: true, message: "Le placement est requis" }]}
-            >
-              <Select
-                showSearch
-                options={AD_PLACEMENTS.map((p) => ({ label: p, value: p }))}
-                placeholder="Sélectionner un placement"
-              />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12}>
-            <Form.Item
-              name="campaign_category"
-              label="Catégorie"
-              rules={[{ required: true, message: "La catégorie est requise" }]}
-            >
-              <Select
-                options={AD_CATEGORIES.map((c) => ({ label: c, value: c }))}
-                placeholder="Sélectionner une catégorie"
-              />
-            </Form.Item>
-          </Col>
-        </Row>
+    <div className="campagne-form">
+      <style>{focusRingStyle}</style>
+      <style>{`
+        @media (max-width: 1024px) {
+          .campagne-columns { flex-direction: column; }
+          .campagne-preview-col { position: static !important; width: 100% !important; order: -1; }
+        }
+      `}</style>
 
-        <Row gutter={16}>
-          <Col xs={24} md={8}>
-            <Form.Item
-              name="type"
-              label="Type"
-              rules={[{ required: true, message: "Le type est requis" }]}
-            >
-              <Radio.Group>
-                {AD_TYPES.map((t) => (
-                  <Radio.Button key={t} value={t}>{t}</Radio.Button>
-                ))}
-              </Radio.Group>
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={8}>
-            <Form.Item
-              name="status"
-              label="Statut"
-              rules={[{ required: true, message: "Le statut est requis" }]}
-            >
-              <Select
-                options={AD_STATUSES.map((s) => ({ label: s, value: s }))}
-                placeholder="Sélectionner un statut"
-              />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={8}>
-            <Form.Item name="priority" label="Priorité">
-              <InputNumber min={0} style={{ width: "100%" }} />
-            </Form.Item>
-          </Col>
-        </Row>
+      <Form
+        {...formProps}
+        onFinish={handleFinish}
+        layout="vertical"
+        scrollToFirstError
+      >
+        <div className="campagne-columns" style={{ display: "flex", gap: 24, alignItems: "flex-start" }}>
+          <div style={{ flex: "1 1 600px", minWidth: 0 }}>
+            {/* Section 1 — Paramètres généraux */}
+            <SectionCard title="Paramètres généraux" description="Où et quand cette campagne apparaît">
+              <Row gutter={20}>
+                <Col xs={24} md={12}>
+                  <Form.Item
+                    name="placement"
+                    label="Placement"
+                    rules={[{ required: true, message: "Le placement est requis" }]}
+                  >
+                    <Select
+                      showSearch
+                      options={AD_PLACEMENTS.map((p) => ({ label: p, value: p }))}
+                      placeholder="Sélectionner un placement"
+                    />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item
+                    name="campaign_category"
+                    label="Catégorie"
+                    rules={[{ required: true, message: "La catégorie est requise" }]}
+                  >
+                    <Select
+                      options={AD_CATEGORIES.map((c) => ({ label: c, value: c }))}
+                      placeholder="Sélectionner une catégorie"
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
 
-        <Row gutter={16}>
-          <Col xs={24} md={12}>
-            <Form.Item
-              name="start_date"
-              label="Date de début"
-              rules={[{ required: true, message: "La date de début est requise" }]}
-              getValueProps={(value) => ({ value: value ? dayjs(value) : undefined })}
-            >
-              <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} placeholder="Sélectionner une date" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12}>
-            <Form.Item
-              name="end_date"
-              label="Date de fin"
-              dependencies={["start_date"]}
-              rules={[
-                { required: true, message: "La date de fin est requise" },
-                ({ getFieldValue }) => ({
-                  validator(_, value) {
-                    const start = getFieldValue("start_date");
-                    if (!value || !start) return Promise.resolve();
-                    const startDay = dayjs.isDayjs(start) ? start : dayjs(start);
-                    const endDay = dayjs.isDayjs(value) ? value : dayjs(value);
-                    if (endDay.isAfter(startDay)) return Promise.resolve();
-                    return Promise.reject(new Error("La date de fin doit être postérieure à la date de début"));
-                  },
-                }),
-              ]}
-              getValueProps={(value) => ({ value: value ? dayjs(value) : undefined })}
-            >
-              <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} placeholder="Sélectionner une date" />
-            </Form.Item>
-          </Col>
-        </Row>
-      </Card>
+              <Row gutter={20} align="top">
+                <Col xs={24} md={12}>
+                  <Form.Item
+                    name="type"
+                    label="Type"
+                    rules={[{ required: true, message: "Le type est requis" }]}
+                  >
+                    <Segmented options={TYPE_OPTIONS} block />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item
+                    name="status"
+                    label="Statut"
+                    rules={[{ required: true, message: "Le statut est requis" }]}
+                  >
+                    <StatusBadgeSelect />
+                  </Form.Item>
+                </Col>
+              </Row>
 
-      {/* Section 2 — Contenu */}
-      <Card title="Contenu" style={{ marginBottom: 24 }}>
-        <Form.Item
-          name={["content", "title"]}
-          label="Titre"
-          rules={[
-            { required: true, message: "Le titre est requis" },
-            { max: 255, message: "255 caractères maximum" },
-          ]}
-        >
-          <Input placeholder="Titre de la campagne" showCount maxLength={255} />
-        </Form.Item>
+              <Row gutter={20}>
+                <Col xs={24} md={12}>
+                  <Form.Item name="priority" label={<OptionalLabel>Priorité</OptionalLabel>}>
+                    <InputNumber min={0} style={{ width: "100%" }} />
+                  </Form.Item>
+                  <FieldHint>Plus la valeur est élevée, plus la bannière apparaît en premier.</FieldHint>
+                </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item
+                    name="position_index"
+                    label="Position"
+                    initialValue={0}
+                    rules={[{ required: true, message: "La position est requise" }]}
+                  >
+                    <InputNumber min={0} style={{ width: "100%" }} placeholder="0" />
+                  </Form.Item>
+                  <FieldHint>Ordre d'affichage parmi les autres bannières du même placement.</FieldHint>
+                </Col>
+              </Row>
 
-        <Row gutter={16}>
-          <Col xs={24} md={12}>
-            <Form.Item name={["content", "subtitle"]} label="Sous-titre">
-              <Input placeholder="Sous-titre (optionnel)" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={6}>
-            <Form.Item name={["content", "badge"]} label="Badge">
-              <Input placeholder="-20%" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={6}>
-            <Form.Item name={["content", "cta_label"]} label="Libellé CTA">
-              <Input placeholder="En savoir plus" />
-            </Form.Item>
-          </Col>
-        </Row>
-      </Card>
+              <Row gutter={20} style={{ marginTop: 20 }}>
+                <Col xs={24} md={12}>
+                  <Form.Item
+                    name="start_date"
+                    label="Date de début"
+                    rules={[{ required: true, message: "La date de début est requise" }]}
+                    getValueProps={(value) => ({ value: value ? dayjs(value) : undefined })}
+                  >
+                    <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} placeholder="Sélectionner une date" />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item
+                    name="end_date"
+                    label="Date de fin"
+                    dependencies={["start_date"]}
+                    rules={[
+                      { required: true, message: "La date de fin est requise" },
+                      ({ getFieldValue }) => ({
+                        validator(_, value) {
+                          const start = getFieldValue("start_date");
+                          if (!value || !start) return Promise.resolve();
+                          const sd = dayjs.isDayjs(start) ? start : dayjs(start);
+                          const ed = dayjs.isDayjs(value) ? value : dayjs(value);
+                          if (ed.isAfter(sd)) return Promise.resolve();
+                          return Promise.reject(new Error("La date de fin doit être postérieure à la date de début"));
+                        },
+                      }),
+                    ]}
+                    getValueProps={(value) => ({ value: value ? dayjs(value) : undefined })}
+                  >
+                    <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} placeholder="Sélectionner une date" />
+                  </Form.Item>
+                </Col>
+              </Row>
+              {startDay && endDay && (
+                <FieldHint>
+                  {endDay.isAfter(startDay) ? (
+                    <span>
+                      Cette campagne sera visible du {startDay.format("DD MMMM")} au {endDay.format("DD MMMM YYYY")}
+                      {" "}({endDay.diff(startDay, "day")} jour{endDay.diff(startDay, "day") > 1 ? "s" : ""}).
+                    </span>
+                  ) : (
+                    <span style={{ color: T.error }}>La date de fin doit être postérieure à la date de début.</span>
+                  )}
+                </FieldHint>
+              )}
+            </SectionCard>
 
-      {/* Section 3 — Médias */}
-      <Card title="Médias" style={{ marginBottom: 24 }}>
-
-        {uploadError && (
-          <Alert
-            type="error"
-            message={uploadError}
-            closable
-            onClose={() => setUploadError(null)}
-            style={{ marginBottom: 16 }}
-          />
-        )}
-
-        {/* ── Images ── */}
-        <Form.Item
-          name={["media", "images"]}
-          label="Images"
-          extra="Sélectionnez vos images. Elles seront enregistrées dans la table files à la soumission."
-          getValueFromEvent={(e) => e.fileList}
-          getValueProps={(value) => ({ fileList: normalizeFileList(value) })}
-        >
-          <Upload
-            listType="picture-card"
-            accept="image/*"
-            multiple
-            beforeUpload={beforeUploadImage}
-            onPreview={(file) => {
-              const url = file.url ?? file.thumbUrl;
-              if (url) window.open(url, "_blank");
-            }}
-            disabled={uploading}
-          >
-            <div>
-              <PlusOutlined />
-              <div style={{ marginTop: 8 }}>Ajouter</div>
-            </div>
-          </Upload>
-        </Form.Item>
-
-        {/* ── Vidéos ── */}
-        <Form.Item
-          name={["media", "videos"]}
-          label="Vidéos"
-          extra="Glissez-déposez vos vidéos. Elles seront enregistrées dans la table files à la soumission."
-          getValueFromEvent={(e) => {
-            if (Array.isArray(e)) return e;
-            return e?.fileList;
-          }}
-          valuePropName="fileList"
-        >
-          <Upload.Dragger
-            name="video"
-            multiple
-            beforeUpload={beforeUploadVideo}
-            accept="video/*,video/mp4"
-            showUploadList={false}
-            disabled={uploading}
-            style={{ borderRadius: 8, padding: "20px 0" }}
-          >
-            <Space direction="vertical" align="center" size={4}>
-              <CloudUploadOutlined style={{ fontSize: 40, color: "#1677ff" }} />
-              <Text style={{ fontSize: 14, fontWeight: 600 }}>
-                Glissez-déposez vos vidéos ici
+            {/* Section 2 — Contenu */}
+            <SectionCard title="Contenu" description="Ce que verra l'utilisateur sur la bannière">
+              <Form.Item
+                name={["content", "title"]}
+                label="Titre"
+                rules={[
+                  { required: true, message: "Le titre est requis" },
+                  { max: 255, message: "255 caractères maximum" },
+                ]}
+              >
+                <Input placeholder="Titre de la campagne" maxLength={255} />
+              </Form.Item>
+              <Text style={{ display: "block", fontSize: 12, color: titleCounterColor, marginTop: -12, marginBottom: 16 }}>
+                {titleLength}/255
               </Text>
-              <Text type="secondary" style={{ fontSize: 12 }}>
-                ou cliquez pour parcourir — MP4, MOV, AVI… (max 200 Mo)
-              </Text>
-            </Space>
-          </Upload.Dragger>
-        </Form.Item>
 
-        {/* Liste des vidéos sélectionnées avec preview */}
-        <Form.Item noStyle dependencies={[["media", "videos"]]}>
-          {() => {
-            const list: UploadFile[] = normalizeFileList(
-              form.getFieldValue(["media", "videos"]),
-            );
-            if (!list.length) return null;
-            return (
-              <div style={{ marginTop: -8, marginBottom: 16 }}>
-                {list.map((file) => (
-                  <VideoPreviewItem
-                    key={file.uid}
-                    file={file}
-                    progress={fileProgress[file.uid]}
-                    onRemove={() => {
-                      const current: UploadFile[] = normalizeFileList(
-                        form.getFieldValue(["media", "videos"]),
-                      );
-                      form.setFieldValue(
-                        ["media", "videos"],
-                        current.filter((f) => f.uid !== file.uid),
-                      );
+              <Form.Item name={["content", "subtitle"]} label={<OptionalLabel>Sous-titre</OptionalLabel>}>
+                <Input placeholder="Sous-titre" />
+              </Form.Item>
+
+              <div style={{ background: T.surfaceMuted, borderRadius: 8, padding: 16, marginTop: 4 }}>
+                <Text style={{ display: "block", fontSize: 12, color: T.ink60, marginBottom: 12 }}>
+                  Éléments additionnels — n'apparaissent que sur certains placements
+                </Text>
+                <Row gutter={20}>
+                  <Col xs={24} md={12}>
+                    <Form.Item name={["content", "badge"]} label={<OptionalLabel>Badge</OptionalLabel>} style={{ marginBottom: 0 }}>
+                      <Input placeholder="-20%" />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item name={["content", "cta_label"]} label={<OptionalLabel>Libellé CTA</OptionalLabel>} style={{ marginBottom: 0 }}>
+                      <Input placeholder="En savoir plus" />
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </div>
+            </SectionCard>
+
+            {/* Section 3 — Médias */}
+            <SectionCard title="Médias" description="Visuels affichés dans la bannière">
+              {uploadError && (
+                <Alert
+                  type="error"
+                  message={uploadError}
+                  closable
+                  onClose={() => setUploadError(null)}
+                  style={{ marginBottom: 16 }}
+                />
+              )}
+
+              {showImages && (
+                <Form.Item
+                  name={["media", "images"]}
+                  getValueFromEvent={(files) => files}
+                  getValueProps={(value) => ({ value: normalizeFileList(value) })}
+                  style={{ marginBottom: 0 }}
+                >
+                  <MediaDropzone
+                    label="Images"
+                    hint="PNG, JPG — max 10 Mo"
+                    accept="image/*"
+                    kind="image"
+                    beforeUpload={beforeUploadImage}
+                    disabled={uploading}
+                    onPreview={(file) => {
+                      const url = file.url ?? file.thumbUrl;
+                      if (url) window.open(url, "_blank");
                     }}
                   />
-                ))}
-              </div>
-            );
-          }}
-        </Form.Item>
+                </Form.Item>
+              )}
 
-        {/* Progression globale pendant l'upload */}
-        {uploading && (
-          <Alert
-            type="info"
-            icon={<LoadingOutlined />}
-            message="Envoi des médias en cours, veuillez patienter…"
-            showIcon
-          />
-        )}
-      </Card>
+              {type === "CAROUSEL" && (
+                <FieldHint>
+                  {imageFiles.length < 2
+                    ? `Ajoutez au moins 2 visuels pour le carrousel (${imageFiles.length}/2).`
+                    : `${imageFiles.length} visuels ajoutés.`}
+                </FieldHint>
+              )}
 
-      {/* Section 4 — Action & Scope */}
-      <Card title="Action & Scope">
-        <Form.Item
-          name="action"
-          label="Action"
-          rules={[{ required: true, message: "L'action est requise" }]}
-        >
-          <Select
-            options={AD_ACTIONS.map((a) => ({ label: a, value: a }))}
-            placeholder="Sélectionner une action"
-          />
-        </Form.Item>
+              {showVideos && (
+                <Form.Item
+                  name={["media", "videos"]}
+                  getValueFromEvent={(files) => files}
+                  getValueProps={(value) => ({ value: normalizeFileList(value) })}
+                  style={{ marginBottom: 0, marginTop: showImages ? 20 : 0 }}
+                >
+                  <MediaDropzone
+                    label="Vidéos"
+                    hint="MP4, MOV, AVI — max 200 Mo"
+                    accept="video/*,video/mp4"
+                    kind="video"
+                    beforeUpload={beforeUploadVideo}
+                    disabled={uploading}
+                  />
+                </Form.Item>
+              )}
 
-        {showUrl && (
-          <Form.Item
-            name="url"
-            label="URL"
-            rules={[
-              { required: true, message: "L'URL est requise pour cette action" },
-              { type: "url", message: "URL invalide" },
-            ]}
-          >
-            <Input placeholder="https://exemple.com" />
-          </Form.Item>
-        )}
+              {uploading && (
+                <Alert
+                  type="info"
+                  message="Envoi des médias en cours, veuillez patienter…"
+                  showIcon
+                  style={{ marginTop: 16 }}
+                />
+              )}
+            </SectionCard>
 
-        {showEntityId && (
-          <Form.Item
-            name={["scope", "entity_id"]}
-            label="ID de l'entité"
-            rules={[{ required: true, message: "L'ID de l'entité est requis pour cette action" }]}
-          >
-            <Input placeholder="Ex : 42" />
-          </Form.Item>
-        )}
+            {/* Section 4 — Action & Scope */}
+            <SectionCard title="Action & Scope" description="Ce qui se passe lorsqu'on clique sur la bannière">
+              <Form.Item
+                name="action"
+                label="Action"
+                rules={[{ required: true, message: "L'action est requise" }]}
+              >
+                <Select
+                  options={AD_ACTIONS.map((a) => ({ label: a, value: a }))}
+                  placeholder="Sélectionner une action"
+                />
+              </Form.Item>
 
-        {showEntityIds && (
-          <Form.Item
-            name={["scope", "entity_ids"]}
-            label="IDs des entités"
-            extra="Saisissez des identifiants numériques et appuyez sur Entrée."
-          >
-            <Select
-              mode="tags"
-              tokenSeparators={[","]}
-              placeholder="Ex : 1, 2, 3"
-              style={{ width: "100%" }}
-              open={false}
+              {(!action || action === "NONE") && (
+                <FieldHint>La bannière n'est pas cliquable.</FieldHint>
+              )}
+
+              {showUrl && (
+                <Form.Item
+                  name="url"
+                  label="URL"
+                  rules={[
+                    { required: true, message: "L'URL est requise pour cette action" },
+                    { type: "url", message: "URL invalide" },
+                  ]}
+                >
+                  <Input placeholder="https://exemple.com" />
+                </Form.Item>
+              )}
+
+              {showEntityId && (
+                <Form.Item
+                  name={["scope", "entity_id"]}
+                  label="ID de l'entité"
+                  rules={[{ required: true, message: "L'ID de l'entité est requis pour cette action" }]}
+                >
+                  <Input placeholder="Ex : 42" />
+                </Form.Item>
+              )}
+
+              {showEntityIds && (
+                <Form.Item
+                  name={["scope", "entity_ids"]}
+                  label="IDs des entités"
+                  extra="Saisissez des identifiants numériques et appuyez sur Entrée."
+                >
+                  <Select
+                    mode="tags"
+                    tokenSeparators={[","]}
+                    placeholder="Ex : 1, 2, 3"
+                    style={{ width: "100%" }}
+                    open={false}
+                  />
+                </Form.Item>
+              )}
+
+              {showFilters && (
+                <Form.Item
+                  name={["scope", "filters"]}
+                  label="Filtres (JSON)"
+                  getValueProps={(value) => ({
+                    value:
+                      value && typeof value === "object"
+                        ? JSON.stringify(value, null, 2)
+                        : (value as string) ?? "",
+                  })}
+                  getValueFromEvent={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                    try { return JSON.parse(e.target.value); }
+                    catch { return e.target.value; }
+                  }}
+                >
+                  <Input.TextArea
+                    rows={4}
+                    placeholder='{"key": "value"}'
+                    style={{ fontFamily: "monospace" }}
+                  />
+                </Form.Item>
+              )}
+
+              {!showEntityId && !showEntityIds && !showFilters && action && action !== "NONE" && action !== "OPEN_URL" && (
+                <FieldHint>Aucun scope requis pour l'action sélectionnée.</FieldHint>
+              )}
+            </SectionCard>
+
+            <Button
+              type="primary"
+              htmlType="submit"
+              size="large"
+              block
+              loading={uploading}
+              style={{ background: T.primary, borderColor: T.primary, height: 48, fontWeight: 600 }}
+            >
+              {submitLabel}
+            </Button>
+          </div>
+
+          <div className="campagne-preview-col" style={{ flex: "0 1 340px", minWidth: 280 }}>
+            <AdCampaignPreview
+              type={type}
+              status={status}
+              placement={placement}
+              category={category}
+              title={title}
+              subtitle={subtitle}
+              badge={badge}
+              ctaLabel={ctaLabel}
+              imageFiles={imageFiles}
+              videoFiles={videoFiles}
+              startDate={startDay}
+              endDate={endDay}
+              priority={priority}
+              positionIndex={positionIndex}
             />
-          </Form.Item>
-        )}
-
-        {showFilters && (
-          <Form.Item
-            name={["scope", "filters"]}
-            label="Filtres (JSON)"
-            getValueProps={(value) => ({
-              value:
-                value && typeof value === "object"
-                  ? JSON.stringify(value, null, 2)
-                  : (value as string) ?? "",
-            })}
-            getValueFromEvent={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-              try { return JSON.parse(e.target.value); }
-              catch { return e.target.value; }
-            }}
-          >
-            <Input.TextArea
-              rows={4}
-              placeholder='{"key": "value"}'
-              style={{ fontFamily: "monospace" }}
-            />
-          </Form.Item>
-        )}
-
-        {!showEntityId && !showEntityIds && !showFilters && action && action !== "NONE" && action !== "OPEN_URL" && (
-          <Text type="secondary" style={{ fontSize: 12 }}>
-            Aucun scope requis pour l'action sélectionnée.
-          </Text>
-        )}
-      </Card>
-    </Form>
+          </div>
+        </div>
+      </Form>
+    </div>
   );
 };

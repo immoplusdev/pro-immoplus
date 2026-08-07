@@ -12,14 +12,19 @@ import { WalletTransferForm } from "./wallet-transfer-form";
 import { FilePreviewModal } from "./file-preview";
 import { UserProStatistics } from "./user-pro-statistics";
 import { ProCertificationCard } from "./pro-certification/pro-certification-card";
+import { UserNotificationsTable } from "./user-notifications";
 
 export const UsersEditDataFields: React.FC<{
   translate: any;
   data?: BaseRecord;
   walletData?: BaseRecord;
   onWalletUpdate?: () => void;
-}> = ({ translate, data, walletData, onWalletUpdate }) => {
-  console.log("data", data);
+  canViewFinancialData?: boolean;
+}> = ({ translate, data, walletData, onWalletUpdate, canViewFinancialData = false }) => {
+  const showFinancialSections =
+    canViewFinancialData &&
+    (data?.role?.name === "pro_entreprise" || data?.role?.name === "pro_particulier");
+
   return (
     <>
       <Card
@@ -184,6 +189,12 @@ export const UsersEditDataFields: React.FC<{
       >
         <Card style={{ border: "none", width: "50%" }}>
           <Form.Item
+            label="Lieu de Naissance"
+            name={["additionalData", "lieuNaissance"]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
             label="Activité"
             name={["additionalData", "activite"]}
           >
@@ -205,7 +216,7 @@ export const UsersEditDataFields: React.FC<{
         </Card>
         <Card style={{ width: "50%", border: "none" }}>
           <ReadOnlyFormField
-            label="Pièce d'Identité"
+            label="Pièce d'Identité (Recto)"
             content={
               data?.additionalData?.pieceIdentiteId ? (
                 <FilePreviewModal
@@ -217,110 +228,83 @@ export const UsersEditDataFields: React.FC<{
               )
             }
           />
-        </Card>
-      </Card>
-
-      {/* Detail de Portefeuille */}
-      <Card
-        style={{
-          display:
-            data?.role?.name === "pro_entreprise" ||
-            data?.role?.name === "pro_particulier"
-              ? ""
-              : "None",
-          marginTop: "2rem",
-          border: "1px solid #E8E9EE",
-          borderRadius: 10,
-        }}
-        title={
-          <Space>
-            <DatabaseOutlined />
-            <p>{translate("users.fields.wallet")}</p>
-          </Space>
-        }
-        headStyle={{ padding: "1rem" }}
-        bodyStyle={{
-          padding: "2rem",
-          display: "flex",
-          flexDirection: "row",
-        }}
-      >
-        <Card style={{ border: "none", width: "50%" }}>
           <ReadOnlyFormField
-            label={translate("users.fields.available_balance")}
-            content={formatAmount(walletData?.availableBalance)}
-          />
-        </Card>
-        <Card style={{ width: "50%", border: "none" }}>
-          <ReadOnlyFormField
-            label={translate("users.fields.pending_balance")}
-            content={formatAmount(walletData?.pendingBalance)}
+            label="Pièce d'Identité (Verso)"
+            content={
+              data?.additionalData?.pieceIdentiteVersoId ? (
+                <FilePreviewModal
+                  fileUrl={getApiFileUrl(data.additionalData.pieceIdentiteVersoId)}
+                  label="Voir le document"
+                />
+              ) : (
+                "Non fourni"
+              )
+            }
           />
         </Card>
       </Card>
 
-      <div
-        style={{
-          display:
-            data?.role?.name === "pro_entreprise" ||
-            data?.role?.name === "pro_particulier"
-              ? ""
-              : "None",
-          marginTop: "2rem",
-        }}
-      >
-        <WalletCreditForm translate={translate} onSuccess={onWalletUpdate} />
-      </div>
-
-      <div
-        style={{
-          display:
-            data?.role?.name === "pro_entreprise" ||
-            data?.role?.name === "pro_particulier"
-              ? ""
-              : "None",
-          marginTop: "2rem",
-        }}
-      >
-        <WalletDebitForm translate={translate} onSuccess={onWalletUpdate} />
-      </div>
-
-      <div
-        style={{
-          display:
-            data?.role?.name === "pro_entreprise" ||
-            data?.role?.name === "pro_particulier"
-              ? ""
-              : "None",
-          marginTop: "2rem",
-        }}
-      >
-        <WalletReleaseFundsForm
-          translate={translate}
-          onSuccess={onWalletUpdate}
-        />
-      </div>
-
-      <div
-        style={{
-          display:
-            data?.role?.name === "pro_entreprise" ||
-            data?.role?.name === "pro_particulier"
-              ? ""
-              : "None",
-          marginTop: "2rem",
-        }}
-      >
-        <WalletTransferForm translate={translate} onSuccess={onWalletUpdate} />
-      </div>
-
-      {(data?.role?.name === "pro_entreprise" ||
-        data?.role?.name === "pro_particulier") && (
+      {/* Detail de Portefeuille — masqué pour les viewers sans droit "wallets" (ex: commercial) */}
+      {showFinancialSections && (
         <>
+          <Card
+            style={{
+              marginTop: "2rem",
+              border: "1px solid #E8E9EE",
+              borderRadius: 10,
+            }}
+            title={
+              <Space>
+                <DatabaseOutlined />
+                <p>{translate("users.fields.wallet")}</p>
+              </Space>
+            }
+            headStyle={{ padding: "1rem" }}
+            bodyStyle={{
+              padding: "2rem",
+              display: "flex",
+              flexDirection: "row",
+            }}
+          >
+            <Card style={{ border: "none", width: "50%" }}>
+              <ReadOnlyFormField
+                label={translate("users.fields.available_balance")}
+                content={formatAmount(walletData?.availableBalance)}
+              />
+            </Card>
+            <Card style={{ width: "50%", border: "none" }}>
+              <ReadOnlyFormField
+                label={translate("users.fields.pending_balance")}
+                content={formatAmount(walletData?.pendingBalance)}
+              />
+            </Card>
+          </Card>
+
+          <div style={{ marginTop: "2rem" }}>
+            <WalletCreditForm translate={translate} onSuccess={onWalletUpdate} />
+          </div>
+
+          <div style={{ marginTop: "2rem" }}>
+            <WalletDebitForm translate={translate} onSuccess={onWalletUpdate} />
+          </div>
+
+          <div style={{ marginTop: "2rem" }}>
+            <WalletReleaseFundsForm
+              translate={translate}
+              onSuccess={onWalletUpdate}
+            />
+          </div>
+
+          <div style={{ marginTop: "2rem" }}>
+            <WalletTransferForm translate={translate} onSuccess={onWalletUpdate} />
+          </div>
+
           <UserProStatistics proId={data?.id ? String(data.id) : undefined} />
           <ProCertificationCard proId={data?.id ? String(data.id) : undefined} />
         </>
       )}
+
+      <UserNotificationsTable userId={data?.id ? String(data.id) : undefined} />
 
       <Card
         style={{

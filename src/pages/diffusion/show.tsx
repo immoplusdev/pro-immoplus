@@ -12,7 +12,8 @@ import {
 import { ArrowLeftOutlined, EditOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
-import { AdCampaign, STATUS_COLORS, ENTITY_ID_ACTIONS, FILTERS_ACTIONS } from "./types";
+import { AdCampaign, ENTITY_ID_ACTIONS, FILTERS_ACTIONS } from "./types";
+import { StatusBadge } from "./status-badge";
 
 const { Text, Title } = Typography;
 
@@ -71,7 +72,7 @@ export const AdCampaignShow = () => {
         <Descriptions column={{ xs: 1, sm: 2, md: 3 }} bordered size="small">
           <Descriptions.Item label="ID">{campaign.id}</Descriptions.Item>
           <Descriptions.Item label="Statut">
-            <Tag color={STATUS_COLORS[campaign.status]}>{campaign.status}</Tag>
+            <StatusBadge status={campaign.status} />
           </Descriptions.Item>
           <Descriptions.Item label="Priorité">{campaign.priority}</Descriptions.Item>
           <Descriptions.Item label="Placement">{campaign.placement}</Descriptions.Item>
