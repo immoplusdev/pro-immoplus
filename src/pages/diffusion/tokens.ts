@@ -1,26 +1,8 @@
 import type { CSSProperties } from "react";
+import { T } from "@/lib/design-tokens";
 
 // Design tokens — spec docs/drafts/Campagne.md §2
-export const T = {
-    primary: "#2744DE",
-    primaryHover: "#1F37B5",
-    ink: "#1A1423",
-    ink60: "rgba(26,20,35,0.6)",
-    ink40: "rgba(26,20,35,0.4)",
-    ink12: "rgba(26,20,35,0.12)",
-    ink8: "rgba(26,20,35,0.08)",
-    bg: "#FFFFFF",
-    surfaceMuted: "rgba(238,224,203,0.3)",
-    success: "#35FF69",
-    successDark: "#12793A",
-    warning: "#FA9F42",
-    warningDark: "#8A4A00",
-    accentPink: "#F72585",
-    accentLilac: "#D4C2FC",
-    accentLilacDark: "#5B3B9E",
-    accentPeach: "#F9DBBD",
-    error: "#F72585",
-} as const;
+export { T } from "@/lib/design-tokens";
 
 export const cardStyle: CSSProperties = {
     border: `1px solid ${T.ink12}`,

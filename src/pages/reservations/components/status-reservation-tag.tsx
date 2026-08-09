@@ -1,6 +1,6 @@
 import { useTranslate } from "@refinedev/core";
 import { StatusReservation } from "@/lib/ts-utilities/enums/status-reservation";
-import { OutlineTag } from "@/components/table";
+import { PillTag, PillTone } from "@/components/table";
 
 type Props = {
   status: string;
@@ -8,33 +8,33 @@ type Props = {
 
 export function StatusReservationTag({ status }: Props) {
   const translate = useTranslate();
-  const color = statusReservationToColor(status);
+  const tone = statusReservationToTone(status);
 
   return (
-    <OutlineTag color={color}>
+    <PillTag tone={tone}>
       {translate(`reservations.status_reservation.${status}`)}
-    </OutlineTag>
+    </PillTag>
   );
 }
 
-function statusReservationToColor(status: string) {
+function statusReservationToTone(status: string): PillTone {
   switch (status) {
     case StatusReservation.Valide:
-      return "#1F8A5B";
+    case StatusReservation.Terminee:
+      return "success";
     case StatusReservation.EnCours:
-      return "#185FA5";
+      return "info";
     case StatusReservation.EnAttenteReponseProprietaire:
-      return "#B86B0A";
+      return "warning";
     case StatusReservation.EnAttentePaiementClient:
-      return "#185FA5";
+      return "accent";
     case StatusReservation.Rejete:
     case StatusReservation.ProprietaireAnnuleReservation:
     case StatusReservation.ProprietaireSansReponse:
     case StatusReservation.clientAnnuleReservation:
     case StatusReservation.ClientSansReponse:
-      return "#C13838";
-    case StatusReservation.Terminee:
+      return "error";
     default:
-      return "#5F5E5A";
+      return "neutral";
   }
 }
