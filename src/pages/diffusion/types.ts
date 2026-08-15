@@ -75,8 +75,8 @@ export interface AdMedia {
 }
 
 export interface AdScope {
-  entity_id: string | number | null;
-  entity_ids: (string | number)[];
+  entity_id: string | null;
+  entity_ids: string[];
   filters: Record<string, unknown>;
 }
 

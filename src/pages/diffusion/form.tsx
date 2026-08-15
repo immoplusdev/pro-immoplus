@@ -41,6 +41,7 @@ import { StatusBadgeSelect } from "./status-badge-select";
 import { MediaDropzone } from "./media-dropzone";
 import { AdCampaignPreview } from "./ad-campaign-preview";
 import { FeedPickerModal, FeedVideoPick } from "./feed-picker-modal";
+import { ResidencePickerModal, ResidencePick } from "./residence-picker-modal";
 
 const { Text, Title } = Typography;
 
@@ -137,13 +138,23 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
   const [fileProgress, setFileProgress] = useState<Record<string, number>>({});
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [feedPickerOpen, setFeedPickerOpen] = useState(false);
+  const [residencePickerOpen, setResidencePickerOpen] = useState(false);
   const submittingRef = useRef(false);
 
   const showUrl = action === "OPEN_URL";
-  const showEntityId = ENTITY_ID_ACTIONS.includes(action as AdAction);
   const showFeedPicker = type === "VIDEO_CAROUSEL" && action === "OPEN_INTERNAL_PAGE";
-  const showEntityIds = action === "OPEN_CATEGORY" || showFeedPicker;
+  const showResidencePicker =
+    type === "CAROUSEL" && (action === "OPEN_INTERNAL_PAGE" || action === "OPEN_RESIDENCE");
+  const showEntityId = ENTITY_ID_ACTIONS.includes(action as AdAction) && !showResidencePicker;
+  const showEntityIds = action === "OPEN_CATEGORY" || showFeedPicker || showResidencePicker;
   const showFilters = FILTERS_ACTIONS.includes(action as AdAction);
+
+  // Ajoute des ids à scope.entity_ids sans doublon.
+  const mergeEntityIds = (newIds: string[]) => {
+    const currentEntityIds: unknown[] = form.getFieldValue(["scope", "entity_ids"]) ?? [];
+    const merged = Array.from(new Set([...currentEntityIds.map(String), ...newIds]));
+    form.setFieldValue(["scope", "entity_ids"], merged);
+  };
 
   // Fusionne les vidéos choisies dans le flux : leur URL rejoint media.videos
   // (sans passer par /files) et leur id rejoint scope.entity_ids.
@@ -162,12 +173,31 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
         url: item.videoUrl,
       }));
     form.setFieldValue(["media", "videos"], [...currentVideos, ...newVideoEntries]);
-
-    const currentEntityIds: unknown[] = form.getFieldValue(["scope", "entity_ids"]) ?? [];
-    const mergedEntityIds = Array.from(new Set([...currentEntityIds.map(String), ...picked.map((item) => item.id)]));
-    form.setFieldValue(["scope", "entity_ids"], mergedEntityIds);
+    mergeEntityIds(picked.map((item) => item.id));
 
     message.success(`${picked.length} vidéo(s) ajoutée(s) depuis le flux.`);
+  };
+
+  // Fusionne les résidences choisies : leur image (miniature) rejoint media.images
+  // (sans passer par /files) et leur id rejoint scope.entity_ids.
+  const handleResidencesPicked = (picked: ResidencePick[]) => {
+    setResidencePickerOpen(false);
+    if (picked.length === 0) return;
+
+    const currentImages = normalizeFileList(form.getFieldValue(["media", "images"]));
+    const existingIds = new Set(currentImages.map((f) => f.uid).filter(Boolean));
+    const newImageEntries: UploadFile[] = picked
+      .filter((item) => item.imageId && !existingIds.has(item.imageId))
+      .map((item) => ({
+        uid: item.imageId as string, // valeur soumise (id du fichier)
+        name: item.nom || "residence",
+        status: "done",
+        url: item.imageUrl ?? undefined, // aperçu uniquement
+      }));
+    form.setFieldValue(["media", "images"], [...currentImages, ...newImageEntries]);
+    mergeEntityIds(picked.map((item) => item.id));
+
+    message.success(`${picked.length} résidence(s) ajoutée(s).`);
   };
 
   const imageFiles = normalizeFileList(imagesRaw);
@@ -200,8 +230,8 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
     const results: string[] = [];
     for (const f of fileList) {
       if (f.status === "done" && !f.originFileObj) {
-        // Fichier existant (mode édition) — déjà dans /files, on passe l'URL
-        results.push(f.url ?? f.uid);
+        // Fichier existant — on renvoie l'id (uid porte l'id réel, url ne sert qu'à l'aperçu)
+        results.push(f.uid ?? f.url);
       } else if (f.originFileObj) {
         // Nouveau fichier — upload vers /files
         const id = await uploadToFiles(f.originFileObj as File, f.uid);
@@ -257,15 +287,13 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
             : values.end_date
           : undefined,
         scope: {
-          entity_id: scopeRaw.entity_id ?? null,
-          // Les IDs numériques (ex: OPEN_CATEGORY) sont convertis en Number ; les IDs
-          // non numériques (ex: UUID des vidéos choisies via le flux) restent tels quels.
+          entity_id:
+            scopeRaw.entity_id !== null && scopeRaw.entity_id !== undefined && String(scopeRaw.entity_id).trim() !== ""
+              ? String(scopeRaw.entity_id).trim()
+              : null,
           entity_ids: (scopeRaw.entity_ids ?? [])
-            .filter((v) => v !== null && v !== undefined && String(v).trim() !== "")
-            .map((v) => {
-              const n = Number(v);
-              return !isNaN(n) && String(v).trim() !== "" ? n : v;
-            }),
+            .map((v) => String(v).trim())
+            .filter((v) => v !== ""),
           filters,
         },
         media: { images, videos },
@@ -586,14 +614,34 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
                 </div>
               )}
 
+              {showResidencePicker && (
+                <div style={{ marginBottom: 16 }}>
+                  <Button icon={<FolderOpenOutlined />} onClick={() => setResidencePickerOpen(true)}>
+                    Choisir des résidences
+                  </Button>
+                  <FieldHint>
+                    Sélectionne des résidences — l'id de leur première image rejoint <code>media.images</code>
+                    et leur id est ajouté à <code>scope.entity_ids</code>, sans re-upload.
+                  </FieldHint>
+                </div>
+              )}
+
               {showEntityIds && (
                 <Form.Item
                   name={["scope", "entity_ids"]}
-                  label={showFeedPicker ? "Vidéos sélectionnées (IDs)" : "IDs des entités"}
+                  label={
+                    showFeedPicker
+                      ? "Vidéos sélectionnées (IDs)"
+                      : showResidencePicker
+                        ? "Résidences sélectionnées (IDs)"
+                        : "IDs des entités"
+                  }
                   extra={
                     showFeedPicker
                       ? "Rempli via le bouton \"Choisir des vidéos depuis le flux\" ci-dessus — modifiable manuellement."
-                      : "Saisissez des identifiants numériques et appuyez sur Entrée."
+                      : showResidencePicker
+                        ? "Rempli via le bouton \"Choisir des résidences\" ci-dessus — modifiable manuellement."
+                        : "Saisissez des identifiants numériques et appuyez sur Entrée."
                   }
                 >
                   <Select
@@ -671,6 +719,12 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
         open={feedPickerOpen}
         onClose={() => setFeedPickerOpen(false)}
         onConfirm={handleFeedVideosPicked}
+      />
+
+      <ResidencePickerModal
+        open={residencePickerOpen}
+        onClose={() => setResidencePickerOpen(false)}
+        onConfirm={handleResidencesPicked}
       />
     </div>
   );
