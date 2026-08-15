@@ -59,6 +59,7 @@ export const AdCampaignCreate = () => {
             position_index: 0,
             type: "IMAGE",
             action: "NONE",
+            url: "",
             media: { images: [], videos: [] },
             scope: { entity_id: null, entity_ids: [], filters: {} },
           },

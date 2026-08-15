@@ -22,6 +22,7 @@ import {
   PictureOutlined,
   VideoCameraOutlined,
   AppstoreOutlined,
+  FolderOpenOutlined,
 } from "@ant-design/icons";
 import dayjs, { Dayjs } from "dayjs";
 import {
@@ -39,6 +40,7 @@ import { T, cardStyle, focusRingStyle } from "./tokens";
 import { StatusBadgeSelect } from "./status-badge-select";
 import { MediaDropzone } from "./media-dropzone";
 import { AdCampaignPreview } from "./ad-campaign-preview";
+import { FeedPickerModal, FeedVideoPick } from "./feed-picker-modal";
 
 const { Text, Title } = Typography;
 
@@ -134,12 +136,39 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
   const [uploading, setUploading] = useState(false);
   const [fileProgress, setFileProgress] = useState<Record<string, number>>({});
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [feedPickerOpen, setFeedPickerOpen] = useState(false);
   const submittingRef = useRef(false);
 
   const showUrl = action === "OPEN_URL";
   const showEntityId = ENTITY_ID_ACTIONS.includes(action as AdAction);
-  const showEntityIds = action === "OPEN_CATEGORY";
+  const showFeedPicker = type === "VIDEO_CAROUSEL" && action === "OPEN_INTERNAL_PAGE";
+  const showEntityIds = action === "OPEN_CATEGORY" || showFeedPicker;
   const showFilters = FILTERS_ACTIONS.includes(action as AdAction);
+
+  // Fusionne les vidéos choisies dans le flux : leur URL rejoint media.videos
+  // (sans passer par /files) et leur id rejoint scope.entity_ids.
+  const handleFeedVideosPicked = (picked: FeedVideoPick[]) => {
+    setFeedPickerOpen(false);
+    if (picked.length === 0) return;
+
+    const currentVideos = normalizeFileList(form.getFieldValue(["media", "videos"]));
+    const existingUrls = new Set(currentVideos.map((f) => f.url).filter(Boolean));
+    const newVideoEntries: UploadFile[] = picked
+      .filter((item) => !existingUrls.has(item.videoUrl))
+      .map((item) => ({
+        uid: item.videoUrl,
+        name: item.title || "video-feed",
+        status: "done",
+        url: item.videoUrl,
+      }));
+    form.setFieldValue(["media", "videos"], [...currentVideos, ...newVideoEntries]);
+
+    const currentEntityIds: unknown[] = form.getFieldValue(["scope", "entity_ids"]) ?? [];
+    const mergedEntityIds = Array.from(new Set([...currentEntityIds.map(String), ...picked.map((item) => item.id)]));
+    form.setFieldValue(["scope", "entity_ids"], mergedEntityIds);
+
+    message.success(`${picked.length} vidéo(s) ajoutée(s) depuis le flux.`);
+  };
 
   const imageFiles = normalizeFileList(imagesRaw);
   const videoFiles = normalizeFileList(videosRaw);
@@ -216,6 +245,7 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
 
       const payload = {
         ...values,
+        url: (values.url as string | undefined) ?? "",
         start_date: values.start_date
           ? dayjs.isDayjs(values.start_date)
             ? (values.start_date as Dayjs).toISOString()
@@ -228,7 +258,14 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
           : undefined,
         scope: {
           entity_id: scopeRaw.entity_id ?? null,
-          entity_ids: (scopeRaw.entity_ids ?? []).map(Number).filter((n) => !isNaN(n)),
+          // Les IDs numériques (ex: OPEN_CATEGORY) sont convertis en Number ; les IDs
+          // non numériques (ex: UUID des vidéos choisies via le flux) restent tels quels.
+          entity_ids: (scopeRaw.entity_ids ?? [])
+            .filter((v) => v !== null && v !== undefined && String(v).trim() !== "")
+            .map((v) => {
+              const n = Number(v);
+              return !isNaN(n) && String(v).trim() !== "" ? n : v;
+            }),
           filters,
         },
         media: { images, videos },
@@ -542,11 +579,27 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
                 </Form.Item>
               )}
 
+              {showFeedPicker && (
+                <div style={{ marginBottom: 16 }}>
+                  <Button icon={<FolderOpenOutlined />} onClick={() => setFeedPickerOpen(true)}>
+                    Choisir des vidéos depuis le flux
+                  </Button>
+                  <FieldHint>
+                    Sélectionne des vidéos déjà publiées — leur URL rejoint les médias du carrousel
+                    et leur id est ajouté à <code>scope.entity_ids</code>, sans re-upload.
+                  </FieldHint>
+                </div>
+              )}
+
               {showEntityIds && (
                 <Form.Item
                   name={["scope", "entity_ids"]}
-                  label="IDs des entités"
-                  extra="Saisissez des identifiants numériques et appuyez sur Entrée."
+                  label={showFeedPicker ? "Vidéos sélectionnées (IDs)" : "IDs des entités"}
+                  extra={
+                    showFeedPicker
+                      ? "Rempli via le bouton \"Choisir des vidéos depuis le flux\" ci-dessus — modifiable manuellement."
+                      : "Saisissez des identifiants numériques et appuyez sur Entrée."
+                  }
                 >
                   <Select
                     mode="tags"
@@ -618,6 +671,12 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
           </div>
         </div>
       </Form>
+
+      <FeedPickerModal
+        open={feedPickerOpen}
+        onClose={() => setFeedPickerOpen(false)}
+        onConfirm={handleFeedVideosPicked}
+      />
     </div>
   );
 };
