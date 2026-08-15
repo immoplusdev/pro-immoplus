@@ -76,6 +76,7 @@ const TYPE_OPTIONS: { label: React.ReactNode; value: AdType }[] = [
   { value: "IMAGE", label: <Space size={6}><PictureOutlined /> Image</Space> },
   { value: "VIDEO", label: <Space size={6}><VideoCameraOutlined /> Vidéo</Space> },
   { value: "CAROUSEL", label: <Space size={6}><AppstoreOutlined /> Carrousel</Space> },
+  { value: "VIDEO_CAROUSEL", label: <Space size={6}><AppstoreOutlined /> Carrousel vidéo</Space> },
 ];
 
 function SectionCard({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) {
@@ -244,7 +245,7 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
   };
 
   const showImages = type === "IMAGE" || type === "CAROUSEL";
-  const showVideos = type === "VIDEO";
+  const showVideos = type === "VIDEO" || type === "VIDEO_CAROUSEL";
 
   return (
     <div className="campagne-form">
@@ -481,6 +482,14 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
                     disabled={uploading}
                   />
                 </Form.Item>
+              )}
+
+              {type === "VIDEO_CAROUSEL" && (
+                <FieldHint>
+                  {videoFiles.length < 2
+                    ? `Ajoutez au moins 2 vidéos pour le carrousel vidéo (${videoFiles.length}/2).`
+                    : `${videoFiles.length} vidéos ajoutées.`}
+                </FieldHint>
               )}
 
               {uploading && (
