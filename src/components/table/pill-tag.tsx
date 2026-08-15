@@ -16,17 +16,20 @@ interface Props {
     tone: PillTone;
     children: React.ReactNode;
     size?: "small" | "default";
+    variant?: "filled" | "outline";
 }
 
-export function PillTag({ tone, children, size = "default" }: Props) {
+export function PillTag({ tone, children, size = "default", variant = "filled" }: Props) {
     const cfg = TONE_CONFIG[tone];
+    const isOutline = variant === "outline";
     return (
         <span
             style={{
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 6,
-                background: cfg.bg,
+                background: isOutline ? T.bg : cfg.bg,
+                border: isOutline ? `1px solid ${cfg.dot}` : "1px solid transparent",
                 color: cfg.text,
                 borderRadius: 999,
                 padding: size === "small" ? "2px 8px" : "3px 10px",

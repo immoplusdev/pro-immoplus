@@ -67,9 +67,8 @@ export function ReservationCard({ record, onExpire }: Props) {
   return (
     <div
       style={{
-        background: token.colorBgContainer,
-        border: `1px solid ${token.colorBorderSecondary}`,
-        borderLeft: `4px solid ${borderColor}`,
+        background: T.bg,
+        border: `1.5px solid ${borderColor}`,
         borderRadius: token.borderRadiusLG,
         padding: "14px 18px",
         display: "flex",
