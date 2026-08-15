@@ -559,12 +559,9 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
               <Form.Item
                 name="url"
                 label={showUrl ? "URL" : <OptionalLabel>URL</OptionalLabel>}
-                rules={[
-                  ...(showUrl ? [{ required: true, message: "L'URL est requise pour cette action" }] : []),
-                  { type: "url", message: "URL invalide" },
-                ]}
+                rules={showUrl ? [{ required: true, message: "L'URL est requise pour cette action" }] : []}
               >
-                <Input placeholder="https://exemple.com" />
+                <Input placeholder="https://exemple.com ou /vivre" />
               </Form.Item>
 
               {showEntityId && (
