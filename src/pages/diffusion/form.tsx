@@ -556,18 +556,16 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
                 <FieldHint>La bannière n'est pas cliquable.</FieldHint>
               )}
 
-              {showUrl && (
-                <Form.Item
-                  name="url"
-                  label="URL"
-                  rules={[
-                    { required: true, message: "L'URL est requise pour cette action" },
-                    { type: "url", message: "URL invalide" },
-                  ]}
-                >
-                  <Input placeholder="https://exemple.com" />
-                </Form.Item>
-              )}
+              <Form.Item
+                name="url"
+                label={showUrl ? "URL" : <OptionalLabel>URL</OptionalLabel>}
+                rules={[
+                  ...(showUrl ? [{ required: true, message: "L'URL est requise pour cette action" }] : []),
+                  { type: "url", message: "URL invalide" },
+                ]}
+              >
+                <Input placeholder="https://exemple.com" />
+              </Form.Item>
 
               {showEntityId && (
                 <Form.Item
