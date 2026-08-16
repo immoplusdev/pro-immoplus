@@ -17,6 +17,7 @@ interface Props {
     open: boolean;
     onClose: () => void;
     onConfirm: (items: FeedVideoPick[]) => void;
+    multiple?: boolean;
 }
 
 const PAGE_SIZE = 12;
@@ -28,7 +29,7 @@ const STATUS_OPTIONS = [
     { label: "🗑️ Deleted", value: "deleted" },
 ];
 
-export function FeedPickerModal({ open, onClose, onConfirm }: Props) {
+export function FeedPickerModal({ open, onClose, onConfirm, multiple = true }: Props) {
     const [current, setCurrent] = useState(1);
     const [status, setStatus] = useState<string | null>("ready");
     const [selected, setSelected] = useState<Map<string, FeedVideoPick>>(new Map());
@@ -54,8 +55,18 @@ export function FeedPickerModal({ open, onClose, onConfirm }: Props) {
 
     const toggle = (record: any) => {
         setSelected((prev) => {
+            const alreadyPicked = prev.has(record.id);
+            if (!multiple) {
+                return alreadyPicked
+                    ? new Map()
+                    : new Map([[record.id, {
+                        id: record.id,
+                        videoUrl: record.videoUrl,
+                        title: record?.content?.title ?? "",
+                    }]]);
+            }
             const next = new Map(prev);
-            if (next.has(record.id)) {
+            if (alreadyPicked) {
                 next.delete(record.id);
             } else {
                 next.set(record.id, {
@@ -81,14 +92,14 @@ export function FeedPickerModal({ open, onClose, onConfirm }: Props) {
         <Modal
             open={open}
             onCancel={onClose}
-            title="Sélectionner des vidéos du flux"
+            title={multiple ? "Sélectionner des vidéos du flux" : "Sélectionner une vidéo du flux"}
             width={840}
             footer={[
                 <Button key="cancel" onClick={onClose}>
                     Annuler
                 </Button>,
                 <Button key="confirm" type="primary" disabled={selected.size === 0} onClick={handleConfirm}>
-                    Ajouter{selected.size > 0 ? ` (${selected.size})` : ""}
+                    {multiple ? `Ajouter${selected.size > 0 ? ` (${selected.size})` : ""}` : "Choisir"}
                 </Button>,
             ]}
         >

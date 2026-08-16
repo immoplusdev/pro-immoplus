@@ -142,11 +142,14 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
   const submittingRef = useRef(false);
 
   const showUrl = action === "OPEN_URL";
-  const showFeedPicker = (type === "VIDEO_CAROUSEL" || type === "VIDEO") && action === "OPEN_INTERNAL_PAGE";
+  const showFeedPickerSingle = type === "VIDEO" && action === "OPEN_INTERNAL_PAGE";
+  const showFeedPickerMulti = type === "VIDEO_CAROUSEL" && action === "OPEN_INTERNAL_PAGE";
+  const showFeedPicker = showFeedPickerSingle || showFeedPickerMulti;
   const showResidencePicker =
     type === "CAROUSEL" && (action === "OPEN_INTERNAL_PAGE" || action === "OPEN_RESIDENCE");
-  const showEntityId = ENTITY_ID_ACTIONS.includes(action as AdAction) && !showResidencePicker;
-  const showEntityIds = action === "OPEN_CATEGORY" || showFeedPicker || showResidencePicker;
+  const showEntityId =
+    (ENTITY_ID_ACTIONS.includes(action as AdAction) && !showResidencePicker) || showFeedPickerSingle;
+  const showEntityIds = action === "OPEN_CATEGORY" || showFeedPickerMulti || showResidencePicker;
   const showFilters = FILTERS_ACTIONS.includes(action as AdAction);
 
   // Ajoute des ids à scope.entity_ids sans doublon.
@@ -156,24 +159,31 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
     form.setFieldValue(["scope", "entity_ids"], merged);
   };
 
-  // Fusionne les vidéos choisies dans le flux : leur URL rejoint media.videos
-  // (sans passer par /files) et leur id rejoint scope.entity_ids.
+  // Fusionne la/les vidéo(s) choisie(s) dans le flux : leur URL rejoint media.videos
+  // (sans passer par /files). Type VIDEO → une seule vidéo, scope.entity_id (singulier).
+  // Type VIDEO_CAROUSEL → plusieurs vidéos, scope.entity_ids (pluriel, cumulatif).
   const handleFeedVideosPicked = (picked: FeedVideoPick[]) => {
     setFeedPickerOpen(false);
     if (picked.length === 0) return;
 
-    const currentVideos = normalizeFileList(form.getFieldValue(["media", "videos"]));
-    const existingUrls = new Set(currentVideos.map((f) => f.url).filter(Boolean));
-    const newVideoEntries: UploadFile[] = picked
-      .filter((item) => !existingUrls.has(item.videoUrl))
-      .map((item) => ({
-        uid: item.videoUrl,
-        name: item.title || "video-feed",
-        status: "done",
-        url: item.videoUrl,
-      }));
-    form.setFieldValue(["media", "videos"], [...currentVideos, ...newVideoEntries]);
-    mergeEntityIds(picked.map((item) => item.id));
+    const toEntry = (item: FeedVideoPick): UploadFile => ({
+      uid: item.videoUrl,
+      name: item.title || "video-feed",
+      status: "done",
+      url: item.videoUrl,
+    });
+
+    if (showFeedPickerSingle) {
+      const [single] = picked;
+      form.setFieldValue(["media", "videos"], [toEntry(single)]);
+      form.setFieldValue(["scope", "entity_id"], single.id);
+    } else {
+      const currentVideos = normalizeFileList(form.getFieldValue(["media", "videos"]));
+      const existingUrls = new Set(currentVideos.map((f) => f.url).filter(Boolean));
+      const newVideoEntries = picked.filter((item) => !existingUrls.has(item.videoUrl)).map(toEntry);
+      form.setFieldValue(["media", "videos"], [...currentVideos, ...newVideoEntries]);
+      mergeEntityIds(picked.map((item) => item.id));
+    }
 
     message.success(`${picked.length} vidéo(s) ajoutée(s) depuis le flux.`);
   };
@@ -595,8 +605,13 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
               {showEntityId && (
                 <Form.Item
                   name={["scope", "entity_id"]}
-                  label="ID de l'entité"
+                  label={showFeedPickerSingle ? "Vidéo sélectionnée (ID)" : "ID de l'entité"}
                   rules={[{ required: true, message: "L'ID de l'entité est requis pour cette action" }]}
+                  extra={
+                    showFeedPickerSingle
+                      ? "Rempli via le bouton \"Choisir une vidéo depuis le flux\" ci-dessous — modifiable manuellement."
+                      : undefined
+                  }
                 >
                   <Input placeholder="Ex : 42" />
                 </Form.Item>
@@ -605,11 +620,12 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
               {showFeedPicker && (
                 <div style={{ marginBottom: 16 }}>
                   <Button icon={<FolderOpenOutlined />} onClick={() => setFeedPickerOpen(true)}>
-                    Choisir des vidéos depuis le flux
+                    {showFeedPickerSingle ? "Choisir une vidéo depuis le flux" : "Choisir des vidéos depuis le flux"}
                   </Button>
                   <FieldHint>
-                    Sélectionne des vidéos déjà publiées — leur URL rejoint les médias du carrousel
-                    et leur id est ajouté à <code>scope.entity_ids</code>, sans re-upload.
+                    {showFeedPickerSingle
+                      ? <>Sélectionne une vidéo déjà publiée — son URL rejoint <code>media.videos</code> et son id remplace <code>scope.entity_id</code>, sans re-upload.</>
+                      : <>Sélectionne des vidéos déjà publiées — leur URL rejoint les médias du carrousel et leur id est ajouté à <code>scope.entity_ids</code>, sans re-upload.</>}
                   </FieldHint>
                 </div>
               )}
@@ -630,14 +646,14 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
                 <Form.Item
                   name={["scope", "entity_ids"]}
                   label={
-                    showFeedPicker
+                    showFeedPickerMulti
                       ? "Vidéos sélectionnées (IDs)"
                       : showResidencePicker
                         ? "Résidences sélectionnées (IDs)"
                         : "IDs des entités"
                   }
                   extra={
-                    showFeedPicker
+                    showFeedPickerMulti
                       ? "Rempli via le bouton \"Choisir des vidéos depuis le flux\" ci-dessus — modifiable manuellement."
                       : showResidencePicker
                         ? "Rempli via le bouton \"Choisir des résidences\" ci-dessus — modifiable manuellement."
@@ -719,6 +735,7 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
         open={feedPickerOpen}
         onClose={() => setFeedPickerOpen(false)}
         onConfirm={handleFeedVideosPicked}
+        multiple={!showFeedPickerSingle}
       />
 
       <ResidencePickerModal
