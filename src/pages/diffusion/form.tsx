@@ -142,7 +142,7 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
   const submittingRef = useRef(false);
 
   const showUrl = action === "OPEN_URL";
-  const showFeedPicker = type === "VIDEO_CAROUSEL" && action === "OPEN_INTERNAL_PAGE";
+  const showFeedPicker = (type === "VIDEO_CAROUSEL" || type === "VIDEO") && action === "OPEN_INTERNAL_PAGE";
   const showResidencePicker =
     type === "CAROUSEL" && (action === "OPEN_INTERNAL_PAGE" || action === "OPEN_RESIDENCE");
   const showEntityId = ENTITY_ID_ACTIONS.includes(action as AdAction) && !showResidencePicker;
