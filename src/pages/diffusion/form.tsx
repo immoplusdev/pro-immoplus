@@ -22,6 +22,7 @@ import {
   PictureOutlined,
   VideoCameraOutlined,
   AppstoreOutlined,
+  FolderOpenOutlined,
 } from "@ant-design/icons";
 import dayjs, { Dayjs } from "dayjs";
 import {
@@ -39,6 +40,8 @@ import { T, cardStyle, focusRingStyle } from "./tokens";
 import { StatusBadgeSelect } from "./status-badge-select";
 import { MediaDropzone } from "./media-dropzone";
 import { AdCampaignPreview } from "./ad-campaign-preview";
+import { FeedPickerModal, FeedVideoPick } from "./feed-picker-modal";
+import { ResidencePickerModal, ResidencePick } from "./residence-picker-modal";
 
 const { Text, Title } = Typography;
 
@@ -76,6 +79,7 @@ const TYPE_OPTIONS: { label: React.ReactNode; value: AdType }[] = [
   { value: "IMAGE", label: <Space size={6}><PictureOutlined /> Image</Space> },
   { value: "VIDEO", label: <Space size={6}><VideoCameraOutlined /> Vidéo</Space> },
   { value: "CAROUSEL", label: <Space size={6}><AppstoreOutlined /> Carrousel</Space> },
+  { value: "VIDEO_CAROUSEL", label: <Space size={6}><AppstoreOutlined /> Carrousel vidéo</Space> },
 ];
 
 function SectionCard({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) {
@@ -133,12 +137,78 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
   const [uploading, setUploading] = useState(false);
   const [fileProgress, setFileProgress] = useState<Record<string, number>>({});
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [feedPickerOpen, setFeedPickerOpen] = useState(false);
+  const [residencePickerOpen, setResidencePickerOpen] = useState(false);
   const submittingRef = useRef(false);
 
   const showUrl = action === "OPEN_URL";
-  const showEntityId = ENTITY_ID_ACTIONS.includes(action as AdAction);
-  const showEntityIds = action === "OPEN_CATEGORY";
+  const showFeedPickerSingle = type === "VIDEO" && action === "OPEN_INTERNAL_PAGE";
+  const showFeedPickerMulti = type === "VIDEO_CAROUSEL" && action === "OPEN_INTERNAL_PAGE";
+  const showFeedPicker = showFeedPickerSingle || showFeedPickerMulti;
+  const showResidencePicker =
+    type === "CAROUSEL" && (action === "OPEN_INTERNAL_PAGE" || action === "OPEN_RESIDENCE");
+  const showEntityId =
+    (ENTITY_ID_ACTIONS.includes(action as AdAction) && !showResidencePicker) || showFeedPickerSingle;
+  const showEntityIds = action === "OPEN_CATEGORY" || showFeedPickerMulti || showResidencePicker;
   const showFilters = FILTERS_ACTIONS.includes(action as AdAction);
+
+  // Ajoute des ids à scope.entity_ids sans doublon.
+  const mergeEntityIds = (newIds: string[]) => {
+    const currentEntityIds: unknown[] = form.getFieldValue(["scope", "entity_ids"]) ?? [];
+    const merged = Array.from(new Set([...currentEntityIds.map(String), ...newIds]));
+    form.setFieldValue(["scope", "entity_ids"], merged);
+  };
+
+  // Fusionne la/les vidéo(s) choisie(s) dans le flux : leur URL rejoint media.videos
+  // (sans passer par /files). Type VIDEO → une seule vidéo, scope.entity_id (singulier).
+  // Type VIDEO_CAROUSEL → plusieurs vidéos, scope.entity_ids (pluriel, cumulatif).
+  const handleFeedVideosPicked = (picked: FeedVideoPick[]) => {
+    setFeedPickerOpen(false);
+    if (picked.length === 0) return;
+
+    const toEntry = (item: FeedVideoPick): UploadFile => ({
+      uid: item.videoUrl,
+      name: item.title || "video-feed",
+      status: "done",
+      url: item.videoUrl,
+    });
+
+    if (showFeedPickerSingle) {
+      const [single] = picked;
+      form.setFieldValue(["media", "videos"], [toEntry(single)]);
+      form.setFieldValue(["scope", "entity_id"], single.id);
+    } else {
+      const currentVideos = normalizeFileList(form.getFieldValue(["media", "videos"]));
+      const existingUrls = new Set(currentVideos.map((f) => f.url).filter(Boolean));
+      const newVideoEntries = picked.filter((item) => !existingUrls.has(item.videoUrl)).map(toEntry);
+      form.setFieldValue(["media", "videos"], [...currentVideos, ...newVideoEntries]);
+      mergeEntityIds(picked.map((item) => item.id));
+    }
+
+    message.success(`${picked.length} vidéo(s) ajoutée(s) depuis le flux.`);
+  };
+
+  // Fusionne les résidences choisies : leur image (miniature) rejoint media.images
+  // (sans passer par /files) et leur id rejoint scope.entity_ids.
+  const handleResidencesPicked = (picked: ResidencePick[]) => {
+    setResidencePickerOpen(false);
+    if (picked.length === 0) return;
+
+    const currentImages = normalizeFileList(form.getFieldValue(["media", "images"]));
+    const existingIds = new Set(currentImages.map((f) => f.uid).filter(Boolean));
+    const newImageEntries: UploadFile[] = picked
+      .filter((item) => item.imageId && !existingIds.has(item.imageId))
+      .map((item) => ({
+        uid: item.imageId as string, // valeur soumise (id du fichier)
+        name: item.nom || "residence",
+        status: "done",
+        url: item.imageUrl ?? undefined, // aperçu uniquement
+      }));
+    form.setFieldValue(["media", "images"], [...currentImages, ...newImageEntries]);
+    mergeEntityIds(picked.map((item) => item.id));
+
+    message.success(`${picked.length} résidence(s) ajoutée(s).`);
+  };
 
   const imageFiles = normalizeFileList(imagesRaw);
   const videoFiles = normalizeFileList(videosRaw);
@@ -170,8 +240,8 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
     const results: string[] = [];
     for (const f of fileList) {
       if (f.status === "done" && !f.originFileObj) {
-        // Fichier existant (mode édition) — déjà dans /files, on passe l'URL
-        results.push(f.url ?? f.uid);
+        // Fichier existant — on renvoie l'id (uid porte l'id réel, url ne sert qu'à l'aperçu)
+        results.push(f.uid ?? f.url);
       } else if (f.originFileObj) {
         // Nouveau fichier — upload vers /files
         const id = await uploadToFiles(f.originFileObj as File, f.uid);
@@ -215,6 +285,7 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
 
       const payload = {
         ...values,
+        url: (values.url as string | undefined) ?? "",
         start_date: values.start_date
           ? dayjs.isDayjs(values.start_date)
             ? (values.start_date as Dayjs).toISOString()
@@ -226,8 +297,13 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
             : values.end_date
           : undefined,
         scope: {
-          entity_id: scopeRaw.entity_id ?? null,
-          entity_ids: (scopeRaw.entity_ids ?? []).map(Number).filter((n) => !isNaN(n)),
+          entity_id:
+            scopeRaw.entity_id !== null && scopeRaw.entity_id !== undefined && String(scopeRaw.entity_id).trim() !== ""
+              ? String(scopeRaw.entity_id).trim()
+              : null,
+          entity_ids: (scopeRaw.entity_ids ?? [])
+            .map((v) => String(v).trim())
+            .filter((v) => v !== ""),
           filters,
         },
         media: { images, videos },
@@ -244,7 +320,7 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
   };
 
   const showImages = type === "IMAGE" || type === "CAROUSEL";
-  const showVideos = type === "VIDEO";
+  const showVideos = type === "VIDEO" || type === "VIDEO_CAROUSEL";
 
   return (
     <div className="campagne-form">
@@ -483,6 +559,14 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
                 </Form.Item>
               )}
 
+              {type === "VIDEO_CAROUSEL" && (
+                <FieldHint>
+                  {videoFiles.length < 2
+                    ? `Ajoutez au moins 2 vidéos pour le carrousel vidéo (${videoFiles.length}/2).`
+                    : `${videoFiles.length} vidéos ajoutées.`}
+                </FieldHint>
+              )}
+
               {uploading && (
                 <Alert
                   type="info"
@@ -510,34 +594,71 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
                 <FieldHint>La bannière n'est pas cliquable.</FieldHint>
               )}
 
-              {showUrl && (
-                <Form.Item
-                  name="url"
-                  label="URL"
-                  rules={[
-                    { required: true, message: "L'URL est requise pour cette action" },
-                    { type: "url", message: "URL invalide" },
-                  ]}
-                >
-                  <Input placeholder="https://exemple.com" />
-                </Form.Item>
-              )}
+              <Form.Item
+                name="url"
+                label={showUrl ? "URL" : <OptionalLabel>URL</OptionalLabel>}
+                rules={showUrl ? [{ required: true, message: "L'URL est requise pour cette action" }] : []}
+              >
+                <Input placeholder="https://exemple.com ou /vivre" />
+              </Form.Item>
 
               {showEntityId && (
                 <Form.Item
                   name={["scope", "entity_id"]}
-                  label="ID de l'entité"
+                  label={showFeedPickerSingle ? "Vidéo sélectionnée (ID)" : "ID de l'entité"}
                   rules={[{ required: true, message: "L'ID de l'entité est requis pour cette action" }]}
+                  extra={
+                    showFeedPickerSingle
+                      ? "Rempli via le bouton \"Choisir une vidéo depuis le flux\" ci-dessous — modifiable manuellement."
+                      : undefined
+                  }
                 >
                   <Input placeholder="Ex : 42" />
                 </Form.Item>
               )}
 
+              {showFeedPicker && (
+                <div style={{ marginBottom: 16 }}>
+                  <Button icon={<FolderOpenOutlined />} onClick={() => setFeedPickerOpen(true)}>
+                    {showFeedPickerSingle ? "Choisir une vidéo depuis le flux" : "Choisir des vidéos depuis le flux"}
+                  </Button>
+                  <FieldHint>
+                    {showFeedPickerSingle
+                      ? <>Sélectionne une vidéo déjà publiée — son URL rejoint <code>media.videos</code> et son id remplace <code>scope.entity_id</code>, sans re-upload.</>
+                      : <>Sélectionne des vidéos déjà publiées — leur URL rejoint les médias du carrousel et leur id est ajouté à <code>scope.entity_ids</code>, sans re-upload.</>}
+                  </FieldHint>
+                </div>
+              )}
+
+              {showResidencePicker && (
+                <div style={{ marginBottom: 16 }}>
+                  <Button icon={<FolderOpenOutlined />} onClick={() => setResidencePickerOpen(true)}>
+                    Choisir des résidences
+                  </Button>
+                  <FieldHint>
+                    Sélectionne des résidences — l'id de leur première image rejoint <code>media.images</code>
+                    et leur id est ajouté à <code>scope.entity_ids</code>, sans re-upload.
+                  </FieldHint>
+                </div>
+              )}
+
               {showEntityIds && (
                 <Form.Item
                   name={["scope", "entity_ids"]}
-                  label="IDs des entités"
-                  extra="Saisissez des identifiants numériques et appuyez sur Entrée."
+                  label={
+                    showFeedPickerMulti
+                      ? "Vidéos sélectionnées (IDs)"
+                      : showResidencePicker
+                        ? "Résidences sélectionnées (IDs)"
+                        : "IDs des entités"
+                  }
+                  extra={
+                    showFeedPickerMulti
+                      ? "Rempli via le bouton \"Choisir des vidéos depuis le flux\" ci-dessus — modifiable manuellement."
+                      : showResidencePicker
+                        ? "Rempli via le bouton \"Choisir des résidences\" ci-dessus — modifiable manuellement."
+                        : "Saisissez des identifiants numériques et appuyez sur Entrée."
+                  }
                 >
                   <Select
                     mode="tags"
@@ -609,6 +730,19 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
           </div>
         </div>
       </Form>
+
+      <FeedPickerModal
+        open={feedPickerOpen}
+        onClose={() => setFeedPickerOpen(false)}
+        onConfirm={handleFeedVideosPicked}
+        multiple={!showFeedPickerSingle}
+      />
+
+      <ResidencePickerModal
+        open={residencePickerOpen}
+        onClose={() => setResidencePickerOpen(false)}
+        onConfirm={handleResidencesPicked}
+      />
     </div>
   );
 };

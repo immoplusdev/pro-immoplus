@@ -45,36 +45,40 @@ interface PreviewProps {
     positionIndex?: number;
 }
 
-function CarouselMedia({ images }: { images: UploadFile[] }) {
+function CarouselMedia({ items, kind = "image" }: { items: UploadFile[]; kind?: "image" | "video" }) {
     const [index, setIndex] = useState(0);
-    const current = images[Math.min(index, images.length - 1)];
+    const current = items[Math.min(index, items.length - 1)];
     const url = useFileObjectUrl(current);
 
     return (
         <div style={{ position: "relative", width: "100%", height: "100%" }}>
             {url ? (
-                <img src={url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                kind === "video" ? (
+                    <video key={url} src={url} muted loop autoPlay style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                ) : (
+                    <img src={url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                )
             ) : (
                 <EmptyMedia />
             )}
-            {images.length > 1 && (
+            {items.length > 1 && (
                 <>
                     <button
                         type="button"
-                        onClick={() => setIndex((i) => (i - 1 + images.length) % images.length)}
+                        onClick={() => setIndex((i) => (i - 1 + items.length) % items.length)}
                         style={carouselArrowStyle("left")}
                     >
                         <LeftOutlined style={{ fontSize: 10 }} />
                     </button>
                     <button
                         type="button"
-                        onClick={() => setIndex((i) => (i + 1) % images.length)}
+                        onClick={() => setIndex((i) => (i + 1) % items.length)}
                         style={carouselArrowStyle("right")}
                     >
                         <RightOutlined style={{ fontSize: 10 }} />
                     </button>
                     <div style={{ position: "absolute", bottom: 8, left: 0, right: 0, display: "flex", justifyContent: "center", gap: 4 }}>
-                        {images.map((_, i) => (
+                        {items.map((_, i) => (
                             <span
                                 key={i}
                                 style={{
@@ -159,7 +163,8 @@ export function AdCampaignPreview({
     const hasMedia =
         (type === "IMAGE" && imageFiles.length > 0) ||
         (type === "VIDEO" && videoFiles.length > 0) ||
-        (type === "CAROUSEL" && imageFiles.length > 0);
+        (type === "CAROUSEL" && imageFiles.length > 0) ||
+        (type === "VIDEO_CAROUSEL" && videoFiles.length > 0);
 
     const dateSummary = useMemo(() => {
         if (!startDate || !endDate) return null;
@@ -202,7 +207,9 @@ export function AdCampaignPreview({
                         <video src={firstVideoUrl} muted loop autoPlay style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     )}
 
-                    {hasMedia && type === "CAROUSEL" && <CarouselMedia images={imageFiles} />}
+                    {hasMedia && type === "CAROUSEL" && <CarouselMedia items={imageFiles} kind="image" />}
+
+                    {hasMedia && type === "VIDEO_CAROUSEL" && <CarouselMedia items={videoFiles} kind="video" />}
 
                     {hasMedia && (
                         <div
