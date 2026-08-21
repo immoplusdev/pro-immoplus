@@ -26,9 +26,7 @@ import {
 } from "@ant-design/icons";
 import dayjs, { Dayjs } from "dayjs";
 import {
-  AD_PLACEMENTS,
   AD_ACTIONS,
-  AD_CATEGORIES,
   ENTITY_ID_ACTIONS,
   FILTERS_ACTIONS,
   AdAction,
@@ -42,6 +40,7 @@ import { MediaDropzone } from "./media-dropzone";
 import { AdCampaignPreview } from "./ad-campaign-preview";
 import { FeedPickerModal, FeedVideoPick } from "./feed-picker-modal";
 import { ResidencePickerModal, ResidencePick } from "./residence-picker-modal";
+import { useAdCampaignMetadata } from "./use-ad-campaign-metadata";
 
 const { Text, Title } = Typography;
 
@@ -118,6 +117,7 @@ interface AdCampaignFormProps {
 }
 
 export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }: AdCampaignFormProps) => {
+  const { placements, campaignCategories } = useAdCampaignMetadata();
   const action: AdAction | undefined = Form.useWatch("action", form);
   const type: AdType = Form.useWatch("type", form) ?? "IMAGE";
   const status = Form.useWatch("status", form) ?? "DRAFT";
@@ -351,7 +351,7 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
                   >
                     <Select
                       showSearch
-                      options={AD_PLACEMENTS.map((p) => ({ label: p, value: p }))}
+                      options={placements.map((p) => ({ label: p, value: p }))}
                       placeholder="Sélectionner un placement"
                     />
                   </Form.Item>
@@ -363,7 +363,7 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
                     rules={[{ required: true, message: "La catégorie est requise" }]}
                   >
                     <Select
-                      options={AD_CATEGORIES.map((c) => ({ label: c, value: c }))}
+                      options={campaignCategories.map((c) => ({ label: c, value: c }))}
                       placeholder="Sélectionner une catégorie"
                     />
                   </Form.Item>

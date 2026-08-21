@@ -23,14 +23,15 @@ import {
   AdStatus,
   AdPlacement,
   AD_STATUSES,
-  AD_PLACEMENTS,
 } from "./types";
 import { StatusBadge } from "./status-badge";
+import { useAdCampaignMetadata } from "./use-ad-campaign-metadata";
 
 const { Text } = Typography;
 
 export const AdCampaignList = () => {
   const navigate = useNavigate();
+  const { placements } = useAdCampaignMetadata();
   const [filterStatus, setFilterStatus] = useState<AdStatus | null>(null);
   const [filterPlacement, setFilterPlacement] = useState<AdPlacement | null>(null);
 
@@ -164,7 +165,7 @@ export const AdCampaignList = () => {
           placeholder="Filtrer par placement"
           style={{ width: 240 }}
           onChange={(v) => setFilterPlacement((v as AdPlacement) ?? null)}
-          options={AD_PLACEMENTS.map((p) => ({ label: p, value: p }))}
+          options={placements.map((p) => ({ label: p, value: p }))}
         />
       </Space>
 
