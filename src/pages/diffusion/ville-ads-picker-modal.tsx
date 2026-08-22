@@ -11,10 +11,11 @@ const { Text } = Typography;
 
 type EntityResource = "residences" | "biens-immobiliers";
 
+const MAX_IMAGES_PER_ENTITY = 4;
+
 export interface EntityPick {
     id: string;
-    imageId: string | null;
-    imageUrl: string | null;
+    images: { id: string; url: string }[]; // jusqu'à 4 — la première sert d'aperçu dans le sheet
     nom: string;
     resource: EntityResource;
 }
@@ -23,17 +24,14 @@ interface Props {
     open: boolean;
     onClose: () => void;
     onConfirm: (items: EntityPick[]) => void;
+    multiple?: boolean;
 }
 
 const PAGE_SIZE = 12;
 
-function firstImageId(record: any): string | null {
-    return record?.images?.[0] ?? null;
-}
-
-function firstImageUrl(record: any): string | null {
-    const id = firstImageId(record);
-    return id ? getApiFileUrl(id) : null;
+function pickedImages(record: any): { id: string; url: string }[] {
+    const ids: string[] = (record?.images ?? []).slice(0, MAX_IMAGES_PER_ENTITY).filter(Boolean);
+    return ids.map((id) => ({ id, url: getApiFileUrl(id) }));
 }
 
 const RESOURCE_OPTIONS = [
@@ -41,7 +39,7 @@ const RESOURCE_OPTIONS = [
     { label: "Biens immobiliers", value: "biens-immobiliers" as const },
 ];
 
-export function VilleAdsPickerModal({ open, onClose, onConfirm }: Props) {
+export function VilleAdsPickerModal({ open, onClose, onConfirm, multiple = true }: Props) {
     const [resource, setResource] = useState<EntityResource>("residences");
     const [current, setCurrent] = useState(1);
     const [searchInput, setSearchInput] = useState("");
@@ -83,15 +81,27 @@ export function VilleAdsPickerModal({ open, onClose, onConfirm }: Props) {
 
     const toggle = (record: any) => {
         setSelected((prev) => {
-            const next = new Map(prev);
             const k = entryKey(record.id);
-            if (next.has(k)) {
+            const alreadyPicked = prev.has(k);
+
+            if (!multiple) {
+                return alreadyPicked
+                    ? new Map()
+                    : new Map([[k, {
+                        id: record.id,
+                        images: pickedImages(record),
+                        nom: record?.nom ?? "",
+                        resource,
+                    }]]);
+            }
+
+            const next = new Map(prev);
+            if (alreadyPicked) {
                 next.delete(k);
             } else {
                 next.set(k, {
                     id: record.id,
-                    imageId: firstImageId(record),
-                    imageUrl: firstImageUrl(record),
+                    images: pickedImages(record),
                     nom: record?.nom ?? "",
                     resource,
                 });
@@ -108,14 +118,14 @@ export function VilleAdsPickerModal({ open, onClose, onConfirm }: Props) {
         <Modal
             open={open}
             onCancel={onClose}
-            title="Sélectionner des résidences ou biens immobiliers"
+            title={multiple ? "Sélectionner des résidences ou biens immobiliers" : "Sélectionner une résidence ou un bien immobilier"}
             width={840}
             footer={[
                 <Button key="cancel" onClick={onClose}>
                     Annuler
                 </Button>,
                 <Button key="confirm" type="primary" disabled={selected.size === 0} onClick={handleConfirm}>
-                    Ajouter{selected.size > 0 ? ` (${selected.size})` : ""}
+                    {multiple ? `Ajouter${selected.size > 0 ? ` (${selected.size})` : ""}` : "Choisir"}
                 </Button>,
             ]}
         >
@@ -128,7 +138,7 @@ export function VilleAdsPickerModal({ open, onClose, onConfirm }: Props) {
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
                 />
-                {selected.size > 0 && (
+                {multiple && selected.size > 0 && (
                     <Text style={{ fontSize: 12, color: T.ink60 }}>
                         {selected.size} élément(s) sélectionné(s) au total (résidences + biens immobiliers confondus).
                     </Text>
@@ -150,7 +160,7 @@ export function VilleAdsPickerModal({ open, onClose, onConfirm }: Props) {
                         {items.map((record: any) => {
                             const k = entryKey(record.id);
                             const isChecked = selected.has(k);
-                            const imageUrl = firstImageUrl(record);
+                            const imageUrl = pickedImages(record)[0]?.url ?? null;
                             return (
                                 <div
                                     key={k}
