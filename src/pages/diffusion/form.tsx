@@ -144,7 +144,8 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
   const submittingRef = useRef(false);
 
   const showUrl = action === "OPEN_URL";
-  const showFeedPickerSingle = type === "VIDEO" && action === "OPEN_INTERNAL_PAGE";
+  const showFeedPickerSingle =
+    type === "VIDEO" && (action === "OPEN_INTERNAL_PAGE" || category === "HORIZONTAL_AD");
   const showFeedPickerMulti = type === "VIDEO_CAROUSEL" && action === "OPEN_INTERNAL_PAGE";
   const showFeedPicker = showFeedPickerSingle || showFeedPickerMulti;
   const showResidencePicker =
