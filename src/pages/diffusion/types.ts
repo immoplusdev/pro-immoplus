@@ -1,40 +1,8 @@
-export type AdPlacement =
-  | "HOME_TOP"
-  | "HOME_AFTER_SEARCH"
-  | "HOME_AFTER_SECTION"
-  | "HOME_BOTTOM"
-  | "PROPERTY_LIST_TOP"
-  | "PROPERTY_LIST_AFTER"
-  | "PROPERTY_DETAILS_HEADER"
-  | "PROPERTY_DETAILS_GALLERY"
-  | "PROPERTY_DETAILS_DESCRIPTION"
-  | "PROPERTY_DETAILS_BOTTOM"
-  | "HOTEL_LIST_TOP"
-  | "HOTEL_DETAILS_HEADER"
-  | "RESIDENCE_LIST"
-  | "RESIDENCE_LIST_ALL"
-  | "RESIDENCE_LIST_NEAR"
-  | "RESIDENCE_LIST_BEST_RATED"
-  | "RESIDENCE_LIST_ABIDJAN"
-  | "RESIDENCE_LIST_ABOISSO"
-  | "RESIDENCE_LIST_GRAND_BASSAM"
-  | "RESIDENCE_LIST_YAMOUSSOUKRO"
-  | "RESIDENCE_LIST_SAN_PEDRO"
-  | "RESIDENCE_LIST_COCODY"
-  | "RESIDENCE_LIST_YOPOUGON"
-  | "RESIDENCE_LIST_PLATEAU"
-  | "RESIDENCE_DETAILS"
-  | "LOCATION_LIST"
-  | "PAYMENT_TOP"
-  | "PAYMENT_BOTTOM"
-  | "MAP_TOP"
-  | "MAP_BOTTOM"
-  | "CALENDAR_TOP"
-  | "CALENDAR_BOTTOM"
-  | "ACCOUNT_TOP"
-  | "ACCOUNT_BOTTOM"
-  | "IMATCH_TOP"
-  | "IMATCH_BOTTOM";
+// Placement et catégorie sont désormais pilotés par GET /ads/campaigns/metadata
+// (voir use-ad-campaign-metadata.ts) — le backend fait évoluer ces listes sans
+// nécessiter de changement ici. Le type reste `string` pour ne pas se désynchroniser ;
+// AD_PLACEMENTS ci-dessous ne sert plus que de valeur de repli avant chargement.
+export type AdPlacement = string;
 
 export type AdAction =
   | "OPEN_URL"
@@ -51,12 +19,8 @@ export type AdAction =
   | "OPEN_PAYMENT"
   | "NONE";
 
-export type AdCampaignCategory =
-  | "PROMOTION"
-  | "NEW_FEATURE"
-  | "NEW_PROGRAM"
-  | "POLICY_UPDATE"
-  | "GENERAL";
+// Idem AdPlacement : liste pilotée par le backend via /ads/campaigns/metadata.
+export type AdCampaignCategory = string;
 
 export type AdStatus = "DRAFT" | "ACTIVE" | "SUSPENDED" | "EXPIRED";
 export type AdType = "IMAGE" | "VIDEO" | "CAROUSEL" | "VIDEO_CAROUSEL";
@@ -98,6 +62,7 @@ export interface AdCampaign {
   updated_at: string;
 }
 
+// Valeur de repli utilisée tant que /ads/campaigns/metadata n'a pas répondu (ou en cas d'échec).
 export const AD_PLACEMENTS: AdPlacement[] = [
   "HOME_TOP",
   "HOME_AFTER_SEARCH",
@@ -125,6 +90,13 @@ export const AD_PLACEMENTS: AdPlacement[] = [
   "RESIDENCE_LIST_PLATEAU",
   "RESIDENCE_DETAILS",
   "LOCATION_LIST",
+  "LOCATION_TOP",
+  "LOCATION_ABIDJAN",
+  "LOCATION_COCODY",
+  "LOCATION_GRAND_BASSAM",
+  "LOCATION_SAN_PEDRO",
+  "LOCATION_ASSINIE",
+  "LOCATION_YOPOUGON",
   "PAYMENT_TOP",
   "PAYMENT_BOTTOM",
   "MAP_TOP",
@@ -153,12 +125,15 @@ export const AD_ACTIONS: AdAction[] = [
   "NONE",
 ];
 
+// Valeur de repli — idem AD_PLACEMENTS.
 export const AD_CATEGORIES: AdCampaignCategory[] = [
   "PROMOTION",
   "NEW_FEATURE",
   "NEW_PROGRAM",
   "POLICY_UPDATE",
   "GENERAL",
+  "HORIZONTAL_AD",
+  "OFFRE_SPECIAL",
 ];
 
 export const AD_STATUSES: AdStatus[] = ["DRAFT", "ACTIVE", "SUSPENDED", "EXPIRED"];

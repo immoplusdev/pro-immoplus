@@ -26,9 +26,7 @@ import {
 } from "@ant-design/icons";
 import dayjs, { Dayjs } from "dayjs";
 import {
-  AD_PLACEMENTS,
   AD_ACTIONS,
-  AD_CATEGORIES,
   ENTITY_ID_ACTIONS,
   FILTERS_ACTIONS,
   AdAction,
@@ -42,6 +40,8 @@ import { MediaDropzone } from "./media-dropzone";
 import { AdCampaignPreview } from "./ad-campaign-preview";
 import { FeedPickerModal, FeedVideoPick } from "./feed-picker-modal";
 import { ResidencePickerModal, ResidencePick } from "./residence-picker-modal";
+import { VilleAdsPickerModal, EntityPick } from "./ville-ads-picker-modal";
+import { useAdCampaignMetadata } from "./use-ad-campaign-metadata";
 
 const { Text, Title } = Typography;
 
@@ -118,6 +118,7 @@ interface AdCampaignFormProps {
 }
 
 export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }: AdCampaignFormProps) => {
+  const { placements, campaignCategories } = useAdCampaignMetadata();
   const action: AdAction | undefined = Form.useWatch("action", form);
   const type: AdType = Form.useWatch("type", form) ?? "IMAGE";
   const status = Form.useWatch("status", form) ?? "DRAFT";
@@ -139,17 +140,27 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [feedPickerOpen, setFeedPickerOpen] = useState(false);
   const [residencePickerOpen, setResidencePickerOpen] = useState(false);
+  const [villeAdsPickerOpen, setVilleAdsPickerOpen] = useState(false);
   const submittingRef = useRef(false);
 
   const showUrl = action === "OPEN_URL";
-  const showFeedPickerSingle = type === "VIDEO" && action === "OPEN_INTERNAL_PAGE";
+  const showFeedPickerSingle =
+    type === "VIDEO" && (action === "OPEN_INTERNAL_PAGE" || category === "HORIZONTAL_AD");
   const showFeedPickerMulti = type === "VIDEO_CAROUSEL" && action === "OPEN_INTERNAL_PAGE";
   const showFeedPicker = showFeedPickerSingle || showFeedPickerMulti;
   const showResidencePicker =
     type === "CAROUSEL" && (action === "OPEN_INTERNAL_PAGE" || action === "OPEN_RESIDENCE");
+  // VILLE_ADS → plusieurs éléments (entity_ids, 1 image chacun). OFFRE_SPECIAL → un seul
+  // élément (entity_id singulier), on prend ses 4 premières images.
+  const showVilleAdsPickerMulti = category === "VILLE_ADS";
+  const showVilleAdsPickerSingle = category === "OFFRE_SPECIAL";
+  const showVilleAdsPicker = showVilleAdsPickerMulti || showVilleAdsPickerSingle;
   const showEntityId =
-    (ENTITY_ID_ACTIONS.includes(action as AdAction) && !showResidencePicker) || showFeedPickerSingle;
-  const showEntityIds = action === "OPEN_CATEGORY" || showFeedPickerMulti || showResidencePicker;
+    (ENTITY_ID_ACTIONS.includes(action as AdAction) && !showResidencePicker) ||
+    showFeedPickerSingle ||
+    showVilleAdsPickerSingle;
+  const showEntityIds =
+    action === "OPEN_CATEGORY" || showFeedPickerMulti || showResidencePicker || showVilleAdsPickerMulti;
   const showFilters = FILTERS_ACTIONS.includes(action as AdAction);
 
   // Ajoute des ids à scope.entity_ids sans doublon.
@@ -208,6 +219,43 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
     mergeEntityIds(picked.map((item) => item.id));
 
     message.success(`${picked.length} résidence(s) ajoutée(s).`);
+  };
+
+  // VILLE_ADS (multi) : une image (la 1ère) par élément choisi, cumulée dans media.images,
+  // ids cumulés dans scope.entity_ids. OFFRE_SPECIAL (single) : un seul élément, ses 4
+  // premières images REMPLACENT media.images, son id remplace scope.entity_id (singulier).
+  const handleVilleAdsEntitiesPicked = (picked: EntityPick[]) => {
+    setVilleAdsPickerOpen(false);
+    if (picked.length === 0) return;
+
+    if (showVilleAdsPickerSingle) {
+      const [single] = picked;
+      const newImageEntries: UploadFile[] = single.images.map((img, i) => ({
+        uid: img.id,
+        name: `${single.nom || single.resource}-${i + 1}`,
+        status: "done",
+        url: img.url,
+      }));
+      form.setFieldValue(["media", "images"], newImageEntries);
+      form.setFieldValue(["scope", "entity_id"], single.id);
+      message.success(`Sélection mise à jour (${newImageEntries.length} image(s)).`);
+      return;
+    }
+
+    const currentImages = normalizeFileList(form.getFieldValue(["media", "images"]));
+    const existingIds = new Set(currentImages.map((f) => f.uid).filter(Boolean));
+    const newImageEntries: UploadFile[] = picked
+      .filter((item) => item.images[0] && !existingIds.has(item.images[0].id))
+      .map((item) => ({
+        uid: item.images[0].id,
+        name: item.nom || item.resource,
+        status: "done",
+        url: item.images[0].url,
+      }));
+    form.setFieldValue(["media", "images"], [...currentImages, ...newImageEntries]);
+    mergeEntityIds(picked.map((item) => item.id));
+
+    message.success(`${picked.length} élément(s) ajouté(s).`);
   };
 
   const imageFiles = normalizeFileList(imagesRaw);
@@ -351,7 +399,7 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
                   >
                     <Select
                       showSearch
-                      options={AD_PLACEMENTS.map((p) => ({ label: p, value: p }))}
+                      options={placements.map((p) => ({ label: p, value: p }))}
                       placeholder="Sélectionner un placement"
                     />
                   </Form.Item>
@@ -363,7 +411,7 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
                     rules={[{ required: true, message: "La catégorie est requise" }]}
                   >
                     <Select
-                      options={AD_CATEGORIES.map((c) => ({ label: c, value: c }))}
+                      options={campaignCategories.map((c) => ({ label: c, value: c }))}
                       placeholder="Sélectionner une catégorie"
                     />
                   </Form.Item>
@@ -605,12 +653,20 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
               {showEntityId && (
                 <Form.Item
                   name={["scope", "entity_id"]}
-                  label={showFeedPickerSingle ? "Vidéo sélectionnée (ID)" : "ID de l'entité"}
+                  label={
+                    showFeedPickerSingle
+                      ? "Vidéo sélectionnée (ID)"
+                      : showVilleAdsPickerSingle
+                        ? "Résidence / bien sélectionné (ID)"
+                        : "ID de l'entité"
+                  }
                   rules={[{ required: true, message: "L'ID de l'entité est requis pour cette action" }]}
                   extra={
                     showFeedPickerSingle
                       ? "Rempli via le bouton \"Choisir une vidéo depuis le flux\" ci-dessous — modifiable manuellement."
-                      : undefined
+                      : showVilleAdsPickerSingle
+                        ? "Rempli via le bouton \"Choisir une résidence / un bien immobilier\" ci-dessous — modifiable manuellement."
+                        : undefined
                   }
                 >
                   <Input placeholder="Ex : 42" />
@@ -642,6 +698,21 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
                 </div>
               )}
 
+              {showVilleAdsPicker && (
+                <div style={{ marginBottom: 16 }}>
+                  <Button icon={<FolderOpenOutlined />} onClick={() => setVilleAdsPickerOpen(true)}>
+                    {showVilleAdsPickerSingle
+                      ? "Choisir une résidence / un bien immobilier"
+                      : "Choisir des résidences / biens immobiliers"}
+                  </Button>
+                  <FieldHint>
+                    {showVilleAdsPickerSingle
+                      ? <>Recherche par ville/nom/adresse et sélectionne une résidence ou un bien immobilier — ses 4 premières images remplacent <code>media.images</code> et son id remplace <code>scope.entity_id</code>, sans re-upload.</>
+                      : <>Recherche par ville/nom/adresse et sélectionne des résidences et/ou biens immobiliers. Leur première image rejoint <code>media.images</code> et leur id est ajouté à <code>scope.entity_ids</code>, sans re-upload.</>}
+                  </FieldHint>
+                </div>
+              )}
+
               {showEntityIds && (
                 <Form.Item
                   name={["scope", "entity_ids"]}
@@ -650,14 +721,18 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
                       ? "Vidéos sélectionnées (IDs)"
                       : showResidencePicker
                         ? "Résidences sélectionnées (IDs)"
-                        : "IDs des entités"
+                        : showVilleAdsPickerMulti
+                          ? "Résidences / biens sélectionnés (IDs)"
+                          : "IDs des entités"
                   }
                   extra={
                     showFeedPickerMulti
                       ? "Rempli via le bouton \"Choisir des vidéos depuis le flux\" ci-dessus — modifiable manuellement."
                       : showResidencePicker
                         ? "Rempli via le bouton \"Choisir des résidences\" ci-dessus — modifiable manuellement."
-                        : "Saisissez des identifiants numériques et appuyez sur Entrée."
+                        : showVilleAdsPickerMulti
+                          ? "Rempli via le bouton \"Choisir des résidences / biens immobiliers\" ci-dessus — modifiable manuellement."
+                          : "Saisissez des identifiants numériques et appuyez sur Entrée."
                   }
                 >
                   <Select
@@ -742,6 +817,13 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
         open={residencePickerOpen}
         onClose={() => setResidencePickerOpen(false)}
         onConfirm={handleResidencesPicked}
+      />
+
+      <VilleAdsPickerModal
+        open={villeAdsPickerOpen}
+        onClose={() => setVilleAdsPickerOpen(false)}
+        onConfirm={handleVilleAdsEntitiesPicked}
+        multiple={!showVilleAdsPickerSingle}
       />
     </div>
   );
