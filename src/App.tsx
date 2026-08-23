@@ -35,6 +35,7 @@ import {
   TagOutlined,
   FundOutlined,
   SafetyCertificateOutlined,
+  TeamOutlined,
 } from "@ant-design/icons";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { API_URL, PROJECT_ID } from "@/configs/app.config";
@@ -259,6 +260,15 @@ function App() {
                   meta: {
                     icon: <SafetyCertificateOutlined />,
                     label: "Certification Pro",
+                  },
+                },
+                {
+                  name: "admin/clients-statistiques",
+                  list: "/admin/clients-statistiques",
+                  show: "/admin/clients-statistiques/:clientId",
+                  meta: {
+                    icon: <TeamOutlined />,
+                    label: "Statistiques Clients",
                   },
                 },
                 {
