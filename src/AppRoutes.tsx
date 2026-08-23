@@ -112,6 +112,8 @@ import {
 } from "@/pages/diffusion";
 import { ProCertificationList } from "@/pages/admin/pro-certification";
 import { ProCertificationDetail } from "@/pages/admin/pro-certification/detail";
+import { ClientsStatistiquesList } from "@/pages/admin/clients-statistiques";
+import { ClientsStatistiquesDetail } from "@/pages/admin/clients-statistiques/detail";
 
 export function AppRoutes() {
   return (
@@ -298,6 +300,10 @@ export function AppRoutes() {
         <Route path={"/admin/pro-certification"}>
           <Route index element={<ProCertificationList />} />
           <Route path=":userId" element={<ProCertificationDetail />} />
+        </Route>
+        <Route path={"/admin/clients-statistiques"}>
+          <Route index element={<ClientsStatistiquesList />} />
+          <Route path=":clientId" element={<ClientsStatistiquesDetail />} />
         </Route>
         <Route path={"/statistics"}>
           <Route index element={<Statistics />} />
