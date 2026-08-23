@@ -6,28 +6,15 @@ import React, { useCallback, useState } from "react";
 import { ReservationCard } from "@/pages/reservations/components/reservation-card";
 import { ExportReservationsButton } from "@/pages/reservations/components/export-reservations-button";
 import { useReservationSocket } from "@/hooks/useReservationSocket";
+import { PillTag } from "@/components/table";
 
 const PAGE_SIZE = 20;
 
 function ConnectionStatusBadge({ isConnected }: { isConnected: boolean }) {
-  const color = isConnected ? "#1F8A5B" : "#C13838";
   return (
-    <span
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 6,
-        fontSize: 12,
-        color,
-        border: `1px solid ${color}`,
-        borderRadius: 999,
-        padding: "3px 10px",
-        background: "#FFFFFF",
-      }}
-    >
-      <span style={{ width: 8, height: 8, borderRadius: "50%", background: color }} />
+    <PillTag tone={isConnected ? "success" : "error"}>
       {isConnected ? "Temps réel actif" : "Hors ligne"}
-    </span>
+    </PillTag>
   );
 }
 

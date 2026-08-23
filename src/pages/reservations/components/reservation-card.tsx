@@ -15,6 +15,7 @@ import {
 } from "./reservation-countdown";
 import { formatAmount } from "@/lib/helpers";
 import { StatusReservation } from "@/lib/ts-utilities/enums/status-reservation";
+import { T } from "@/lib/design-tokens";
 
 // ─── couleur bordure gauche ────────────────────────────────────────────────
 function getBorderColor(record: any, delays: ReservationDelays): string {
@@ -22,18 +23,18 @@ function getBorderColor(record: any, delays: ReservationDelays): string {
 
   if (isRelevantStatus(status)) {
     const remaining = getTempsRestant(record, delays);
-    if (remaining <= 3 * 60 * 1000) return "#E24B4A"; // urgent (< 3 min ou expiré)
-    return "#EF9F27"; // en attente (> 3 min)
+    if (remaining <= 3 * 60 * 1000) return T.error; // urgent (< 3 min ou expiré)
+    return T.warning; // en attente (> 3 min)
   }
 
   switch (status) {
     case StatusReservation.Valide:
     case StatusReservation.Terminee:
-      return "#5DCAA5";
+      return T.success;
     case StatusReservation.EnCours:
-      return "#97C459";
+      return T.info;
     default:
-      return "#888780"; // rejete, annulés, timeout
+      return T.ink40; // rejete, annulés, timeout
   }
 }
 
@@ -66,9 +67,8 @@ export function ReservationCard({ record, onExpire }: Props) {
   return (
     <div
       style={{
-        background: token.colorBgContainer,
-        border: `1px solid ${token.colorBorderSecondary}`,
-        borderLeft: `4px solid ${borderColor}`,
+        background: T.bg,
+        border: `1.5px solid ${borderColor}`,
         borderRadius: token.borderRadiusLG,
         padding: "14px 18px",
         display: "flex",
