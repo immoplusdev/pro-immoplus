@@ -55,10 +55,7 @@ export const UsersEditDataFields: React.FC<{
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            label={translate("users.fields.email")}
-            name={["email"]}
-          >
+          <Form.Item label={translate("users.fields.email")} name={["email"]}>
             <Input />
           </Form.Item>
           <Form.Item
@@ -124,10 +121,7 @@ export const UsersEditDataFields: React.FC<{
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            label="Activité"
-            name={["additionalData", "activite"]}
-          >
+          <Form.Item label="Activité" name={["additionalData", "activite"]}>
             <Input />
           </Form.Item>
           <Form.Item
@@ -155,7 +149,9 @@ export const UsersEditDataFields: React.FC<{
             content={
               data?.additionalData?.registreCommerceId ? (
                 <FilePreviewModal
-                  fileUrl={getApiFileUrl(data.additionalData.registreCommerceId)}
+                  fileUrl={getApiFileUrl(
+                    data.additionalData.registreCommerceId,
+                  )}
                   label="Voir le document"
                 />
               ) : (
@@ -194,10 +190,7 @@ export const UsersEditDataFields: React.FC<{
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            label="Activité"
-            name={["additionalData", "activite"]}
-          >
+          <Form.Item label="Activité" name={["additionalData", "activite"]}>
             <Input />
           </Form.Item>
           <ReadOnlyFormField
@@ -233,7 +226,9 @@ export const UsersEditDataFields: React.FC<{
             content={
               data?.additionalData?.pieceIdentiteVersoId ? (
                 <FilePreviewModal
-                  fileUrl={getApiFileUrl(data.additionalData.pieceIdentiteVersoId)}
+                  fileUrl={getApiFileUrl(
+                    data.additionalData.pieceIdentiteVersoId,
+                  )}
                   label="Voir le document"
                 />
               ) : (
@@ -300,7 +295,9 @@ export const UsersEditDataFields: React.FC<{
           </div>
 
           <UserProStatistics proId={data?.id ? String(data.id) : undefined} />
-          <ProCertificationCard proId={data?.id ? String(data.id) : undefined} />
+          <ProCertificationCard
+            proId={data?.id ? String(data.id) : undefined}
+          />
         </>
       )}
 
