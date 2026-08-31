@@ -115,6 +115,10 @@ import { ProCertificationList } from "@/pages/admin/pro-certification";
 import { ProCertificationDetail } from "@/pages/admin/pro-certification/detail";
 import { ClientsStatistiquesList } from "@/pages/admin/clients-statistiques";
 import { ClientsStatistiquesDetail } from "@/pages/admin/clients-statistiques/detail";
+import { CampaignsList } from "@/pages/admin/campaigns";
+import { CampaignCreate } from "@/pages/admin/campaigns/create";
+import { CampaignDetail } from "@/pages/admin/campaigns/detail";
+import { CampaignTagsManagement } from "@/pages/admin/campaigns/tags";
 
 function RouteErrorBoundary() {
   const location = useLocation();
@@ -314,6 +318,14 @@ export function AppRoutes() {
         <Route path={"/admin/clients-statistiques"}>
           <Route index element={<ClientsStatistiquesList />} />
           <Route path=":clientId" element={<ClientsStatistiquesDetail />} />
+        </Route>
+        <Route path={"/admin/campaigns"}>
+          <Route index element={<CampaignsList />} />
+          <Route path="create" element={<CampaignCreate />} />
+          <Route path=":campagneId" element={<CampaignDetail />} />
+        </Route>
+        <Route path={"/admin/campaign-tags"}>
+          <Route index element={<CampaignTagsManagement />} />
         </Route>
         <Route path={"/statistics"}>
           <Route index element={<Statistics />} />
