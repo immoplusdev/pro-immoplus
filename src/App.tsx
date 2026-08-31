@@ -36,6 +36,8 @@ import {
   FundOutlined,
   SafetyCertificateOutlined,
   TeamOutlined,
+  SendOutlined,
+  TagsOutlined,
 } from "@ant-design/icons";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { API_URL, PROJECT_ID } from "@/configs/app.config";
@@ -269,6 +271,24 @@ function App() {
                   meta: {
                     icon: <TeamOutlined />,
                     label: "Statistiques Clients",
+                  },
+                },
+                {
+                  name: "admin/campaigns",
+                  list: "/admin/campaigns",
+                  create: "/admin/campaigns/create",
+                  show: "/admin/campaigns/:campagneId",
+                  meta: {
+                    icon: <SendOutlined />,
+                    label: "Campagnes Push/WhatsApp",
+                  },
+                },
+                {
+                  name: "admin/campaign-tags",
+                  list: "/admin/campaign-tags",
+                  meta: {
+                    icon: <TagsOutlined />,
+                    label: "Tags de campagne",
                   },
                 },
                 {
