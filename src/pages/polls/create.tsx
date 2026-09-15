@@ -2,27 +2,27 @@ import { useForm } from "@refinedev/antd";
 import { Button, Space, message } from "antd";
 import { ArrowLeftOutlined, SaveOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
-import { AdCampaignForm } from "./form";
+import { PollForm } from "./form";
 
-export const AdCampaignCreate = () => {
+export const PollCreate = () => {
   const navigate = useNavigate();
 
   const { formProps, form } = useForm({
-    resource: "ads/campaigns",
+    resource: "polls",
     action: "create",
     redirect: false,
     successNotification: false,
     onMutationSuccess: (data) => {
-      message.success("Campagne créée avec succès");
-      const id = (data?.data as { id?: number })?.id;
+      message.success("Sondage créé avec succès");
+      const id = (data?.data as { id?: string })?.id;
       if (id) {
-        navigate(`/ads/campaigns/show/${id}`);
+        navigate(`/polls/show/${id}`);
       } else {
-        navigate("/ads/campaigns");
+        navigate("/polls");
       }
     },
     onMutationError: () => {
-      message.error("Erreur lors de la création de la campagne");
+      message.error("Erreur lors de la création du sondage");
     },
   });
 
@@ -36,37 +36,27 @@ export const AdCampaignCreate = () => {
           marginBottom: 24,
         }}
       >
-        <Link to="/ads/campaigns">
+        <Link to="/polls">
           <Button icon={<ArrowLeftOutlined />}>Retour</Button>
         </Link>
         <Space>
-          <Button
-            type="primary"
-            icon={<SaveOutlined />}
-            onClick={() => form.submit()}
-          >
-            Créer la campagne
+          <Button type="primary" icon={<SaveOutlined />} onClick={() => form.submit()}>
+            Créer le sondage
           </Button>
         </Space>
       </div>
 
-      <AdCampaignForm
+      <PollForm
         formProps={{
           ...formProps,
           initialValues: {
-            status: "DRAFT",
-            priority: 0,
-            position_index: 0,
-            section_position: "after",
-            type: "IMAGE",
-            action: "NONE",
-            url: "",
-            media: { images: [], videos: [] },
-            scope: { entity_id: null, entity_ids: [], filters: {} },
+            options: [{ label: "" }, { label: "" }],
+            sectionPosition: "after",
           },
         }}
         form={form}
-        submitLabel="Créer la campagne"
+        mode="create"
+        submitLabel="Créer le sondage"
       />
     </div>
   );

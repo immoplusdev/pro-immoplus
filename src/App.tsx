@@ -38,6 +38,7 @@ import {
   TeamOutlined,
   SendOutlined,
   TagsOutlined,
+  PieChartOutlined,
 } from "@ant-design/icons";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { API_URL, PROJECT_ID } from "@/configs/app.config";
@@ -253,6 +254,18 @@ function App() {
                     canDelete: true,
                     icon: <FundOutlined />,
                     label: "Campagnes pub",
+                  },
+                },
+                {
+                  name: "polls",
+                  list: "/polls",
+                  create: "/polls/create",
+                  edit: "/polls/edit/:id",
+                  show: "/polls/show/:id",
+                  meta: {
+                    canDelete: true,
+                    icon: <PieChartOutlined />,
+                    label: "Sondages",
                   },
                 },
                 {

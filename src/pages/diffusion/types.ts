@@ -22,6 +22,8 @@ export type AdAction =
 // Idem AdPlacement : liste pilotée par le backend via /ads/campaigns/metadata.
 export type AdCampaignCategory = string;
 
+export type AdSectionPosition = "inline" | "before" | "after";
+
 export type AdStatus = "DRAFT" | "ACTIVE" | "SUSPENDED" | "EXPIRED";
 export type AdType = "IMAGE" | "VIDEO" | "CAROUSEL" | "VIDEO_CAROUSEL";
 export type AdEventType = "IMPRESSION" | "CLICK";
@@ -55,6 +57,8 @@ export interface AdCampaign {
   scope: AdScope;
   url: string | null;
   priority: number;
+  position_index: number | null;
+  section_position: AdSectionPosition;
   start_date: string;
   end_date: string;
   status: AdStatus;
@@ -135,6 +139,15 @@ export const AD_CATEGORIES: AdCampaignCategory[] = [
   "HORIZONTAL_AD",
   "OFFRE_SPECIAL",
 ];
+
+// Valeur de repli utilisée tant que /ads/campaigns/metadata n'a pas répondu (ou en cas d'échec).
+export const AD_SECTION_POSITIONS: AdSectionPosition[] = ["inline", "before", "after"];
+
+export const SECTION_POSITION_LABELS: Record<AdSectionPosition, string> = {
+  inline: "Dans la section (inline)",
+  before: "Avant la section",
+  after: "Après la section",
+};
 
 export const AD_STATUSES: AdStatus[] = ["DRAFT", "ACTIVE", "SUSPENDED", "EXPIRED"];
 export const AD_TYPES: AdType[] = ["IMAGE", "VIDEO", "CAROUSEL", "VIDEO_CAROUSEL"];

@@ -26,6 +26,7 @@ export const rolePermissions: Record<string, RolePermission> = {
             "feed",
             "banners",
             "ads/campaigns",
+            "polls",
             "admin/pro-certification",
             "admin/clients-statistiques",
             "admin/campaigns",

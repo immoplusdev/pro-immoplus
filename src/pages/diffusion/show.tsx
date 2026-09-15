@@ -12,7 +12,7 @@ import {
 import { ArrowLeftOutlined, EditOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
-import { AdCampaign, ENTITY_ID_ACTIONS, FILTERS_ACTIONS } from "./types";
+import { AdCampaign, ENTITY_ID_ACTIONS, FILTERS_ACTIONS, SECTION_POSITION_LABELS } from "./types";
 import { StatusBadge } from "./status-badge";
 
 const { Text, Title } = Typography;
@@ -75,6 +75,12 @@ export const AdCampaignShow = () => {
             <StatusBadge status={campaign.status} />
           </Descriptions.Item>
           <Descriptions.Item label="Priorité">{campaign.priority}</Descriptions.Item>
+          <Descriptions.Item label="Position section">
+            {SECTION_POSITION_LABELS[campaign.section_position] ?? campaign.section_position}
+          </Descriptions.Item>
+          {campaign.section_position === "inline" && (
+            <Descriptions.Item label="Position">{campaign.position_index ?? 0}</Descriptions.Item>
+          )}
           <Descriptions.Item label="Placement">{campaign.placement}</Descriptions.Item>
           <Descriptions.Item label="Catégorie">{campaign.campaign_category}</Descriptions.Item>
           <Descriptions.Item label="Type">{campaign.type}</Descriptions.Item>

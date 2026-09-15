@@ -3,7 +3,8 @@ import { Segmented, Typography } from "antd";
 import { LeftOutlined, RightOutlined, PictureOutlined } from "@ant-design/icons";
 import type { UploadFile } from "antd";
 import type { Dayjs } from "dayjs";
-import type { AdType, AdStatus, AdPlacement, AdCampaignCategory } from "./types";
+import type { AdType, AdStatus, AdPlacement, AdCampaignCategory, AdSectionPosition } from "./types";
+import { SECTION_POSITION_LABELS } from "./types";
 import { T, cardStyle } from "./tokens";
 import { StatusBadge } from "./status-badge";
 
@@ -43,6 +44,7 @@ interface PreviewProps {
     endDate?: Dayjs;
     priority?: number;
     positionIndex?: number;
+    sectionPosition?: AdSectionPosition;
 }
 
 function CarouselMedia({ items, kind = "image" }: { items: UploadFile[]; kind?: "image" | "video" }) {
@@ -155,6 +157,7 @@ export function AdCampaignPreview({
     endDate,
     priority,
     positionIndex,
+    sectionPosition,
 }: PreviewProps) {
     const [view, setView] = useState<"Mobile" | "Web">("Mobile");
     const firstImageUrl = useFileObjectUrl(imageFiles[0]);
@@ -276,7 +279,14 @@ export function AdCampaignPreview({
                 <MetaRow label="Type" value={type} />
                 <MetaRow label="Placement" value={placement} />
                 <MetaRow label="Catégorie" value={category} />
-                <MetaRow label="Priorité / Position" value={`${priority ?? 0} / ${positionIndex ?? 0}`} />
+                <MetaRow label="Priorité" value={String(priority ?? 0)} />
+                <MetaRow
+                    label="Position section"
+                    value={sectionPosition ? SECTION_POSITION_LABELS[sectionPosition] ?? sectionPosition : undefined}
+                />
+                {sectionPosition === "inline" && (
+                    <MetaRow label="Position" value={String(positionIndex ?? 0)} />
+                )}
                 {dateSummary && <MetaRow label="Période" value={dateSummary} />}
             </div>
         </div>

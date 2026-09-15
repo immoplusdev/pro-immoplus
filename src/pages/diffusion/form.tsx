@@ -29,7 +29,9 @@ import {
   AD_ACTIONS,
   ENTITY_ID_ACTIONS,
   FILTERS_ACTIONS,
+  SECTION_POSITION_LABELS,
   AdAction,
+  AdSectionPosition,
   AdType,
 } from "./types";
 import { axiosInstance } from "@/lib/providers/utils/axios";
@@ -118,7 +120,7 @@ interface AdCampaignFormProps {
 }
 
 export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }: AdCampaignFormProps) => {
-  const { placements, campaignCategories } = useAdCampaignMetadata();
+  const { placements, campaignCategories, sectionPositions } = useAdCampaignMetadata();
   const action: AdAction | undefined = Form.useWatch("action", form);
   const type: AdType = Form.useWatch("type", form) ?? "IMAGE";
   const status = Form.useWatch("status", form) ?? "DRAFT";
@@ -126,6 +128,8 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
   const category = Form.useWatch("campaign_category", form);
   const priority = Form.useWatch("priority", form);
   const positionIndex = Form.useWatch("position_index", form);
+  const sectionPosition: AdSectionPosition = Form.useWatch("section_position", form) ?? "after";
+  const showPositionIndex = sectionPosition === "inline";
   const startDate: Dayjs | undefined = Form.useWatch("start_date", form);
   const endDate: Dayjs | undefined = Form.useWatch("end_date", form);
   const title = Form.useWatch(["content", "title"], form);
@@ -448,16 +452,40 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item
-                    name="position_index"
-                    label="Position"
-                    initialValue={0}
+                    name="section_position"
+                    label="Position par rapport à la section"
+                    initialValue="after"
                     rules={[{ required: true, message: "La position est requise" }]}
                   >
-                    <InputNumber min={0} style={{ width: "100%" }} placeholder="0" />
+                    <Select
+                      options={sectionPositions.map((p) => ({
+                        label: SECTION_POSITION_LABELS[p] ?? p,
+                        value: p,
+                      }))}
+                    />
                   </Form.Item>
-                  <FieldHint>Ordre d'affichage parmi les autres bannières du même placement.</FieldHint>
+                  <FieldHint>
+                    "Avant"/"Après" insère la pub comme sa propre section ; "Dans la section" la mélange aux éléments
+                    (nécessite une position ci-dessous).
+                  </FieldHint>
                 </Col>
               </Row>
+
+              {showPositionIndex && (
+                <Row gutter={20} style={{ marginTop: 20 }}>
+                  <Col xs={24} md={12}>
+                    <Form.Item
+                      name="position_index"
+                      label="Position"
+                      initialValue={0}
+                      rules={[{ required: true, message: "La position est requise" }]}
+                    >
+                      <InputNumber min={0} style={{ width: "100%" }} placeholder="0" />
+                    </Form.Item>
+                    <FieldHint>Ordre d'affichage parmi les autres éléments de la section.</FieldHint>
+                  </Col>
+                </Row>
+              )}
 
               <Row gutter={20} style={{ marginTop: 20 }}>
                 <Col xs={24} md={12}>
@@ -801,6 +829,7 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
               endDate={endDay}
               priority={priority}
               positionIndex={positionIndex}
+              sectionPosition={sectionPosition}
             />
           </div>
         </div>

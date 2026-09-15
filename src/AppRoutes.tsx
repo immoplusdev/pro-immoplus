@@ -111,6 +111,7 @@ import {
   AdCampaignEdit,
   AdCampaignShow,
 } from "@/pages/diffusion";
+import { PollList, PollCreate, PollEdit, PollShow } from "@/pages/polls";
 import { ProCertificationList } from "@/pages/admin/pro-certification";
 import { ProCertificationDetail } from "@/pages/admin/pro-certification/detail";
 import { ClientsStatistiquesList } from "@/pages/admin/clients-statistiques";
@@ -310,6 +311,12 @@ export function AppRoutes() {
           <Route path="create" element={<AdCampaignCreate />} />
           <Route path="edit/:id" element={<AdCampaignEdit />} />
           <Route path="show/:id" element={<AdCampaignShow />} />
+        </Route>
+        <Route path={"/polls"}>
+          <Route index element={<PollList />} />
+          <Route path="create" element={<PollCreate />} />
+          <Route path="edit/:id" element={<PollEdit />} />
+          <Route path="show/:id" element={<PollShow />} />
         </Route>
         <Route path={"/admin/pro-certification"}>
           <Route index element={<ProCertificationList />} />
