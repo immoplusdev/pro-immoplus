@@ -3,6 +3,7 @@ import {
   Form,
   Input,
   Select,
+  AutoComplete,
   Segmented,
   InputNumber,
   DatePicker,
@@ -30,6 +31,8 @@ import {
   ENTITY_ID_ACTIONS,
   FILTERS_ACTIONS,
   SECTION_POSITION_LABELS,
+  RESIDENCES_VILLE_PLACEMENT,
+  RESIDENCES_COMMUNE_PLACEMENT,
   AdAction,
   AdSectionPosition,
   AdType,
@@ -44,6 +47,7 @@ import { FeedPickerModal, FeedVideoPick } from "./feed-picker-modal";
 import { ResidencePickerModal, ResidencePick } from "./residence-picker-modal";
 import { VilleAdsPickerModal, EntityPick } from "./ville-ads-picker-modal";
 import { useAdCampaignMetadata } from "./use-ad-campaign-metadata";
+import { useDynamicHomeSections } from "./use-dynamic-home-sections";
 
 const { Text, Title } = Typography;
 
@@ -130,6 +134,15 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
   const positionIndex = Form.useWatch("position_index", form);
   const sectionPosition: AdSectionPosition = Form.useWatch("section_position", form) ?? "after";
   const showPositionIndex = sectionPosition === "inline";
+  const targetSectionGroup: "ville" | "commune" | null =
+    placement === RESIDENCES_VILLE_PLACEMENT
+      ? "ville"
+      : placement === RESIDENCES_COMMUNE_PLACEMENT
+        ? "commune"
+        : null;
+  const { villeOptions, communeOptions } = useDynamicHomeSections(targetSectionGroup !== null);
+  const targetSectionOptions = targetSectionGroup === "commune" ? communeOptions : villeOptions;
+  const targetSectionKey: string | undefined = Form.useWatch("target_section_key", form);
   const startDate: Dayjs | undefined = Form.useWatch("start_date", form);
   const endDate: Dayjs | undefined = Form.useWatch("end_date", form);
   const title = Form.useWatch(["content", "title"], form);
@@ -335,9 +348,13 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
         resolveMedia(vidFiles),
       ]);
 
+      const targetSectionKeyRaw = values.target_section_key as string | null | undefined;
+
       const payload = {
         ...values,
         url: (values.url as string | undefined) ?? "",
+        target_section_key:
+          targetSectionKeyRaw && targetSectionKeyRaw.trim() !== "" ? targetSectionKeyRaw.trim() : null,
         start_date: values.start_date
           ? dayjs.isDayjs(values.start_date)
             ? (values.start_date as Dayjs).toISOString()
@@ -483,6 +500,31 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
                       <InputNumber min={0} style={{ width: "100%" }} placeholder="0" />
                     </Form.Item>
                     <FieldHint>Ordre d'affichage parmi les autres éléments de la section.</FieldHint>
+                  </Col>
+                </Row>
+              )}
+
+              {targetSectionGroup && (
+                <Row gutter={20} style={{ marginTop: 20 }}>
+                  <Col xs={24}>
+                    <Form.Item
+                      name="target_section_key"
+                      label={<OptionalLabel>Cibler une {targetSectionGroup === "commune" ? "commune" : "ville"} précise</OptionalLabel>}
+                    >
+                      <AutoComplete
+                        options={targetSectionOptions}
+                        placeholder={`Laisser vide pour cibler toutes les ${targetSectionGroup === "commune" ? "communes" : "villes"}`}
+                        filterOption={(input, option) =>
+                          (option?.label as string)?.toLowerCase().includes(input.toLowerCase())
+                        }
+                      />
+                    </Form.Item>
+                    <FieldHint>
+                      Clé exacte de la section (ex. <code>residences_{targetSectionGroup}_&lt;id&gt;</code>), avec le
+                      nombre de résidences entre parenthèses. Seules les {targetSectionGroup === "commune" ? "communes" : "villes"} les
+                      mieux dotées apparaissent dans la liste — au besoin, saisissez la clé manuellement.
+                      Laisser vide pour cibler l'ensemble des {targetSectionGroup === "commune" ? "communes" : "villes"}.
+                    </FieldHint>
                   </Col>
                 </Row>
               )}
@@ -830,6 +872,7 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
               priority={priority}
               positionIndex={positionIndex}
               sectionPosition={sectionPosition}
+              targetSectionKey={targetSectionKey}
             />
           </div>
         </div>

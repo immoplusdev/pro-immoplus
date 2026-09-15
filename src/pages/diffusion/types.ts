@@ -59,6 +59,7 @@ export interface AdCampaign {
   priority: number;
   position_index: number | null;
   section_position: AdSectionPosition;
+  target_section_key: string | null;
   start_date: string;
   end_date: string;
   status: AdStatus;
@@ -148,6 +149,14 @@ export const SECTION_POSITION_LABELS: Record<AdSectionPosition, string> = {
   before: "Avant la section",
   after: "Après la section",
 };
+
+// Placements dont les sections cibles sont dynamiques (une par ville/commune) — seuls ceux-ci
+// permettent de préciser `target_section_key` pour ne cibler qu'une ville/commune donnée au lieu
+// de toutes (voir docs/drafts/docss.md §1.1/§1.2/§1.4). Comparaison en dur nécessaire ici (logique
+// conditionnelle du formulaire), contrairement aux options du dropdown `placement` qui restent
+// pilotées par /ads/campaigns/metadata.
+export const RESIDENCES_VILLE_PLACEMENT = "HOME_FEED_RESIDENCES_PAR_VILLE";
+export const RESIDENCES_COMMUNE_PLACEMENT = "HOME_FEED_RESIDENCES_PAR_COMMUNE";
 
 export const AD_STATUSES: AdStatus[] = ["DRAFT", "ACTIVE", "SUSPENDED", "EXPIRED"];
 export const AD_TYPES: AdType[] = ["IMAGE", "VIDEO", "CAROUSEL", "VIDEO_CAROUSEL"];

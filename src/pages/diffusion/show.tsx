@@ -81,6 +81,11 @@ export const AdCampaignShow = () => {
           {campaign.section_position === "inline" && (
             <Descriptions.Item label="Position">{campaign.position_index ?? 0}</Descriptions.Item>
           )}
+          {campaign.target_section_key && (
+            <Descriptions.Item label="Ville/commune ciblée">
+              {campaign.target_section_key}
+            </Descriptions.Item>
+          )}
           <Descriptions.Item label="Placement">{campaign.placement}</Descriptions.Item>
           <Descriptions.Item label="Catégorie">{campaign.campaign_category}</Descriptions.Item>
           <Descriptions.Item label="Type">{campaign.type}</Descriptions.Item>

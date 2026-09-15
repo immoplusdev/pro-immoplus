@@ -45,6 +45,7 @@ interface PreviewProps {
     priority?: number;
     positionIndex?: number;
     sectionPosition?: AdSectionPosition;
+    targetSectionKey?: string | null;
 }
 
 function CarouselMedia({ items, kind = "image" }: { items: UploadFile[]; kind?: "image" | "video" }) {
@@ -158,6 +159,7 @@ export function AdCampaignPreview({
     priority,
     positionIndex,
     sectionPosition,
+    targetSectionKey,
 }: PreviewProps) {
     const [view, setView] = useState<"Mobile" | "Web">("Mobile");
     const firstImageUrl = useFileObjectUrl(imageFiles[0]);
@@ -287,6 +289,7 @@ export function AdCampaignPreview({
                 {sectionPosition === "inline" && (
                     <MetaRow label="Position" value={String(positionIndex ?? 0)} />
                 )}
+                {targetSectionKey && <MetaRow label="Cible" value={targetSectionKey} />}
                 {dateSummary && <MetaRow label="Période" value={dateSummary} />}
             </div>
         </div>

@@ -58,6 +58,7 @@ export const AdCampaignCreate = () => {
             priority: 0,
             position_index: 0,
             section_position: "after",
+            target_section_key: null,
             type: "IMAGE",
             action: "NONE",
             url: "",

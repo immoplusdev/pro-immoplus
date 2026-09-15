@@ -99,6 +99,12 @@ export const AdCampaignList = () => {
           : "—",
     },
     {
+      dataIndex: "target_section_key",
+      title: "Ville/commune ciblée",
+      ellipsis: true,
+      render: (v: AdCampaign["target_section_key"]) => v ?? "—",
+    },
+    {
       dataIndex: "start_date",
       title: "Date début",
       render: (v: string) => dayjs(v).format("DD/MM/YYYY"),
