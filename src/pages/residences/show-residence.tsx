@@ -16,6 +16,7 @@ import {ImageCarousel} from "@/components/images/image-carousel";
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import {getCarouselUrls} from "@/lib/helpers";
+import {SeedResidenceRating} from "@/pages/residences/components/seed-residence-rating";
 
 const {Title} = Typography;
 
@@ -127,6 +128,8 @@ export const ShowResidence = () => {
 
                 </ColList>
             </Form>
+
+            <SeedResidenceRating residenceId={record?.id} />
         </Show>
     );
 };

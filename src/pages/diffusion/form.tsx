@@ -24,6 +24,7 @@ import {
   VideoCameraOutlined,
   AppstoreOutlined,
   FolderOpenOutlined,
+  ThunderboltOutlined,
 } from "@ant-design/icons";
 import dayjs, { Dayjs } from "dayjs";
 import {
@@ -86,6 +87,7 @@ const TYPE_OPTIONS: { label: React.ReactNode; value: AdType }[] = [
   { value: "VIDEO", label: <Space size={6}><VideoCameraOutlined /> Vidéo</Space> },
   { value: "CAROUSEL", label: <Space size={6}><AppstoreOutlined /> Carrousel</Space> },
   { value: "VIDEO_CAROUSEL", label: <Space size={6}><AppstoreOutlined /> Carrousel vidéo</Space> },
+  { value: "FLASH_OFFER", label: <Space size={6}><ThunderboltOutlined /> Offre flash</Space> },
 ];
 
 function SectionCard({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) {
@@ -388,8 +390,9 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
     }
   };
 
-  const showImages = type === "IMAGE" || type === "CAROUSEL";
+  const showImages = type === "IMAGE" || type === "CAROUSEL" || type === "FLASH_OFFER";
   const showVideos = type === "VIDEO" || type === "VIDEO_CAROUSEL";
+  const isFlashOffer = type === "FLASH_OFFER";
 
   return (
     <div className="campagne-form">
@@ -541,27 +544,52 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item
-                    name="end_date"
-                    label="Date de fin"
-                    dependencies={["start_date"]}
-                    rules={[
-                      { required: true, message: "La date de fin est requise" },
-                      ({ getFieldValue }) => ({
-                        validator(_, value) {
-                          const start = getFieldValue("start_date");
-                          if (!value || !start) return Promise.resolve();
-                          const sd = dayjs.isDayjs(start) ? start : dayjs(start);
-                          const ed = dayjs.isDayjs(value) ? value : dayjs(value);
-                          if (ed.isAfter(sd)) return Promise.resolve();
-                          return Promise.reject(new Error("La date de fin doit être postérieure à la date de début"));
-                        },
-                      }),
-                    ]}
-                    getValueProps={(value) => ({ value: value ? dayjs(value) : undefined })}
+                  <div
+                    style={
+                      isFlashOffer
+                        ? {
+                            border: `1.5px solid ${T.warning}`,
+                            background: `${T.warning}14`,
+                            borderRadius: 8,
+                            padding: 12,
+                          }
+                        : undefined
+                    }
                   >
-                    <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} placeholder="Sélectionner une date" />
-                  </Form.Item>
+                    <Form.Item
+                      name="end_date"
+                      label={isFlashOffer ? "Date de fin ⏱️ (pilote le countdown)" : "Date de fin"}
+                      dependencies={["start_date"]}
+                      rules={[
+                        { required: true, message: "La date de fin est requise" },
+                        ({ getFieldValue }) => ({
+                          validator(_, value) {
+                            const start = getFieldValue("start_date");
+                            if (!value || !start) return Promise.resolve();
+                            const sd = dayjs.isDayjs(start) ? start : dayjs(start);
+                            const ed = dayjs.isDayjs(value) ? value : dayjs(value);
+                            if (ed.isAfter(sd)) return Promise.resolve();
+                            return Promise.reject(new Error("La date de fin doit être postérieure à la date de début"));
+                          },
+                        }),
+                      ]}
+                      getValueProps={(value) => ({ value: value ? dayjs(value) : undefined })}
+                      style={{ marginBottom: isFlashOffer ? 4 : undefined }}
+                    >
+                      <DatePicker
+                        format={isFlashOffer ? "DD/MM/YYYY HH:mm" : "DD/MM/YYYY"}
+                        showTime={isFlashOffer ? { format: "HH:mm" } : false}
+                        style={{ width: "100%" }}
+                        placeholder="Sélectionner une date"
+                      />
+                    </Form.Item>
+                    {isFlashOffer && (
+                      <FieldHint>
+                        Visible en direct par les utilisateurs (countdown rafraîchi chaque seconde) —
+                        une erreur ici sera immédiatement visible dans l'app.
+                      </FieldHint>
+                    )}
+                  </div>
                 </Col>
               </Row>
               {startDay && endDay && (
@@ -609,9 +637,15 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item name={["content", "cta_label"]} label={<OptionalLabel>Libellé CTA</OptionalLabel>} style={{ marginBottom: 0 }}>
-                      <Input placeholder="En savoir plus" />
-                    </Form.Item>
+                    {isFlashOffer ? (
+                      <FieldHint>
+                        Pas de bouton CTA pour une offre flash — toute la bannière est cliquable.
+                      </FieldHint>
+                    ) : (
+                      <Form.Item name={["content", "cta_label"]} label={<OptionalLabel>Libellé CTA</OptionalLabel>} style={{ marginBottom: 0 }}>
+                        <Input placeholder="En savoir plus" />
+                      </Form.Item>
+                    )}
                   </Col>
                 </Row>
               </div>
@@ -656,6 +690,13 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
                   {imageFiles.length < 2
                     ? `Ajoutez au moins 2 visuels pour le carrousel (${imageFiles.length}/2).`
                     : `${imageFiles.length} visuels ajoutés.`}
+                </FieldHint>
+              )}
+
+              {isFlashOffer && (
+                <FieldHint>
+                  Image décorative uniquement (vague, dégradé…) — pas une bannière complète avec texte
+                  incrusté, le titre/badge sont déjà affichés par-dessus.
                 </FieldHint>
               )}
 

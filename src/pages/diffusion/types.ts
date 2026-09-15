@@ -25,7 +25,7 @@ export type AdCampaignCategory = string;
 export type AdSectionPosition = "inline" | "before" | "after";
 
 export type AdStatus = "DRAFT" | "ACTIVE" | "SUSPENDED" | "EXPIRED";
-export type AdType = "IMAGE" | "VIDEO" | "CAROUSEL" | "VIDEO_CAROUSEL";
+export type AdType = "IMAGE" | "VIDEO" | "CAROUSEL" | "VIDEO_CAROUSEL" | "FLASH_OFFER";
 export type AdEventType = "IMPRESSION" | "CLICK";
 
 export interface AdContent {
@@ -159,7 +159,7 @@ export const RESIDENCES_VILLE_PLACEMENT = "HOME_FEED_RESIDENCES_PAR_VILLE";
 export const RESIDENCES_COMMUNE_PLACEMENT = "HOME_FEED_RESIDENCES_PAR_COMMUNE";
 
 export const AD_STATUSES: AdStatus[] = ["DRAFT", "ACTIVE", "SUSPENDED", "EXPIRED"];
-export const AD_TYPES: AdType[] = ["IMAGE", "VIDEO", "CAROUSEL", "VIDEO_CAROUSEL"];
+export const AD_TYPES: AdType[] = ["IMAGE", "VIDEO", "CAROUSEL", "VIDEO_CAROUSEL", "FLASH_OFFER"];
 export const AD_EVENT_TYPES: AdEventType[] = ["IMPRESSION", "CLICK"];
 
 export const STATUS_COLORS: Record<AdStatus, string> = {
