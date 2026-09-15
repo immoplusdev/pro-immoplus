@@ -87,6 +87,7 @@ import {
   FeedUploadPromo,
   FeedVideosUpload,
   ShowFeed,
+  FeedHomeConfig,
 } from "@/pages/feed";
 import { Statistics } from "@/pages/statistics";
 import { ListBanners, CreateBanner, EditBanner } from "@/pages/banners";
@@ -229,6 +230,7 @@ export function AppRoutes() {
         </Route>
         <Route path={"/feed"}>
           <Route index element={<FeedIndex />} />
+          <Route path="home" element={<FeedHomeConfig />} />
           <Route path="list" element={<ListFeed />} />
           <Route path="legacy" element={<ListFeedLegacy />} />
           <Route path="legacy/show/:id" element={<ShowFeedLegacy />} />

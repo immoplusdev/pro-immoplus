@@ -287,12 +287,14 @@
       "authorStats": "Author & Statistics",
       "legacyFlow": "Legacy Flow",
       "activeFlow": "Active Flow",
-      "uploader": "Uploader"
+      "uploader": "Uploader",
+      "home": "Home"
     },
     "descriptions": {
       "activeFlow": "Manage active feed videos with high performance HLS",
       "legacyFlow": "View and migrate old videos to the active feed",
-      "uploader": "Upload new promotional videos"
+      "uploader": "Upload new promotional videos",
+      "home": "Order, limit and toggle the home screen sections"
     },
     "fields": {
       "title": "Title",
@@ -330,7 +332,8 @@
       "migrateToActive": "Migrate to active feed",
       "viewActive": "View active feed",
       "viewLegacy": "View legacy feed",
-      "upload": "Upload"
+      "upload": "Upload",
+      "viewHome": "Configure Home"
     },
     "filters": {
       "status": "Status",
