@@ -4,6 +4,7 @@ import {OrderedListOutlined, ReloadOutlined, SaveOutlined} from "@ant-design/ico
 import {DeleteButton, Edit, useForm} from "@refinedev/antd";
 import {ResidenceEditActionFields} from "@/pages/residences/components/edit-actions-fields";
 import {ResidenceDataFields} from "@/pages/residences/components/edit-read-only-fields";
+import {SeedResidenceRating} from "@/pages/residences/components/seed-residence-rating";
 import {useTranslate} from "@refinedev/core";
 import {Button, Col, Form, Row, Space} from "antd";
 import {extractRelationId} from "@/lib/helpers";
@@ -66,6 +67,8 @@ export const EditResidence: React.FC = () => {
                     </Col>
                 </Row>
             </Form>
+
+            <SeedResidenceRating residenceId={residencesData?.id} />
         </Edit>
     );
 };

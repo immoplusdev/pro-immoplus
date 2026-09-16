@@ -23,6 +23,7 @@ import {
   AdStatus,
   AdPlacement,
   AD_STATUSES,
+  SECTION_POSITION_LABELS,
 } from "./types";
 import { StatusBadge } from "./status-badge";
 import { useAdCampaignMetadata } from "./use-ad-campaign-metadata";
@@ -88,6 +89,20 @@ export const AdCampaignList = () => {
       title: "Priorité",
       width: 80,
       sorter: (a: AdCampaign, b: AdCampaign) => a.priority - b.priority,
+    },
+    {
+      dataIndex: "section_position",
+      title: "Position section",
+      render: (v: AdCampaign["section_position"], record: AdCampaign) =>
+        v
+          ? `${SECTION_POSITION_LABELS[v] ?? v}${v === "inline" ? ` (${record.position_index ?? 0})` : ""}`
+          : "—",
+    },
+    {
+      dataIndex: "target_section_key",
+      title: "Ville/commune ciblée",
+      ellipsis: true,
+      render: (v: AdCampaign["target_section_key"]) => v ?? "—",
     },
     {
       dataIndex: "start_date",

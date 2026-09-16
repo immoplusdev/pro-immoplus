@@ -3,7 +3,8 @@ import { Segmented, Typography } from "antd";
 import { LeftOutlined, RightOutlined, PictureOutlined } from "@ant-design/icons";
 import type { UploadFile } from "antd";
 import type { Dayjs } from "dayjs";
-import type { AdType, AdStatus, AdPlacement, AdCampaignCategory } from "./types";
+import type { AdType, AdStatus, AdPlacement, AdCampaignCategory, AdSectionPosition } from "./types";
+import { SECTION_POSITION_LABELS } from "./types";
 import { T, cardStyle } from "./tokens";
 import { StatusBadge } from "./status-badge";
 
@@ -28,6 +29,38 @@ function useFileObjectUrl(file: UploadFile | undefined): string | undefined {
     return url;
 }
 
+// Compte à rebours vivant pour AdType.FLASH_OFFER — recalculé chaque seconde depuis `endDate`,
+// pour donner un aperçu fidèle de ce que verra l'utilisateur final dans l'app.
+function useCountdown(endDate: Dayjs | undefined): { label: string; expired: boolean } | null {
+    const [, forceTick] = useState(0);
+    // `endDate` est réinstancié par le formulaire à chaque render (dayjs(value) non mémoïsé) —
+    // dépendre du timestamp brut évite de relancer l'intervalle inutilement à chaque frappe.
+    const endMs = endDate?.valueOf();
+
+    useEffect(() => {
+        if (!endMs) return;
+        const interval = setInterval(() => forceTick((n) => n + 1), 1000);
+        return () => clearInterval(interval);
+    }, [endMs]);
+
+    if (!endDate) return null;
+
+    const diffMs = endDate.diff(undefined, "millisecond");
+    if (diffMs <= 0) return { label: "Expirée", expired: true };
+
+    const totalSeconds = Math.floor(diffMs / 1000);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    const label = days > 0
+        ? `${days}j ${hours}h ${minutes}m`
+        : `${String(hours).padStart(2, "0")}h ${String(minutes).padStart(2, "0")}m ${String(seconds).padStart(2, "0")}s`;
+
+    return { label, expired: false };
+}
+
 interface PreviewProps {
     type: AdType;
     status: AdStatus;
@@ -43,6 +76,8 @@ interface PreviewProps {
     endDate?: Dayjs;
     priority?: number;
     positionIndex?: number;
+    sectionPosition?: AdSectionPosition;
+    targetSectionKey?: string | null;
 }
 
 function CarouselMedia({ items, kind = "image" }: { items: UploadFile[]; kind?: "image" | "video" }) {
@@ -155,6 +190,8 @@ export function AdCampaignPreview({
     endDate,
     priority,
     positionIndex,
+    sectionPosition,
+    targetSectionKey,
 }: PreviewProps) {
     const [view, setView] = useState<"Mobile" | "Web">("Mobile");
     const firstImageUrl = useFileObjectUrl(imageFiles[0]);
@@ -164,7 +201,13 @@ export function AdCampaignPreview({
         (type === "IMAGE" && imageFiles.length > 0) ||
         (type === "VIDEO" && videoFiles.length > 0) ||
         (type === "CAROUSEL" && imageFiles.length > 0) ||
-        (type === "VIDEO_CAROUSEL" && videoFiles.length > 0);
+        (type === "VIDEO_CAROUSEL" && videoFiles.length > 0) ||
+        (type === "FLASH_OFFER" && imageFiles.length > 0);
+
+    // L'image reste "décorative uniquement" pour une offre flash (recommandée, pas requise) —
+    // le titre/badge/countdown doivent rester visibles même sans image choisie.
+    const showOverlay = hasMedia || type === "FLASH_OFFER";
+    const countdown = useCountdown(type === "FLASH_OFFER" ? endDate : undefined);
 
     const dateSummary = useMemo(() => {
         if (!startDate || !endDate) return null;
@@ -211,7 +254,11 @@ export function AdCampaignPreview({
 
                     {hasMedia && type === "VIDEO_CAROUSEL" && <CarouselMedia items={videoFiles} kind="video" />}
 
-                    {hasMedia && (
+                    {hasMedia && type === "FLASH_OFFER" && firstImageUrl && (
+                        <img src={firstImageUrl} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    )}
+
+                    {showOverlay && (
                         <div
                             style={{
                                 position: "absolute",
@@ -226,6 +273,22 @@ export function AdCampaignPreview({
                                 transition: "opacity 180ms ease-out",
                             }}
                         >
+                            {countdown && (
+                                <span
+                                    style={{
+                                        alignSelf: "flex-start",
+                                        background: countdown.expired ? "rgba(255,255,255,0.15)" : T.warning,
+                                        color: countdown.expired ? "rgba(255,255,255,0.7)" : "#1A1423",
+                                        fontSize: 12,
+                                        fontWeight: 700,
+                                        borderRadius: 999,
+                                        padding: "3px 10px",
+                                        letterSpacing: 0.2,
+                                    }}
+                                >
+                                    ⏱ {countdown.label}
+                                </span>
+                            )}
                             {badge && (
                                 <span
                                     style={{
@@ -276,7 +339,16 @@ export function AdCampaignPreview({
                 <MetaRow label="Type" value={type} />
                 <MetaRow label="Placement" value={placement} />
                 <MetaRow label="Catégorie" value={category} />
-                <MetaRow label="Priorité / Position" value={`${priority ?? 0} / ${positionIndex ?? 0}`} />
+                <MetaRow label="Priorité" value={String(priority ?? 0)} />
+                <MetaRow
+                    label="Position section"
+                    value={sectionPosition ? SECTION_POSITION_LABELS[sectionPosition] ?? sectionPosition : undefined}
+                />
+                {sectionPosition === "inline" && (
+                    <MetaRow label="Position" value={String(positionIndex ?? 0)} />
+                )}
+                {targetSectionKey && <MetaRow label="Cible" value={targetSectionKey} />}
+                {countdown && <MetaRow label="Expire dans" value={countdown.label} />}
                 {dateSummary && <MetaRow label="Période" value={dateSummary} />}
             </div>
         </div>

@@ -87,6 +87,7 @@ import {
   FeedUploadPromo,
   FeedVideosUpload,
   ShowFeed,
+  FeedHomeConfig,
 } from "@/pages/feed";
 import { Statistics } from "@/pages/statistics";
 import { ListBanners, CreateBanner, EditBanner } from "@/pages/banners";
@@ -111,10 +112,15 @@ import {
   AdCampaignEdit,
   AdCampaignShow,
 } from "@/pages/diffusion";
+import { PollList, PollCreate, PollEdit, PollShow } from "@/pages/polls";
 import { ProCertificationList } from "@/pages/admin/pro-certification";
 import { ProCertificationDetail } from "@/pages/admin/pro-certification/detail";
 import { ClientsStatistiquesList } from "@/pages/admin/clients-statistiques";
 import { ClientsStatistiquesDetail } from "@/pages/admin/clients-statistiques/detail";
+import { CampaignsList } from "@/pages/admin/campaigns";
+import { CampaignCreate } from "@/pages/admin/campaigns/create";
+import { CampaignDetail } from "@/pages/admin/campaigns/detail";
+import { CampaignTagsManagement } from "@/pages/admin/campaigns/tags";
 
 function RouteErrorBoundary() {
   const location = useLocation();
@@ -224,6 +230,7 @@ export function AppRoutes() {
         </Route>
         <Route path={"/feed"}>
           <Route index element={<FeedIndex />} />
+          <Route path="home" element={<FeedHomeConfig />} />
           <Route path="list" element={<ListFeed />} />
           <Route path="legacy" element={<ListFeedLegacy />} />
           <Route path="legacy/show/:id" element={<ShowFeedLegacy />} />
@@ -307,6 +314,12 @@ export function AppRoutes() {
           <Route path="edit/:id" element={<AdCampaignEdit />} />
           <Route path="show/:id" element={<AdCampaignShow />} />
         </Route>
+        <Route path={"/polls"}>
+          <Route index element={<PollList />} />
+          <Route path="create" element={<PollCreate />} />
+          <Route path="edit/:id" element={<PollEdit />} />
+          <Route path="show/:id" element={<PollShow />} />
+        </Route>
         <Route path={"/admin/pro-certification"}>
           <Route index element={<ProCertificationList />} />
           <Route path=":userId" element={<ProCertificationDetail />} />
@@ -314,6 +327,14 @@ export function AppRoutes() {
         <Route path={"/admin/clients-statistiques"}>
           <Route index element={<ClientsStatistiquesList />} />
           <Route path=":clientId" element={<ClientsStatistiquesDetail />} />
+        </Route>
+        <Route path={"/admin/campaigns"}>
+          <Route index element={<CampaignsList />} />
+          <Route path="create" element={<CampaignCreate />} />
+          <Route path=":campagneId" element={<CampaignDetail />} />
+        </Route>
+        <Route path={"/admin/campaign-tags"}>
+          <Route index element={<CampaignTagsManagement />} />
         </Route>
         <Route path={"/statistics"}>
           <Route index element={<Statistics />} />

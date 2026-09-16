@@ -45,9 +45,9 @@ export const getDataProvider = (
 
             const queryFilters = generateFilter(filters);
 
-            // Pour alerts et feed-legacy : extraire le filtre status et le passer en query param direct
+            // Pour alerts, feed-legacy et polls : extraire le filtre status et le passer en query param direct
             let directStatus: string | undefined;
-            if (resource === "alerts" || resource === "feed-legacy") {
+            if (resource === "alerts" || resource === "feed-legacy" || resource === "polls") {
                 const statusIdx = queryFilters.findIndex((f) => f._field === "status");
                 if (statusIdx !== -1) {
                     directStatus = queryFilters[statusIdx]._val as string;
@@ -70,7 +70,7 @@ export const getDataProvider = (
             } = {};
 
             if (mode === "server") {
-                if (resource === "feed-legacy") {
+                if (resource === "feed-legacy" || resource === "polls") {
                     query.page = current;
                     query.limit = pageSize;
                 } else {
@@ -100,8 +100,8 @@ export const getDataProvider = (
 
             const total = resource === "feed"
                 ? data.count
-                : resource === "feed-legacy"
-                ? data.total
+                : resource === "feed-legacy" || resource === "polls"
+                ? (data.total ?? data.totalCount)
                 : data.totalCount;
 
             let items = data.data;

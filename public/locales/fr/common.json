@@ -975,12 +975,14 @@
       "authorStats": "Auteur et Statistiques",
       "legacyFlow": "Flux Legacy",
       "activeFlow": "Flux Actif",
-      "uploader": "Uploader"
+      "uploader": "Uploader",
+      "home": "Home"
     },
     "descriptions": {
       "activeFlow": "Gérer les vidéos du flux actif avec HLS haute performance",
       "legacyFlow": "Consulter et migrer les anciennes vidéos vers le flux actif",
-      "uploader": "Télécharger de nouvelles vidéos promotionnelles"
+      "uploader": "Télécharger de nouvelles vidéos promotionnelles",
+      "home": "Ordonner, limiter et activer/désactiver les sections de l'écran d'accueil"
     },
     "fields": {
       "title": "Titre",
@@ -1018,7 +1020,8 @@
       "migrateToActive": "Migrer vers le flux actif",
       "viewActive": "Voir le flux actif",
       "viewLegacy": "Voir le flux legacy",
-      "upload": "Télécharger"
+      "upload": "Télécharger",
+      "viewHome": "Configurer le Home"
     },
     "filters": {
       "status": "Statut",
