@@ -121,6 +121,12 @@ import { CampaignsList } from "@/pages/admin/campaigns";
 import { CampaignCreate } from "@/pages/admin/campaigns/create";
 import { CampaignDetail } from "@/pages/admin/campaigns/detail";
 import { CampaignTagsManagement } from "@/pages/admin/campaigns/tags";
+import { ConversationsList } from "@/pages/admin/conversations";
+import { ConversationReportsList } from "@/pages/admin/conversations/reports";
+import { ConversationDetailPage } from "@/pages/admin/conversations/detail";
+import { RelaisList } from "@/pages/admin/relais";
+import { RelaisInterestsList } from "@/pages/admin/relais/interests";
+import { RelaisDetail } from "@/pages/admin/relais/detail";
 
 function RouteErrorBoundary() {
   const location = useLocation();
@@ -335,6 +341,16 @@ export function AppRoutes() {
         </Route>
         <Route path={"/admin/campaign-tags"}>
           <Route index element={<CampaignTagsManagement />} />
+        </Route>
+        <Route path={"/admin/conversations"}>
+          <Route index element={<ConversationsList />} />
+          <Route path="reports" element={<ConversationReportsList />} />
+          <Route path=":conversationId" element={<ConversationDetailPage />} />
+        </Route>
+        <Route path={"/admin/relais"}>
+          <Route index element={<RelaisList />} />
+          <Route path="interests" element={<RelaisInterestsList />} />
+          <Route path=":relaisId" element={<RelaisDetail />} />
         </Route>
         <Route path={"/statistics"}>
           <Route index element={<Statistics />} />
