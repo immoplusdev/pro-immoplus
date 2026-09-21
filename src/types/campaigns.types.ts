@@ -210,7 +210,11 @@ export interface CreateCampaignPayload {
   templateId: string;
   /** { "1": "{{prenom}}", ... } */
   mappingVariables: Record<string, string>;
-  audience: { filtre: Record<string, string> };
+  /**
+   * `filtre` (vide = "tous", rempli = segment) ou `recipientIds` (sélection
+   * manuelle, 1 à 5000 IDs `users.id`, prioritaire sur `filtre` côté back).
+   */
+  audience: { filtre: Record<string, string> } | { recipientIds: string[] };
   /** ISO date, optionnel */
   planifieLe?: string;
 }
