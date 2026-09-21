@@ -6,3 +6,4 @@ export * from "./show-feed-legacy";
 export * from "./feed-upload-index";
 export * from "./feed-upload-promo";
 export * from "./feed-videos-upload";
+export * from "./home-config/home-feed-config";

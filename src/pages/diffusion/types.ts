@@ -22,8 +22,10 @@ export type AdAction =
 // Idem AdPlacement : liste pilotée par le backend via /ads/campaigns/metadata.
 export type AdCampaignCategory = string;
 
+export type AdSectionPosition = "inline" | "before" | "after";
+
 export type AdStatus = "DRAFT" | "ACTIVE" | "SUSPENDED" | "EXPIRED";
-export type AdType = "IMAGE" | "VIDEO" | "CAROUSEL" | "VIDEO_CAROUSEL";
+export type AdType = "IMAGE" | "VIDEO" | "CAROUSEL" | "VIDEO_CAROUSEL" | "FLASH_OFFER";
 export type AdEventType = "IMPRESSION" | "CLICK";
 
 export interface AdContent {
@@ -55,6 +57,9 @@ export interface AdCampaign {
   scope: AdScope;
   url: string | null;
   priority: number;
+  position_index: number | null;
+  section_position: AdSectionPosition;
+  target_section_key: string | null;
   start_date: string;
   end_date: string;
   status: AdStatus;
@@ -136,8 +141,25 @@ export const AD_CATEGORIES: AdCampaignCategory[] = [
   "OFFRE_SPECIAL",
 ];
 
+// Valeur de repli utilisée tant que /ads/campaigns/metadata n'a pas répondu (ou en cas d'échec).
+export const AD_SECTION_POSITIONS: AdSectionPosition[] = ["inline", "before", "after"];
+
+export const SECTION_POSITION_LABELS: Record<AdSectionPosition, string> = {
+  inline: "Dans la section (inline)",
+  before: "Avant la section",
+  after: "Après la section",
+};
+
+// Placements dont les sections cibles sont dynamiques (une par ville/commune) — seuls ceux-ci
+// permettent de préciser `target_section_key` pour ne cibler qu'une ville/commune donnée au lieu
+// de toutes (voir docs/drafts/docss.md §1.1/§1.2/§1.4). Comparaison en dur nécessaire ici (logique
+// conditionnelle du formulaire), contrairement aux options du dropdown `placement` qui restent
+// pilotées par /ads/campaigns/metadata.
+export const RESIDENCES_VILLE_PLACEMENT = "HOME_FEED_RESIDENCES_PAR_VILLE";
+export const RESIDENCES_COMMUNE_PLACEMENT = "HOME_FEED_RESIDENCES_PAR_COMMUNE";
+
 export const AD_STATUSES: AdStatus[] = ["DRAFT", "ACTIVE", "SUSPENDED", "EXPIRED"];
-export const AD_TYPES: AdType[] = ["IMAGE", "VIDEO", "CAROUSEL", "VIDEO_CAROUSEL"];
+export const AD_TYPES: AdType[] = ["IMAGE", "VIDEO", "CAROUSEL", "VIDEO_CAROUSEL", "FLASH_OFFER"];
 export const AD_EVENT_TYPES: AdEventType[] = ["IMPRESSION", "CLICK"];
 
 export const STATUS_COLORS: Record<AdStatus, string> = {

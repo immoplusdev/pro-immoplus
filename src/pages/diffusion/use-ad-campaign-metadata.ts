@@ -1,5 +1,12 @@
 import { useCustom, useApiUrl } from "@refinedev/core";
-import { AD_PLACEMENTS, AD_CATEGORIES, AdPlacement, AdCampaignCategory } from "./types";
+import {
+  AD_PLACEMENTS,
+  AD_CATEGORIES,
+  AD_SECTION_POSITIONS,
+  AdPlacement,
+  AdCampaignCategory,
+  AdSectionPosition,
+} from "./types";
 
 interface AdCampaignMetadataResponse {
   placements: AdPlacement[];
@@ -7,6 +14,7 @@ interface AdCampaignMetadataResponse {
   types: string[];
   actions: string[];
   statuses: string[];
+  section_positions: AdSectionPosition[];
 }
 
 // GET /ads/campaigns/metadata renvoie Object.values(...) des enums backend —
@@ -26,6 +34,7 @@ export function useAdCampaignMetadata() {
   return {
     placements: metadata?.placements ?? AD_PLACEMENTS,
     campaignCategories: metadata?.campaign_categories ?? AD_CATEGORIES,
+    sectionPositions: metadata?.section_positions ?? AD_SECTION_POSITIONS,
     isLoading,
     isError,
   };

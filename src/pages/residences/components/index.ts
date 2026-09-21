@@ -5,3 +5,5 @@ export * from "./residence-tabs";
 export * from "./residence-tabs-nav";
 export * from "./apply-residence-reduction";
 export * from "./outline-tag";
+export * from "./seed-residence-rating";
+export * from "./client-picker-modal";
