@@ -38,6 +38,8 @@ import {
   TeamOutlined,
   SendOutlined,
   TagsOutlined,
+  MessageOutlined,
+  RetweetOutlined,
   PieChartOutlined,
 } from "@ant-design/icons";
 import { ColorModeContextProvider } from "./contexts/color-mode";
@@ -302,6 +304,24 @@ function App() {
                   meta: {
                     icon: <TagsOutlined />,
                     label: "Tags de campagne",
+                  },
+                },
+                {
+                  name: "admin/conversations",
+                  list: "/admin/conversations",
+                  show: "/admin/conversations/:conversationId",
+                  meta: {
+                    icon: <MessageOutlined />,
+                    label: "Messagerie",
+                  },
+                },
+                {
+                  name: "admin/relais",
+                  list: "/admin/relais",
+                  show: "/admin/relais/:relaisId",
+                  meta: {
+                    icon: <RetweetOutlined />,
+                    label: "Immo-Relais",
                   },
                 },
                 {

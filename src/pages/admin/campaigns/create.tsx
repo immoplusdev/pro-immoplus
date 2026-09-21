@@ -29,6 +29,8 @@ import {
 import { addCampaignToRegistry, updateCampaignInRegistry } from "@/hooks/useCampaignRegistry";
 import { VariableMappingList } from "@/components/admin/campaigns/VariableMappingList";
 import { AudienceFilterFields } from "@/components/admin/campaigns/AudienceFilterFields";
+import { AudienceRecipientsPicker } from "@/components/admin/campaigns/AudienceRecipientsPicker";
+import type { RecipientPick } from "@/components/admin/campaigns/RecipientPickerModal";
 import {
   FixedVariablesInputs,
   getFixedTagsFromMapping,
@@ -61,7 +63,9 @@ export function CampaignCreate() {
 
   // Étape 3
   const [mappingVariables, setMappingVariables] = useState<Record<string, string>>({});
+  const [audienceMode, setAudienceMode] = useState<"filtre" | "manuel">("filtre");
   const [audienceFiltre, setAudienceFiltre] = useState<Record<string, string>>({});
+  const [audienceRecipients, setAudienceRecipients] = useState<RecipientPick[]>([]);
   const [planifieLe, setPlanifieLe] = useState<Dayjs | null>(null);
 
   // Après création
@@ -96,6 +100,7 @@ export function CampaignCreate() {
 
   // vrai si le template ne déclare aucune variable, ou si toutes sont mappées
   const allPositionsMapped = positions.every((p) => !!mappingVariables[p]);
+  const audienceValid = audienceMode === "manuel" ? audienceRecipients.length > 0 : true;
 
   const allFixedSendFilled = fixedTags.every((tag) => !!sendFixes[unwrapTag(tag)]?.trim());
 
@@ -111,7 +116,10 @@ export function CampaignCreate() {
         cible,
         templateId,
         mappingVariables,
-        audience: { filtre: audienceFiltre },
+        audience:
+          audienceMode === "manuel"
+            ? { recipientIds: audienceRecipients.map((r) => r.id) }
+            : { filtre: audienceFiltre },
         ...(planifieLe ? { planifieLe: planifieLe.toISOString() } : {}),
       },
       {
@@ -208,7 +216,9 @@ export function CampaignCreate() {
                 setCible(v);
                 setTemplateId(undefined);
                 setMappingVariables({});
+                setAudienceMode("filtre");
                 setAudienceFiltre({});
+                setAudienceRecipients([]);
               }}
             />
           </div>
@@ -278,13 +288,29 @@ export function CampaignCreate() {
 
           <div>
             <Divider orientation="left" plain>
-              Filtre d'audience
+              Audience
             </Divider>
-            {cible && (
+            <Radio.Group
+              value={audienceMode}
+              onChange={(e) => setAudienceMode(e.target.value)}
+              style={{ marginBottom: 12 }}
+            >
+              <Radio.Button value="filtre">Tous / par segment</Radio.Button>
+              <Radio.Button value="manuel">Sélection manuelle</Radio.Button>
+            </Radio.Group>
+
+            {audienceMode === "filtre" && cible && (
               <AudienceFilterFields
                 cible={cible}
                 value={audienceFiltre}
                 onChange={setAudienceFiltre}
+              />
+            )}
+            {audienceMode === "manuel" && cible && (
+              <AudienceRecipientsPicker
+                cible={cible}
+                value={audienceRecipients}
+                onChange={setAudienceRecipients}
               />
             )}
           </div>
@@ -310,7 +336,7 @@ export function CampaignCreate() {
           </div>
         </Space>
       ),
-      canNext: allPositionsMapped,
+      canNext: allPositionsMapped && audienceValid,
     },
     {
       title: "Aperçu",
