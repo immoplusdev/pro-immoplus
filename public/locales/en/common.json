@@ -339,6 +339,43 @@
       "status": "Status",
       "all": "All"
     },
+    "admin": {
+      "tabs": { "all": "All", "ready": "Ready", "processing": "Processing", "failed": "Failed", "deleted": "Deleted" },
+      "retry": "Retry",
+      "retryFailed": "Retry failed",
+      "retrySelection": "Retry selection ({{count}})",
+      "retrySelectionHigh": "Retry in high quality",
+      "clearSelection": "Clear selection",
+      "selected": "{{count}} selected",
+      "reencodeHigh": "Re-encode in high quality",
+      "reencodeWarning": "The video will leave the public feed for the whole encoding.",
+      "confirm": "Confirm",
+      "relatedProperty": "Linked property",
+      "loadMore": "Load more",
+      "empty": "No videos",
+      "emptyFailed": "No failed videos",
+      "reprocessQueued": "Video queued for encoding.",
+      "queueBanner": "Encoding queue: {{waiting}} waiting, {{active}} running",
+      "quality": {
+        "standard": "Standard quality",
+        "high": "High quality",
+        "standardShort": "Standard",
+        "highShort": "High"
+      },
+      "bulkLimit": "Number of videos to retry (oldest failed first)",
+      "bulkQuality": "Encoding quality",
+      "bulkConfirm": "Retry {{count}} video(s) in {{quality}} quality?",
+      "highWarning": "Larger files and longer encoding. The worker only has 1 vCPU / 1 GB: prefer batches of 5 to 10.",
+      "highBatchWarning": "Large high-quality batch: prefer 5 to 10 videos at a time.",
+      "resultTitle": "Retry result",
+      "resultSummary": "{{queued}} queued · {{skipped}} already queued · {{failed}} failed",
+      "resultFailedDetails": "Error details ({{count}})",
+      "errors": {
+        "conflict": "Already being encoded",
+        "notFound": "Video or source file not found",
+        "generic": "Retry failed"
+      }
+    },
     "legacy": {
       "migrateTitle": "Migrate this video?",
       "migrateDescription": "This video will be converted to HLS high performance format and appear in the active feed.",

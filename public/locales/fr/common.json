@@ -1027,6 +1027,43 @@
       "status": "Statut",
       "all": "Tous"
     },
+    "admin": {
+      "tabs": { "all": "Toutes", "ready": "Prêtes", "processing": "En cours", "failed": "Échecs", "deleted": "Supprimées" },
+      "retry": "Relancer",
+      "retryFailed": "Relancer les échecs",
+      "retrySelection": "Relancer la sélection ({{count}})",
+      "retrySelectionHigh": "Relancer en haute qualité",
+      "clearSelection": "Désélectionner",
+      "selected": "{{count}} sélectionnée(s)",
+      "reencodeHigh": "Ré-encoder en haute qualité",
+      "reencodeWarning": "La vidéo quittera le feed public pendant tout l'encodage.",
+      "confirm": "Confirmer",
+      "relatedProperty": "Bien lié",
+      "loadMore": "Charger plus",
+      "empty": "Aucune vidéo",
+      "emptyFailed": "Aucune vidéo en échec",
+      "reprocessQueued": "Vidéo relancée dans la file d'encodage.",
+      "queueBanner": "File d'encodage : {{waiting}} en attente, {{active}} en cours",
+      "quality": {
+        "standard": "Qualité standard",
+        "high": "Haute qualité",
+        "standardShort": "Standard",
+        "highShort": "Haute"
+      },
+      "bulkLimit": "Nombre de vidéos à relancer (les plus anciennes en échec)",
+      "bulkQuality": "Qualité d'encodage",
+      "bulkConfirm": "Relancer {{count}} vidéo(s) en qualité {{quality}} ?",
+      "highWarning": "Fichiers plus lourds et encodage plus long. Le worker n'a que 1 vCPU / 1 Go : préférez des lots de 5 à 10.",
+      "highBatchWarning": "Gros lot en haute qualité : préférez 5 à 10 vidéos à la fois.",
+      "resultTitle": "Résultat de la relance",
+      "resultSummary": "{{queued}} relancée(s) · {{skipped}} déjà en file · {{failed}} en erreur",
+      "resultFailedDetails": "Détail des erreurs ({{count}})",
+      "errors": {
+        "conflict": "Déjà en cours d'encodage",
+        "notFound": "Vidéo ou fichier source introuvable",
+        "generic": "Erreur lors de la relance"
+      }
+    },
     "legacy": {
       "migrateTitle": "Migrer cette vidéo ?",
       "migrateDescription": "Cette vidéo sera convertie au format HLS haute performance et apparaîtra dans le flux actif.",
