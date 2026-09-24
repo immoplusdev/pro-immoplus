@@ -2,7 +2,11 @@ import React from "react";
 import { useTranslate, useShow } from "@refinedev/core";
 import { Show, ListButton, DeleteButton } from "@refinedev/antd";
 import {
+    Alert,
+    Button,
+    Dropdown,
     Card,
+    message,
     Row,
     Col,
     Typography,
@@ -13,6 +17,8 @@ import {
     EyeOutlined,
     LikeOutlined,
     LinkOutlined,
+    ReloadOutlined,
+    DownOutlined,
     UserOutlined,
 } from "@ant-design/icons";
 import { useParams, Link } from "react-router-dom";
@@ -20,6 +26,8 @@ import { DateDisplayField, OutlineTag } from "@/components/table";
 import { SpinLoader } from "@/components/loading";
 import { FeedEntityTag, FeedParentType } from "./components/feed-entity-tag";
 import { FeedVideoStatusTag } from "./components/feed-video-status-tag";
+import { FeedQuality, useReprocessVideo } from "@/hooks/useFeedAdmin";
+import { extractErrorMessage } from "@/lib/helpers";
 
 const { Text, Paragraph, Title } = Typography;
 
@@ -27,6 +35,7 @@ export const ShowFeed = () => {
     const translate = useTranslate();
     const { id } = useParams<{ id: string }>();
 
+    const reprocess = useReprocessVideo();
     const { query } = useShow({ resource: "feed", id });
     const data = query?.data?.data;
     const isLoading = query?.isLoading;
@@ -40,14 +49,57 @@ export const ShowFeed = () => {
     };
     const entityPath = entityPathMap[data?.relatedTo?.entity] ?? "residences";
 
+    const canRetry = data?.status === "failed" || data?.status === "processing";
+    const handleRetry = (quality: FeedQuality) => {
+        if (!id) return;
+        reprocess.mutate(
+            { id, quality },
+            {
+                onSuccess: () => {
+                    message.success(translate("feed.admin.reprocessQueued"));
+                    query?.refetch();
+                },
+                onError: (err) => {
+                    const code = (err as any)?.response?.status;
+                    if (code === 409) message.warning(translate("feed.admin.errors.conflict"));
+                    else if (code === 404) message.error(translate("feed.admin.errors.notFound"));
+                    else message.error(extractErrorMessage(err, translate("feed.admin.errors.generic")));
+                },
+            }
+        );
+    };
+
     return (
         <Show
             isLoading={isLoading}
             headerButtons={[
                 <ListButton key="list" />,
+                canRetry && (
+                    <Dropdown
+                        key="retry"
+                        menu={{
+                            items: [
+                                { key: "standard", label: translate("feed.admin.quality.standard") },
+                                { key: "high", label: translate("feed.admin.quality.high") },
+                            ],
+                            onClick: ({ key }) => handleRetry(key as FeedQuality),
+                        }}
+                    >
+                        <Button icon={<ReloadOutlined />} loading={reprocess.isLoading}>
+                            {translate("feed.admin.retry")} <DownOutlined />
+                        </Button>
+                    </Dropdown>
+                ),
                 <DeleteButton key="delete" recordItemId={id} />,
             ]}
         >
+            {data?.status === "failed" && (
+                <Alert type="error" showIcon style={{ marginBottom: 16 }} message={translate("feed.status.failed")} />
+            )}
+            {data?.status === "processing" && (
+                <Alert type="info" showIcon style={{ marginBottom: 16 }} message={translate("feed.status.processing")} />
+            )}
+
             <Row gutter={[16, 16]}>
                 {/* Vidéo */}
                 <Col xs={24} md={12}>
