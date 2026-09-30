@@ -22,8 +22,12 @@ export interface WsNotificationPayload {
 
 interface UseAdminNotificationsSocketOptions {
   onNotification: (payload: WsNotificationPayload) => void;
+  /** `admin:relance_reservation` : payload brut, hors cloche (trop fréquent pour une notification). */
+  onReminderSent?: (data: unknown) => void;
   enabled: boolean;
 }
+
+export const WS_RELANCE_EVENT = "admin:relance_reservation";
 
 const WS_EVENTS: Record<string, WsNotificationType> = {
   "admin:nouvelle_reservation": "nouvelle_reservation",
@@ -105,6 +109,7 @@ function buildPayload(
 
 export const useAdminNotificationsSocket = ({
   onNotification,
+  onReminderSent,
   enabled,
 }: UseAdminNotificationsSocketOptions) => {
   const [isConnected, setIsConnected] = useState(false);
@@ -113,6 +118,8 @@ export const useAdminNotificationsSocket = ({
   // Stable ref so reconnect doesn't re-register listeners on every render
   const onNotificationRef = useRef(onNotification);
   useEffect(() => { onNotificationRef.current = onNotification; }, [onNotification]);
+  const onReminderSentRef = useRef(onReminderSent);
+  useEffect(() => { onReminderSentRef.current = onReminderSent; }, [onReminderSent]);
 
   const getToken = useCallback(() => {
     const data = storage.getAuthData();
@@ -164,6 +171,10 @@ export const useAdminNotificationsSocket = ({
         const payload = buildPayload(type, data);
         onNotificationRef.current(payload);
       });
+    });
+
+    socket.on(WS_RELANCE_EVENT, (data: unknown) => {
+      onReminderSentRef.current?.(data);
     });
   }, [getToken]);
 

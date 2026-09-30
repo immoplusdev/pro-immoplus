@@ -13,6 +13,7 @@ import {
 import {
   EditReservation,
   ListMotifsEchec,
+  ListRelances,
   ListReservations,
   ShowReservation,
 } from "@/pages/reservations";
@@ -203,6 +204,10 @@ export function AppRoutes() {
           {/* Même garde que la lecture des réservations (Admin + Commercial côté front). */}
           <Route element={<ResourceRoute resource="reservations" />}>
             <Route path="motifs-echec" element={<ListMotifsEchec />} />
+          </Route>
+          {/* GET /reservations/relances est réservé au rôle Admin côté API. */}
+          <Route element={<AdminRoute />}>
+            <Route path="relances" element={<ListRelances />} />
           </Route>
         </Route>
         <Route path={"/furnitures"}>
