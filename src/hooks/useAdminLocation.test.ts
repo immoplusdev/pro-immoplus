@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { buildLocationExportParams, unwrapEnvelopeData } from "./useAdminLocation";
+import { buildLocationExportParams } from "./useAdminLocation";
+import { unwrapEnvelopeData } from "@/lib/helpers/api-response.helper";
 
 describe("buildLocationExportParams", () => {
   it("retourne un objet vide sans filtre", () => {

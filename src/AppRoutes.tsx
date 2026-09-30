@@ -12,6 +12,7 @@ import {
 } from "@/pages/residences";
 import {
   EditReservation,
+  ListMotifsEchec,
   ListReservations,
   ShowReservation,
 } from "@/pages/reservations";
@@ -129,6 +130,7 @@ import { RelaisInterestsList } from "@/pages/admin/relais/interests";
 import { RelaisDetail } from "@/pages/admin/relais/detail";
 import { LocationExportPage } from "@/pages/admin/location";
 import { AdminRoute } from "@/components/auth/admin-route";
+import { ResourceRoute } from "@/components/auth/resource-route";
 
 function RouteErrorBoundary() {
   const location = useLocation();
@@ -198,6 +200,10 @@ export function AppRoutes() {
             path="echoue-annule"
             element={<ListReservationsEchoueAnnule />}
           />
+          {/* Même garde que la lecture des réservations (Admin + Commercial côté front). */}
+          <Route element={<ResourceRoute resource="reservations" />}>
+            <Route path="motifs-echec" element={<ListMotifsEchec />} />
+          </Route>
         </Route>
         <Route path={"/furnitures"}>
           <Route index element={<ListFurnitures />} />

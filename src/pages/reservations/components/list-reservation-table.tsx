@@ -3,6 +3,7 @@ import { useTranslate } from "@refinedev/core";
 import { List, useTable } from "@refinedev/antd";
 import { Button, Divider, Pagination, Spin, theme } from "antd";
 import { Link } from "react-router-dom";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 import { SearchInput } from "@/components/filters";
 import { ReservationCard } from "@/pages/reservations/components/reservation-card";
@@ -163,6 +164,9 @@ export function ListReservationTable({
             >
               {translate("reservations.fields.echoue_annule")}
             </Button>
+          </Link>,
+          <Link to="/reservations/motifs-echec">
+            <Button icon={<QuestionCircleOutlined />}>Motifs d'échec</Button>
           </Link>,
         ]}
       >

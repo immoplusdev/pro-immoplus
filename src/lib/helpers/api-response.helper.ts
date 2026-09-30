@@ -41,3 +41,15 @@ export function getErrorBody(err: unknown): Record<string, unknown> | undefined 
   if (isRecord(response) && isRecord(response.data)) return response.data;
   return isRecord(err.data) ? err.data : undefined;
 }
+
+/**
+ * Déballage explicite d'un `WrapperResponseDto` : le contenu utile est dans `body.data`.
+ * `axiosInstance` ne déballe rien (intercepteur d'erreurs uniquement) : on déballe une seule fois.
+ * À préférer à `unwrapBody` quand l'endpoint est connu pour être enveloppé : l'heuristique (≤ 2 clés)
+ * de `unwrapBody` renverrait l'enveloppe entière dès que currentPage/totalCount… sont présents.
+ * La pagination de l'enveloppe est ignorée.
+ */
+export function unwrapEnvelopeData<T>(body: unknown): T {
+  if (isRecord(body) && isRecord(body.data)) return body.data as T;
+  throw new Error("Réponse API inattendue : enveloppe `data` absente");
+}

@@ -4,8 +4,8 @@ import {
   fetchAllLocationExportItems,
   LOCATION_CSV_MAX_ROWS,
   LOCATION_CSV_PAGE_SIZE,
-  LocationExportTooLargeError,
 } from "./location-csv.helper";
+import { ExportTooLargeError } from "./csv.helper";
 import type { LocationExportFilters, LocationExportItem, LocationExportResponse } from "@/types/location.types";
 
 const item = (overrides: Partial<LocationExportItem> = {}): LocationExportItem => ({
@@ -88,7 +88,7 @@ describe("fetchAllLocationExportItems", () => {
 
   it("bloque au-delà du plafond dès la première page", async () => {
     const fetchPage = vi.fn(async (f: LocationExportFilters) => pageOf(f, LOCATION_CSV_MAX_ROWS + 1));
-    await expect(fetchAllLocationExportItems({}, { fetchPage })).rejects.toBeInstanceOf(LocationExportTooLargeError);
+    await expect(fetchAllLocationExportItems({}, { fetchPage })).rejects.toBeInstanceOf(ExportTooLargeError);
     expect(fetchPage).toHaveBeenCalledTimes(1);
   });
 
