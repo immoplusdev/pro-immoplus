@@ -73,7 +73,7 @@
     "api": "cd ../api-immoplus && npm run dev",
     "lint": "eslint src --ext .ts,.tsx",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "TZ=UTC vitest run"
   },
   "browserslist": {
     "production": [

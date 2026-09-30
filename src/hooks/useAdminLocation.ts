@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/providers/utils/axios";
 import { API_URL } from "@/configs/app.config";
-import { getErrorStatus } from "@/lib/helpers/api-response.helper";
+import { getErrorStatus, unwrapEnvelopeData } from "@/lib/helpers/api-response.helper";
 import type {
   LocationDateRange,
   LocationExportFilters,
@@ -26,20 +26,6 @@ const SENSITIVE_QUERY_OPTIONS = {
 } as const;
 
 type QueryParams = Record<string, string | number>;
-
-/**
- * Les deux endpoints renvoient un `WrapperResponseDto` : le contenu utile est dans `body.data`.
- * `axiosInstance` ne déballe rien (intercepteur d'erreurs uniquement) : on déballe ici, une seule fois.
- * Pas de `unwrapBody` générique : son heuristique (≤ 2 clés) renverrait l'enveloppe entière dès que
- * currentPage/totalCount… sont présents. La pagination de l'enveloppe est ignorée (non fiable ici).
- */
-export function unwrapEnvelopeData<T>(body: unknown): T {
-  if (typeof body === "object" && body !== null && "data" in body) {
-    const { data } = body as { data: unknown };
-    if (typeof data === "object" && data !== null) return data as T;
-  }
-  throw new Error("Réponse API inattendue : enveloppe `data` absente");
-}
 
 /**
  * Query params de l'export : valeurs vides omises (pas de `city=""`, pas de `role` pour "Tous"),
