@@ -127,6 +127,8 @@ import { ConversationDetailPage } from "@/pages/admin/conversations/detail";
 import { RelaisList } from "@/pages/admin/relais";
 import { RelaisInterestsList } from "@/pages/admin/relais/interests";
 import { RelaisDetail } from "@/pages/admin/relais/detail";
+import { LocationExportPage } from "@/pages/admin/location";
+import { AdminRoute } from "@/components/auth/admin-route";
 
 function RouteErrorBoundary() {
   const location = useLocation();
@@ -351,6 +353,10 @@ export function AppRoutes() {
           <Route index element={<RelaisList />} />
           <Route path="interests" element={<RelaisInterestsList />} />
           <Route path=":relaisId" element={<RelaisDetail />} />
+        </Route>
+        {/* Données GPS sensibles : guard de rôle en plus du masquage du menu. */}
+        <Route path={"/admin/location"} element={<AdminRoute />}>
+          <Route index element={<LocationExportPage />} />
         </Route>
         <Route path={"/statistics"}>
           <Route index element={<Statistics />} />
