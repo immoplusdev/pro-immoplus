@@ -1,6 +1,8 @@
 import {IResourceComponentsProps, useCustom} from "@refinedev/core";
 import {Edit, useForm} from "@refinedev/antd";
-import {Col, Form, Row} from "antd";
+import {Col, Form, Row, Tabs} from "antd";
+import {RobotOutlined} from "@ant-design/icons";
+import {ImaaiSettingsCard} from "@/pages/configs/components/imaai-settings-card";
 import React, {useMemo} from "react";
 import {ConfigEditActionFields} from "@/pages/configs/components/edit-actions-fields";
 import {ConfigDataFields} from "@/pages/configs/components/edit-read-only-fields";
@@ -9,7 +11,18 @@ import AppLoader from "@/components/loading/app-loader";
 import {SpinLoader} from "@/components/loading";
 
 
-export const EditConfig: React.FC<IResourceComponentsProps> = () => {
+export const EditConfig: React.FC<IResourceComponentsProps> = (props) => (
+    <Tabs
+        defaultActiveKey="general"
+        destroyInactiveTabPane
+        items={[
+            {key: "general", label: "Général", children: <GeneralConfig {...props}/>},
+            {key: "imaai", label: "IMAAI", icon: <RobotOutlined/>, children: <ImaaiSettingsCard/>},
+        ]}
+    />
+);
+
+const GeneralConfig: React.FC<IResourceComponentsProps> = () => {
 
     const {isLoading, isFetching, isInitialLoading, data} = useCustom({
         method: "get",
