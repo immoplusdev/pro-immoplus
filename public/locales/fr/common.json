@@ -1231,6 +1231,7 @@
     "step": "Étape {{step}}",
     "next_action": "Prochaine action :",
     "automatic": "Automatique",
+    "supervision": "Supervision",
     "no_items": "Aucune étape détaillée disponible.",
     "residence": "Résidence",
     "view_details": "Voir les détails",
