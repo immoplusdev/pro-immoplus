@@ -5,6 +5,7 @@ import { Button, Checkbox, Divider, Empty, Modal, Progress, Select, Spin, Tag, T
 import { Add, Calendar, Chart21, TickCircle } from "iconsax-react";
 import dayjs from "dayjs";
 import { axiosInstance } from "@/lib/providers/utils/axios";
+import { Link } from "react-router-dom";
 
 type ItemState = "pending" | "done" | "failed" | "not_applicable";
 
@@ -21,6 +22,7 @@ type ProgressItem = {
 type ProgressCase = {
     id: string;
     residenceId?: string | null;
+    residence?: { id?: string; nom?: string; name?: string } | null;
     track: "new_pro" | "existing_pro";
     status: string;
     currentStep: number;
@@ -153,6 +155,7 @@ export function ProProgressModal({ open, proId, proName, onClose }: Props) {
                                         <Tag color={statusColors[progressCase.status] ?? "default"}>{translate(`pro_progress.status.${progressCase.status}`, { defaultValue: progressCase.status })}</Tag>
                                     </div>
                                     <Typography.Text type="secondary">{translate("pro_progress.step", { step: progressCase.currentStep })}</Typography.Text>
+                                    <ResidenceReference residenceId={progressCase.residenceId} residence={progressCase.residence} />
                                 </div>
                                 <span style={{ fontWeight: 700, color: "#2744DE" }}>{progressCase.completionPercent}%</span>
                             </div>
@@ -186,6 +189,31 @@ export function ProProgressModal({ open, proId, proName, onClose }: Props) {
                 </div>
             )}
         </Modal>
+    );
+}
+
+function ResidenceReference({ residenceId, residence }: Pick<ProgressCase, "residenceId" | "residence">) {
+    const apiUrl = useApiUrl();
+    const translate = useTranslate();
+    const directName = residence?.nom ?? residence?.name;
+    const { data } = useQuery({
+        queryKey: ["pro-progress-residence", residenceId],
+        enabled: !!residenceId && !directName,
+        queryFn: async () => (await axiosInstance.get<{ data?: { nom?: string; name?: string }; nom?: string; name?: string }>(`${apiUrl}/residences/${residenceId}`)).data,
+    });
+    const resolvedResidence = data?.data ?? data;
+    const residenceName = directName ?? resolvedResidence?.nom ?? resolvedResidence?.name;
+
+    if (!residenceId || !residenceName) return null;
+
+    return (
+        <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 5, fontSize: 13 }}>
+            <Typography.Text type="secondary">{translate("pro_progress.residence")} :</Typography.Text>
+            <Typography.Text strong>{residenceName}</Typography.Text>
+            <Link to={`/residences/show/${residenceId}`} aria-label={`${translate("pro_progress.view_details")} : ${residenceName}`}>
+                {translate("pro_progress.view_details")}
+            </Link>
+        </div>
     );
 }
 
