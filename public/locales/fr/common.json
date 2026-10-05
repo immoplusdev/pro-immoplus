@@ -1209,5 +1209,37 @@
       "saveSuccess": "Bannière enregistrée",
       "publishSuccess": "Bannière publiée"
     }
+  },
+  "pro_progress": {
+    "title": "Progression du Pro",
+    "view": "Voir la progression",
+    "unavailable": "La progression est indisponible",
+    "retry": "Réessayer",
+    "not_started": "Suivi non démarré",
+    "not_started_description": "Ouvrez le premier dossier pour accompagner ce Pro.",
+    "new_pro": "Nouveau Pro",
+    "existing_pro": "Pro existant",
+    "start": "Démarrer le suivi",
+    "started": "Le suivi a été démarré",
+    "start_error": "Impossible de démarrer le suivi",
+    "item_error": "La case n'a pas pu être mise à jour",
+    "cases": "Dossiers",
+    "average_completion": "Avancement moyen",
+    "completed": "Terminés",
+    "new_pro_track": "Parcours nouveau Pro",
+    "existing_pro_track": "Parcours Pro existant",
+    "step": "Étape {{step}}",
+    "next_action": "Prochaine action :",
+    "automatic": "Automatique",
+    "no_items": "Aucune étape détaillée disponible.",
+    "residence": "Résidence",
+    "view_details": "Voir les détails",
+    "status": {
+      "in_progress": "En cours",
+      "blocked": "Bloqué",
+      "ready_for_validation": "Prêt à valider",
+      "completed": "Terminé",
+      "cancelled": "Annulé"
+    }
   }
 }

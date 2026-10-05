@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {BaseRecord, useTranslate} from "@refinedev/core";
 import {
     useTable,
@@ -9,6 +9,7 @@ import {Table, Space, Button} from "antd";
 import {Link, useLocation} from "react-router-dom";
 import type {CrudFilter} from "@refinedev/core/src/contexts/data/types";
 import {ArrowRightOutlined} from "@ant-design/icons";
+import {Chart21} from "iconsax-react";
 import {SearchInput} from "@/components/filters";
 import {DateDisplayField} from "@/components/table";
 import {ExportUsersButton} from "./export-users-button";
@@ -17,6 +18,7 @@ import {OutlineTag} from "./outline-tag";
 import {VerificationBadge} from "./verification-badge";
 import {UserMonogram} from "./user-monogram";
 import {badgeLabel} from "@/pages/statistics/pro-performance/types";
+import {ProProgressModal} from "./pro-progress-modal";
 
 const BORDER_COLOR = "#E5E3DC";
 const TEXT_SECONDARY = "#5F5E5A";
@@ -65,6 +67,8 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
         },
         filters,
     });
+    const [progressPro, setProgressPro] = useState<{id: string; name: string} | null>(null);
+    const isProList = activeMenu === "pro_entreprise" || activeMenu === "pro_particulier";
 
     // Merge permanent + initial filters to pass to the export button
     const allFilters = [
@@ -176,6 +180,19 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
                         align="center"
                         render={(_, record: BaseRecord) => (
                             <Space>
+                                {isProList && (
+                                    <Button
+                                        size="small"
+                                        title={translate("pro_progress.view")}
+                                        aria-label={`${translate("pro_progress.view")} : ${record.lastName} ${record.firstName}`}
+                                        icon={<Chart21 size={17} variant="Linear"/>}
+                                        style={{background: "#EEF2FF", border: "1px solid #C7D2FE", color: "#2744DE"}}
+                                        onClick={(event) => {
+                                            event.stopPropagation();
+                                            setProgressPro({id: String(record.id), name: `${record.lastName ?? ""} ${record.firstName ?? ""}`.trim()});
+                                        }}
+                                    />
+                                )}
                                 <Link to={`/users/edit/${record.id}`} state={{ from: location.pathname + location.search }}>
                                     <Button
                                         size="small"
@@ -194,6 +211,12 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
                     />
                 </Table>
             </List>
+            <ProProgressModal
+                open={!!progressPro}
+                proId={progressPro?.id ?? null}
+                proName={progressPro?.name}
+                onClose={() => setProgressPro(null)}
+            />
         </>
     );
 };
