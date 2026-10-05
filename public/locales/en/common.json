@@ -419,5 +419,35 @@
       "budget_min": "Min Budget",
       "budget_max": "Max Budget"
     }
+  },
+  "pro_progress": {
+    "title": "Pro progress",
+    "view": "View progress",
+    "unavailable": "Progress is unavailable",
+    "retry": "Try again",
+    "not_started": "Tracking has not started",
+    "not_started_description": "Open the first case to support this Pro.",
+    "new_pro": "New Pro",
+    "existing_pro": "Existing Pro",
+    "start": "Start tracking",
+    "started": "Tracking has started",
+    "start_error": "Unable to start tracking",
+    "item_error": "The checklist item could not be updated",
+    "cases": "Cases",
+    "average_completion": "Average completion",
+    "completed": "Completed",
+    "new_pro_track": "New Pro journey",
+    "existing_pro_track": "Existing Pro journey",
+    "step": "Step {{step}}",
+    "next_action": "Next action:",
+    "automatic": "Automatic",
+    "no_items": "No detailed step is available.",
+    "status": {
+      "in_progress": "In progress",
+      "blocked": "Blocked",
+      "ready_for_validation": "Ready for validation",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    }
   }
 }

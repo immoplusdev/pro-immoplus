@@ -111,5 +111,35 @@
   },
   "table": {
     "actions": "Aktionen"
+  },
+  "pro_progress": {
+    "title": "Pro-Fortschritt",
+    "view": "Fortschritt anzeigen",
+    "unavailable": "Der Fortschritt ist nicht verfügbar",
+    "retry": "Erneut versuchen",
+    "not_started": "Die Betreuung wurde noch nicht gestartet",
+    "not_started_description": "Öffnen Sie den ersten Fall, um diesen Pro zu begleiten.",
+    "new_pro": "Neuer Pro",
+    "existing_pro": "Bestehender Pro",
+    "start": "Betreuung starten",
+    "started": "Die Betreuung wurde gestartet",
+    "start_error": "Die Betreuung konnte nicht gestartet werden",
+    "item_error": "Der Checklistenpunkt konnte nicht aktualisiert werden",
+    "cases": "Fälle",
+    "average_completion": "Durchschnittlicher Fortschritt",
+    "completed": "Abgeschlossen",
+    "new_pro_track": "Weg für neue Pros",
+    "existing_pro_track": "Weg für bestehende Pros",
+    "step": "Schritt {{step}}",
+    "next_action": "Nächste Aktion:",
+    "automatic": "Automatisch",
+    "no_items": "Keine detaillierte Etappe verfügbar.",
+    "status": {
+      "in_progress": "In Bearbeitung",
+      "blocked": "Blockiert",
+      "ready_for_validation": "Bereit zur Prüfung",
+      "completed": "Abgeschlossen",
+      "cancelled": "Abgebrochen"
+    }
   }
 }
