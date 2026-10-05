@@ -1232,6 +1232,8 @@
     "next_action": "Prochaine action :",
     "automatic": "Automatique",
     "no_items": "Aucune étape détaillée disponible.",
+    "residence": "Résidence",
+    "view_details": "Voir les détails",
     "status": {
       "in_progress": "En cours",
       "blocked": "Bloqué",

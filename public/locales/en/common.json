@@ -442,6 +442,8 @@
     "next_action": "Next action:",
     "automatic": "Automatic",
     "no_items": "No detailed step is available.",
+    "residence": "Residence",
+    "view_details": "View details",
     "status": {
       "in_progress": "In progress",
       "blocked": "Blocked",

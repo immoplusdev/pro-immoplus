@@ -134,6 +134,8 @@
     "next_action": "Nächste Aktion:",
     "automatic": "Automatisch",
     "no_items": "Keine detaillierte Etappe verfügbar.",
+    "residence": "Residenz",
+    "view_details": "Details anzeigen",
     "status": {
       "in_progress": "In Bearbeitung",
       "blocked": "Blockiert",
