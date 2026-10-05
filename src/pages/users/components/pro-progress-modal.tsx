@@ -1,18 +1,19 @@
 import React, { useState } from "react";
-import { useApiUrl, useTranslate } from "@refinedev/core";
+import { useApiUrl, useGetIdentity, useTranslate } from "@refinedev/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button, Checkbox, Divider, Empty, Modal, Progress, Select, Spin, Tag, Typography, message } from "antd";
 import { Add, Calendar, Chart21, TickCircle } from "iconsax-react";
 import dayjs from "dayjs";
 import { axiosInstance } from "@/lib/providers/utils/axios";
 import { Link } from "react-router-dom";
+import { UserRole } from "@/core/domain/users";
 
 type ItemState = "pending" | "done" | "failed" | "not_applicable";
 
 type ProgressItem = {
     key: string;
     step: number;
-    source: "AUTO" | "COM";
+    source: "AUTO" | "COM" | "SUP";
     label: string;
     state: ItemState;
     completedAt?: string | null;
@@ -67,6 +68,8 @@ function formatDate(value?: string | null) {
 export function ProProgressModal({ open, proId, proName, onClose }: Props) {
     const apiUrl = useApiUrl();
     const translate = useTranslate();
+    const { data: identity } = useGetIdentity<{ role?: { id: string } }>();
+    const isAdmin = identity?.role?.id === UserRole.Admin;
     const queryClient = useQueryClient();
     const [track, setTrack] = useState<"new_pro" | "existing_pro">("new_pro");
     const queryKey = ["pro-progress", proId];
@@ -170,16 +173,18 @@ export function ProProgressModal({ open, proId, proName, onClose }: Props) {
                             <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
                                 {progressCase.items.length ? progressCase.items.map((item) => {
                                     const isAutomatic = item.source === "AUTO";
+                                    const isSupervision = item.source === "SUP";
+                                    const isReadOnly = isAutomatic || (isSupervision && !isAdmin);
                                     return (
                                         <div key={item.key} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
                                             <Checkbox
                                                 checked={item.state === "done"}
-                                                disabled={isAutomatic || updateItem.isPending}
+                                                disabled={isReadOnly || updateItem.isPending}
                                                 onChange={(event) => updateItem.mutate({ caseId: progressCase.id, item, state: event.target.checked ? "done" : "pending" })}
                                             >
                                                 <span style={{ color: item.state === "done" ? "#1F8A5B" : undefined }}>{item.label}</span>
                                             </Checkbox>
-                                            {isAutomatic ? <Tag color="blue">{translate("pro_progress.automatic")}</Tag> : item.state === "done" ? <TickCircle size={18} color="#1F8A5B" variant="Bold" /> : null}
+                                            {isAutomatic ? <Tag color="blue">{translate("pro_progress.automatic")}</Tag> : isSupervision ? <Tag color="purple">{translate("pro_progress.supervision")}</Tag> : item.state === "done" ? <TickCircle size={18} color="#1F8A5B" variant="Bold" /> : null}
                                         </div>
                                     );
                                 }) : <Typography.Text type="secondary">{translate("pro_progress.no_items")}</Typography.Text>}

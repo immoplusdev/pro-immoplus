@@ -441,6 +441,7 @@
     "step": "Step {{step}}",
     "next_action": "Next action:",
     "automatic": "Automatic",
+    "supervision": "Supervision",
     "no_items": "No detailed step is available.",
     "residence": "Residence",
     "view_details": "View details",
