@@ -92,7 +92,7 @@
   "notifications": {
     "success": "Erfolg",
     "error": "Fehler (status code: {{statusCode}})",
-    "undoable": "Sie haben {{seconds}} Sekunden Zeit für Undo.",
+    j     "undoable": "Sie haben {{seconds}} Sekunden Zeit für Undo.",
     "createSuccess": "{{resource}} erfolgreich erstellt.",
     "createError": "Fehler beim Erstellen {{resource}} (status code: {{statusCode}})",
     "deleteSuccess": "{{resource}} erfolgreich gelöscht.",

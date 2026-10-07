@@ -75,9 +75,6 @@ export function ProProgressModal({ open, proId, proName, onClose }: Props) {
     const [noteEditor, setNoteEditor] = useState<{ caseId: string; item: ProgressItem } | null>(null);
     const [note, setNote] = useState("");
     const [itemState, setItemState] = useState<ItemState>("pending");
-    const [activeCaseId, setActiveCaseId] = useState<string | null>(null);
-    const [activeStep, setActiveStep] = useState<number | null>(null);
-    const [itemPage, setItemPage] = useState(0);
     const queryKey = ["pro-progress", proId];
 
     const { data, isFetching, isError } = useQuery({
@@ -106,13 +103,6 @@ export function ProProgressModal({ open, proId, proName, onClose }: Props) {
 
     const content = data?.data;
     const cases = content?.cases ?? [];
-    const activeCase = cases.find((progressCase) => progressCase.id === activeCaseId) ?? cases[0];
-    const stepNumbers = activeCase ? [...new Set(activeCase.items.map((item) => item.step))].sort((a, b) => a - b) : [];
-    const selectedStep = activeStep ?? activeCase?.currentStep ?? stepNumbers[0];
-    const stepItems = activeCase?.items.filter((item) => item.step === selectedStep) ?? [];
-    const itemsPerPage = 6;
-    const itemPageCount = Math.max(1, Math.ceil(stepItems.length / itemsPerPage));
-    const visibleItems = stepItems.slice(itemPage * itemsPerPage, (itemPage + 1) * itemsPerPage);
     const openNoteEditor = (caseId: string, item: ProgressItem) => {
         setNoteEditor({ caseId, item });
         setNote(item.note ?? "");
@@ -135,9 +125,8 @@ export function ProProgressModal({ open, proId, proName, onClose }: Props) {
             onCancel={onClose}
             footer={null}
             centered
-            width={1120}
+            width={760}
             destroyOnClose
-            styles={{ body: { maxHeight: "calc(100dvh - 170px)", overflow: "hidden" } }}
             title={
                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                     <span style={{ display: "grid", placeItems: "center", width: 34, height: 34, borderRadius: 9, background: "#EEF2FF" }}>
@@ -172,69 +161,60 @@ export function ProProgressModal({ open, proId, proName, onClose }: Props) {
                     </div>
                 </Empty>
             ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                    <div style={{ display: "grid", gridTemplateColumns: "1.35fr 1fr 1fr", gap: 12, padding: 14, borderRadius: 14, background: "#F8F9FC", border: "1px solid #E8E9EE" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, padding: 14, borderRadius: 10, background: "#F8F9FC" }}>
                         <Metric label={translate("pro_progress.cases")} value={content?.summary.totalCases ?? 0} />
                         <Metric label={translate("pro_progress.average_completion")} value={`${content?.summary.averageCompletionPercent ?? 0}%`} />
                         <Metric label={translate("pro_progress.completed")} value={content?.summary.completedCases ?? 0} />
                     </div>
-                    {cases.length > 1 && <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                        {cases.map((progressCase, index) => <Button key={progressCase.id} size="small" type={activeCase?.id === progressCase.id ? "primary" : "default"} onClick={() => { setActiveCaseId(progressCase.id); setActiveStep(progressCase.currentStep); setItemPage(0); }}>{translate("pro_progress.case_number", { number: index + 1 })}</Button>)}
-                    </div>}
-                    {activeCase && <section style={{ border: "1px solid #E1E5EC", borderRadius: 14, padding: 14, background: "#FFFFFF" }}>
-                        <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: 16, alignItems: "start" }}>
-                            <div>
-                                <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 4 }}>
-                                    <strong>{translate(activeCase.track === "new_pro" ? "pro_progress.new_pro_track" : "pro_progress.existing_pro_track")}</strong>
-                                    <Tag color={statusColors[activeCase.status] ?? "default"}>{translate(`pro_progress.status.${activeCase.status}`, { defaultValue: activeCase.status })}</Tag>
+                    {cases.map((progressCase) => (
+                        <section key={progressCase.id} style={{ border: "1px solid #E8E9EE", borderRadius: 10, padding: 16 }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
+                                <div>
+                                    <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 5 }}>
+                                        <strong>{translate(progressCase.track === "new_pro" ? "pro_progress.new_pro_track" : "pro_progress.existing_pro_track")}</strong>
+                                        <Tag color={statusColors[progressCase.status] ?? "default"}>{translate(`pro_progress.status.${progressCase.status}`, { defaultValue: progressCase.status })}</Tag>
+                                    </div>
+                                    <Typography.Text type="secondary">{translate("pro_progress.step", { step: progressCase.currentStep })}</Typography.Text>
+                                    <ResidenceReference residenceId={progressCase.residenceId} residence={progressCase.residence} />
                                 </div>
-                                <ResidenceReference residenceId={activeCase.residenceId} residence={activeCase.residence} />
+                                <span style={{ fontWeight: 700, color: "#2744DE" }}>{progressCase.completionPercent}%</span>
                             </div>
-                            <div style={{ padding: "8px 10px", background: "#F6F8FF", borderRadius: 10 }}>
-                                <div style={{ display: "flex", justifyContent: "space-between", color: "#2744DE", fontWeight: 700 }}><span>{translate("pro_progress.progress")}</span><span>{activeCase.completionPercent}%</span></div>
-                                <Progress percent={activeCase.completionPercent} showInfo={false} strokeColor="#2744DE" size="small" style={{ margin: "6px 0" }} />
-                                {activeCase.nextAction && <div style={{ display: "flex", gap: 6, color: "#494C57", fontSize: 12 }}><Calendar size={15} color="#5F6370" variant="Linear" /><span>{activeCase.nextAction}{formatDate(activeCase.nextActionAt) ? ` — ${formatDate(activeCase.nextActionAt)}` : ""}</span></div>}
-                            </div>
-                        </div>
-                        <Divider style={{ margin: "12px 0" }} />
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(64px, 1fr))", gap: 7, marginBottom: 12 }}>
-                            {stepNumbers.map((step) => {
-                                const items = activeCase.items.filter((item) => item.step === step);
-                                const completed = items.filter((item) => item.state === "done").length;
-                                const selected = selectedStep === step;
-                                return <button key={step} type="button" onClick={() => { setActiveStep(step); setItemPage(0); }} style={{ border: selected ? "1px solid #2744DE" : "1px solid #E1E5EC", borderRadius: 10, background: selected ? "#EEF2FF" : "#FFFFFF", padding: "8px 5px", color: "#20222A", cursor: "pointer" }}><div style={{ fontSize: 11, color: "#5F6370" }}>{translate("pro_progress.step", { step })}</div><div style={{ fontWeight: 700, fontSize: 13 }}>{completed}/{items.length}</div></button>;
-                            })}
-                        </div>
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
-                            <Typography.Text strong>{translate("pro_progress.step", { step: selectedStep })}</Typography.Text>
-                            {itemPageCount > 1 && <div style={{ display: "flex", alignItems: "center", gap: 8 }}><Button size="small" disabled={itemPage === 0} onClick={() => setItemPage((page) => page - 1)}>{translate("pro_progress.previous")}</Button><Typography.Text type="secondary" style={{ fontSize: 12 }}>{itemPage + 1}/{itemPageCount}</Typography.Text><Button size="small" disabled={itemPage + 1 === itemPageCount} onClick={() => setItemPage((page) => page + 1)}>{translate("pro_progress.next")}</Button></div>}
-                        </div>
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))", gap: 10 }}>
-                            {visibleItems.map((item) => {
+                            <Progress percent={progressCase.completionPercent} showInfo={false} strokeColor="#2744DE" size="small" style={{ margin: "12px 0 8px" }} />
+                            {progressCase.nextAction && (
+                                <div style={{ display: "flex", alignItems: "center", gap: 7, color: "#494C57", fontSize: 13, marginBottom: 12 }}>
+                                    <Calendar size={16} color="#5F6370" variant="Linear" />
+                                    <span><strong>{translate("pro_progress.next_action")}</strong> {progressCase.nextAction}{formatDate(progressCase.nextActionAt) ? ` — ${formatDate(progressCase.nextActionAt)}` : ""}</span>
+                                </div>
+                            )}
+                            <Divider style={{ margin: "10px 0" }} />
+                            <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
+                                {progressCase.items.length ? progressCase.items.map((item) => {
                                     const isAutomatic = item.source === "AUTO";
                                     const isSupervision = item.source === "SUP";
                                     const isReadOnly = isAutomatic || (isSupervision && !isAdmin);
                                     return (
-                                        <article key={item.key} style={{ border: "1px solid #E6E9F0", borderRadius: 12, padding: 12, minHeight: 104, display: "flex", flexDirection: "column", justifyContent: "space-between", background: item.state === "done" ? "#FAFFFC" : "#FFFFFF" }}>
+                                        <div key={item.key}>
                                             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
                                                 <Checkbox
                                                     checked={item.state === "done"}
                                                     disabled={isReadOnly || updateItem.isPending}
-                                                    onChange={(event) => updateItem.mutate({ caseId: activeCase.id, item, state: event.target.checked ? "done" : "pending" })}
+                                                    onChange={(event) => updateItem.mutate({ caseId: progressCase.id, item, state: event.target.checked ? "done" : "pending" })}
                                                 >
                                                     <span style={{ color: item.state === "done" ? "#1F8A5B" : undefined }}>{item.label}</span>
                                                 </Checkbox>
                                                 <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                                                     {isAutomatic ? <Tag color="blue">{translate("pro_progress.automatic")}</Tag> : isSupervision ? <Tag color="purple">{translate("pro_progress.supervision")}</Tag> : item.state === "done" ? <TickCircle size={18} color="#1F8A5B" variant="Bold" /> : null}
-                                                    {!isReadOnly && <Button type="link" size="small" onClick={() => openNoteEditor(activeCase.id, item)}>{translate(item.note ? "pro_progress.edit_note" : "pro_progress.add_note")}</Button>}
+                                                    {!isReadOnly && <Button type="link" size="small" onClick={() => openNoteEditor(progressCase.id, item)}>{translate(item.note ? "pro_progress.edit_note" : "pro_progress.add_note")}</Button>}
                                                 </div>
                                             </div>
-                                            {item.note && <div style={{ marginTop: 8, padding: "7px 8px", borderRadius: 8, background: "#F6F8FC", color: "#50545E", fontSize: 12, lineHeight: 1.45, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}><strong>{translate("pro_progress.note")} :</strong> {item.note}</div>}
-                                        </article>
+                                            {item.note && <div style={{ margin: "4px 0 0 24px", color: "#50545E", fontSize: 12, lineHeight: 1.45 }}><strong>{translate("pro_progress.note")} :</strong> {item.note}</div>}
+                                        </div>
                                     );
-                            })}
-                        </div>
-                    </section>}
+                                }) : <Typography.Text type="secondary">{translate("pro_progress.no_items")}</Typography.Text>}
+                            </div>
+                        </section>
+                    ))}
                 </div>
             )}
             <Modal

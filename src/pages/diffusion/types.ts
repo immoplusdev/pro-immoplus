@@ -69,6 +69,14 @@ export interface AdCampaign {
 
 // Valeur de repli utilisée tant que /ads/campaigns/metadata n'a pas répondu (ou en cas d'échec).
 export const AD_PLACEMENTS: AdPlacement[] = [
+  // Flux verticaux. Le placement est le sélecteur principal pour /me/stay,
+  // /me/rent et /me/buy ; position_index ne sert qu'à une insertion fine.
+  "STAY_FEED_TOP",
+  "STAY_FEED_BOTTOM",
+  "RENT_FEED_TOP",
+  "RENT_FEED_BOTTOM",
+  "BUY_FEED_TOP",
+  "BUY_FEED_BOTTOM",
   "HOME_TOP",
   "HOME_AFTER_SEARCH",
   "HOME_AFTER_SECTION",
@@ -157,6 +165,19 @@ export const SECTION_POSITION_LABELS: Record<AdSectionPosition, string> = {
 // pilotées par /ads/campaigns/metadata.
 export const RESIDENCES_VILLE_PLACEMENT = "HOME_FEED_RESIDENCES_PAR_VILLE";
 export const RESIDENCES_COMMUNE_PLACEMENT = "HOME_FEED_RESIDENCES_PAR_COMMUNE";
+
+export const VERTICAL_FEED_PLACEMENTS = [
+  "STAY_FEED_TOP",
+  "STAY_FEED_BOTTOM",
+  "RENT_FEED_TOP",
+  "RENT_FEED_BOTTOM",
+  "BUY_FEED_TOP",
+  "BUY_FEED_BOTTOM",
+] as const;
+
+export function isVerticalFeedPlacement(placement?: string | null): boolean {
+  return !!placement && (VERTICAL_FEED_PLACEMENTS as readonly string[]).includes(placement);
+}
 
 export const AD_STATUSES: AdStatus[] = ["DRAFT", "ACTIVE", "SUSPENDED", "EXPIRED"];
 export const AD_TYPES: AdType[] = ["IMAGE", "VIDEO", "CAROUSEL", "VIDEO_CAROUSEL", "FLASH_OFFER"];

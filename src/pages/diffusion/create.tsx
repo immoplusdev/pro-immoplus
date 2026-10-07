@@ -56,7 +56,7 @@ export const AdCampaignCreate = () => {
           initialValues: {
             status: "DRAFT",
             priority: 0,
-            position_index: 0,
+            position_index: null,
             section_position: "after",
             target_section_key: null,
             type: "IMAGE",
