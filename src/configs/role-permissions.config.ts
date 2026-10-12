@@ -29,6 +29,7 @@ export const rolePermissions: Record<string, RolePermission> = {
             "polls",
             "admin/pro-certification",
             "admin/clients-statistiques",
+            "admin/location",
             "admin/campaigns",
             "admin/campaign-tags",
             "admin/conversations",

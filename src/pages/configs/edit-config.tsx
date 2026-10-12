@@ -9,6 +9,7 @@ import {ConfigDataFields} from "@/pages/configs/components/edit-read-only-fields
 import {API_URL} from "@/configs";
 import AppLoader from "@/components/loading/app-loader";
 import {SpinLoader} from "@/components/loading";
+import {ReminderSettingsCard} from "@/components/admin/reservation-reminders/ReminderSettingsCard";
 
 
 export const EditConfig: React.FC<IResourceComponentsProps> = (props) => (
@@ -49,6 +50,12 @@ const GeneralConfig: React.FC<IResourceComponentsProps> = () => {
                         </Col>
                     </Row>
                 </Form>
+                {/* Formulaire séparé : son PATCH /configs n'envoie que les champs de relance. */}
+                <Row gutter={[32, 32]} style={{marginTop: 32}}>
+                    <Col xs={24} xl={16}>
+                        <ReminderSettingsCard/>
+                    </Col>
+                </Row>
             </Edit>
 
 

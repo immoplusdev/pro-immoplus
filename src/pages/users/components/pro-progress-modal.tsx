@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useApiUrl, useGetIdentity, useTranslate } from "@refinedev/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Button, Checkbox, Divider, Empty, Modal, Progress, Select, Spin, Tag, Typography, message } from "antd";
+import { Button, Checkbox, Divider, Empty, Input, Modal, Progress, Select, Spin, Tag, Typography, message } from "antd";
 import { Add, Calendar, Chart21, TickCircle } from "iconsax-react";
 import dayjs from "dayjs";
 import { axiosInstance } from "@/lib/providers/utils/axios";
@@ -72,6 +72,9 @@ export function ProProgressModal({ open, proId, proName, onClose }: Props) {
     const isAdmin = identity?.role?.id === UserRole.Admin;
     const queryClient = useQueryClient();
     const [track, setTrack] = useState<"new_pro" | "existing_pro">("new_pro");
+    const [noteEditor, setNoteEditor] = useState<{ caseId: string; item: ProgressItem } | null>(null);
+    const [note, setNote] = useState("");
+    const [itemState, setItemState] = useState<ItemState>("pending");
     const queryKey = ["pro-progress", proId];
 
     const { data, isFetching, isError } = useQuery({
@@ -92,14 +95,29 @@ export function ProProgressModal({ open, proId, proName, onClose }: Props) {
     });
 
     const updateItem = useMutation({
-        mutationFn: ({ caseId, item, state }: { caseId: string; item: ProgressItem; state: ItemState }) =>
-            axiosInstance.patch(`${apiUrl}/admin/pro-progress/cases/${caseId}/items/${encodeURIComponent(item.key)}`, { state }),
+        mutationFn: ({ caseId, item, state, note }: { caseId: string; item: ProgressItem; state: ItemState; note?: string }) =>
+            axiosInstance.patch(`${apiUrl}/admin/pro-progress/cases/${caseId}/items/${encodeURIComponent(item.key)}`, { state, note }),
         onSuccess: () => refresh(),
         onError: () => message.error(translate("pro_progress.item_error")),
     });
 
     const content = data?.data;
     const cases = content?.cases ?? [];
+    const openNoteEditor = (caseId: string, item: ProgressItem) => {
+        setNoteEditor({ caseId, item });
+        setNote(item.note ?? "");
+        setItemState(item.state);
+    };
+    const saveNote = async () => {
+        if (!noteEditor) return;
+        try {
+            await updateItem.mutateAsync({ caseId: noteEditor.caseId, item: noteEditor.item, state: itemState, note });
+            message.success(translate("pro_progress.note_saved"));
+            setNoteEditor(null);
+        } catch {
+            // The mutation displays the API error.
+        }
+    };
 
     return (
         <Modal
@@ -176,15 +194,21 @@ export function ProProgressModal({ open, proId, proName, onClose }: Props) {
                                     const isSupervision = item.source === "SUP";
                                     const isReadOnly = isAutomatic || (isSupervision && !isAdmin);
                                     return (
-                                        <div key={item.key} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
-                                            <Checkbox
-                                                checked={item.state === "done"}
-                                                disabled={isReadOnly || updateItem.isPending}
-                                                onChange={(event) => updateItem.mutate({ caseId: progressCase.id, item, state: event.target.checked ? "done" : "pending" })}
-                                            >
-                                                <span style={{ color: item.state === "done" ? "#1F8A5B" : undefined }}>{item.label}</span>
-                                            </Checkbox>
-                                            {isAutomatic ? <Tag color="blue">{translate("pro_progress.automatic")}</Tag> : isSupervision ? <Tag color="purple">{translate("pro_progress.supervision")}</Tag> : item.state === "done" ? <TickCircle size={18} color="#1F8A5B" variant="Bold" /> : null}
+                                        <div key={item.key}>
+                                            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+                                                <Checkbox
+                                                    checked={item.state === "done"}
+                                                    disabled={isReadOnly || updateItem.isPending}
+                                                    onChange={(event) => updateItem.mutate({ caseId: progressCase.id, item, state: event.target.checked ? "done" : "pending" })}
+                                                >
+                                                    <span style={{ color: item.state === "done" ? "#1F8A5B" : undefined }}>{item.label}</span>
+                                                </Checkbox>
+                                                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                                                    {isAutomatic ? <Tag color="blue">{translate("pro_progress.automatic")}</Tag> : isSupervision ? <Tag color="purple">{translate("pro_progress.supervision")}</Tag> : item.state === "done" ? <TickCircle size={18} color="#1F8A5B" variant="Bold" /> : null}
+                                                    {!isReadOnly && <Button type="link" size="small" onClick={() => openNoteEditor(progressCase.id, item)}>{translate(item.note ? "pro_progress.edit_note" : "pro_progress.add_note")}</Button>}
+                                                </div>
+                                            </div>
+                                            {item.note && <div style={{ margin: "4px 0 0 24px", color: "#50545E", fontSize: 12, lineHeight: 1.45 }}><strong>{translate("pro_progress.note")} :</strong> {item.note}</div>}
                                         </div>
                                     );
                                 }) : <Typography.Text type="secondary">{translate("pro_progress.no_items")}</Typography.Text>}
@@ -193,6 +217,33 @@ export function ProProgressModal({ open, proId, proName, onClose }: Props) {
                     ))}
                 </div>
             )}
+            <Modal
+                open={!!noteEditor}
+                title={noteEditor?.item.label}
+                onCancel={() => setNoteEditor(null)}
+                onOk={saveNote}
+                okText={translate("pro_progress.save_note")}
+                cancelText={translate("buttons.cancel")}
+                confirmLoading={updateItem.isPending}
+                destroyOnClose
+            >
+                <Typography.Paragraph type="secondary">{translate("pro_progress.note_help")}</Typography.Paragraph>
+                <Select<ItemState>
+                    value={itemState}
+                    onChange={setItemState}
+                    disabled={updateItem.isPending}
+                    options={(["pending", "done", "failed", "not_applicable"] as ItemState[]).map((state) => ({ value: state, label: translate(`pro_progress.item_state.${state}`) }))}
+                    style={{ width: "100%", marginBottom: 12 }}
+                />
+                <Input.TextArea
+                    value={note}
+                    onChange={(event) => setNote(event.target.value)}
+                    placeholder={translate("pro_progress.note_placeholder")}
+                    maxLength={5000}
+                    autoSize={{ minRows: 4, maxRows: 8 }}
+                    disabled={updateItem.isPending}
+                />
+            </Modal>
         </Modal>
     );
 }

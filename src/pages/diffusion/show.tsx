@@ -12,7 +12,7 @@ import {
 import { ArrowLeftOutlined, EditOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
-import { AdCampaign, ENTITY_ID_ACTIONS, FILTERS_ACTIONS, SECTION_POSITION_LABELS } from "./types";
+import { AdCampaign, ENTITY_ID_ACTIONS, FILTERS_ACTIONS, SECTION_POSITION_LABELS, isVerticalFeedPlacement } from "./types";
 import { StatusBadge } from "./status-badge";
 
 const { Text, Title } = Typography;
@@ -75,11 +75,21 @@ export const AdCampaignShow = () => {
             <StatusBadge status={campaign.status} />
           </Descriptions.Item>
           <Descriptions.Item label="Priorité">{campaign.priority}</Descriptions.Item>
-          <Descriptions.Item label="Position section">
-            {SECTION_POSITION_LABELS[campaign.section_position] ?? campaign.section_position}
-          </Descriptions.Item>
-          {campaign.section_position === "inline" && (
-            <Descriptions.Item label="Position">{campaign.position_index ?? 0}</Descriptions.Item>
+          {isVerticalFeedPlacement(campaign.placement) ? (
+            <Descriptions.Item label="Position dans le flux">
+              {campaign.position_index === null || campaign.position_index === undefined
+                ? "Haut / bas du flux"
+                : `Après l'élément ${campaign.position_index + 1}`}
+            </Descriptions.Item>
+          ) : (
+            <>
+              <Descriptions.Item label="Position section">
+                {SECTION_POSITION_LABELS[campaign.section_position] ?? campaign.section_position}
+              </Descriptions.Item>
+              {campaign.section_position === "inline" && (
+                <Descriptions.Item label="Position">{campaign.position_index ?? 0}</Descriptions.Item>
+              )}
+            </>
           )}
           {campaign.target_section_key && (
             <Descriptions.Item label="Ville/commune ciblée">

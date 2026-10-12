@@ -2,6 +2,8 @@ import { CrudFilter, useList, useTranslate } from "@refinedev/core";
 import { List } from "@refinedev/antd";
 import { Button, Divider, Pagination, Spin } from "antd";
 import { Link } from "react-router-dom";
+import { NotificationOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import { isAdminViewer } from "@/components/auth/is-admin-viewer";
 import React, { useCallback, useState } from "react";
 import { ReservationCard } from "@/pages/reservations/components/reservation-card";
 import { ExportReservationsButton } from "@/pages/reservations/components/export-reservations-button";
@@ -120,6 +122,16 @@ export function ReservationMergedTable({
             {translate("reservations.fields.echoue_annule")}
           </Button>
         </Link>,
+        <Link to="/reservations/motifs-echec">
+          <Button icon={<QuestionCircleOutlined />}>Motifs d'échec</Button>
+        </Link>,
+        ...(isAdminViewer()
+          ? [
+              <Link key="relances" to="/reservations/relances">
+                <Button icon={<NotificationOutlined />}>Relances</Button>
+              </Link>,
+            ]
+          : []),
       ]}
     >
       <Spin spinning={loading}>

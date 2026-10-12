@@ -34,6 +34,7 @@ import {
   SECTION_POSITION_LABELS,
   RESIDENCES_VILLE_PLACEMENT,
   RESIDENCES_COMMUNE_PLACEMENT,
+  isVerticalFeedPlacement,
   AdAction,
   AdSectionPosition,
   AdType,
@@ -135,7 +136,8 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
   const priority = Form.useWatch("priority", form);
   const positionIndex = Form.useWatch("position_index", form);
   const sectionPosition: AdSectionPosition = Form.useWatch("section_position", form) ?? "after";
-  const showPositionIndex = sectionPosition === "inline";
+  const isVerticalFeed = isVerticalFeedPlacement(placement);
+  const showPositionIndex = isVerticalFeed || sectionPosition === "inline";
   const targetSectionGroup: "ville" | "commune" | null =
     placement === RESIDENCES_VILLE_PLACEMENT
       ? "ville"
@@ -351,12 +353,27 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
       ]);
 
       const targetSectionKeyRaw = values.target_section_key as string | null | undefined;
+      const placementValue = values.placement as string | undefined;
+      const isVerticalFeedCampaign = isVerticalFeedPlacement(placementValue);
+      const positionIndexRaw = values.position_index as number | null | undefined;
 
       const payload = {
         ...values,
         url: (values.url as string | undefined) ?? "",
         target_section_key:
-          targetSectionKeyRaw && targetSectionKeyRaw.trim() !== "" ? targetSectionKeyRaw.trim() : null,
+          !isVerticalFeedCampaign && targetSectionKeyRaw && targetSectionKeyRaw.trim() !== ""
+            ? targetSectionKeyRaw.trim()
+            : null,
+        // Les flux /me/stay, /me/rent et /me/buy sont déterminés par le
+        // placement. Leur index est facultatif, même si section_position vaut
+        // "after" par défaut.
+        position_index:
+          showPositionIndex && positionIndexRaw !== null && positionIndexRaw !== undefined
+            ? Number(positionIndexRaw)
+            : null,
+        section_position: isVerticalFeedCampaign
+          ? "after"
+          : (values.section_position as AdSectionPosition | undefined) ?? "after",
         start_date: values.start_date
           ? dayjs.isDayjs(values.start_date)
             ? (values.start_date as Dayjs).toISOString()
@@ -425,9 +442,29 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
                       showSearch
                       options={placements.map((p) => ({ label: p, value: p }))}
                       placeholder="Sélectionner un placement"
+                      onChange={(nextPlacement) => {
+                        if (isVerticalFeedPlacement(nextPlacement)) {
+                          form.setFieldsValue({
+                            section_position: "after",
+                            target_section_key: null,
+                          });
+                        }
+                      }}
                     />
                   </Form.Item>
                 </Col>
+                {showPositionIndex && (
+                  <Col xs={24} md={12}>
+                    <Form.Item name="position_index" label={isVerticalFeed ? <OptionalLabel>Position dans la liste</OptionalLabel> : "Position"}>
+                      <InputNumber min={0} style={{ width: "100%" }} placeholder="Ex. 0" />
+                    </Form.Item>
+                    <FieldHint>
+                      {isVerticalFeed
+                        ? "Optionnel : 0 insère après le premier élément, 3 après le quatrième. Laissez vide pour l'emplacement haut ou bas normal."
+                        : "Ordre d'affichage parmi les autres éléments de la section."}
+                    </FieldHint>
+                  </Col>
+                )}
                 <Col xs={24} md={12}>
                   <Form.Item
                     name="campaign_category"
@@ -470,28 +507,30 @@ export const AdCampaignForm = ({ formProps, form, submitLabel = "Enregistrer" }:
                   </Form.Item>
                   <FieldHint>Plus la valeur est élevée, plus la bannière apparaît en premier.</FieldHint>
                 </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    name="section_position"
-                    label="Position par rapport à la section"
-                    initialValue="after"
-                    rules={[{ required: true, message: "La position est requise" }]}
-                  >
-                    <Select
-                      options={sectionPositions.map((p) => ({
-                        label: SECTION_POSITION_LABELS[p] ?? p,
-                        value: p,
-                      }))}
-                    />
-                  </Form.Item>
-                  <FieldHint>
-                    "Avant"/"Après" insère la pub comme sa propre section ; "Dans la section" la mélange aux éléments
-                    (nécessite une position ci-dessous).
-                  </FieldHint>
-                </Col>
+                {!isVerticalFeed && (
+                  <Col xs={24} md={12}>
+                    <Form.Item
+                      name="section_position"
+                      label="Position par rapport à la section"
+                      initialValue="after"
+                      rules={[{ required: true, message: "La position est requise" }]}
+                    >
+                      <Select
+                        options={sectionPositions.map((p) => ({
+                          label: SECTION_POSITION_LABELS[p] ?? p,
+                          value: p,
+                        }))}
+                      />
+                    </Form.Item>
+                    <FieldHint>
+                      "Avant"/"Après" insère la pub comme sa propre section ; "Dans la section" la mélange aux éléments
+                      (nécessite une position ci-dessous).
+                    </FieldHint>
+                  </Col>
+                )}
               </Row>
 
-              {showPositionIndex && (
+              {showPositionIndex && !isVerticalFeed && (
                 <Row gutter={20} style={{ marginTop: 20 }}>
                   <Col xs={24} md={12}>
                     <Form.Item

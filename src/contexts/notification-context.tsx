@@ -8,6 +8,7 @@ import {
   WsNotificationType,
 } from "@/hooks/useAdminNotificationsSocket";
 import { authService } from "@/lib/services/auth/auth.service";
+import { useReminderSentHandler } from "@/hooks/useReminderSentHandler";
 
 const formatMontant = (val: unknown): string | null => {
   const n = Number(val);
@@ -145,9 +146,12 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     [addNotification]
   );
 
+  const handleReminderSent = useReminderSentHandler();
+
   const { isConnected: wsConnected, connectionError: wsError, reconnectWithNewToken } =
     useAdminNotificationsSocket({
       onNotification: handleWsNotification,
+      onReminderSent: handleReminderSent,
       enabled: isAuthenticated,
     });
 

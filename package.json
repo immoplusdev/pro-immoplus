@@ -58,7 +58,8 @@
     "tailwindcss": "^3.4.1",
     "typescript": "^4.7.4",
     "vite": "^7.1.12",
-    "vite-tsconfig-paths": "^4.3.1"
+    "vite-tsconfig-paths": "^4.3.1",
+    "vitest": "^3.2.7"
   },
   "scripts": {
     "dev": "vite dev",
@@ -70,7 +71,10 @@
     "preview": "vite start",
     "refine": "vite",
     "refine-devtools": "npx refine devtools start",
-    "api": "cd ../api-immoplus && npm run dev"
+    "api": "cd ../api-immoplus && npm run dev",
+    "lint": "eslint src --ext .ts,.tsx",
+    "typecheck": "tsc --noEmit",
+    "test": "TZ=UTC vitest run"
   },
   "browserslist": {
     "production": [

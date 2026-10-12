@@ -1,6 +1,7 @@
 import React from "react";
 import { DeleteButton, Edit, useForm } from "@refinedev/antd";
-import { Button, Col, Form, Row, Space } from "antd";
+import { Button, Col, Form, Row, Space, Tabs } from "antd";
+import type { TabsProps } from "antd";
 import { useCustom, useTranslate } from "@refinedev/core";
 import { UsersEditDataFields } from "./components/edit-read-only-fields";
 import { UsersEditActionFields } from "./components/edit-actions-fields";
@@ -9,10 +10,12 @@ import {
   ReloadOutlined,
   SaveOutlined,
 } from "@ant-design/icons";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useNavigate, useLocation, useParams, useSearchParams } from "react-router-dom";
 import { API_URL } from "@/configs/app.config";
 import { canAccessResource } from "@/configs/role-permissions.config";
 import { getLocalStorageProvider } from "@/lib/providers/local-storage.provider";
+import { isAdminViewer } from "@/components/auth/is-admin-viewer";
+import { UserLocationTab } from "./components/user-location-tab";
 
 const localStorageProvider = getLocalStorageProvider();
 
@@ -46,6 +49,48 @@ export const EditUser: React.FC = () => {
   });
   const walletData = walletQuery?.data;
 
+  // Onglet "Localisation" : données GPS sensibles, réservé au rôle Admin (masqué sinon, même via ?tab=).
+  const isAdmin = isAdminViewer();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab = isAdmin && searchParams.get("tab") === "localisation" ? "localisation" : "informations";
+  const onTabChange = (key: string) =>
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        if (key === "informations") next.delete("tab");
+        else next.set("tab", key);
+        return next;
+      },
+      { replace: true }
+    );
+
+  const informations = (
+    <Form {...formProps} layout="vertical">
+      <Row gutter={[32, 32]} style={{ marginTop: 16 }}>
+        <Col xs={24} md={24} lg={16}>
+          <UsersEditDataFields
+            translate={translate}
+            data={usersData}
+            walletData={walletData}
+            onWalletUpdate={() => refetchWallet()}
+            canViewFinancialData={canViewFinancialData}
+          />
+        </Col>
+        <Col xs={24} md={24} lg={8}>
+          <UsersEditActionFields translate={translate} />
+        </Col>
+      </Row>
+    </Form>
+  );
+
+  const tabItems: TabsProps["items"] = [
+    // forceRender : le formulaire doit rester monté même en arrivant directement sur ?tab=localisation.
+    { key: "informations", label: "Informations", children: informations, forceRender: true },
+    ...(isAdmin
+      ? [{ key: "localisation", label: "Localisation", children: <UserLocationTab userId={userId} /> }]
+      : []),
+  ];
+
   return (
     <Edit
       title={`${translate(`actions.edit`)} Utilisateur`}
@@ -73,22 +118,7 @@ export const EditUser: React.FC = () => {
         </Space>
       }
     >
-      <Form {...formProps} layout="vertical">
-        <Row gutter={[32, 32]} style={{ marginTop: 32 }}>
-          <Col xs={24} md={24} lg={16}>
-            <UsersEditDataFields
-              translate={translate}
-              data={usersData}
-              walletData={walletData}
-              onWalletUpdate={() => refetchWallet()}
-              canViewFinancialData={canViewFinancialData}
-            />
-          </Col>
-          <Col xs={24} md={24} lg={8}>
-            <UsersEditActionFields translate={translate} />
-          </Col>
-        </Row>
-      </Form>
+      <Tabs activeKey={activeTab} onChange={onTabChange} items={tabItems} />
     </Edit>
   );
 };

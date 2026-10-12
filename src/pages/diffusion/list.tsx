@@ -23,6 +23,7 @@ import {
   AdStatus,
   AdPlacement,
   AD_STATUSES,
+  isVerticalFeedPlacement,
   SECTION_POSITION_LABELS,
 } from "./types";
 import { StatusBadge } from "./status-badge";
@@ -94,7 +95,11 @@ export const AdCampaignList = () => {
       dataIndex: "section_position",
       title: "Position section",
       render: (v: AdCampaign["section_position"], record: AdCampaign) =>
-        v
+        isVerticalFeedPlacement(record.placement)
+          ? record.position_index === null || record.position_index === undefined
+            ? "Haut / bas du flux"
+            : `Après l'élément ${record.position_index + 1}`
+          : v
           ? `${SECTION_POSITION_LABELS[v] ?? v}${v === "inline" ? ` (${record.position_index ?? 0})` : ""}`
           : "—",
     },
