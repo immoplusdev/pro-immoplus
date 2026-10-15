@@ -9,6 +9,7 @@ import { useConversations } from "@/hooks/useMessaging";
 import { MappedTag } from "@/components/admin/common/MappedTag";
 import { QueryError } from "@/components/admin/common/QueryError";
 import { useUrlFilters } from "@/components/admin/common/useUrlFilters";
+import { ParticipantCell } from "./participant";
 import {
   conversationStatusMap,
   conversationTypeMap,
@@ -56,13 +57,18 @@ export function ConversationsList() {
       width: 110,
       render: (v: ConversationStatus) => <MappedTag value={v} map={conversationStatusMap} />,
     },
-    { title: "Client", dataIndex: "clientId", width: 150, ellipsis: true },
+    {
+      title: "Client",
+      key: "client",
+      width: 180,
+      render: (_, r) => <ParticipantCell user={r.client} fallbackId={r.clientId} />,
+    },
     {
       title: "Pro",
-      dataIndex: "proId",
-      width: 150,
-      ellipsis: true,
-      render: (v: string | null) => v ?? <Text type="secondary">Support</Text>,
+      key: "pro",
+      width: 180,
+      render: (_, r) =>
+        r.proId ? <ParticipantCell user={r.pro} fallbackId={r.proId} /> : <Text type="secondary">Support</Text>,
     },
     {
       title: "Dernier message",
@@ -174,7 +180,7 @@ export function ConversationsList() {
           dataSource={data?.data}
           loading={isLoading || isFetching}
           locale={{ emptyText: "Aucune conversation ne correspond aux filtres" }}
-          scroll={{ x: 1100 }}
+          scroll={{ x: 1160 }}
           onRow={(r) => ({
             onClick: () => navigate(`/admin/conversations/${r.id}`),
             onKeyDown: (e) => e.key === "Enter" && navigate(`/admin/conversations/${r.id}`),

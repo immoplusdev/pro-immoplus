@@ -13,6 +13,7 @@ import {
 import { MappedTag } from "@/components/admin/common/MappedTag";
 import { QueryError } from "@/components/admin/common/QueryError";
 import { extractErrorMessage, getErrorBody, getErrorStatus } from "@/lib/helpers";
+import { ParticipantCell, participantLabel } from "./participant";
 import {
   MESSAGE_MAX_LENGTH,
   conversationStatusMap,
@@ -59,7 +60,7 @@ function MessageItem({ msg }: { msg: ConversationMessage }) {
         <Space size={4} wrap style={{ marginBottom: 4 }}>
           <MappedTag value={msg.senderRole} map={participantRoleMap} />
           <Text type="secondary" style={{ fontSize: 12 }}>
-            {msg.senderId}
+            {participantLabel(msg.sender, msg.senderId)}
           </Text>
           {isBlocked && (
             <Tag color="red" icon={<StopOutlined />}>
@@ -154,6 +155,10 @@ export function ConversationDetailPage() {
     );
   };
 
+  // Les signalements ne portent que des IDs : on les résout via les participants de la conversation.
+  const userLabel = (id: string) =>
+    participantLabel(id === c.clientId ? c.client : id === c.proId ? c.pro : null, id);
+
   const links: { label: string; id: string | null; to: string }[] = [
     { label: "Résidence", id: c.residenceId, to: `/residences/show/${c.residenceId}` },
     { label: "Réservation", id: c.reservationId, to: `/reservations/show/${c.reservationId}` },
@@ -201,13 +206,17 @@ export function ConversationDetailPage() {
 
       <Descriptions bordered size="small" column={{ xs: 1, md: 2 }} style={{ marginBottom: 16 }}>
         <Descriptions.Item label="ID">{c.id}</Descriptions.Item>
-        <Descriptions.Item label="Client">{c.clientId}</Descriptions.Item>
-        <Descriptions.Item label="Pro">{c.proId ?? "Support"}</Descriptions.Item>
+        <Descriptions.Item label="Client">
+          <ParticipantCell user={c.client} fallbackId={c.clientId} linkToProfile />
+        </Descriptions.Item>
+        <Descriptions.Item label="Pro">
+          {c.proId ? <ParticipantCell user={c.pro} fallbackId={c.proId} linkToProfile /> : "Support"}
+        </Descriptions.Item>
         <Descriptions.Item label="Contenus bloqués">{c.blockedContentCount}</Descriptions.Item>
         <Descriptions.Item label="Non lus (pro / client)">
           {c.unreadCountPro} / {c.unreadCountClient}
         </Descriptions.Item>
-        {isBlocked && <Descriptions.Item label="Bloquée par">{c.blockedByUserId ?? "—"}</Descriptions.Item>}
+        {isBlocked && <Descriptions.Item label="Bloquée par">{c.blockedByUserId ? participantLabel(c.blockedByUser, c.blockedByUserId) : "—"}</Descriptions.Item>}
         <Descriptions.Item label="Créée le">{dayjs(c.createdAt).format("DD/MM/YYYY HH:mm")}</Descriptions.Item>
         <Descriptions.Item label="Liens">
           <Space wrap>
@@ -231,7 +240,7 @@ export function ConversationDetailPage() {
             <ul style={{ margin: 0, paddingLeft: 16 }}>
               {c.reports.map((r) => (
                 <li key={r.id}>
-                  <MappedTag value={r.reason} map={reportReasonMap} /> par {r.reporterId} contre {r.reportedUserId}
+                  <MappedTag value={r.reason} map={reportReasonMap} /> par {userLabel(r.reporterId)} contre {userLabel(r.reportedUserId)}
                   {r.details ? ` — ${r.details}` : ""} ({dayjs(r.createdAt).format("DD/MM/YYYY HH:mm")})
                 </li>
               ))}
