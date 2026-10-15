@@ -21,9 +21,9 @@ export const UsersEditDataFields: React.FC<{
   onWalletUpdate?: () => void;
   canViewFinancialData?: boolean;
 }> = ({ translate, data, walletData, onWalletUpdate, canViewFinancialData = false }) => {
-  const showFinancialSections =
-    canViewFinancialData &&
-    (data?.role?.name === "pro_entreprise" || data?.role?.name === "pro_particulier");
+  const isPro =
+    data?.role?.name === "pro_entreprise" || data?.role?.name === "pro_particulier";
+  const showFinancialSections = canViewFinancialData && isPro;
 
   return (
     <>
@@ -90,6 +90,18 @@ export const UsersEditDataFields: React.FC<{
             label={translate("users.fields.auth_login_attempts")}
             content={data?.authLoginAttempts}
           />
+          {data?.role?.name === "customer" && (
+            <ReadOnlyFormField
+              label={translate("users.fields.nombre_reservations")}
+              content={data?.nombreReservations ?? "—"}
+            />
+          )}
+          {isPro && (
+            <ReadOnlyFormField
+              label={translate("users.fields.nombre_residences")}
+              content={data?.nombreResidences ?? "—"}
+            />
+          )}
         </Card>
       </Card>
 
