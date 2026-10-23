@@ -248,12 +248,19 @@
       "status": "Status",
       "compte_pro_valide": "Pro account validated",
       "certification_score": "Certification score",
+      "nombre_reservations": "Bookings",
+      "nombre_residences": "Residences",
+      "activity_count": "Bookings / Residences",
       "certification_status": "Certification"
     },
     "tags": {
       "status": {
         "active": "Active",
         "blocked": "Blocked"
+      },
+      "activity": {
+        "reservations": "bookings",
+        "residences": "residences"
       },
       "roles": {
         "admin": "Administrator",

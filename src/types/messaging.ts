@@ -22,6 +22,15 @@ export interface Paginated<T> {
   hasNext: boolean;
 }
 
+/** Participant (client ou pro) tel que joint par l'API dans les conversations. */
+export interface ConversationParticipant {
+  id: string;
+  firstName: string | null;
+  lastName: string | null;
+  email: string | null;
+  phoneNumber: string | null;
+}
+
 export interface Conversation {
   id: string;
   type: ConversationType;
@@ -41,6 +50,9 @@ export interface Conversation {
   blockedByUserId: string | null;
   createdAt: string;
   updatedAt: string;
+  client?: ConversationParticipant | null;
+  pro?: ConversationParticipant | null;
+  blockedByUser?: ConversationParticipant | null;
 }
 
 export interface ConversationMessage {
@@ -54,6 +66,7 @@ export interface ConversationMessage {
   clientTempId: string | null;
   readAt: string | null;
   createdAt: string;
+  sender?: ConversationParticipant | null;
 }
 
 export interface ConversationReport {

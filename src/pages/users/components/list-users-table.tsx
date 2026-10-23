@@ -45,6 +45,20 @@ const CERTIFICATION_COLORS: Record<string, string> = {
     retire: TEXT_SECONDARY,
 };
 
+const STAFF_MENUS = ["admin", "financier", "commercial"];
+const PRO_ROLES = ["pro_entreprise", "pro_particulier"];
+
+const getActivityCount = (record: BaseRecord): {value: number; kind: "reservations" | "residences"} | null => {
+    const role = record.role?.name;
+    if (role === "customer" && typeof record.nombreReservations === "number") {
+        return {value: record.nombreReservations, kind: "reservations"};
+    }
+    if (PRO_ROLES.includes(role) && typeof record.nombreResidences === "number") {
+        return {value: record.nombreResidences, kind: "residences"};
+    }
+    return null;
+};
+
 type Props = {
     filters?: {
         initial?: CrudFilter[];
@@ -69,6 +83,14 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
     });
     const [progressPro, setProgressPro] = useState<{id: string; name: string} | null>(null);
     const isProList = activeMenu === "pro_entreprise" || activeMenu === "pro_particulier";
+    // Compteur métier : réservations pour un client, résidences pour un pro
+    const showActivityCount = !STAFF_MENUS.includes(activeMenu as string);
+    const isMixedList = activeMenu !== "customer" && !isProList;
+    const activityTitle = activeMenu === "customer"
+        ? translate("users.fields.nombre_reservations")
+        : isProList
+            ? translate("users.fields.nombre_residences")
+            : translate("users.fields.activity_count");
 
     // Merge permanent + initial filters to pass to the export button
     const allFilters = [
@@ -148,6 +170,23 @@ export const ListUsersTable = ({filters, activeMenu}: Props) => {
                         align="center"
                         sorter={true}
                     />
+                    {showActivityCount && <Table.Column
+                        key="activityCount"
+                        title={activityTitle}
+                        align="center"
+                        render={(_, record: BaseRecord) => {
+                            const count = getActivityCount(record);
+                            if (!count) return "—";
+                            return isMixedList ? (
+                                <span>
+                                    {count.value}{" "}
+                                    <span style={{color: TEXT_SECONDARY, fontSize: 12}}>
+                                        {translate(`users.tags.activity.${count.kind}`)}
+                                    </span>
+                                </span>
+                            ) : count.value;
+                        }}
+                    />}
                     <Table.Column
                         dataIndex="certificationScore"
                         title={translate("users.fields.certification_score")}

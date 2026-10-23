@@ -454,6 +454,9 @@
       "phone_number_verified": "Numéro de téléphone verifié ",
       "compte_pro_valide": "Compte pro valide",
       "certification_score": "Score certification",
+      "nombre_reservations": "Réservations",
+      "nombre_residences": "Résidences",
+      "activity_count": "Réservations / Résidences",
       "certification_status": "Certification",
       "auth_login_attempts": "Tentatives d'authentification",
       "status": "Status",
@@ -487,6 +490,10 @@
       "status": {
         "active": "Actif",
         "blocked": "Bloqué"
+      },
+      "activity": {
+        "reservations": "réservations",
+        "residences": "résidences"
       },
       "roles": {
         "admin": "Administrateur",
