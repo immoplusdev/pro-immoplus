@@ -3,6 +3,31 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 
 const axiosInstance = axios.create();
 
+interface ApiErrorBody {
+  message?: string | string[];
+  code?: string;
+  data?: unknown;
+}
+
+/**
+ * Erreur axios -> HttpError refine. Conserve le `code` métier et le `data` du back
+ * (ex. `FAILURE_REASON_IN_USE` + `data.usageCount`) ; un `message` de validation (400)
+ * peut être un tableau : il est joint pour les notifications.
+ */
+export const toHttpError = (error: AxiosError, fallbackStatus: number): HttpError => {
+  const body = error.response?.data as ApiErrorBody | undefined;
+  const rawMessage = body?.message;
+  const message = Array.isArray(rawMessage) ? rawMessage.join(", ") : rawMessage;
+
+  return {
+    ...error,
+    message: message ?? error.message,
+    statusCode: error.response?.status || fallbackStatus,
+    code: body?.code,
+    data: body?.data,
+  };
+};
+
 let isRefreshing = false;
 let failedQueue: Array<{
   resolve: (value?: unknown) => void;
@@ -37,12 +62,7 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (originalRequest.url?.includes('/auth/refresh-token') ||
           originalRequest.url?.includes('/auth/login')) {
-        const customError: HttpError = {
-          ...error,
-          message: (error.response?.data as any)?.message,
-          statusCode: error.response?.status || 401,
-        };
-        return Promise.reject(customError);
+        return Promise.reject(toHttpError(error, 401));
       }
 
       if (isRefreshing) {
@@ -88,13 +108,7 @@ axiosInstance.interceptors.response.use(
       }
     }
 
-    const customError: HttpError = {
-      ...error,
-      message: (error.response?.data as any)?.message,
-      statusCode: error.response?.status || 500,
-    };
-
-    return Promise.reject(customError);
+    return Promise.reject(toHttpError(error, 500));
   },
 );
 
