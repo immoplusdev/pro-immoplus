@@ -1,12 +1,12 @@
 import React from "react";
 import { useTranslate } from "@refinedev/core";
 import { Link } from "react-router-dom";
-import { DollarOutlined, FileTextOutlined, SwapOutlined } from "@ant-design/icons";
+import { DollarOutlined, FileTextOutlined, SwapOutlined, SafetyOutlined } from "@ant-design/icons";
 
 const BORDER_COLOR = "#E5E3DC";
 const TEXT_SECONDARY = "#5F5E5A";
 
-type ActiveMenu = "all_e" | "factures" | "retraits";
+type ActiveMenu = "all_e" | "factures" | "retraits" | "protection";
 
 interface Props {
     activeMenu?: ActiveMenu;
@@ -36,6 +36,13 @@ export function PaymentTabs({ activeMenu }: Props) {
             label: "Retraits",
             icon: SwapOutlined,
             color: "#B86B0A",
+        },
+        {
+            key: "protection" as const,
+            to: "/payments/protection",
+            label: "Protection client",
+            icon: SafetyOutlined,
+            color: "#1677FF",
         },
     ] as const;
 

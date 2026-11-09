@@ -57,6 +57,7 @@ import {
   ListPaymentsDemandesRetrait,
   ListPaymentsFactures,
 } from "@/pages/payments";
+import { PaymentProtectionPage } from "@/pages/payments/payment-protection";
 import { LoginPage } from "@/pages/auth";
 import ListWithdrawalRequest from "./pages/withdrawal-request/list-withdrawal-request";
 import EditWithdrawalRequest from "./pages/withdrawal-request/edit-withdrawal-request";
@@ -304,6 +305,7 @@ export function AppRoutes() {
           <Route index element={<ListPayments />} />
           <Route path="factures" element={<ListPaymentsFactures />} />
           <Route path="retraits" element={<ListPaymentsDemandesRetrait />} />
+          <Route path="protection" element={<PaymentProtectionPage />} />
           <Route path="edit/:id" element={<EditPayment />} />
         </Route>
         <Route path={"withdrawal-requests"}>
