@@ -42,6 +42,7 @@ import {
   RetweetOutlined,
   PieChartOutlined,
   EnvironmentOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { API_URL, PROJECT_ID } from "@/configs/app.config";
@@ -331,6 +332,14 @@ function App() {
                   meta: {
                     icon: <RetweetOutlined />,
                     label: "Immo-Relais",
+                  },
+                },
+                {
+                  name: "admin/reservation-failure-reasons",
+                  list: "/failure-reasons",
+                  meta: {
+                    icon: <ExclamationCircleOutlined />,
+                    label: "Motifs d'échec",
                   },
                 },
                 {

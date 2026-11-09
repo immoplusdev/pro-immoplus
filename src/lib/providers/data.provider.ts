@@ -1,11 +1,16 @@
 import type {AxiosInstance} from "axios";
 import type {DataProvider} from "@refinedev/core";
-import {axiosInstance, generateSort, generateFilter, generateSearch} from "./utils";
+import {axiosInstance, generateSort, generateFilter, generateSearch, generatePlainQuery} from "./utils";
 import queryString from "query-string";
 import {normalizeStringArray, serializeWhereParameterToQueryFiltersString} from "@/lib/helpers";
 
 type MethodTypes = "get" | "delete" | "head" | "options";
 type MethodTypesWithBody = "post" | "put" | "patch";
+
+/**
+ * Listes non paginées : filtres `eq` en query string simple, réponse `{ data: { items, total } }`.
+ */
+const PLAIN_LIST_RESOURCES = ["admin/reservation-failure-reasons"];
 
 
 export const getDataProvider = (
@@ -40,6 +45,14 @@ export const getDataProvider = (
             const {current = 1, pageSize = 10, mode = "server"} = pagination ?? {};
 
             const {headers: headersFromMeta, method} = meta ?? {};
+
+            if (PLAIN_LIST_RESOURCES.includes(resource)) {
+                const plainQuery = generatePlainQuery(filters);
+                const {data} = await httpClient.get(plainQuery ? `${url}?${plainQuery}` : url, {
+                    headers: headersFromMeta,
+                });
+                return {data: data.data.items, total: data.data.total};
+            }
 
             const requestMethod = (method as MethodTypes) ?? "get";
 
@@ -247,8 +260,9 @@ export const getDataProvider = (
                 headers,
             });
 
+            // 204 : corps vide (axios renvoie "" sans tenter de parser du JSON).
             return {
-                data: data.data,
+                data: data?.data,
             };
         },
 

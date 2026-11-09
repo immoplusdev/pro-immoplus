@@ -57,6 +57,7 @@ import {
   ListPaymentsDemandesRetrait,
   ListPaymentsFactures,
 } from "@/pages/payments";
+import { PaymentProtectionPage } from "@/pages/payments/payment-protection";
 import { LoginPage } from "@/pages/auth";
 import ListWithdrawalRequest from "./pages/withdrawal-request/list-withdrawal-request";
 import EditWithdrawalRequest from "./pages/withdrawal-request/edit-withdrawal-request";
@@ -130,6 +131,7 @@ import { RelaisList } from "@/pages/admin/relais";
 import { RelaisInterestsList } from "@/pages/admin/relais/interests";
 import { RelaisDetail } from "@/pages/admin/relais/detail";
 import { LocationExportPage } from "@/pages/admin/location";
+import { FailureReasonList } from "@/pages/failure-reasons";
 import { AdminRoute } from "@/components/auth/admin-route";
 import { ResourceRoute } from "@/components/auth/resource-route";
 
@@ -303,6 +305,7 @@ export function AppRoutes() {
           <Route index element={<ListPayments />} />
           <Route path="factures" element={<ListPaymentsFactures />} />
           <Route path="retraits" element={<ListPaymentsDemandesRetrait />} />
+          <Route path="protection" element={<PaymentProtectionPage />} />
           <Route path="edit/:id" element={<EditPayment />} />
         </Route>
         <Route path={"withdrawal-requests"}>
@@ -368,6 +371,9 @@ export function AppRoutes() {
         {/* Données GPS sensibles : guard de rôle en plus du masquage du menu. */}
         <Route path={"/admin/location"} element={<AdminRoute />}>
           <Route index element={<LocationExportPage />} />
+        </Route>
+        <Route path={"/failure-reasons"} element={<AdminRoute />}>
+          <Route index element={<FailureReasonList />} />
         </Route>
         <Route path={"/statistics"}>
           <Route index element={<Statistics />} />
