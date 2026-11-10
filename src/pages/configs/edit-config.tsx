@@ -10,6 +10,7 @@ import {API_URL} from "@/configs";
 import AppLoader from "@/components/loading/app-loader";
 import {SpinLoader} from "@/components/loading";
 import {ReminderSettingsCard} from "@/components/admin/reservation-reminders/ReminderSettingsCard";
+import {PaymentPolicySettingsCard} from "@/pages/configs/components/payment-policy-settings-card";
 
 
 export const EditConfig: React.FC<IResourceComponentsProps> = (props) => (
@@ -18,6 +19,7 @@ export const EditConfig: React.FC<IResourceComponentsProps> = (props) => (
         destroyInactiveTabPane
         items={[
             {key: "general", label: "Général", children: <GeneralConfig {...props}/>},
+            {key: "payments", label: "Paiements", children: <PaymentPolicySettingsCard/>},
             {key: "imaai", label: "IMAAI", icon: <RobotOutlined/>, children: <ImaaiSettingsCard/>},
         ]}
     />
