@@ -11,7 +11,7 @@ const BASE = `${API_URL}/admin/payment-protection`;
 type State = "PROTECTABLE" | "PENDING_APPROVAL" | "FAILED" | "RESOLVED" | "NOT_PAID";
 type CaseItem = {
   reservationId: string; codeReservation?: string; statusReservation?: string; statusFacture?: string;
-  dateDebut?: string; dateFin?: string; residence?: { id?: string; nom?: string };
+  dateDebut?: string; dateFin?: string; createdAt?: string; residence?: { id?: string; nom?: string };
   client?: { id?: string; firstName?: string; lastName?: string; phoneNumber?: string; email?: string; masked?: boolean };
   capturedAmount?: number; creditedAmount?: number; pendingApprovalAmount?: number; protectableAmount?: number;
   currency?: string; protectionState: State;
@@ -19,6 +19,7 @@ type CaseItem = {
 type Detail = { reservation?: CaseItem; payments?: any[]; resolutions?: any[]; walletTransactions?: any[]; audit?: any[] };
 const label: Record<State, string> = { PROTECTABLE: "À restituer", PENDING_APPROVAL: "En attente de validation", FAILED: "Échec", RESOLVED: "Résolu", NOT_PAID: "Non payé" };
 const formatAmount = (amount?: number, currency = "XOF") => `${new Intl.NumberFormat("fr-FR").format(amount ?? 0)} ${currency}`;
+const formatDateTime = (value?: string) => value ? new Date(value).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" }) : "—";
 
 export function PaymentProtectionPage() {
   const [state, setState] = useState<State | undefined>();
@@ -47,6 +48,7 @@ export function PaymentProtectionPage() {
   const openDetail = (record: CaseItem) => { setSelected(record); setDetail(undefined); detailMutation.mutate(record.reservationId); };
   const columns: ColumnsType<CaseItem> = [
     { title: "Réservation", dataIndex: "codeReservation", render: (v, r) => v || r.reservationId },
+    { title: "Date de réservation", dataIndex: "createdAt", render: formatDateTime },
     { title: "Client", render: (_, r) => `${r.client?.firstName ?? ""} ${r.client?.lastName ?? ""}`.trim() || "—" },
     { title: "Résidence", render: (_, r) => r.residence?.nom || "—" },
     { title: "Encaissé", render: (_, r) => formatAmount(r.capturedAmount, r.currency) },
@@ -72,6 +74,7 @@ export function PaymentProtectionPage() {
       {detail && <>
         <Descriptions bordered size="small" column={2} style={{ marginBottom: 20 }}>
           <Descriptions.Item label="Réservation">{detail.reservation?.codeReservation ?? selected?.reservationId}</Descriptions.Item>
+          <Descriptions.Item label="Date de réservation">{formatDateTime(detail.reservation?.createdAt ?? selected?.createdAt)}</Descriptions.Item>
           <Descriptions.Item label="État">{label[detail.reservation?.protectionState ?? selected?.protectionState ?? "NOT_PAID"]}</Descriptions.Item>
           <Descriptions.Item label="Client">{[detail.reservation?.client?.firstName, detail.reservation?.client?.lastName].filter(Boolean).join(" ") || "—"}</Descriptions.Item>
           <Descriptions.Item label="Téléphone">{detail.reservation?.client?.phoneNumber || "—"}</Descriptions.Item>

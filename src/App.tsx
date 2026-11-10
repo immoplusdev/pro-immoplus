@@ -25,6 +25,7 @@ import {
   BankOutlined,
   SwapOutlined,
   DollarOutlined,
+  SafetyOutlined,
   SettingOutlined,
   AppstoreOutlined,
   SolutionOutlined,
@@ -228,6 +229,14 @@ function App() {
                   meta: {
                     icon: <DollarOutlined />,
                     label: "Paiements",
+                  },
+                },
+                {
+                  name: "payment-protection",
+                  list: "/payments/protection",
+                  meta: {
+                    icon: <SafetyOutlined />,
+                    label: "Protection client",
                   },
                 },
                 {
