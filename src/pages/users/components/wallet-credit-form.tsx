@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Form,
   Input,
@@ -7,13 +7,16 @@ import {
   Button,
   DatePicker,
   Space,
-  message,
   Collapse,
 } from "antd";
 import { CreditCardOutlined } from "@ant-design/icons";
-import { useApiUrl } from "@refinedev/core";
-import axios from "axios";
-import { getLocalStorageProvider } from "@/lib/providers/local-storage.provider";
+import {
+  UUID_PATTERN,
+  WALLET_NOTE_MAX_LENGTH,
+  WalletOperationFormValues,
+  buildCreditPayload,
+} from "./wallet-operations";
+import { useWalletAdminOperation } from "./use-wallet-admin-operation";
 import { useParams } from "react-router-dom";
 
 const { Option } = Select;
@@ -28,56 +31,19 @@ export const WalletCreditForm: React.FC<WalletCreditFormProps> = ({
   onSuccess,
 }) => {
   const [form] = Form.useForm();
-  const [isLoading, setIsLoading] = useState(false);
-  const apiUrl = useApiUrl();
   const { id: userId } = useParams<{ id: string }>();
-  const authStorageManager = getLocalStorageProvider();
+  const { run, isSubmitting } = useWalletAdminOperation<ReturnType<typeof buildCreditPayload>>({
+    operation: "credit",
+    translate,
+    successKey: "wallet.messages.walletCreditSuccess",
+    failedKey: "wallet.messages.walletCreditFailed",
+    onRefresh: onSuccess,
+  });
 
-  const handleCreditWallet = async (values: any) => {
-    if (isLoading) return;
-
-    try {
-      setIsLoading(true);
-
-      // Récupérer le token depuis le localStorage
-      const authData = authStorageManager.getAuthData();
-      const token = authData?.access_token;
-
-      if (!token) {
-        message.error(translate("auth.messages.tokenNotFound"));
-        return;
-      }
-
-      const payload = {
-        ownerId: userId,
-        amount: values.amount,
-        source: values.source,
-        sourceId: values.sourceId,
-        currency: values.currency,
-        operator: values.operator,
-        note: values.note,
-        refundDate: values.refundDate?.toISOString(),
-      };
-
-      await axios.post(`${apiUrl}/wallet/admin/credit`, payload, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      message.success(translate("wallet.messages.walletCreditSuccess"));
-      form.resetFields();
-      if (onSuccess) {
-        onSuccess();
-      }
-    } catch (error: unknown) {
-      const errorMessage =
-        (error as any)?.response?.data?.message ||
-        translate("wallet.messages.walletCreditFailed");
-      message.error(errorMessage);
-    } finally {
-      setIsLoading(false);
-    }
+  const handleCreditWallet = async (values: WalletOperationFormValues) => {
+    if (!userId) return;
+    const succeeded = await run(buildCreditPayload(userId, values));
+    if (succeeded) form.resetFields();
   };
 
   return (
@@ -178,7 +144,12 @@ export const WalletCreditForm: React.FC<WalletCreditFormProps> = ({
                 rules={[
                   {
                     required: true,
+                    whitespace: true,
                     message: translate("wallet.validation.sourceId.required"),
+                  },
+                  {
+                    pattern: UUID_PATTERN,
+                    message: translate("wallet.validation.sourceId.uuid"),
                   },
                 ]}
               >
@@ -212,10 +183,26 @@ export const WalletCreditForm: React.FC<WalletCreditFormProps> = ({
                 </Select>
               </Form.Item>
 
-              <Form.Item label={translate("wallet.fields.note")} name="note">
+              <Form.Item
+                label={translate("wallet.fields.reason")}
+                name="note"
+                rules={[
+                  {
+                    required: true,
+                    whitespace: true,
+                    message: translate("wallet.validation.reason.required"),
+                  },
+                  {
+                    max: WALLET_NOTE_MAX_LENGTH,
+                    message: translate("wallet.validation.reason.max"),
+                  },
+                ]}
+              >
                 <Input.TextArea
                   rows={3}
-                  placeholder={translate("wallet.placeholders.note")}
+                  maxLength={WALLET_NOTE_MAX_LENGTH}
+                  showCount
+                  placeholder={translate("wallet.placeholders.reason")}
                 />
               </Form.Item>
 
@@ -235,7 +222,8 @@ export const WalletCreditForm: React.FC<WalletCreditFormProps> = ({
                 <Button
                   type="primary"
                   onClick={() => form.submit()}
-                  loading={isLoading}
+                  loading={isSubmitting}
+                  disabled={isSubmitting}
                   style={{ width: "100%" }}
                   size="large"
                 >

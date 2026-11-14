@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Button, Card, Descriptions, Drawer, Input, Modal, Select, Space, Table, Tag, Typography, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { ReloadOutlined, EyeOutlined, SafetyOutlined } from "@ant-design/icons";
@@ -6,6 +6,7 @@ import { axiosInstance } from "@/lib/providers/utils/axios";
 import { API_URL } from "@/configs/app.config";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { PaymentTabs } from "@/pages/payments/components/payment-tabs";
+import { createIdempotencyKeyStore, getIdempotencyErrorKind } from "@/lib/helpers/idempotency.helper";
 
 const BASE = `${API_URL}/admin/payment-protection`;
 type State = "PROTECTABLE" | "PENDING_APPROVAL" | "FAILED" | "RESOLVED" | "NOT_PAID";
@@ -31,17 +32,32 @@ export function PaymentProtectionPage() {
   const [reason, setReason] = useState("OWNER_CANCELLED_AFTER_CAPTURE");
   const [action, setAction] = useState<"create" | "approve" | "reject">();
   const queryClient = useQueryClient();
+  // Une clé par intention de restitution : réutilisée pour tout renvoi du même contenu
+  // (double-clic, retry après erreur réseau/5xx), renouvelée après succès ou si le contenu change.
+  const resolutionKeys = useRef(createIdempotencyKeyStore());
+  const refreshCase = () => { queryClient.invalidateQueries({ queryKey: ["payment-protection"] }); if (selected) detailMutation.mutate(selected.reservationId); };
   const params = useMemo(() => ({ page, perPage: 20, ...(state ? { protectionState: state } : {}), ...(clientId ? { clientId } : {}) }), [page, state, clientId]);
   const listQuery = useQuery({ queryKey: ["payment-protection", params], queryFn: async () => (await axiosInstance.get<{data: CaseItem[]; meta: {total: number}}>(`${BASE}/reservations`, { params })).data });
   const detailMutation = useMutation({ mutationFn: async (id: string) => (await axiosInstance.get<{data: Detail}>(`${BASE}/reservations/${id}`)).data.data,
     onSuccess: (data) => { setDetail(data); setSelected(data.reservation ?? selected); } });
   const actionMutation = useMutation({ mutationFn: async () => {
     if (!selected || !action) return;
-    if (action === "create") return (await axiosInstance.post(`${BASE}/reservations/${selected.reservationId}/resolutions`, { reason, destination: "WALLET", note }, { headers: { "Idempotency-Key": `protection-${selected.reservationId}-${Date.now()}` } })).data;
+    if (action === "create") {
+      const body = { reason, destination: "WALLET", note: note.trim() };
+      const idempotencyKey = resolutionKeys.current.keyFor({ reservationId: selected.reservationId, ...body });
+      return (await axiosInstance.post(`${BASE}/reservations/${selected.reservationId}/resolutions`, body, { idempotencyKey })).data;
+    }
     const resolutionId = (detail?.resolutions ?? []).find((r: any) => r.status === "PENDING_APPROVAL")?.resolutionId ?? (detail?.resolutions ?? []).find((r: any) => r.status === "PENDING_APPROVAL")?.id;
     if (!resolutionId) throw new Error("Identifiant de restitution en attente introuvable.");
     return (await axiosInstance.post(`${BASE}/resolutions/${resolutionId}/${action}`, { note })).data;
-  }, onSuccess: () => { message.success("Action effectuée"); setAction(undefined); setNote(""); queryClient.invalidateQueries({ queryKey: ["payment-protection"] }); if (selected) detailMutation.mutate(selected.reservationId); }, onError: (e: any) => message.error(e?.response?.data?.message || e.message || "L’action a échoué") });
+  }, onSuccess: () => { if (action === "create") resolutionKeys.current.reset(); message.success("Action effectuée"); setAction(undefined); setNote(""); refreshCase(); },
+    onError: (e: any) => {
+      const kind = getIdempotencyErrorKind(e);
+      if (kind === "key-reused") { resolutionKeys.current.reset(); message.warning("Cette restitution a déjà été tentée avec un contenu différent. Vérifiez le motif puis confirmez à nouveau."); return; }
+      if (kind === "in-progress") { message.info("Cette restitution est déjà en cours de traitement. Le dossier est actualisé."); setAction(undefined); refreshCase(); return; }
+      if (kind === "key-required") console.error("[idempotency] Idempotency-Key absente de la requête (bug client)", e);
+      message.error(e?.response?.data?.message || e.message || "L’action a échoué");
+    } });
   const retryMutation = useMutation({ mutationFn: async (resolutionId: string) => (await axiosInstance.post(`${BASE}/resolutions/${resolutionId}/retry`)).data,
     onSuccess: () => { message.success("Restitution relancée"); queryClient.invalidateQueries({ queryKey: ["payment-protection"] }); if (selected) detailMutation.mutate(selected.reservationId); }, onError: (e: any) => message.error(e?.response?.data?.message || "La relance a échoué") });
 
@@ -88,9 +104,9 @@ export function PaymentProtectionPage() {
         </Card>)}
       </>}
     </Drawer>
-    <Modal title={action === "create" ? "Créer une restitution" : action === "approve" ? "Valider la restitution" : "Rejeter la restitution"} open={!!action} onCancel={() => setAction(undefined)} onOk={() => actionMutation.mutate()} confirmLoading={actionMutation.isPending} okText={action === "reject" ? "Rejeter" : action === "approve" ? "Valider" : "Créditer le coffre"} okButtonProps={{ danger: action === "reject" }}>
+    <Modal title={action === "create" ? "Créer une restitution" : action === "approve" ? "Valider la restitution" : "Rejeter la restitution"} open={!!action} onCancel={() => setAction(undefined)} onOk={() => { if (!actionMutation.isPending) actionMutation.mutate(); }} confirmLoading={actionMutation.isPending} okText={action === "reject" ? "Rejeter" : action === "approve" ? "Valider" : "Créditer le coffre"} okButtonProps={{ danger: action === "reject", disabled: action === "create" && !note.trim() }} cancelButtonProps={{ disabled: actionMutation.isPending }}>
       {action === "create" && <Select value={reason} onChange={setReason} style={{ width: "100%", marginBottom: 12 }} options={[{ value: "OWNER_CANCELLED_AFTER_CAPTURE", label: "Annulation par le propriétaire" }, { value: "ADMIN_CANCELLED_AFTER_CAPTURE", label: "Annulation par l’administration" }, { value: "AVAILABILITY_LOST", label: "Indisponibilité du logement" }, { value: "DISPUTE_RESOLVED_FOR_CLIENT", label: "Litige résolu en faveur du client" }]} />}
-      <Input.TextArea value={note} onChange={(e) => setNote(e.target.value)} rows={3} placeholder="Note (facultative)" />
+      <Input.TextArea value={note} onChange={(e) => setNote(e.target.value)} rows={3} maxLength={1000} showCount placeholder={action === "create" ? "Motif (obligatoire)" : "Note (facultative)"} />
     </Modal>
   </>;
 }
