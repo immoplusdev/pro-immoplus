@@ -3,6 +3,26 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 
 const axiosInstance = axios.create();
 
+export const IDEMPOTENCY_KEY_HEADER = "Idempotency-Key";
+
+declare module "axios" {
+  interface AxiosRequestConfig {
+    /**
+     * Pose l'en-tête `Idempotency-Key`. La clé est fournie par l'appelant et doit rester la même
+     * pour tous les renvois d'une même intention (double-clic, retry) : ne jamais en générer une
+     * ici, sinon un renvoi serait exécuté deux fois. Voir `createIdempotentSubmitter`.
+     */
+    idempotencyKey?: string;
+  }
+}
+
+axiosInstance.interceptors.request.use((config) => {
+  if (config.idempotencyKey) {
+    config.headers.set(IDEMPOTENCY_KEY_HEADER, config.idempotencyKey);
+  }
+  return config;
+});
+
 interface ApiErrorBody {
   message?: string | string[];
   code?: string;
