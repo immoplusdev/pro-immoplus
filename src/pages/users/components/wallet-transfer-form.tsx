@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Form,
   Input,
@@ -6,13 +6,16 @@ import {
   Select,
   Button,
   Space,
-  message,
   Collapse,
 } from "antd";
 import { SwapOutlined } from "@ant-design/icons";
-import { useApiUrl } from "@refinedev/core";
-import axios from "axios";
-import { getLocalStorageProvider } from "@/lib/providers/local-storage.provider";
+import {
+  UUID_PATTERN,
+  WALLET_NOTE_MAX_LENGTH,
+  WalletOperationFormValues,
+  buildTransferPayload,
+} from "./wallet-operations";
+import { useWalletAdminOperation } from "./use-wallet-admin-operation";
 import { useParams } from "react-router-dom";
 
 const { Option } = Select;
@@ -27,52 +30,19 @@ export const WalletTransferForm: React.FC<WalletTransferFormProps> = ({
   onSuccess,
 }) => {
   const [form] = Form.useForm();
-  const [isLoading, setIsLoading] = useState(false);
-  const apiUrl = useApiUrl();
   const { id: userId } = useParams<{ id: string }>();
-  const authStorageManager = getLocalStorageProvider();
+  const { run, isSubmitting } = useWalletAdminOperation<ReturnType<typeof buildTransferPayload>>({
+    operation: "transfer",
+    translate,
+    successKey: "wallet.messages.walletTransferSuccess",
+    failedKey: "wallet.messages.walletTransferFailed",
+    onRefresh: onSuccess,
+  });
 
-  const handleTransfer = async (values: any) => {
-    if (isLoading) return;
-
-    try {
-      setIsLoading(true);
-
-      const authData = authStorageManager.getAuthData();
-      const token = authData?.access_token;
-
-      if (!token) {
-        message.error(translate("auth.messages.tokenNotFound"));
-        return;
-      }
-
-      const payload = {
-        fromOwnerId: userId,
-        toOwnerId: values.toOwnerId,
-        amount: values.amount,
-        currency: values.currency,
-        note: values.note,
-      };
-
-      await axios.post(`${apiUrl}/wallet/admin/transfer`, payload, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      message.success(translate("wallet.messages.walletTransferSuccess"));
-      form.resetFields();
-      if (onSuccess) {
-        onSuccess();
-      }
-    } catch (error: unknown) {
-      const errorMessage =
-        (error as any)?.response?.data?.message ||
-        translate("wallet.messages.walletTransferFailed");
-      message.error(errorMessage);
-    } finally {
-      setIsLoading(false);
-    }
+  const handleTransfer = async (values: WalletOperationFormValues) => {
+    if (!userId) return;
+    const succeeded = await run(buildTransferPayload(userId, values));
+    if (succeeded) form.resetFields();
   };
 
   return (
@@ -101,7 +71,12 @@ export const WalletTransferForm: React.FC<WalletTransferFormProps> = ({
                 rules={[
                   {
                     required: true,
+                    whitespace: true,
                     message: translate("wallet.validation.toOwnerId.required"),
+                  },
+                  {
+                    pattern: UUID_PATTERN,
+                    message: translate("wallet.validation.toOwnerId.uuid"),
                   },
                 ]}
               >
@@ -123,7 +98,7 @@ export const WalletTransferForm: React.FC<WalletTransferFormProps> = ({
                   },
                   {
                     type: "number",
-                    min: 1,
+                    min: 100,
                     message: translate("wallet.validation.transferAmount.min"),
                   },
                 ]}
@@ -132,7 +107,7 @@ export const WalletTransferForm: React.FC<WalletTransferFormProps> = ({
                   placeholder={translate("wallet.placeholders.transferAmount")}
                   style={{ width: "100%" }}
                   size="large"
-                  min={1}
+                  min={100}
                   precision={2}
                 />
               </Form.Item>
@@ -158,10 +133,26 @@ export const WalletTransferForm: React.FC<WalletTransferFormProps> = ({
                 </Select>
               </Form.Item>
 
-              <Form.Item label={translate("wallet.fields.note")} name="note">
+              <Form.Item
+                label={translate("wallet.fields.reason")}
+                name="note"
+                rules={[
+                  {
+                    required: true,
+                    whitespace: true,
+                    message: translate("wallet.validation.reason.required"),
+                  },
+                  {
+                    max: WALLET_NOTE_MAX_LENGTH,
+                    message: translate("wallet.validation.reason.max"),
+                  },
+                ]}
+              >
                 <Input.TextArea
                   rows={3}
-                  placeholder={translate("wallet.placeholders.note")}
+                  maxLength={WALLET_NOTE_MAX_LENGTH}
+                  showCount
+                  placeholder={translate("wallet.placeholders.reason")}
                 />
               </Form.Item>
 
@@ -169,7 +160,8 @@ export const WalletTransferForm: React.FC<WalletTransferFormProps> = ({
                 <Button
                   type="primary"
                   onClick={() => form.submit()}
-                  loading={isLoading}
+                  loading={isSubmitting}
+                  disabled={isSubmitting}
                   style={{ width: "100%" }}
                   size="large"
                 >

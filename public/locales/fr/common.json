@@ -885,7 +885,8 @@
       "debitAmount": "Montant à debiter",
       "releaseAmount": "Montant à reverser",
       "transferAmount": "Montant à transférer",
-      "toOwnerId": "ID du pro destinataire"
+      "toOwnerId": "ID du pro destinataire",
+      "reason": "Motif"
     },
     "validation": {
       "creditAmount": {
@@ -899,7 +900,8 @@
         "required": "La source est obligatoire"
       },
       "sourceId": {
-        "required": "L'ID de la source est obligatoire"
+        "required": "L'ID de la source est obligatoire",
+        "uuid": "L'ID de la source doit être un identifiant valide (UUID de la réservation, du paiement, de la demande de retrait…)"
       },
       "operator": {
         "required": "L'operateur est obligatoire"
@@ -914,10 +916,15 @@
       },
       "transferAmount": {
         "required": "Le montant du transfert est obligatoire",
-        "min": "Le montant du transfert doit être supérieur ou égal à 1"
+        "min": "Le montant du transfert doit être supérieur ou égal à 100"
       },
       "toOwnerId": {
-        "required": "L'ID du pro destinataire est obligatoire"
+        "required": "L'ID du pro destinataire est obligatoire",
+        "uuid": "L'ID du pro destinataire doit être un identifiant valide (UUID)"
+      },
+      "reason": {
+        "required": "Le motif est obligatoire",
+        "max": "Le motif ne doit pas dépasser 1000 caractères"
       }
     },
     "placeholders": {
@@ -931,7 +938,11 @@
       "debitAmount": "Montant à debiter",
       "releaseAmount": "Montant à reverser",
       "transferAmount": "Montant à transférer",
-      "toOwnerId": "ID du pro destinataire"
+      "toOwnerId": "ID du pro destinataire",
+      "reason": "Motif de l'opération (conservé dans le journal)"
+    },
+    "hints": {
+      "releaseFundsSource": "Pour un séjour (source RESERVATION) : ID de la réservation et montant exact bloqué pour ce séjour, au moins 24 h après le checkout."
     },
     "tags": {
       "active": "Actif",
@@ -944,7 +955,15 @@
       "walletDebitSuccess": "Le débit a bien été ajouté au portefeuille.",
       "walletDebitFailed": "Une erreur s'est produite lors de l'ajout du débit au portefeuille.",
       "walletTransferSuccess": "Le transfert a été effectué avec succès.",
-      "walletTransferFailed": "Une erreur s'est produite lors du transfert. Veuillez contacter l'administrateur."
+      "walletTransferFailed": "Une erreur s'est produite lors du transfert. Veuillez contacter l'administrateur.",
+      "walletReleaseFundsSuccess": "Les fonds ont bien été reversés.",
+      "walletReleaseFundsFailed": "Une erreur s'est produite lors du reversement des fonds."
+    },
+    "errors": {
+      "idempotencyKeyRequired": "Erreur technique : la requête n'a pas pu être sécurisée. Rechargez la page puis réessayez ; si le problème persiste, contactez l'équipe technique.",
+      "idempotencyKeyReused": "Cette opération a déjà été tentée avec un contenu différent. Vérifiez les informations puis confirmez à nouveau.",
+      "operationInProgress": "Cette opération est déjà en cours de traitement. Le solde est actualisé : vérifiez-le avant de relancer.",
+      "reservationFundsNotReleasable": "Fonds non reversables : le montant doit correspondre exactement au montant bloqué pour ce séjour, et le séjour doit être terminé depuis au moins 24 h, sans annulation ni remboursement."
     },
     "sections": {
       "walletCredit": "Crediter le portefeuille",
