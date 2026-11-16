@@ -35,7 +35,8 @@ export enum TemplateApprovalStatus {
 
 export enum TemplateProvider {
   Twilio = "twilio",
-  Onesignal = "onesignal",
+  /** Modèle push stocké et rendu par ImmoPlus (FCM), modifiable dans l'admin. */
+  ImmoPlus = "immoplus",
 }
 
 export enum TagPriorite {
@@ -49,11 +50,14 @@ export enum CampaignTagType {
   Fixe = "fixe",
 }
 
-/** provider imposé par le canal (whatsapp⇔twilio, push⇔onesignal). */
+/** provider imposé par le canal (whatsapp⇔twilio, push⇔immoplus/FCM). */
 export const PROVIDER_BY_CANAL: Record<CampaignCanal, TemplateProvider> = {
   [CampaignCanal.Whatsapp]: TemplateProvider.Twilio,
-  [CampaignCanal.Push]: TemplateProvider.Onesignal,
+  [CampaignCanal.Push]: TemplateProvider.ImmoPlus,
 };
+
+/** Limites du formulaire de modèle push (PushTemplateInputDto côté API). */
+export const PUSH_TEMPLATE_LIMITS = { nom: 150, title: 100, body: 1000 } as const;
 
 /* ------------------------------------------------------------------ */
 /* sourceField autorisés par cible (formulaire de tag "db_field")     */
@@ -146,8 +150,34 @@ export interface PaginatedResponse<T> {
 export interface CampaignTemplate {
   templateId: string;
   nom: string;
-  /** positions déclarées par le template, ex ["1","2"] */
+  /**
+   * WhatsApp : positions déclarées par le template, ex ["1","2"].
+   * Push : noms des tags utilisés dans le titre et le texte, ex ["prenom"].
+   */
   variables: string[];
+  provider?: TemplateProvider;
+  /** Push : `rejected` = modèle à réécrire avant envoi. */
+  statutApprobation?: TemplateApprovalStatus;
+}
+
+/** GET /admin/campaign-templates/:templateId */
+export interface CampaignTemplateDetail extends CampaignTemplate {
+  canal: CampaignCanal;
+  cible: CampaignCible;
+  /** Push uniquement */
+  title?: string | null;
+  body?: string | null;
+  /** Modifiable via PUT/DELETE (modèle push ImmoPlus) */
+  modifiable: boolean;
+}
+
+/** POST /admin/campaign-templates et PUT /admin/campaign-templates/:templateId */
+export interface PushTemplatePayload {
+  /** non modifiable après création */
+  cible: CampaignCible;
+  nom: string;
+  title: string;
+  body: string;
 }
 
 /** Vue lecture (peuplement du sélecteur de variables dans la création). */
@@ -186,6 +216,11 @@ export interface CampaignStatus {
   statut: CampaignStatut;
   envoyes: number;
   echecs: number;
+  /**
+   * Push : destinataires sans appareil FCM actif au moment de l'envoi (ni envoi,
+   * ni échec). Toujours 0 en WhatsApp. Absent sur une API plus ancienne : traiter comme 0.
+   */
+  sansAppareil?: number;
   enAttente: number;
 }
 
@@ -197,7 +232,8 @@ export interface CampaignPreviewItem {
 export interface SyncResult {
   syncId: string;
   whatsapp: { nouveaux: number; total: number };
-  push: { nouveaux: number; total: number };
+  /** n'est plus renvoyé depuis le passage à FCM (les modèles push sont gérés dans l'admin). */
+  push?: { nouveaux: number; total: number };
 }
 
 /* ------------------------------------------------------------------ */

@@ -13,11 +13,12 @@ import {
   Select,
   Space,
   Spin,
+  Statistic,
   Steps,
   Typography,
   message,
 } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, FileTextOutlined } from "@ant-design/icons";
 import dayjs, { Dayjs } from "dayjs";
 import {
   useCampaignTemplateTags,
@@ -35,6 +36,13 @@ import {
   FixedVariablesInputs,
   getFixedTagsFromMapping,
 } from "@/components/admin/campaigns/FixedVariablesInputs";
+import { CampaignSendErrorAlert } from "@/components/admin/campaigns/CampaignSendErrorAlert";
+import { TemplateStatusBadge } from "@/components/admin/campaigns/TemplateStatusBadge";
+import {
+  PUSH_AUDIENCE_HINT,
+  getHttpStatus,
+  isPushTemplateBlocked,
+} from "@/components/admin/campaigns/campaign-helpers";
 import { extractErrorMessage } from "@/lib/helpers";
 import {
   CampaignCanal,
@@ -75,6 +83,7 @@ export function CampaignCreate() {
   const [previewFixes, setPreviewFixes] = useState<Record<string, string>>({});
   const [sendFixes, setSendFixes] = useState<Record<string, string>>({});
   const [echantillon, setEchantillon] = useState<CampaignPreviewItem[] | null>(null);
+  const [sendError, setSendError] = useState<unknown>(null);
 
   const templatesEnabled = !!canal && !!cible;
   const { data: templates = [], isFetching: loadingTemplates } = useCampaignTemplates(
@@ -92,6 +101,10 @@ export function CampaignCreate() {
     [templates, templateId]
   );
   const positions = selectedTemplate?.variables ?? [];
+  const templateBlocked = !!selectedTemplate && isPushTemplateBlocked(selectedTemplate, canal);
+  const isPush = canal === CampaignCanal.Push;
+  // push uniquement : l'audience ne compte que les utilisateurs joignables par FCM
+  const noAudience = !!campaign && campaign.canal === CampaignCanal.Push && campaign.audience === 0;
 
   const fixedTags = useMemo(
     () => getFixedTagsFromMapping(mappingVariables, tags),
@@ -163,6 +176,7 @@ export function CampaignCreate() {
 
   const handleSend = () => {
     if (!campaign) return;
+    setSendError(null);
     sendCampaign.mutate(
       {
         campagneId: campaign.campagneId,
@@ -177,8 +191,10 @@ export function CampaignCreate() {
           message.success("Campagne envoyée");
           navigate(`/admin/campaigns/${campaign.campagneId}`);
         },
-        onError: (err) =>
-          message.error(extractErrorMessage(err, "Erreur lors de l'envoi de la campagne")),
+        onError: (err) => {
+          if (getHttpStatus(err) === 409) setSendError(err);
+          else message.error(extractErrorMessage(err, "Erreur lors de l'envoi de la campagne"));
+        },
       }
     );
   };
@@ -223,7 +239,8 @@ export function CampaignCreate() {
             />
           </div>
           <Text type="secondary" style={{ fontSize: 12 }}>
-            Le provider est imposé par le canal : WhatsApp ⇔ Twilio, Push ⇔ OneSignal.
+            Le provider est imposé par le canal : WhatsApp ⇔ Twilio, Push ⇔ notifications FCM (modèles
+            gérés dans l'admin).
           </Text>
         </Space>
       ),
@@ -234,35 +251,69 @@ export function CampaignCreate() {
       content: (
         <Spin spinning={loadingTemplates}>
           {templates.length === 0 && !loadingTemplates ? (
-            <Empty description="Aucun template pour ce canal / cette cible. Lancez d'abord une synchronisation.">
-              <Button onClick={() => navigate("/admin/campaigns")}>Retour — synchroniser</Button>
-            </Empty>
+            isPush ? (
+              <Empty description="Aucun modèle push pour cette cible.">
+                <Button icon={<FileTextOutlined />} onClick={() => navigate("/admin/campaign-templates")}>
+                  Créer un modèle push
+                </Button>
+              </Empty>
+            ) : (
+              <Empty description="Aucun template pour ce canal / cette cible. Lancez d'abord une synchronisation.">
+                <Button onClick={() => navigate("/admin/campaigns")}>Retour — synchroniser</Button>
+              </Empty>
+            )
           ) : (
-            <Radio.Group
-              style={{ width: "100%" }}
-              value={templateId}
-              disabled={locked}
-              onChange={(e) => setTemplateId(e.target.value)}
-            >
-              <Space direction="vertical" style={{ width: "100%" }}>
-                {templates.map((tpl) => (
-                  <Card key={tpl.templateId} size="small" style={{ width: "100%" }}>
-                    <Radio value={tpl.templateId}>
-                      <Space direction="vertical" size={0}>
-                        <Text strong>{tpl.nom}</Text>
-                        <Text type="secondary" style={{ fontSize: 12 }}>
-                          {tpl.variables.length} variable(s) : {tpl.variables.map((v) => `{{${v}}}`).join(" ")}
-                        </Text>
-                      </Space>
-                    </Radio>
-                  </Card>
-                ))}
-              </Space>
-            </Radio.Group>
+            <Space direction="vertical" style={{ width: "100%" }}>
+              {isPush && templates.some((t) => isPushTemplateBlocked(t, canal)) && (
+                <Alert
+                  type="warning"
+                  showIcon
+                  message="Certains modèles sont à réécrire"
+                  description="Ils n'ont pas de titre ou utilisent une syntaxe non supportée, et seraient refusés à l'envoi. Modifiez-les (titre et texte) pour pouvoir les choisir."
+                />
+              )}
+              <Radio.Group
+                style={{ width: "100%" }}
+                value={templateId}
+                disabled={locked}
+                onChange={(e) => setTemplateId(e.target.value)}
+              >
+                <Space direction="vertical" style={{ width: "100%" }}>
+                  {templates.map((tpl) => {
+                    const blocked = isPushTemplateBlocked(tpl, canal);
+                    return (
+                      <Card key={tpl.templateId} size="small" style={{ width: "100%" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+                          <Radio value={tpl.templateId} disabled={blocked}>
+                            <Space direction="vertical" size={0}>
+                              <Text strong>{tpl.nom}</Text>
+                              <Text type="secondary" style={{ fontSize: 12 }}>
+                                {tpl.variables.length} variable(s) : {tpl.variables.map((v) => `{{${v}}}`).join(" ")}
+                              </Text>
+                            </Space>
+                          </Radio>
+                          <TemplateStatusBadge template={tpl} canal={canal} showEditLink />
+                        </div>
+                      </Card>
+                    );
+                  })}
+                </Space>
+              </Radio.Group>
+              {isPush && (
+                <Button
+                  type="link"
+                  icon={<FileTextOutlined />}
+                  style={{ paddingLeft: 0 }}
+                  onClick={() => navigate("/admin/campaign-templates")}
+                >
+                  Gérer les modèles push
+                </Button>
+              )}
+            </Space>
           )}
         </Spin>
       ),
-      canNext: !!templateId,
+      canNext: !!templateId && !templateBlocked,
     },
     {
       title: "Mapping & audience",
@@ -409,6 +460,13 @@ export function CampaignCreate() {
             />
           ) : (
             <>
+              {sendError != null && (
+                <CampaignSendErrorAlert
+                  error={sendError}
+                  templateId={campaign?.templateId}
+                  onClose={() => setSendError(null)}
+                />
+              )}
               <Alert
                 type="warning"
                 showIcon
@@ -424,7 +482,7 @@ export function CampaignCreate() {
                 <Button
                   type="primary"
                   loading={sendCampaign.isLoading}
-                  disabled={!allFixedSendFilled}
+                  disabled={!allFixedSendFilled || noAudience}
                   onClick={handleSend}
                 >
                   Envoyer maintenant
@@ -475,6 +533,34 @@ export function CampaignCreate() {
           {canalLabel[canal]} · {cibleLabel[cible]}
           {selectedTemplate ? ` · ${selectedTemplate.nom}` : ""}
         </Paragraph>
+      )}
+
+      {campaign && current >= 3 && (
+        <Card size="small" style={{ marginBottom: 16 }}>
+          {noAudience ? (
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description={
+                <Space direction="vertical" size={2}>
+                  <Text strong>Aucun destinataire</Text>
+                  <Text type="secondary">
+                    {PUSH_AUDIENCE_HINT} Personne dans cette audience n'a encore l'appli à jour : l'envoi
+                    est désactivé.
+                  </Text>
+                </Space>
+              }
+            />
+          ) : (
+            <Space direction="vertical" size={2}>
+              <Statistic title="Destinataires" value={campaign.audience} />
+              {campaign.canal === CampaignCanal.Push && (
+                <Text type="secondary" style={{ fontSize: 12 }}>
+                  {PUSH_AUDIENCE_HINT}
+                </Text>
+              )}
+            </Space>
+          )}
+        </Card>
       )}
 
       <div style={{ minHeight: 240, marginBottom: 24 }}>{step.content}</div>

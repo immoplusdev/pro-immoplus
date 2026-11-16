@@ -183,6 +183,11 @@ export function ReservationCard({ record, onExpire }: Props) {
           token={token}
         />
         <MetaItem
+          label={translate("reservations.fields.client_reservations_count")}
+          value={formatReservationsCount(record.createdBy?.reservationsCount)}
+          token={token}
+        />
+        <MetaItem
           label={translate("reservations.fields.code_reservation")}
           value={record.codeReservation ?? "—"}
           token={token}
@@ -220,6 +225,11 @@ export function ReservationCard({ record, onExpire }: Props) {
       </div>
     </div>
   );
+}
+
+// createdBy.reservationsCount : nombre de réservations du client, fourni par GET /reservations
+function formatReservationsCount(count: unknown): string {
+  return typeof count === "number" ? String(count) : "—";
 }
 
 // ─── helper meta ──────────────────────────────────────────────────────────

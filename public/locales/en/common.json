@@ -215,6 +215,7 @@
       "date_debut": "Start date",
       "date_fin": "End date",
       "sejour": "Stay",
+      "client_reservations_count": "Client reservations",
       "rapport": "Report",
       "rapport_placeholder": "Enter the reservation report...",
       "rating_status": "Rating status"

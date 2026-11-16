@@ -8,15 +8,21 @@ import type {
   CampaignTagDetail,
   CampaignTagPayload,
   CampaignTemplate,
+  CampaignTemplateDetail,
   CampaignPreviewItem,
   CampaignCanal,
   CampaignCible,
   CreateCampaignPayload,
   PreviewCampaignPayload,
+  PushTemplatePayload,
   SendCampaignPayload,
   SyncResult,
 } from "@/types/campaigns.types";
-import { CampaignStatut } from "@/types/campaigns.types";
+import type { CampaignStatut } from "@/types/campaigns.types";
+import {
+  CAMPAIGN_POLL_INTERVAL_MS,
+  shouldPollCampaign,
+} from "@/components/admin/campaigns/campaign-helpers";
 
 const CAMPAIGNS_KEY = "campaigns";
 const TEMPLATES_BASE = `${API_URL}/admin/campaign-templates`;
@@ -75,6 +81,63 @@ export function useCampaignTemplateTags(cible: CampaignCible | undefined) {
   });
 }
 
+/** GET /admin/campaign-templates/:templateId — titre et texte d'un modèle push. */
+export function useCampaignTemplate(templateId: string | undefined) {
+  return useQuery({
+    queryKey: [CAMPAIGNS_KEY, "template", templateId],
+    queryFn: async () => {
+      const res = await axiosInstance.get<{ data: CampaignTemplateDetail }>(`${TEMPLATES_BASE}/${templateId}`);
+      return res.data.data;
+    },
+    enabled: !!templateId,
+    retry: false,
+  });
+}
+
+function useInvalidateTemplates() {
+  const queryClient = useQueryClient();
+  return () => {
+    queryClient.invalidateQueries({ queryKey: [CAMPAIGNS_KEY, "templates"] });
+    queryClient.invalidateQueries({ queryKey: [CAMPAIGNS_KEY, "template"] });
+  };
+}
+
+/** POST /admin/campaign-templates — crée un modèle push. */
+export function useCreatePushTemplate() {
+  const invalidate = useInvalidateTemplates();
+  return useMutation({
+    mutationFn: async (payload: PushTemplatePayload) => {
+      const res = await axiosInstance.post<{ data: CampaignTemplateDetail }>(TEMPLATES_BASE, payload);
+      return res.data.data;
+    },
+    onSuccess: invalidate,
+  });
+}
+
+/** PUT /admin/campaign-templates/:templateId — un modèle `rejected` redevient `approved`. */
+export function useUpdatePushTemplate() {
+  const invalidate = useInvalidateTemplates();
+  return useMutation({
+    mutationFn: async ({ templateId, ...payload }: { templateId: string } & PushTemplatePayload) => {
+      const res = await axiosInstance.put<{ data: CampaignTemplateDetail }>(`${TEMPLATES_BASE}/${templateId}`, payload);
+      return res.data.data;
+    },
+    onSuccess: invalidate,
+  });
+}
+
+/** DELETE /admin/campaign-templates/:templateId — 409 si utilisé par une campagne. */
+export function useDeletePushTemplate() {
+  const invalidate = useInvalidateTemplates();
+  return useMutation({
+    mutationFn: async (templateId: string) => {
+      await axiosInstance.delete(`${TEMPLATES_BASE}/${templateId}`);
+      return templateId;
+    },
+    onSuccess: invalidate,
+  });
+}
+
 /* ================================================================== */
 /* Campagnes — /admin/campaigns                                       */
 /* ================================================================== */
@@ -130,19 +193,19 @@ export function usePreviewCampaign() {
 
 /**
  * GET /admin/campaigns/:campagneId — statut / progression.
- * Poll automatiquement tant que statut === "en_cours".
+ * Poll automatiquement tant que l'envoi est en cours ou que des messages sont en attente,
+ * sans limite de durée (les nouvelles tentatives FCM ralentissent la fin d'envoi).
  */
 export function useCampaignStatus(campagneId: string | undefined, poll = true) {
   return useQuery({
     queryKey: [CAMPAIGNS_KEY, "status", campagneId],
     queryFn: async () => {
       const res = await axiosInstance.get<{ data: CampaignStatus }>(`${CAMPAIGNS_BASE}/${campagneId}`);
-      return res.data.data;
+      return { ...res.data.data, sansAppareil: res.data.data.sansAppareil ?? 0 };
     },
     enabled: !!campagneId,
     retry: false,
-    refetchInterval: (data) =>
-      poll && data?.statut === CampaignStatut.EnCours ? 4000 : false,
+    refetchInterval: (data) => (poll && shouldPollCampaign(data) ? CAMPAIGN_POLL_INTERVAL_MS : false),
   });
 }
 

@@ -6,6 +6,7 @@ import {ReadOnlyFormField} from "@/lib/ts-utilities";
 import {Link} from "react-router-dom";
 import { ReservationCountdown, isRelevantStatus } from "@/pages/reservations/components/reservation-countdown";
 import { RatingStatusTag } from "@/pages/reservations/components/rating-status-tag";
+import { ReservationPriceDetails } from "@/pages/reservations/components/reservation-price-details";
 
 
 type TranslateFunction = (key: string, params?: Record<string, any>) => string;
@@ -16,7 +17,7 @@ interface ReadOnlySectionProps {
 
 export const ReservationEditDataFields: React.FC<ReadOnlySectionProps> = ({translate, reservationData}) => {
     const residence = reservationData?.residence;
-    const proprietaire = reservationData?.residence?.proprietaire;
+    const proprietaire = reservationData?.proprietaire;
     const client = reservationData?.client;
 
     return (
@@ -58,6 +59,12 @@ export const ReservationEditDataFields: React.FC<ReadOnlySectionProps> = ({trans
                     <ReadOnlyFormField label={translate("reservations.fields.rating_status")} content={<RatingStatusTag status={reservationData?.ratingStatus}/>}/>
                 </Card>
             </Card>
+
+            {/* Détail du prix : réservations sur une résidence séjour (null sur l'historique) */}
+            <ReservationPriceDetails
+                priceDetails={reservationData?.priceDetails}
+                acceptedRules={reservationData?.acceptedRules}
+            />
 
             {/* Informations de la résidence */}
             <Card
@@ -119,7 +126,6 @@ export const ReservationEditDataFields: React.FC<ReadOnlySectionProps> = ({trans
                 </Card>
                 <Card style={{border: "none", width: "50%"}}>
                     <ReadOnlyFormField label={translate("fields.phone_number")} content={proprietaire?.phoneNumber}/>
-                    <ReadOnlyFormField label={translate("fields.adresse")} content={proprietaire?.address}/>
                 </Card>
             </Card>
 
@@ -150,7 +156,6 @@ export const ReservationEditDataFields: React.FC<ReadOnlySectionProps> = ({trans
                 </Card>
                 <Card style={{border: "none", width: "50%"}}>
                     <ReadOnlyFormField label={translate("fields.phone_number")} content={client?.phoneNumber}/>
-                    <ReadOnlyFormField label={translate("fields.adresse")} content={client?.address}/>
                 </Card>
             </Card>
         </Space>

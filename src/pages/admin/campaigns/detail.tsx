@@ -15,14 +15,23 @@ import {
   Skeleton,
   Space,
   Statistic,
+  Tooltip,
   Typography,
   message,
   notification,
 } from "antd";
-import { ArrowLeftOutlined, DeleteOutlined, PlusOutlined, SendOutlined } from "@ant-design/icons";
+import {
+  ArrowLeftOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  InfoCircleOutlined,
+  PlusOutlined,
+  SendOutlined,
+} from "@ant-design/icons";
 import dayjs from "dayjs";
 import {
   useCampaignStatus,
+  useCampaignTemplate,
   useCampaignTemplateTags,
   usePreviewCampaign,
   useSendCampaign,
@@ -34,8 +43,19 @@ import {
   FixedVariablesInputs,
   getFixedTagsFromMapping,
 } from "@/components/admin/campaigns/FixedVariablesInputs";
+import { CampaignSendErrorAlert } from "@/components/admin/campaigns/CampaignSendErrorAlert";
+import { TemplateStatusBadge } from "@/components/admin/campaigns/TemplateStatusBadge";
+import {
+  PUSH_AUDIENCE_HINT,
+  SANS_APPAREIL_TOOLTIP,
+  computeCampaignProgress,
+  getHttpStatus,
+  isPushTemplateBlocked,
+  shouldPollCampaign,
+  templateEditPath,
+} from "@/components/admin/campaigns/campaign-helpers";
 import { extractErrorMessage } from "@/lib/helpers";
-import { CampaignStatut, cibleLabel, unwrapTag } from "@/types/campaigns.types";
+import { CampaignCanal, CampaignStatut, cibleLabel, unwrapTag } from "@/types/campaigns.types";
 import type { CampaignPreviewItem } from "@/types/campaigns.types";
 
 const { Title, Text } = Typography;
@@ -105,6 +125,7 @@ export function CampaignDetail() {
 
   const sendCampaign = useSendCampaign();
   const previewCampaign = usePreviewCampaign();
+  const [sendError, setSendError] = useState<unknown>(null);
 
   const [sendFixes, setSendFixes] = useState<Record<string, string>>({});
   const [manualFixes, setManualFixes] = useState<Record<string, string>>({});
@@ -133,6 +154,12 @@ export function CampaignDetail() {
   const canSendState =
     status?.statut === CampaignStatut.Brouillon || status?.statut === CampaignStatut.Planifiee;
 
+  const isPush = entry?.canal === CampaignCanal.Push;
+  // statut du modèle : un modèle push à réécrire est refusé à l'envoi (409)
+  const { data: template } = useCampaignTemplate(isPush && canSendState ? entry?.templateId : undefined);
+  const templateBlocked = !!template && isPushTemplateBlocked(template, entry?.canal);
+  const noAudience = isPush && entry?.audience === 0;
+
   const effectiveFixes = entry ? sendFixes : manualFixes;
   const allFixedFilled = entry
     ? fixedTags.every((tag) => !!sendFixes[unwrapTag(tag)]?.trim())
@@ -140,6 +167,7 @@ export function CampaignDetail() {
 
   const handleSend = () => {
     if (!campagneId) return;
+    setSendError(null);
     const variablesFixes =
       Object.keys(effectiveFixes).length > 0 ? effectiveFixes : undefined;
     sendCampaign.mutate(
@@ -147,9 +175,14 @@ export function CampaignDetail() {
       {
         onSuccess: (data) => {
           updateCampaignInRegistry(campagneId, { statut: data.statut, audience: data.audience });
-          message.success("Envoi lancé");
+          message.success(
+            data.audience === 0 ? "Envoi lancé, mais aucun destinataire joignable" : "Envoi lancé"
+          );
         },
-        onError: (err) => message.error(extractErrorMessage(err, "Erreur lors de l'envoi")),
+        onError: (err) => {
+          if (getHttpStatus(err) === 409) setSendError(err);
+          else message.error(extractErrorMessage(err, "Erreur lors de l'envoi"));
+        },
       }
     );
   };
@@ -196,9 +229,9 @@ export function CampaignDetail() {
     );
   }
 
-  const total = status.envoyes + status.echecs + status.enAttente;
-  const done = status.envoyes + status.echecs;
-  const percent = total > 0 ? Math.round((done / total) * 100) : 0;
+  const progress = computeCampaignProgress(status, entry?.canal);
+  const polling = shouldPollCampaign(status);
+  const statSpan = progress.showSansAppareil ? 6 : 8;
 
   return (
     <div style={{ background: "#FFFFFF", padding: 24, borderRadius: 8 }}>
@@ -237,33 +270,61 @@ export function CampaignDetail() {
       )}
 
       <Card style={{ marginBottom: 16 }}>
-        <Progress
-          percent={percent}
-          status={status.statut === CampaignStatut.EnCours ? "active" : undefined}
-        />
-        <Row gutter={16} style={{ marginTop: 16 }}>
-          <Col span={8}>
-            <Statistic title="Envoyés" value={status.envoyes} valueStyle={{ color: "#52c41a" }} />
+        <Progress percent={progress.percent} status={polling ? "active" : undefined} />
+        <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
+          <Col xs={12} md={statSpan}>
+            <Statistic title="Envoyés" value={progress.envoyes} valueStyle={{ color: "#52c41a" }} />
           </Col>
-          <Col span={8}>
-            <Statistic title="Échecs" value={status.echecs} valueStyle={{ color: "#ff4d4f" }} />
+          <Col xs={12} md={statSpan}>
+            <Statistic title="Échecs" value={progress.echecs} valueStyle={{ color: "#ff4d4f" }} />
           </Col>
-          <Col span={8}>
-            <Statistic title="En attente" value={status.enAttente} />
+          {progress.showSansAppareil && (
+            <Col xs={12} md={statSpan}>
+              <Statistic
+                title={
+                  <Tooltip title={SANS_APPAREIL_TOOLTIP}>
+                    <Space size={4}>
+                      Sans appareil
+                      <InfoCircleOutlined />
+                    </Space>
+                  </Tooltip>
+                }
+                value={progress.sansAppareil}
+                valueStyle={{ color: "#8c8c8c" }}
+              />
+            </Col>
+          )}
+          <Col xs={12} md={statSpan}>
+            <Statistic title="En attente" value={progress.enAttente} />
           </Col>
         </Row>
-        {status.statut === CampaignStatut.EnCours && (
-          <Text type="secondary" style={{ fontSize: 12 }}>
-            Envoi en cours — actualisation automatique toutes les 4 secondes.
-          </Text>
-        )}
+        <Space direction="vertical" size={2} style={{ marginTop: 12 }}>
+          {progress.tauxReussite !== null && (
+            <Text type="secondary" style={{ fontSize: 12 }}>
+              Taux de réussite : {progress.tauxReussite.toLocaleString("fr-FR")} % (envoyés ÷ envoyés + échecs
+              {progress.showSansAppareil ? ", hors sans appareil" : ""})
+            </Text>
+          )}
+          {polling && (
+            <Text type="secondary" style={{ fontSize: 12 }}>
+              Envoi en cours, actualisation automatique toutes les 4 secondes.
+              {isPush || progress.showSansAppareil
+                ? " Les erreurs temporaires sont relancées automatiquement : la fin de l'envoi peut prendre quelques dizaines de secondes de plus."
+                : ""}
+            </Text>
+          )}
+        </Space>
       </Card>
 
-      {status.statut === CampaignStatut.Terminee && (
+      {status.statut === CampaignStatut.Terminee && !polling && (
         <Result
           status="success"
           title="Campagne terminée"
-          subTitle={`${status.envoyes} message(s) envoyé(s), ${status.echecs} échec(s).`}
+          subTitle={
+            `${progress.envoyes} message(s) envoyé(s), ${progress.echecs} échec(s)` +
+            (progress.showSansAppareil ? `, ${progress.sansAppareil} sans appareil` : "") +
+            ` sur ${progress.total} destinataire(s).`
+          }
         />
       )}
 
@@ -282,6 +343,56 @@ export function CampaignDetail() {
               showIcon
               style={{ marginBottom: 16 }}
               message="Campagne planifiée : elle partira automatiquement. Vous pouvez aussi forcer l'envoi maintenant en renseignant les variables fixes."
+            />
+          )}
+
+          {sendError != null && (
+            <CampaignSendErrorAlert
+              error={sendError}
+              templateId={entry?.templateId}
+              onClose={() => setSendError(null)}
+            />
+          )}
+
+          {templateBlocked && template && (
+            <Alert
+              type="warning"
+              showIcon
+              style={{ marginBottom: 16 }}
+              message={
+                <Space>
+                  Modèle « {template.nom} »
+                  <TemplateStatusBadge template={template} canal={entry?.canal} />
+                </Space>
+              }
+              description="Ce modèle doit être réécrit (titre et texte) avant envoi. Une fois enregistré, il redevient utilisable et la campagne peut partir."
+              action={
+                <Button
+                  size="small"
+                  icon={<EditOutlined />}
+                  onClick={() => navigate(templateEditPath(template.templateId))}
+                >
+                  Modifier le modèle
+                </Button>
+              }
+            />
+          )}
+
+          {isPush && entry && (
+            <Alert
+              type={noAudience ? "warning" : "info"}
+              showIcon
+              style={{ marginBottom: 16 }}
+              message={
+                noAudience
+                  ? "Aucun destinataire joignable par notification"
+                  : `${entry.audience.toLocaleString("fr-FR")} destinataire(s) estimé(s) à la création`
+              }
+              description={
+                noAudience
+                  ? `${PUSH_AUDIENCE_HINT} Aucun utilisateur de cette audience n'a encore l'appli à jour : l'envoi est désactivé.`
+                  : `${PUSH_AUDIENCE_HINT} Le chiffre est recalculé au moment de l'envoi.`
+              }
             />
           )}
 
@@ -318,7 +429,7 @@ export function CampaignDetail() {
               type="primary"
               icon={<SendOutlined />}
               loading={sendCampaign.isLoading}
-              disabled={!allFixedFilled}
+              disabled={!allFixedFilled || templateBlocked || noAudience}
               onClick={handleSend}
             >
               Envoyer maintenant
