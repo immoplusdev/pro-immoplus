@@ -30,7 +30,7 @@ export function TemplateStatusBadge({ template, canal, showApproved, showEditLin
 
   return (
     <Space size={4}>
-      <Tooltip title="Modèle converti depuis OneSignal sans titre ou avec une syntaxe non supportée : il doit être réécrit (titre et texte) avant tout envoi.">
+      <Tooltip title="Modèle sans titre ou avec une syntaxe non supportée : il doit être réécrit (titre et texte) avant tout envoi.">
         <Tag color="volcano">À réécrire</Tag>
       </Tooltip>
       {showEditLink && isTemplateEditable(template) && (
