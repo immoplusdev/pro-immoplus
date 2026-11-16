@@ -16,7 +16,7 @@ interface ReadOnlySectionProps {
 
 export const ReservationEditDataFields: React.FC<ReadOnlySectionProps> = ({translate, reservationData}) => {
     const residence = reservationData?.residence;
-    const proprietaire = reservationData?.residence?.proprietaire;
+    const proprietaire = reservationData?.proprietaire;
     const client = reservationData?.client;
 
     return (
@@ -119,7 +119,6 @@ export const ReservationEditDataFields: React.FC<ReadOnlySectionProps> = ({trans
                 </Card>
                 <Card style={{border: "none", width: "50%"}}>
                     <ReadOnlyFormField label={translate("fields.phone_number")} content={proprietaire?.phoneNumber}/>
-                    <ReadOnlyFormField label={translate("fields.adresse")} content={proprietaire?.address}/>
                 </Card>
             </Card>
 
@@ -150,7 +149,6 @@ export const ReservationEditDataFields: React.FC<ReadOnlySectionProps> = ({trans
                 </Card>
                 <Card style={{border: "none", width: "50%"}}>
                     <ReadOnlyFormField label={translate("fields.phone_number")} content={client?.phoneNumber}/>
-                    <ReadOnlyFormField label={translate("fields.adresse")} content={client?.address}/>
                 </Card>
             </Card>
         </Space>

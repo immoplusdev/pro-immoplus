@@ -16,6 +16,7 @@ import { canAccessResource } from "@/configs/role-permissions.config";
 import { getLocalStorageProvider } from "@/lib/providers/local-storage.provider";
 import { isAdminViewer } from "@/components/auth/is-admin-viewer";
 import { UserLocationTab } from "./components/user-location-tab";
+import { UserResidencesTab } from "./components/user-residences-tab";
 
 const localStorageProvider = getLocalStorageProvider();
 
@@ -52,7 +53,16 @@ export const EditUser: React.FC = () => {
   // Onglet "Localisation" : données GPS sensibles, réservé au rôle Admin (masqué sinon, même via ?tab=).
   const isAdmin = isAdminViewer();
   const [searchParams, setSearchParams] = useSearchParams();
-  const activeTab = isAdmin && searchParams.get("tab") === "localisation" ? "localisation" : "informations";
+  // Onglet "Résidences" : uniquement pour les pros (les autres rôles ne possèdent pas de résidences).
+  const roleName = usersData?.role?.name;
+  const isPro = roleName === "pro_entreprise" || roleName === "pro_particulier";
+  const requestedTab = searchParams.get("tab");
+  const activeTab =
+    isAdmin && requestedTab === "localisation"
+      ? "localisation"
+      : isPro && requestedTab === "residences"
+        ? "residences"
+        : "informations";
   const onTabChange = (key: string) =>
     setSearchParams(
       (prev) => {
@@ -86,6 +96,9 @@ export const EditUser: React.FC = () => {
   const tabItems: TabsProps["items"] = [
     // forceRender : le formulaire doit rester monté même en arrivant directement sur ?tab=localisation.
     { key: "informations", label: "Informations", children: informations, forceRender: true },
+    ...(isPro && userId
+      ? [{ key: "residences", label: translate("pages.residence.residences"), children: <UserResidencesTab userId={userId} /> }]
+      : []),
     ...(isAdmin
       ? [{ key: "localisation", label: "Localisation", children: <UserLocationTab userId={userId} /> }]
       : []),
