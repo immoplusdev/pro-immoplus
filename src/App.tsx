@@ -39,6 +39,7 @@ import {
   TeamOutlined,
   SendOutlined,
   TagsOutlined,
+  FileTextOutlined,
   MessageOutlined,
   RetweetOutlined,
   PieChartOutlined,
@@ -323,6 +324,14 @@ function App() {
                   meta: {
                     icon: <TagsOutlined />,
                     label: "Tags de campagne",
+                  },
+                },
+                {
+                  name: "admin/campaign-templates",
+                  list: "/admin/campaign-templates",
+                  meta: {
+                    icon: <FileTextOutlined />,
+                    label: "Modèles de campagne",
                   },
                 },
                 {

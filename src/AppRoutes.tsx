@@ -124,6 +124,7 @@ import { CampaignsList } from "@/pages/admin/campaigns";
 import { CampaignCreate } from "@/pages/admin/campaigns/create";
 import { CampaignDetail } from "@/pages/admin/campaigns/detail";
 import { CampaignTagsManagement } from "@/pages/admin/campaigns/tags";
+import { CampaignTemplatesManagement } from "@/pages/admin/campaigns/templates";
 import { ConversationsList } from "@/pages/admin/conversations";
 import { ConversationReportsList } from "@/pages/admin/conversations/reports";
 import { ConversationDetailPage } from "@/pages/admin/conversations/detail";
@@ -357,6 +358,9 @@ export function AppRoutes() {
         </Route>
         <Route path={"/admin/campaign-tags"}>
           <Route index element={<CampaignTagsManagement />} />
+        </Route>
+        <Route path={"/admin/campaign-templates"}>
+          <Route index element={<CampaignTemplatesManagement />} />
         </Route>
         <Route path={"/admin/conversations"}>
           <Route index element={<ConversationsList />} />

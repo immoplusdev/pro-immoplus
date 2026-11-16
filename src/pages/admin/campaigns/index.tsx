@@ -13,6 +13,7 @@ import {
 import {
   DeleteOutlined,
   EyeOutlined,
+  FileTextOutlined,
   PlusOutlined,
   SyncOutlined,
   TagsOutlined,
@@ -38,7 +39,9 @@ export function CampaignsList() {
       onSuccess: (res) => {
         notification.success({
           message: "Synchronisation terminée",
-          description: `WhatsApp : ${res.whatsapp.nouveaux} nouveau(x) / ${res.whatsapp.total} · Push : ${res.push.nouveaux} nouveau(x) / ${res.push.total}`,
+          description:
+            `WhatsApp : ${res.whatsapp.nouveaux} nouveau(x) / ${res.whatsapp.total}` +
+            (res.push ? ` · Push : ${res.push.nouveaux} nouveau(x) / ${res.push.total}` : ""),
         });
       },
       onError: (err) => {
@@ -163,7 +166,10 @@ export function CampaignsList() {
             loading={sync.isLoading}
             onClick={handleSync}
           >
-            Synchroniser les templates
+            Synchroniser les templates WhatsApp
+          </Button>
+          <Button icon={<FileTextOutlined />} onClick={() => navigate("/admin/campaign-templates")}>
+            Modèles
           </Button>
           <Button icon={<TagsOutlined />} onClick={() => navigate("/admin/campaign-tags")}>
             Gérer les tags
