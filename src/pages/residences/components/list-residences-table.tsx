@@ -1,4 +1,4 @@
-import {Button, Table} from "antd";
+import {Button, Select, Table, Tag} from "antd";
 import {Thumbnail} from "@/components";
 import {formatAmount, getApiFileUrl} from "@/lib/helpers";
 import {StatusValidationResidence} from "@/core/domain/residences";
@@ -36,6 +36,23 @@ function mapResidenceToRow(r: any, i: number): Record<string, string> {
         "Date de création": r.createdAt ? new Intl.DateTimeFormat("fr-FR").format(new Date(r.createdAt)) : "-",
         "Dernière mise à jour": r.updatedAt ? new Intl.DateTimeFormat("fr-FR").format(new Date(r.updatedAt)) : "-",
     };
+}
+
+/**
+ * Filtre « flow de création ». L'API ne gère pas `isnull` : on ne peut filtrer que les résidences
+ * du nouveau flow (`bookingMode` renseigné), pas l'historique seul.
+ */
+const STAY_FLOW_FILTERS: Record<string, CrudFilter> = {
+    stay: {field: "bookingMode", operator: "in", value: ["INSTANT", "REQUEST"]},
+    instant: {field: "bookingMode", operator: "eq", value: "INSTANT"},
+};
+
+function currentStayFlowFilter(filters?: CrudFilter[]): string | undefined {
+    const filter = filters?.find((f) => "field" in f && f.field === "bookingMode") as
+        | { operator: string; value: unknown }
+        | undefined;
+    if (!filter || filter.value == null) return undefined;
+    return filter.operator === "eq" ? "instant" : "stay";
 }
 
 type ActiveMenu = "all_e" | "valide" | "en_validation" | "rejete" | "reduction";
@@ -76,6 +93,23 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
             <List
                 title={translate("pages.residence.residences")}
                 headerButtons={[
+                    <Select
+                        key="stay-flow"
+                        allowClear
+                        placeholder="Flow de création"
+                        style={{minWidth: 200}}
+                        value={currentStayFlowFilter(searchFilters)}
+                        onChange={(value?: string) =>
+                            setFilters((prev) => [
+                                ...prev.filter((f) => !("field" in f) || f.field !== "bookingMode"),
+                                ...(value ? [STAY_FLOW_FILTERS[value]] : []),
+                            ])
+                        }
+                        options={[
+                            {value: "stay", label: "Nouveau flow (séjour)"},
+                            {value: "instant", label: "Réservation instantanée"},
+                        ]}
+                    />,
                     <SearchInput
                         setFilters={setFilters}
                         tableQuery={tableQuery}
@@ -101,6 +135,16 @@ export function ListResidenceTable({filters, activeMenu}: Props) {
                     title={translate("fields.nom")}
                     align="center"
                     sorter={true}
+                    render={(value: string, record: BaseRecord) => (
+                        <>
+                            <div>{value}</div>
+                            {record.bookingMode != null && (
+                                <Tag color={record.bookingMode === "INSTANT" ? "green" : "blue"} style={{marginTop: 4}}>
+                                    {record.bookingMode === "INSTANT" ? "Instantanée" : "Nouveau flow"}
+                                </Tag>
+                            )}
+                        </>
+                    )}
                 />
                 <Table.Column
                     dataIndex="typeResidence"
