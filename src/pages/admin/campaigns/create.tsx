@@ -269,7 +269,7 @@ export function CampaignCreate() {
                   type="warning"
                   showIcon
                   message="Certains modèles sont à réécrire"
-                  description="Ils ont été convertis depuis OneSignal sans titre ou avec une syntaxe non supportée, et seraient refusés à l'envoi. Modifiez-les (titre et texte) pour pouvoir les choisir."
+                  description="Ils n'ont pas de titre ou utilisent une syntaxe non supportée, et seraient refusés à l'envoi. Modifiez-les (titre et texte) pour pouvoir les choisir."
                 />
               )}
               <Radio.Group

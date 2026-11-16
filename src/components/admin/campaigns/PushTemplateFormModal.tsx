@@ -73,7 +73,7 @@ export function PushTemplateFormModal({ open, template, loading, onSubmit, onCan
           showIcon
           style={{ marginBottom: 16 }}
           message="Modèle à réécrire"
-          description="Ce modèle a été converti depuis OneSignal sans titre ou avec une syntaxe non supportée. Il ne peut pas être envoyé tant qu'il n'a pas un titre et un texte. L'enregistrer le rend de nouveau utilisable."
+          description="Ce modèle n'a pas de titre ou utilise une syntaxe non supportée. Il ne peut pas être envoyé tant qu'il n'a pas un titre et un texte. L'enregistrer le rend de nouveau utilisable."
         />
       )}
       <Form form={form} layout="vertical" requiredMark>

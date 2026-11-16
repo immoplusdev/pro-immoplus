@@ -65,7 +65,7 @@ export function shouldPollCampaign(status: Pick<CampaignStatus, "statut" | "enAt
   return status.statut === CampaignStatut.EnCours || count(status.enAttente) > 0;
 }
 
-/** Un modèle push non approuvé (ex. converti depuis OneSignal sans titre) est refusé à l'envoi. */
+/** Un modèle push non approuvé (ex. ancien modèle sans titre) est refusé à l'envoi. */
 export function isPushTemplateBlocked(
   template: Pick<CampaignTemplate, "statutApprobation">,
   canal: CampaignCanal | undefined

@@ -212,7 +212,7 @@ export function CampaignTemplatesManagement() {
           showIcon
           style={{ marginBottom: 16 }}
           message={`${toRewriteCount} modèle(s) push à réécrire`}
-          description="Ces modèles convertis depuis OneSignal n'ont pas de titre ou utilisent une syntaxe non supportée. Ils ne peuvent pas être envoyés tant qu'ils n'ont pas été modifiés (titre et texte obligatoires)."
+          description="Ces modèles n'ont pas de titre ou utilisent une syntaxe non supportée. Ils ne peuvent pas être envoyés tant qu'ils n'ont pas été modifiés (titre et texte obligatoires)."
         />
       )}
 

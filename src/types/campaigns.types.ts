@@ -37,8 +37,6 @@ export enum TemplateProvider {
   Twilio = "twilio",
   /** Modèle push stocké et rendu par ImmoPlus (FCM), modifiable dans l'admin. */
   ImmoPlus = "immoplus",
-  /** Ancien provider push, avant le passage à FCM. */
-  Onesignal = "onesignal",
 }
 
 export enum TagPriorite {
