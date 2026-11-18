@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/providers/utils/axios";
 import { API_URL } from "@/configs/app.config";
+import { getErrorStatus, unwrapEnvelopeData } from "@/lib/helpers/api-response.helper";
 import type {
   AdminSignalementItemDto,
   ClientDetailDto,
@@ -51,27 +52,48 @@ export function useClientsList(params: ClientsListParams) {
   });
 }
 
-export function useClientDetail(clientId: string | null) {
+/**
+ * GET /v1/statistics/clients/:clientId (Admin). 404 si l'id n'est pas un client (role customer) actif.
+ * Un client jamais recalculé n'est PAS en 404 : LEFT JOIN client_scores → score 0, badge null, risque normal.
+ */
+export async function getClientStatistics(clientId: string, signal?: AbortSignal): Promise<ClientDetailDto> {
+  const res = await axiosInstance.get<unknown>(
+    `${API_URL}/v1/statistics/clients/${encodeURIComponent(clientId)}`,
+    { signal }
+  );
+  return unwrapEnvelopeData<ClientDetailDto>(res.data);
+}
+
+/** POST /admin/clients/:clientId/recompute-score (Admin, route sans version : pas de @Version côté back). */
+export async function recomputeClientScore(clientId: string): Promise<ClientRecomputeScoreResultDto> {
+  const res = await axiosInstance.post<unknown>(
+    `${API_URL}/admin/clients/${encodeURIComponent(clientId)}/recompute-score`
+  );
+  return unwrapEnvelopeData<ClientRecomputeScoreResultDto>(res.data);
+}
+
+export function clientDetailQueryKey(clientId: string | null | undefined) {
+  return [CLIENTS_KEY, "detail", clientId] as const;
+}
+
+export function useClientDetail(clientId: string | null | undefined) {
   return useQuery({
-    queryKey: [CLIENTS_KEY, "detail", clientId],
-    queryFn: async () => {
-      const res = await axiosInstance.get<{ data: ClientDetailDto }>(`${API_URL}/v1/statistics/clients/${clientId}`);
-      return res.data.data;
-    },
+    queryKey: clientDetailQueryKey(clientId),
+    queryFn: ({ signal }) => getClientStatistics(clientId as string, signal),
     enabled: !!clientId,
-    retry: false,
+    refetchOnWindowFocus: false,
+    // Pas de retry sur 4xx (404 = pas de stats, 401/403 = droits) ; un retry sur erreur réseau/5xx.
+    retry: (failureCount, error) => {
+      const status = getErrorStatus(error);
+      return (status === undefined || status >= 500) && failureCount < 1;
+    },
   });
 }
 
 export function useRecomputeClientScore() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (clientId: string) => {
-      const res = await axiosInstance.post<{ data: ClientRecomputeScoreResultDto }>(
-        `${API_URL}/admin/clients/${clientId}/recompute-score`
-      );
-      return res.data.data;
-    },
+    mutationFn: recomputeClientScore,
     onSuccess: (_data, clientId) => {
       queryClient.invalidateQueries({ queryKey: [CLIENTS_KEY, "detail", clientId] });
       queryClient.invalidateQueries({ queryKey: [CLIENTS_KEY, "list"] });
