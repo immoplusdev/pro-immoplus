@@ -4,3 +4,4 @@ export { ListReservations } from "./list-reservation";
 export { ShowReservation } from "./show-reservation";
 export { ListMotifsEchec } from "./list-motifs-echec";
 export { ListRelances } from "./list-relances";
+export { CreateReservationAdmin } from "./create-reservation-admin";

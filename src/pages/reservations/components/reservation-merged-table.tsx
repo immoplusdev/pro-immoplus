@@ -9,6 +9,7 @@ import { ReservationCard } from "@/pages/reservations/components/reservation-car
 import { ExportReservationsButton } from "@/pages/reservations/components/export-reservations-button";
 import { useReservationSocket } from "@/hooks/useReservationSocket";
 import { PillTag } from "@/components/table";
+import { CreateReservationButton } from "@/components/admin/reservation-creation/CreateReservationButton";
 
 const PAGE_SIZE = 20;
 
@@ -93,6 +94,8 @@ export function ReservationMergedTable({
         </span>
       }
       headerButtons={[
+        // Création pour un client (téléphone / WhatsApp) : rôle Admin uniquement.
+        ...(isAdminViewer() ? [<CreateReservationButton key="create" type="primary" />] : []),
         <ExportReservationsButton
           filters={filtersA}
           filtersB={filtersB}

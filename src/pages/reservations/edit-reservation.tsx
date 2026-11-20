@@ -10,6 +10,7 @@ import {ReservationRemindersCard} from "@/components/admin/reservation-reminders
 import {isAdminViewer} from "@/components/auth/is-admin-viewer";
 import {ReservationRelocationButton} from "@/components/admin/reservation-relocation/ReservationRelocationButton";
 import {ResidenceChangeHistoryCard} from "@/components/admin/reservation-relocation/ResidenceChangeHistoryCard";
+import {ReservationAdminCreationCard} from "@/components/admin/reservation-creation/ReservationAdminCreationCard";
 
 
 export const EditReservation: React.FC = () => {
@@ -84,6 +85,8 @@ export const EditReservation: React.FC = () => {
                 <Row gutter={[32, 32]} style={{marginTop: 32}}>
                     <Col xs={24} lg={16}>
                         <Space direction="vertical" size="large" style={{width: "100%"}}>
+                            {/* Encart « Créée depuis le backoffice » : rien si la réservation vient de l'app (404). */}
+                            <ReservationAdminCreationCard reservationId={reservationId}/>
                             {/* Historique des changements de résidence : masqué si vide ou refusé (403). */}
                             <ResidenceChangeHistoryCard reservationId={reservationId}/>
                             <ReservationRemindersCard reservationId={reservationId}/>
