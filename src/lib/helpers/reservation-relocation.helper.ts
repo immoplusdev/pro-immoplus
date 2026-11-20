@@ -115,7 +115,7 @@ const FALLBACK_MESSAGE = "Une erreur inattendue est survenue.";
 const asArray = (value: unknown): unknown[] => (Array.isArray(value) ? value : []);
 
 /** `data` de l'erreur : HttpError refine (`error.data`) ou corps axios (`response.data.data`). */
-function getErrorData(error: unknown): Record<string, unknown> {
+export function getErrorData(error: unknown): Record<string, unknown> {
   const body = getErrorBody(error);
   const fromBody = body && typeof body.data === "object" && body.data !== null ? body.data : undefined;
   const direct = (error as { data?: unknown } | null)?.data;
@@ -127,7 +127,7 @@ function getErrorData(error: unknown): Record<string, unknown> {
  * `message` du back en priorité. Une HttpError refine porte déjà ce message dans `error.message` ;
  * sans réponse HTTP ni code métier, c'est une erreur réseau ou un timeout (statut 500 par défaut).
  */
-function readErrorMessage(error: unknown, code: string | undefined): string {
+export function readErrorMessage(error: unknown, code: string | undefined): string {
   const e = error as { response?: { data?: unknown }; message?: unknown; statusCode?: unknown } | null;
   if (e?.response?.data) return extractErrorMessage(error, FALLBACK_MESSAGE);
   const isHttp = !!code || (typeof e?.statusCode === "number" && e.statusCode !== 500);

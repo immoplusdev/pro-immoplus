@@ -18,6 +18,7 @@ import { isAdminViewer } from "@/components/auth/is-admin-viewer";
 import { UserLocationTab } from "./components/user-location-tab";
 import { UserResidencesTab } from "./components/user-residences-tab";
 import { ClientStatisticsSection } from "@/components/admin/clients-statistiques/ClientStatisticsSection";
+import { CreateReservationButton } from "@/components/admin/reservation-creation/CreateReservationButton";
 
 const localStorageProvider = getLocalStorageProvider();
 
@@ -131,6 +132,8 @@ export const EditUser: React.FC = () => {
           <Button icon={<ReloadOutlined />} onClick={() => form?.resetFields()}>
             Refresh
           </Button>
+          {/* Réservation au nom de ce client (Admin, compte client uniquement). */}
+          {isAdmin && isCustomer && userId && <CreateReservationButton clientId={userId} />}
           <DeleteButton
             recordItemId={usersData?.id}
             onSuccess={goBack}

@@ -6,6 +6,7 @@ import { extractErrorMessage } from "@/lib/helpers/http-exception.helper";
 import { getErrorStatus } from "@/lib/helpers/api-response.helper";
 import { formatDateTime, formatFcfa } from "@/lib/helpers/reservation-relocation.helper";
 import { useResidenceChangeHistory } from "@/hooks/useReservationRelocation";
+import { AdminName } from "@/components/admin/common/AdminName";
 import { getRelocationMotifLabel, type ResidenceChangeHistoryItem } from "@/types/reservation-relocation.types";
 
 const { Text, Paragraph } = Typography;
@@ -19,20 +20,6 @@ function ResidenceName({ id }: { id: string }) {
   });
   const label = isLoading ? "…" : isError ? `Résidence ${id.slice(0, 8)}` : data?.data?.nom || `Résidence ${id.slice(0, 8)}`;
   return <Link to={`/residences/edit/${id}`}>{label}</Link>;
-}
-
-/** Nom de l'admin auteur (GET /users/:id, mis en cache). */
-function AdminName({ id }: { id: string | null }) {
-  const { data, isLoading, isError } = useOne<{ firstName?: string | null; lastName?: string | null; email?: string | null }>({
-    resource: "users",
-    id: id ?? "",
-    queryOptions: { enabled: !!id, staleTime: 10 * 60 * 1000, retry: false },
-  });
-  if (!id) return <>—</>;
-  if (isLoading) return <>…</>;
-  const user = data?.data;
-  const name = [user?.firstName, user?.lastName].filter(Boolean).join(" ") || user?.email;
-  return <>{!isError && name ? name : `Admin ${id.slice(0, 8)}`}</>;
 }
 
 function HistoryEntry({ item }: { item: ResidenceChangeHistoryItem }) {
