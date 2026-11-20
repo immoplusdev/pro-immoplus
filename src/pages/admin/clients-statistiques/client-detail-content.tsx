@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { ClientStatutTag } from "@/components/admin/clients-statistiques/ClientStatutTag";
 import { RisqueTag } from "@/components/admin/clients-statistiques/RisqueTag";
 import { ScoreBadgeTag } from "@/components/admin/clients-statistiques/ScoreBadgeTag";
-import { ClientDetailDto, formatFcfa, segmentLabel } from "@/types/clients-statistiques.types";
+import { ClientDetailDto, formatFcfa, formatPercent, segmentLabel } from "@/types/clients-statistiques.types";
 
 const { Text } = Typography;
 
@@ -55,8 +55,8 @@ export function ClientDetailContent({ client }: Props) {
         <Descriptions.Item label="Terminées">{client.reservations.terminees}</Descriptions.Item>
         <Descriptions.Item label="Annulées (client)">{client.reservations.annuleesClient}</Descriptions.Item>
         <Descriptions.Item label="Sans réponse">{client.reservations.sansReponse}</Descriptions.Item>
-        <Descriptions.Item label="Taux d'annulation">{client.reservations.tauxAnnulation.toFixed(1)} %</Descriptions.Item>
-        <Descriptions.Item label="Taux échec paiement">{client.paiements.tauxEchec.toFixed(1)} %</Descriptions.Item>
+        <Descriptions.Item label="Taux d'annulation">{formatPercent(client.reservations.tauxAnnulation)}</Descriptions.Item>
+        <Descriptions.Item label="Taux échec paiement">{formatPercent(client.paiements.tauxEchec)}</Descriptions.Item>
         <Descriptions.Item label="Montant dépensé" span={2}>
           {formatFcfa(client.paiements.montantTotalDepenseFcfa)}
         </Descriptions.Item>
@@ -80,7 +80,7 @@ export function ClientDetailContent({ client }: Props) {
           {client.reputation.comportement ? <Tag>{client.reputation.comportement}</Tag> : "—"}
         </Descriptions.Item>
         <Descriptions.Item label="Taux de recommandation" span={2}>
-          {client.reputation.tauxRecommandation.toFixed(1)} %
+          {formatPercent(client.reputation.tauxRecommandation)}
         </Descriptions.Item>
       </Descriptions>
 

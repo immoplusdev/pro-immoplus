@@ -17,6 +17,7 @@ import { getLocalStorageProvider } from "@/lib/providers/local-storage.provider"
 import { isAdminViewer } from "@/components/auth/is-admin-viewer";
 import { UserLocationTab } from "./components/user-location-tab";
 import { UserResidencesTab } from "./components/user-residences-tab";
+import { ClientStatisticsSection } from "@/components/admin/clients-statistiques/ClientStatisticsSection";
 
 const localStorageProvider = getLocalStorageProvider();
 
@@ -56,13 +57,19 @@ export const EditUser: React.FC = () => {
   // Onglet "Résidences" : uniquement pour les pros (les autres rôles ne possèdent pas de résidences).
   const roleName = usersData?.role?.name;
   const isPro = roleName === "pro_entreprise" || roleName === "pro_particulier";
+  // Onglet "Statistiques & score" : Admin uniquement (GET /v1/statistics/clients/:id), et seulement
+  // pour un client — l'API renvoie 404 pour tout autre rôle.
+  const isCustomer = roleName === "customer";
+  const canViewClientStats = isAdmin && isCustomer && !!userId;
   const requestedTab = searchParams.get("tab");
   const activeTab =
     isAdmin && requestedTab === "localisation"
       ? "localisation"
       : isPro && requestedTab === "residences"
         ? "residences"
-        : "informations";
+        : canViewClientStats && requestedTab === "statistiques"
+          ? "statistiques"
+          : "informations";
   const onTabChange = (key: string) =>
     setSearchParams(
       (prev) => {
@@ -98,6 +105,9 @@ export const EditUser: React.FC = () => {
     { key: "informations", label: "Informations", children: informations, forceRender: true },
     ...(isPro && userId
       ? [{ key: "residences", label: translate("pages.residence.residences"), children: <UserResidencesTab userId={userId} /> }]
+      : []),
+    ...(canViewClientStats && userId
+      ? [{ key: "statistiques", label: "Statistiques & score", children: <ClientStatisticsSection clientId={userId} /> }]
       : []),
     ...(isAdmin
       ? [{ key: "localisation", label: "Localisation", children: <UserLocationTab userId={userId} /> }]

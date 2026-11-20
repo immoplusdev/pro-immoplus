@@ -11,6 +11,7 @@ import {
   ClientListItemDto,
   ClientListSortBy,
   formatFcfa,
+  formatPercent,
   segmentLabel,
   SortDirection,
 } from "@/types/clients-statistiques.types";
@@ -113,7 +114,7 @@ export function ClientsTable({ filters }: Props) {
             key: ClientListSortBy.TauxAnnulation,
             width: 130,
             sorter: true,
-            render: (_, record) => `${record.reservations.tauxAnnulation.toFixed(1)} %`,
+            render: (_, record) => formatPercent(record.reservations.tauxAnnulation),
           },
           {
             title: "Note moyenne",
