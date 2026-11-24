@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export enum ClientStatut {
     Actif = "actif",
     Suspendu = "suspendu",
@@ -50,6 +52,9 @@ export enum ClientComportementFilter {
     Acceptable = "acceptable",
     Problematique = "problematique",
 }
+
+/** Comportement d'un client (avis hôte, réputation) — mêmes valeurs que le filtre. */
+export type ClientComportement = ClientComportementFilter;
 
 export enum SignalementCategorie {
     Comportement = "comportement",
@@ -115,6 +120,7 @@ export interface ClientListItemDto {
     nom: string;
     anciennete: { createdAt: string; joursDepuisInscription: number };
     verification: { identite: boolean; email: boolean; telephone: boolean };
+    /** tauxAnnulation : ratio 0–1. */
     reservations: {
         total: number;
         terminees: number;
@@ -122,8 +128,14 @@ export interface ClientListItemDto {
         sansReponse: number;
         tauxAnnulation: number;
     };
+    /** tauxEchec : ratio 0–1. */
     paiements: { tauxEchec: number; montantTotalDepenseFcfa: number };
-    reputation: { noteMoyenneHoteClient: number | null; comportement: string | null; tauxRecommandation: number };
+    /** tauxRecommandation : ratio 0–1 (AVG de would_recommend côté back). */
+    reputation: {
+        noteMoyenneHoteClient: number | null;
+        comportement: ClientComportement | null;
+        tauxRecommandation: number;
+    };
     fidelite: {
         nombreReservationsDistinctes: number;
         clientRecurrent: boolean;
@@ -137,15 +149,27 @@ export interface ClientListItemDto {
     statut: ClientStatut;
 }
 
+export interface ClientHistoriqueReservationDto {
+    reservationId: string;
+    /** Valeur brute de `status_reservation` (cf. enum StatusReservation). */
+    statut: string;
+    /** Date de création, "YYYY-MM-DD". */
+    date: string;
+    montantFcfa: number;
+}
+
+export interface ClientHistoriqueAvisHoteDto {
+    reservationId: string;
+    note: number | null;
+    comportement: ClientComportement | null;
+    commentaire: string | null;
+}
+
+/** GET /v1/statistics/clients/:clientId — `data` de l'enveloppe. Historiques : 10 entrées max, plus récentes en premier. */
 export interface ClientDetailDto extends ClientListItemDto {
     historique: {
-        dernieresReservations: Array<{ reservationId: string; statut: string; date: string; montantFcfa: number }>;
-        derniersAvisHote: Array<{
-            reservationId: string;
-            note: number | null;
-            comportement: string | null;
-            commentaire: string | null;
-        }>;
+        dernieresReservations: ClientHistoriqueReservationDto[];
+        derniersAvisHote: ClientHistoriqueAvisHoteDto[];
     };
 }
 
@@ -200,13 +224,52 @@ export interface AdminSignalementItemDto {
     createdAt: string;
 }
 
+// ─── Formatage & libellés FR (fichier unique pour tout le module clients) ────
+
+export const EMPTY_VALUE = "—";
+
+const fcfaFormatter = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 0 });
+const percentFormatter = new Intl.NumberFormat("fr-FR", { style: "percent", maximumFractionDigits: 1 });
+
+/** 1250000 → « 1 250 000 FCFA » (séparateur de milliers fr). */
 export function formatFcfa(value: number): string {
-    return new Intl.NumberFormat("fr-FR").format(value) + " FCFA";
+    return `${fcfaFormatter.format(value)} FCFA`;
 }
 
-export function formatPercent(value: number): string {
-    return `${value.toFixed(1)} %`;
+/**
+ * Taux renvoyés par l'API en RATIO 0–1 (pct() côté back, AVG(0/1) pour tauxRecommandation) → « 12 % ».
+ * null/undefined → « — ».
+ */
+export function formatPercent(ratio: number | null | undefined): string {
+    if (ratio == null || Number.isNaN(ratio)) return EMPTY_VALUE;
+    return percentFormatter.format(ratio);
 }
+
+/** Date ISO ou "YYYY-MM-DD" → « dd/MM/yyyy » ; null → « — ». */
+export function formatDateFr(value: string | null | undefined): string {
+    if (!value) return EMPTY_VALUE;
+    const d = dayjs(value);
+    return d.isValid() ? d.format("DD/MM/YYYY") : EMPTY_VALUE;
+}
+
+/** Note /5 → « 4,5/5 » ; null → « — ». */
+export function formatNote(value: number | null | undefined): string {
+    if (value == null) return EMPTY_VALUE;
+    return `${new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 1 }).format(value)}/5`;
+}
+
+/** Fréquence moyenne entre deux réservations → « tous les 30 jours » ; null → « — ». */
+export function formatFrequence(jours: number | null | undefined): string {
+    if (jours == null) return EMPTY_VALUE;
+    const n = Math.round(jours);
+    return n <= 1 ? "tous les jours" : `tous les ${n} jours`;
+}
+
+export const verificationLabel: Record<keyof ClientListItemDto["verification"], string> = {
+    identite: "Identité",
+    email: "E-mail",
+    telephone: "Téléphone",
+};
 
 export const periodOptions: { label: string; value: ClientKpiPeriod }[] = [
     { label: "Semaine", value: ClientKpiPeriod.Week },

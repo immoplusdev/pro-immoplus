@@ -8,6 +8,9 @@ import {OrderedListOutlined, ReloadOutlined, SaveOutlined} from "@ant-design/ico
 import {useNavigate, useLocation, useParams} from "react-router-dom";
 import {ReservationRemindersCard} from "@/components/admin/reservation-reminders/ReservationRemindersCard";
 import {isAdminViewer} from "@/components/auth/is-admin-viewer";
+import {ReservationRelocationButton} from "@/components/admin/reservation-relocation/ReservationRelocationButton";
+import {ResidenceChangeHistoryCard} from "@/components/admin/reservation-relocation/ResidenceChangeHistoryCard";
+import {ReservationAdminCreationCard} from "@/components/admin/reservation-creation/ReservationAdminCreationCard";
 
 
 export const EditReservation: React.FC = () => {
@@ -21,6 +24,7 @@ export const EditReservation: React.FC = () => {
         onMutationSuccess: goBack,
     });
     const reservationData = queryResult?.data?.data;
+    const isAdmin = isAdminViewer();
     const { selectProps: residenceSelectProps } = useSelect({
         resource: "residences",
         filters: undefined,
@@ -46,6 +50,12 @@ export const EditReservation: React.FC = () => {
                     >
                         Refresh
                     </Button>
+                    {/* Changement de résidence : rôle Admin uniquement (Financier / Commercial reçoivent 403). */}
+                    <ReservationRelocationButton
+                        reservation={reservationData}
+                        isAdmin={isAdmin}
+                        onReload={() => queryResult?.refetch()}
+                    />
                     <DeleteButton
                         recordItemId={reservationData?.id}
                         onSuccess={goBack}
@@ -71,10 +81,16 @@ export const EditReservation: React.FC = () => {
                 </Row>
             </Form>
             {/* Historique des relances : GET /reservations/:id/relances n'est ouvert qu'au rôle Admin côté staff. */}
-            {isAdminViewer() && (
+            {isAdmin && (
                 <Row gutter={[32, 32]} style={{marginTop: 32}}>
                     <Col xs={24} lg={16}>
-                        <ReservationRemindersCard reservationId={reservationId}/>
+                        <Space direction="vertical" size="large" style={{width: "100%"}}>
+                            {/* Encart « Créée depuis le backoffice » : rien si la réservation vient de l'app (404). */}
+                            <ReservationAdminCreationCard reservationId={reservationId}/>
+                            {/* Historique des changements de résidence : masqué si vide ou refusé (403). */}
+                            <ResidenceChangeHistoryCard reservationId={reservationId}/>
+                            <ReservationRemindersCard reservationId={reservationId}/>
+                        </Space>
                     </Col>
                 </Row>
             )}

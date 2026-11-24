@@ -11,6 +11,7 @@ import {
   ShowResidence,
 } from "@/pages/residences";
 import {
+  CreateReservationAdmin,
   EditReservation,
   ListMotifsEchec,
   ListRelances,
@@ -211,6 +212,8 @@ export function AppRoutes() {
           {/* GET /reservations/relances est réservé au rôle Admin côté API. */}
           <Route element={<AdminRoute />}>
             <Route path="relances" element={<ListRelances />} />
+            {/* POST /admin/reservations/creation : rôle Admin uniquement (Financier / Commercial refusés par l'API). */}
+            <Route path="create" element={<CreateReservationAdmin />} />
           </Route>
         </Route>
         <Route path={"/furnitures"}>

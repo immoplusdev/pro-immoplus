@@ -100,8 +100,8 @@ export function ClientsKpis({ filters }: Props) {
     },
     {
       title: "Taux de recommandation",
-      value: kpis?.reputation.tauxRecommandation ?? 0,
-      suffix: "%",
+      value: kpis ? formatPercent(kpis.reputation.tauxRecommandation) : "—",
+      isText: true,
       icon: <StarOutlined style={{ fontSize: 22, color: "#2744DE" }} />,
       bgIcon: "#EEF1FE",
     },
